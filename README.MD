@@ -9,3 +9,6 @@ You will need to create files called smoketest-digital.json and ocesync-digital.
 * ocesync-digital.json -> digital + optimizer + oce-personal enabled
 
 In other respects the configuratin is the same as for [Optimizer](https://gitlab.ims.io/omr/omrtestautomation/-/blob/master/README.md "Optimizer readme")
+
+
+Eva -- Use it as reference project, won't actually use it for testing
