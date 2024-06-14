@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assemblies timestamp="06/14/2024 16:40:14">
+  <assembly name="/Users/shuanghe/Desktop/NewPlace/GoodFrameowrk/digital/bin/Debug/netcoreapp3.1/Digital.dll" run-date="2024-06-14" run-time="16:40:14" total="1" passed="0" failed="1" skipped="0" time="0.133" errors="0">
+    <errors />
+    <collection total="1" passed="0" failed="1" skipped="0" name="Test collection for Digital.Tests.SpecFlow.Features.MCM.CallFeature" time="0.133">
+      <test name="AddingTwoNumbers" type="Digital.Tests.SpecFlow.Features.MCM.CallFeature" method="AddingTwoNumbers" time="0.1334741" result="Fail">
+        <output>When I add two Numbers
+-&gt; error: Assert.True() Failure
+Expected: True
+Actual:   False (0.1s)
+
+</output>
+        <failure>
+          <message>Assert.True() Failure
+Expected: True
+Actual:   False</message>
+          <stack-trace>   at Digital.Tests.SpecFlow.Steps.Class0614.AddTwoNumbers() in /Users/shuanghe/Desktop/NewPlace/GoodFrameowrk/digital/Tests/SpecFlow/Steps/TestAddTwoNumbers.cs:line 23
+   at TechTalk.SpecFlow.Bindings.BindingInvoker.InvokeBinding(IBinding binding, IContextManager contextManager, Object[] arguments, ITestTracer testTracer, TimeSpan&amp; duration)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.ExecuteStepMatch(BindingMatch match, Object[] arguments, TimeSpan&amp; duration)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.ExecuteStep(IContextManager contextManager, StepInstance stepInstance)
+   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnAfterLastStep()
+   at TechTalk.SpecFlow.TestRunner.CollectScenarioErrors()
+   at Digital.Tests.SpecFlow.Features.MCM.CallFeature.ScenarioCleanup()
+   at Digital.Tests.SpecFlow.Features.MCM.CallFeature.AddingTwoNumbers() in /Users/shuanghe/Desktop/NewPlace/GoodFrameowrk/digital/Tests/SpecFlow/Features/MCM/Call.feature:line 57</stack-trace>
+        </failure>
+        <traits>
+          <trait name="FeatureTitle" value="Call" />
+          <trait name="Description" value="AddingTwoNumbers" />
+          <trait name="Category" value="EvaJun14" />
+        </traits>
+      </test>
+    </collection>
+  </assembly>
+</assemblies>

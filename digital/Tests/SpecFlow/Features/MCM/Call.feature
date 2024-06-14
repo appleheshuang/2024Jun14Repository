@@ -50,3 +50,8 @@ Scenario: Call
 	Examples:
 	| Tenant               |
 	| digital-org0325.json |  
+
+
+@EvaJun14
+Scenario: AddingTwoNumbers
+When I add two Numbers

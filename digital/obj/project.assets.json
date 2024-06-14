@@ -9868,11 +9868,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/shuanghe/Desktop/NewPlace/digitaltest/digital/Digital.csproj",
+      "projectUniqueName": "/Users/shuanghe/Desktop/NewPlace/GoodFrameowrk/digital/Digital.csproj",
       "projectName": "Digital",
-      "projectPath": "/Users/shuanghe/Desktop/NewPlace/digitaltest/digital/Digital.csproj",
+      "projectPath": "/Users/shuanghe/Desktop/NewPlace/GoodFrameowrk/digital/Digital.csproj",
       "packagesPath": "/Users/shuanghe/.nuget/packages/",
-      "outputPath": "/Users/shuanghe/Desktop/NewPlace/digitaltest/digital/obj/",
+      "outputPath": "/Users/shuanghe/Desktop/NewPlace/GoodFrameowrk/digital/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/shuanghe/.nuget/NuGet/NuGet.Config"
@@ -9887,11 +9887,11 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "/Users/shuanghe/Desktop/NewPlace/digitaltest/omrtestautomation/MainFramework/MainFramework.csproj": {
-              "projectPath": "/Users/shuanghe/Desktop/NewPlace/digitaltest/omrtestautomation/MainFramework/MainFramework.csproj"
+            "/Users/shuanghe/Desktop/NewPlace/GoodFrameowrk/omrtestautomation/MainFramework/MainFramework.csproj": {
+              "projectPath": "/Users/shuanghe/Desktop/NewPlace/GoodFrameowrk/omrtestautomation/MainFramework/MainFramework.csproj"
             },
-            "/Users/shuanghe/Desktop/NewPlace/digitaltest/omrtestautomation/OMREngineTest/Optimizer.csproj": {
-              "projectPath": "/Users/shuanghe/Desktop/NewPlace/digitaltest/omrtestautomation/OMREngineTest/Optimizer.csproj"
+            "/Users/shuanghe/Desktop/NewPlace/GoodFrameowrk/omrtestautomation/OMREngineTest/Optimizer.csproj": {
+              "projectPath": "/Users/shuanghe/Desktop/NewPlace/GoodFrameowrk/omrtestautomation/OMREngineTest/Optimizer.csproj"
             }
           }
         }

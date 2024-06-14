@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "7CRIjd30Suc=",
+  "dgSpecHash": "2ylP9nm71Ck=",
   "success": true,
-  "projectFilePath": "/Users/shuanghe/Desktop/NewPlace/digitaltest/digital/Digital.csproj",
+  "projectFilePath": "/Users/shuanghe/Desktop/NewPlace/GoodFrameowrk/digital/Digital.csproj",
   "expectedPackageFiles": [
     "/Users/shuanghe/.nuget/packages/amazon.extensions.cognitoauthentication/1.0.3/amazon.extensions.cognitoauthentication.1.0.3.nupkg.sha512",
     "/Users/shuanghe/.nuget/packages/amazon.lambda.apigatewayevents/1.2.0/amazon.lambda.apigatewayevents.1.2.0.nupkg.sha512",
