@@ -1,0 +1,16 @@
+{
+  "BaseData": {
+    "productId": "PROD1",
+    "productName": "Panadol",
+    "EffectiveDate": "2020-08-01"
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "WhitelistedView",
+        "query": "VProductHierarchy,SOMProductId,EffectiveDate,ParentProduct,Key:'{{productId}}'",
+        "exp_result": "[{SOMProductId:{{productId}},EffectiveDate:{{EffectiveDate}},ParentProduct:}]"
+      }
+    ]
+  }
+}

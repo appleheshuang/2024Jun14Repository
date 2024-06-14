@@ -1,0 +1,9 @@
+{
+	"Url": "https://prod-us.dev.optimizer.iqvia.io/",
+	"EnvRoot": "latest",
+	"TestDataBucket": "guardians-testdata-east2",
+	"tenantcreator": "tenantcreator",
+	"creator_pswd": "woi@MPdsZDFP042VQwN0SZWBXydSBBZzUxF",
+	"master_apikey": "OAGkekRgrF51pPX2goBSb3dJ28NWOmhy1B61Pl6N1",
+	"generic_sfApiKey": "SZLWvZHCeI5sxXLIs2IRb9NRYGoNnV7D8OfKTmps1"
+}

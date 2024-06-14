@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32228.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Digital", "digital\Digital.csproj", "{9D8580A4-D0B5-4055-AABD-6828D48C2A7A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{602BF8FA-1336-485F-914F-4A87AE07E0EF} = {602BF8FA-1336-485F-914F-4A87AE07E0EF}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4BB27E99-DB08-436C-846E-3F3A620CFE1A}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitlab-ci.yml = .gitlab-ci.yml
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MainFramework", "omrtestautomation\MainFramework\MainFramework.csproj", "{602BF8FA-1336-485F-914F-4A87AE07E0EF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Optimizer", "omrtestautomation\OMREngineTest\Optimizer.csproj", "{9B405F77-E102-40E4-B693-E59496868F8A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9D8580A4-D0B5-4055-AABD-6828D48C2A7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D8580A4-D0B5-4055-AABD-6828D48C2A7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D8580A4-D0B5-4055-AABD-6828D48C2A7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D8580A4-D0B5-4055-AABD-6828D48C2A7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{602BF8FA-1336-485F-914F-4A87AE07E0EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{602BF8FA-1336-485F-914F-4A87AE07E0EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{602BF8FA-1336-485F-914F-4A87AE07E0EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{602BF8FA-1336-485F-914F-4A87AE07E0EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B405F77-E102-40E4-B693-E59496868F8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B405F77-E102-40E4-B693-E59496868F8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B405F77-E102-40E4-B693-E59496868F8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B405F77-E102-40E4-B693-E59496868F8A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0ACA9D4E-4524-4D86-907B-AD65EA7E5308}
+	EndGlobalSection
+EndGlobal

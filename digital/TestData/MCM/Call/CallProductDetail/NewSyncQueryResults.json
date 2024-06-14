@@ -1,0 +1,43 @@
+{
+  "BaseData": {
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "CallProductDetailValidBU-New",
+        "query": "select \"Id\",\"OMCallId\",\"DetailPriority\",\"SOMProductId\",\"PDE\",\"UniqueIntegrationId\",\"Status\",to_date(\"CreatedDate\") as \"CreatedDate\",\"CreatedById\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\",\"LastModifiedById\" from static.\"OMCallDetail\" where \"Id\"='CPD{{TestUniqueIntegrationID}}CallProDeBU'",
+        "exp_result": "[{Id:CPD{{TestUniqueIntegrationID}}CallProDeBU,OMCallId:CallId{{TestUniqueIntegrationID}},DetailPriority:1,SOMProductId:a5C4x000000kHiJEAU,PDE:2,UniqueIntegrationId:{{TestUniqueIntegrationID}}CallProDe,Status:ACTV,CreatedDate:{{dbt_today}},CreatedById:Automation,LastModifiedDate:{{dbt_today}},LastModifiedById:Automation}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "CallProductDetailMandatory-New",
+        "query": "select \"Id\",\"OMCallId\",\"DetailPriority\",\"SOMProductId\",\"PDE\",\"UniqueIntegrationId\",\"Status\",to_date(\"CreatedDate\") as \"CreatedDate\",\"CreatedById\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\",\"LastModifiedById\" from static.\"OMCallDetail\" where \"Id\"='CPD{{TestUniqueIntegrationID}}MandatoryFields'",
+        "exp_result": "[{Id:CPD{{TestUniqueIntegrationID}}MandatoryFields,OMCallId:CallId{{TestUniqueIntegrationID}},DetailPriority:null,SOMProductId:a5C4x000000kHiJEAU,PDE:null,UniqueIntegrationId:null,Status:ACTV,CreatedDate:{{dbt_today}},CreatedById:Automation,LastModifiedDate:{{dbt_today}},LastModifiedById:Automation}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "CallProductDetailLargeQuantity-New",
+        "query": "select \"Id\",\"OMCallId\",\"DetailPriority\",\"SOMProductId\",\"PDE\",\"UniqueIntegrationId\",\"Status\",to_date(\"CreatedDate\") as \"CreatedDate\",\"CreatedById\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\",\"LastModifiedById\" from static.\"OMCallDetail\" where \"Id\"='CPD{{TestUniqueIntegrationID}}LargeQuantity'",
+        "exp_result": "[{Id:CPD{{TestUniqueIntegrationID}}LargeQuantity,OMCallId:CallId{{TestUniqueIntegrationID}},DetailPriority:2147483647,SOMProductId:a5C4x000000kHiJEAU,PDE:2147483647,UniqueIntegrationId:null,Status:ACTV,CreatedDate:{{dbt_today}},CreatedById:Automation,LastModifiedDate:{{dbt_today}},LastModifiedById:Automation}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "CallProductDetailInvalid-New",
+        "query": "select count(*) from STATIC.\"OMCallDetail\" where \"Id\" in ('CPD{{TestUniqueIntegrationID}}Past','CPD{{TestUniqueIntegrationID}}OtherCRM','CPD{{TestUniqueIntegrationID}}OtherBU','CPD{{TestUniqueIntegrationID}}CallProDeNoBU')",
+        "exp_result": "[{COUNT(*):0}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "CallProductDetailValid-New",
+        "query": "select count(*) from STATIC.\"OMCallDetail\" where \"Id\" like ('%{{TestUniqueIntegrationID}}%')",
+        "exp_result": "[{COUNT(*):3}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      }
+    ]
+  }
+}

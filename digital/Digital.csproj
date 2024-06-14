@@ -1,0 +1,214 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\SpecFlow\Features\Consent - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\SpecFlow\Features\Example.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\SpecFlow\Features\MCM\Call - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\SpecFlow\Features\MCM\ContactMaster - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\SpecFlow\Features\MCM\HCO - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\SpecFlow\Features\MCM\HCOContact - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\SpecFlow\Features\MCM\HCOMasterPhysicalAddress - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\SpecFlow\Features\MCM\MasterPhysicalAddress - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\SpecFlow\Features\MCM\POC - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\SpecFlow\Features\MCM\SalesRep - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\SpecFlow\Features\MCM\TopicMaster - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\SpecFlow\Features\OptSync - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\SpecFlow\Features\Test.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\SpecFlow\Features\TopicSync - Copy.feature.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+    <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.57" />
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.8" />
+    <PackageReference Include="SpecFlow.xUnit" Version="3.9.8" />
+    <PackageReference Include="FluentAssertions" Version="6.2.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="XunitXml.TestLogger" Version="2.1.26" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Constructors\" />
+    <Folder Include="Drivers\" />
+    <Folder Include="Hooks\" />
+    <Folder Include="Utils\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\omrtestautomation\MainFramework\MainFramework.csproj" />
+    <ProjectReference Include="..\omrtestautomation\OMREngineTest\Optimizer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Tests\SpecFlow\Features\InboundSalesRep.feature.cs">
+      <DependentUpon>InboundSalesRep.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\MCM\BestDayTime.feature.cs">
+      <DependentUpon>BestDayTime.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\MCM\ResetInitialSync.feature.cs">
+      <DependentUpon>ResetInitialSync.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\MCM\CommunicationMaster.feature.cs">
+      <DependentUpon>CommunicationMaster.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\MCM\SchedulerTest.feature.cs">
+      <DependentUpon>SchedulerTest.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\MCM\Consent.feature.cs">
+      <DependentUpon>Consent.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\MCM\ContactConsentSettings.feature.cs">
+      <DependentUpon>ContactConsentSettings.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\MCM\Product.feature.cs">
+      <DependentUpon>Product.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\MCM\Call.feature.cs">
+      <DependentUpon>Call.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\MCM\LOV.feature.cs">
+      <DependentUpon>LOV.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\MCM\SalesRep.feature.cs">
+      <DependentUpon>SalesRep.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\MCM\HCO.feature.cs">
+      <DependentUpon>HCO.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\MCM\MasterPhysicalAddress.feature.cs">
+      <DependentUpon>MasterPhysicalAddress.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\MCM\ContactMaster.feature.cs">
+      <Visible>true</Visible>
+      <DependentUpon>ContactMaster.feature</DependentUpon>
+      <DesignTime>true</DesignTime>
+      <AutoGen>true</AutoGen>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\Setup.feature.cs">
+      <DependentUpon>Setup.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\OptSync.feature.cs">
+      <DependentUpon>OptSync.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\Journey.feature.cs">
+      <DependentUpon>Journey.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\TopicProductSync.feature.cs">
+      <DependentUpon>TopicProductSync.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\ConsentNextGen.feature.cs">
+      <DependentUpon>ConsentNextGen.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\InboundTerritory2.feature.cs">
+      <DependentUpon>InboundTerritory2.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\SpecFlow\Features\TopicSync.feature.cs">
+      <Visible>true</Visible>
+      <DependentUpon>TopicSync.feature</DependentUpon>
+      <DesignTime>true</DesignTime>
+      <AutoGen>true</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\InboundSalesRep.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\MCM\BestDayTime.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\MCM\ResetInitialSync.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\MCM\CommunicationMaster.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\MCM\SchedulerTest.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\MCM\Consent.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\MCM\ContactConsentSettings.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\MCM\Product.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\MCM\Call.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\MCM\LOV.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\MCM\SalesRep.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\MCM\HCO.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\MCM\MasterPhysicalAddress.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\MCM\ContactMaster.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\Setup.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\OptSync.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\Journey.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\TopicProductSync.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\ConsentNextGen.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\InboundTerritory2.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\SpecFlow\Features\TopicSync.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+  </ItemGroup>
+
+</Project>

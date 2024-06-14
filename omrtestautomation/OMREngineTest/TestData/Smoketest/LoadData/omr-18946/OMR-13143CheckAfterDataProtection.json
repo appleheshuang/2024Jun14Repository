@@ -1,0 +1,35 @@
+﻿{
+  "Tests": {
+		"MergeResults": [
+			{
+				"testname": "NoExplicitCreatedWithActiveAccountExclusion",
+				"query": "select count(*) \"count\" from OUTPUT.\"OMAccountExplicit\" where \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}' and \"OMAccountId\" = '{{Account.Id[0]}}' and \"Status\" = 'ACTV'",
+				"exp_result": "[{count:0}]"
+			},
+			{
+				"testname": "AccountExplicitCreatedWithFutureAccountExclusion",
+				"query": "select \"Purpose\", \"FromOCEPersonal\", \"SourceId\", \"SOMCreatedById\", \"Status\", \"EffectiveDate\", \"EndDate\" from OUTPUT.\"OMAccountExplicit\" where \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}' and \"OMAccountId\" = '{{Account.Id[1]}}'",
+				"exp_result": "[{Purpose:ALGN,FromOCEPersonal:true,SourceId:{{Account.Id[1]}},SOMCreatedById:{{SFUSER_ID}},Status:INAC,EffectiveDate:{{dbt_today}},EndDate:2050-10-20}]",
+				"odataQuery": "/OMAccountExplicit?$select=Purpose,FromOCEPersonal,SourceId,SOMCreatedById,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c}}' and OMAccountId eq '{{Account.Id[1]}}'"
+			},
+			{
+				"testname": "OMRAccountExplicitNotEndDated",
+				"query": "select \"Purpose\", \"FromOCEPersonal\", \"SourceId\", \"OMAccountId\", \"SOMCreatedById\", \"Status\", \"EffectiveDate\", \"EndDate\" from OUTPUT.\"OMAccountExplicit\" where \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}' and \"OMAccountId\" = '{{Account.Id[2]}}'",
+				"exp_result": "[{Purpose:{{ScenarioAccountExplicit.Purpose__c[0]}},FromOCEPersonal:null,SourceId:null,OMAccountId:{{Account.Id[2]}},SOMCreatedById:{{SFUSER_ID}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}}}]",
+				"odataQuery": "/OMAccountExplicit?$select=Purpose,FromOCEPersonal,SourceId,OMAccountId,SOMCreatedById,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c}}' and OMAccountId eq '{{Account.Id[2]}}'"
+			},
+			{
+				"testname": "NoChangeForExistingActiveAccountExplicit",
+				"query": "select \"Purpose\", \"FromOCEPersonal\", \"SourceId\", \"OMAccountId\", \"SOMCreatedById\", \"Status\", \"EffectiveDate\", \"EndDate\" from OUTPUT.\"OMAccountExplicit\" where \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}' and \"OMAccountId\" = '{{Account.Id[3]}}'",
+				"exp_result": "[{Purpose:{{ScenarioAccountExplicit.Purpose__c[1]}},FromOCEPersonal:null,SourceId:null,OMAccountId:{{Account.Id[3]}},SOMCreatedById:{{SFUSER_ID}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}}}]",
+				"odataQuery": "/OMAccountExplicit?$select=Purpose,FromOCEPersonal,SourceId,OMAccountId,SOMCreatedById,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c}}' and OMAccountId eq '{{Account.Id[3]}}'"
+			},
+			{
+				"testname": "AccountExplicitRestartedWithFutureAccountExplicit",
+				"query": "select \"Purpose\", \"FromOCEPersonal\", \"SourceId\", \"OMAccountId\", \"SOMCreatedById\", \"Status\", \"EffectiveDate\", \"EndDate\" from OUTPUT.\"OMAccountExplicit\" where \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}' and \"OMAccountId\" = '{{Account.Id[4]}}' order by \"EffectiveDate\"",
+				"exp_result": "[{Purpose:ALGN,FromOCEPersonal:true,SourceId:{{Account.Id[4]}},OMAccountId:{{Account.Id[4]}},SOMCreatedById:{{SFUSER_ID}},Status:ACTV,EffectiveDate:{{dbt_today}},EndDate:2050-10-20},{Purpose:{{ScenarioAccountExplicit.Purpose__c[2]}},FromOCEPersonal:null,SourceId:null,OMAccountId:{{Account.Id[4]}},SOMCreatedById:{{SFUSER_ID}},Status:ACTV,EffectiveDate:{{ScenarioAccountExplicit.EffectiveDate__c[2]}},EndDate:{{ScenarioAccountExplicit.EndDate__c[2]}}}]",
+				"odataQuery": "/OMAccountExplicit?$select=Purpose,FromOCEPersonal,SourceId,OMAccountId,SOMCreatedById,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c}}' and OMAccountId eq '{{Account.Id[4]}}'&$orderBy=EffectiveDate"
+			}
+		]
+  }
+}

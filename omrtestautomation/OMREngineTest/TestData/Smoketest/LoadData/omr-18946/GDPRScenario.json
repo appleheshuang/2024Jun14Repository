@@ -1,0 +1,342 @@
+﻿{
+  "Configs": {},
+
+  "BaseData": {
+    "som_geo_id": "GEO01",
+    "productUId": "PROD1",
+    "som_region_id": "FX", //This region has AccountDataProtectionAction = DEL
+    "som_region_id2": "BM", //This region has AccountDataProtectionAction = MASK
+    "som_region_id3": "GB", //This region has AccountDataProtectionAction = NONE
+    "ACC1_ActiveAndInFX": "OMR-18946-1-{{TestUniqueIntegrationId}}",
+    "ACC2_InactiveAndInFX": "OMR-18946-2-{{TestUniqueIntegrationId}}",
+    "ACC3_ActiveAndGlobalAcc": "OMR-18946-3-{{TestUniqueIntegrationId}}",
+    "ACC4_InactiveAndGlobalAcc": "OMR-18946-4-{{TestUniqueIntegrationId}}",
+    "ACC5_ActiveAndInBM": "OMR-18946-5-{{TestUniqueIntegrationId}}",
+    "ACC6_InactiveAndBM": "OMR-18946-6-{{TestUniqueIntegrationId}}",
+    "ACC7_ActiveAndInGB": "OMR-18946-7-{{TestUniqueIntegrationId}}",
+    "ACC8_InactiveAndGB": "OMR-18946-8-{{TestUniqueIntegrationId}}",
+    "explicit_accountUId1": "51ACCTEXPLR",
+    "explicit_accountUId2": "10ACCTEXC",
+    "prod_accountUId2": "ACCT05",
+    "account_rule": "45ACCTEXP",
+    "account_recalc": "AUTORECALC",
+    "exclusion_accountUId": "ACCT03",
+    "salesforceUID": "SF405",
+    "salesforceUID2": "SF505",
+    "salesforceUID3": "SF605",
+    "territoryUID": "T505",
+    "territoryUID1": "T605",
+    "territoryUID2": "T705",
+    "ruleUID": "R201",
+    "ruleUID2": "R202"
+  },
+
+  "Scenario": {
+    "Description": "Data setup for GDPR account deletion",
+    "Name": "Adding every Scenario Entity Test",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "{{TestUniqueIntegrationID}}",
+    "EffectiveDate__c": "2023-07-01",
+    "EndDate__c": "3999-12-31"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID1}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "INST",
+      "Name": "SF 405",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID2}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "INST",
+      "Name": "SF 505",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID3}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "INST",
+      "Name": "SF 605",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    }
+  ],
+
+  "ScenarioSalesForceHierarchy": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "UniqueIntegrationId__c": "SFH-{{TestUniqueIntegrationID}}",
+      "ChildSalesForceUniqueIntegrationId__c": "{{salesforceUID2}}-{{TestUniqueIntegrationID}}",
+      "SOMChildSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+      "ParentSalesForceUniqueIntegrationId__c": "{{salesforceUID1}}-{{TestUniqueIntegrationID}}",
+      "SOMParentSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+      "RelationType__c": "PRIM",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID1}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "Terr 505",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "BU",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID2}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "Terr 605",
+      "UniqueIntegrationId__c": "{{territoryUID1}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "AREA",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID2}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "Terr 705",
+      "UniqueIntegrationId__c": "{{territoryUID3}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    }
+  ],
+
+  "ScenarioTerritoryHierarchy": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ChildTerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "SOMChildTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "UniqueIntegrationId__c": "TRH-{{TestUniqueIntegrationID}}",
+      "RefChildTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+      "ParentTerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "SOMParentTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "RefParentTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "RelationType__c": "PRIM",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "UniqueIntegrationId__c": "TRH2-{{TestUniqueIntegrationID}}",
+      "ChildTerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+      "RefChildTerritoryName__c": "{{ScenarioTerritory.Name[2]}}",
+      "ParentTerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "RefParentTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31",
+      "RelationType__c": "PRIM",
+      "SOMParentTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "SOMChildTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}"
+    }
+  ],
+  "ScenarioUserAssignment": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "RepTerr_{{TestUniqueIntegrationId}}",
+      "AssignmentType__c": "SECN",
+      "ImpactedRegions__c": "{{som_region_id}}",
+      "SOMUserId__c": "{{User.SOMUserId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[0]}}",
+      "RefUserName__c": "{{User.Name[0]}}",
+      "RefUserType__c": "{{User.Type__c[0]}}"
+    }
+  ],
+  "ScenarioAccountOwner": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "AccountUniqueIntegrationId__c": "{{ACC1_ActiveAndInFX}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c}}",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "AccountUniqueIntegrationId__c": "{{ACC3_ActiveAndGlobalAcc}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c}}",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    }
+  ],
+
+  "ScenarioAccountProductExplicit": [
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{ACC3_ActiveAndGlobalAcc}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    }
+  ],
+
+  "ScenarioAccountProductRule": [
+    {
+      "Action__c": "ADD",
+      "Name": "Smoketest {{ruleUID2}}-{{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "{{ruleUID2}}-{{TestUniqueIntegrationID}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Department\"},\"ProductRule\":{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"}}",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    }
+  ],
+
+  "ScenarioAccountProductTerrExplicit": [
+    {
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "AccountUniqueIntegrationId__c": "{{ACC3_ActiveAndGlobalAcc}}",
+      "OMAccountId__c": "{{ACC3_ActiveAndGlobalAcc}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31",
+      "Action__c": "ADD"
+    }
+  ],
+  "ScenarioAccountSalesForceExclusion": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{ACC1_ActiveAndInFX}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    }
+  ],
+
+  "ScenarioRule": [
+    {
+      "Name": "Smoketest {{ruleUID}}-{{TestUniqueIntegrationID}}",
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{ruleUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "RuleData__c": "{\"geography\":true,\"explicit\":false,\"filter\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Department\"}}",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    },
+    {
+      "Name": "Universe-{{TestUniqueIntegrationID}}",
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "Universe-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "RuleData__c": "{\"geography\":false,\"explicit\":false,\"hierarchy\":\"AREA;DM\",\"filter\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"MP\"}}",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    }
+  ],
+
+  "ScenarioAccountExplicit": [
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{ACC1_ActiveAndInFX}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{ACC3_ActiveAndGlobalAcc}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{ACC7_ActiveAndInGB}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    }
+  ],
+
+  "ScenarioAccountExclusion": [
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{ACC5_ActiveAndInBM}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31"
+    }
+  ],
+  "ScenarioEngagementPlan": [
+    {
+      "Name": "EP-18946",
+      "UniqueIntegrationId__c": "EngP-{{TestUniqueIntegrationId}}",
+      "Action__c": "ADD",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.somsalesforceid__c}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "PlanType__c": "LOAD",
+      "ImportEngagementPlan__c": true,
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "3999-12-31",
+      "OMEngagementSegment__c": "[{\"SOMEngagementSegmentId\":\"segA-{{TestUniqueIntegrationId}}\",\"Name\":\"SegA\",\"Description\":\"\",\"Rank\":1,\"SOMRuleId\":\"\",\"Targets\":[{\"SOMEngagementSegmentTargetId\":\"meetA-{{TestUniqueIntegrationId}}\",\"Channel\":\"MEET\",\"Frequency\":100},{\"SOMEngagementSegmentTargetId\":\"emailA-{{TestUniqueIntegrationId}}\",\"Channel\":\"EMAIL\",\"Frequency\":100}]},{\"SOMEngagementSegmentId\":\"segB-{{TestUniqueIntegrationId}}\",\"Name\":\"SegB\",\"Description\":\"\",\"Rank\":2,\"SOMRuleId\":\"\",\"Targets\":[{\"SOMEngagementSegmentTargetId\":\"meetB-{{TestUniqueIntegrationId}}\",\"Channel\":\"MEET\",\"Frequency\":50},{\"SOMEngagementSegmentTargetId\":\"emailB-{{TestUniqueIntegrationId}}\",\"Channel\":\"EMAIL\",\"Frequency\":50}]},{\"SOMEngagementSegmentId\":\"segC-{{TestUniqueIntegrationId}}\",\"Name\":\"SegC\",\"Description\":\"\",\"Rank\":3,\"SOMRuleId\":\"\",\"Targets\":[{\"SOMEngagementSegmentTargetId\":\"meetC-{{TestUniqueIntegrationId}}\",\"Channel\":\"MEET\",\"Frequency\":25},{\"SOMEngagementSegmentTargetId\":\"emailC-{{TestUniqueIntegrationId}}\",\"Channel\":\"EMAIL\",\"Frequency\":25}]}]"
+    }
+  ],
+  "ScenarioEngagementResult": [
+    {
+      "AccountUniqueIntegrationId__c": "{{ACC3_ActiveAndGlobalAcc}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "EngagementPlanUniqueIntegrationId__c": "{{ScenarioEngagementPlan.UniqueIntegrationId__c[0]}}",
+      "SOMEngagementPlanId__c": "{{ScenarioEngagementPlan.SOMEngagementPlanId__c[0]}}",
+      "SOMEngagementSegmentId__c": "segA-{{TestUniqueIntegrationId}}",
+      "Targets__c": "[{\"Channel\":\"MEET\",\"Frequency\":3},{\"Channel\":\"EMAIL\",\"Frequency\":10}]",
+      "SOMEngagementResultId__c": "01-EngRes-{{TestUniqueIntegrationId}}",
+      "OMAccountId__c": "{{ACC3_ActiveAndGlobalAcc}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "OMScenarioEngagementPlanId__c": "{{ScenarioEngagementPlan.Id[0]}}",
+      "EngagementSegmentName__c": "SegA",
+      "UniqueIntegrationId__c": "01-EPRes-18946-{{TestUniqueIntegrationId}}",
+      "Name": "EP-18946"
+    }
+  ]
+
+}

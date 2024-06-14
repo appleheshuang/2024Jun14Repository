@@ -1,0 +1,61 @@
+{
+  "BaseData": {
+    "som_region_id": "IE",
+    "rep_added_accountUId": "REPADDED",
+    "rep_removed_accountUId": "REPREMOVED",
+    "affiliated_accountUId": "AFFILIATED",
+    "accountUId_removed_by_dm_geo_delete_CR": "DELETEDWITHGEODMCR",
+    "accountUId_added_by_dm_geo_add_CR": "ADDEDBYGEOADDDMCR",
+    "dm_added_geoid": "DUBLIN",
+    "dm_removed_geoid": "KILKENNY",
+    "dm_added_geoid_2": "LONDONDERRY",
+    "dm_removed_geoid_2": "CONNACHT",
+    "OrigEffectiveDate": "2023-07-01",
+    "OrigEndDate": "3999-12-31",
+    "AdjEffectiveDate": "{{today-10}}",
+    "AdjEndDate": "{{today+80}}",
+    "DayBeforeAdj": "{{today-11}}",
+    "DayAfterAdj": "{{today+81}}"
+  },
+  "Tests": {
+    "AlignmentResults": [
+      {
+        "testname": "alignments",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountUID:{{accountUId_added_by_dm_geo_add_CR}},EffectiveDate:{{AdjEffectiveDate}},EndDate:{{AdjEndDate}},Source:DSHR,Reason:{{ScenarioRule.Name[1]}}|{{ScenarioRule.SOMRuleId__c[1]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountUID:{{accountUId_removed_by_dm_geo_delete_CR}},EffectiveDate:{{OrigEffectiveDate}},EndDate:{{DayBeforeAdj}},Source:DSHR,Reason:{{ScenarioRule.Name[1]}}|{{ScenarioRule.SOMRuleId__c[1]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountUID:{{accountUId_removed_by_dm_geo_delete_CR}},EffectiveDate:{{DayAfterAdj}},EndDate:{{OrigEndDate}},Source:DSHR,Reason:{{ScenarioRule.Name[1]}}|{{ScenarioRule.SOMRuleId__c[1]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{affiliated_accountUId}},EffectiveDate:{{OrigEffectiveDate}},EndDate:{{DayBeforeAdj}},Source:DSHR,Reason:{{ScenarioRule.Name[0]}}|{{ScenarioRule.SOMRuleId__c[0]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{affiliated_accountUId}},EffectiveDate:{{DayAfterAdj}},EndDate:{{OrigEndDate}},Source:DSHR,Reason:{{ScenarioRule.Name[0]}}|{{ScenarioRule.SOMRuleId__c[0]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{rep_added_accountUId}},EffectiveDate:{{AdjEffectiveDate}},EndDate:{{AdjEndDate}},Source:EXPL,Reason:},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{rep_removed_accountUId}},EffectiveDate:{{OrigEffectiveDate}},EndDate:{{DayBeforeAdj}},Source:EXPL,Reason:},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{rep_removed_accountUId}},EffectiveDate:{{DayAfterAdj}},EndDate:{{OrigEndDate}},Source:EXPL,Reason:}]",
+        "account_uids": "{{rep_added_accountUId}},{{rep_removed_accountUId}},{{affiliated_accountUId}},{{accountUId_removed_by_dm_geo_delete_CR}},{{accountUId_added_by_dm_geo_add_CR}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}},{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]},{{ScenarioTerritory.SOMTerritoryId__c[1]}}"
+      }
+    ],
+    "GeographyAlignments": [
+      {
+        "testname": "geoterr-changedbydm",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},GeographyUID:{{dm_removed_geoid_2}},EffectiveDate:{{OrigEffectiveDate}},EndDate:{{DayBeforeAdj}},SOMCreatedById:{{ho_userid}},SOMLastModifiedById:{{dm_userid}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},GeographyUID:{{dm_removed_geoid_2}},EffectiveDate:{{DayAfterAdj}},EndDate:{{OrigEndDate}},SOMCreatedById:{{ho_userid}},SOMLastModifiedById:{{dm_userid}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},GeographyUID:{{dm_added_geoid_2}},EffectiveDate:{{AdjEffectiveDate}},EndDate:{{AdjEndDate}},SOMCreatedById:{{dm_userid}},SOMLastModifiedById:{{dm_userid}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},GeographyUID:{{dm_added_geoid}},EffectiveDate:{{AdjEffectiveDate}},EndDate:{{AdjEndDate}},SOMCreatedById:{{dm_userid}},SOMLastModifiedById:{{dm_userid}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},GeographyUID:{{dm_removed_geoid}},EffectiveDate:{{OrigEffectiveDate}},EndDate:{{DayBeforeAdj}},SOMCreatedById:{{ho_userid}},SOMLastModifiedById:{{dm_userid}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},GeographyUID:{{dm_removed_geoid}},EffectiveDate:{{DayAfterAdj}},EndDate:{{OrigEndDate}},SOMCreatedById:{{ho_userid}},SOMLastModifiedById:{{dm_userid}}}]",
+        "geography_uids": "{{dm_added_geoid}},{{dm_removed_geoid}},{{dm_added_geoid_2}},{{dm_removed_geoid_2}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}},{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}},{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+        "extra_columns": "SOMCreatedById,SOMLastModifiedById"
+      }
+    ],
+    "Explicits": [
+      {
+        "testname": "explicits-changedbyrep",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{rep_added_accountUId}},EffectiveDate:{{AdjEffectiveDate}},EndDate:{{AdjEndDate}},SOMCreatedById:{{rep_userid}},SOMLastModifiedById:{{rep_userid}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{rep_removed_accountUId}},EffectiveDate:{{OrigEffectiveDate}},EndDate:{{DayBeforeAdj}},SOMCreatedById:{{ho_userid}},SOMLastModifiedById:{{rep_userid}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{rep_removed_accountUId}},EffectiveDate:{{DayAfterAdj}},EndDate:{{OrigEndDate}},SOMCreatedById:{{ho_userid}},SOMLastModifiedById:{{rep_userid}}}]",
+        "account_uids": "{{rep_added_accountUId}},{{rep_removed_accountUId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+        "extra_columns": "SOMCreatedById,SOMLastModifiedById"
+      }
+    ],
+    "Exclusions": [
+      {
+        "testname": "exclusions-addedbyrep",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{rep_removed_accountUId}},EffectiveDate:{{AdjEffectiveDate}},EndDate:{{AdjEndDate}},SOMCreatedById:{{rep_userid}},SOMLastModifiedById:{{rep_userid}}}]",
+        "account_uids": "{{rep_added_accountUId}},{{rep_removed_accountUId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+        "extra_columns": "SOMCreatedById,SOMLastModifiedById"
+      }
+    ]
+  }
+}

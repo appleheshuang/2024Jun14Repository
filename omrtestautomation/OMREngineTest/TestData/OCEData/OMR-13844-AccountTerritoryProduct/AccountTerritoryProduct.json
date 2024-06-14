@@ -1,0 +1,12 @@
+﻿{
+
+	"AccountTerritoryProduct": [
+    {
+      "Account__c": "{{Account.Id[0]}}",
+      "Decile__c": "8",
+      "UniqueIntegrationID__c": "ATP-{{TestUniqueIntegrationId}}",
+      "Product__c": "{{ProductOCEP.Id[0]}}",
+      "Territory__c": null
+    }
+	]
+}

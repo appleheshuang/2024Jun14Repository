@@ -1,0 +1,109 @@
+﻿{
+	"BaseData": {
+		"som_region_id": "UK",
+		"EffectiveDate": "2020-01-01",
+		"EndDate": "3999-12-31"
+	},
+
+	"Geography": [
+		{
+			"SOMGeographyId__c": "G1_POST1_17481_{{TestUniqueIntegrationId}}",
+			"Type__c": "POST",
+			"Code__c": "17481-{{TestUniqueIntegrationId}}-01",
+			"Country__c": "UK",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "UK",
+			"UniqueIntegrationId__c": "G1_POST1_17481_{{TestUniqueIntegrationId}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}"
+		},
+		{
+			"SOMGeographyId__c": "G2_POST2_17481_{{TestUniqueIntegrationId}}",
+			"Type__c": "POST",
+			"Code__c": "17481-{{TestUniqueIntegrationId}}-02",
+			"Country__c": "US",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "US",
+			"UniqueIntegrationId__c": "G2_POST2_17481_{{TestUniqueIntegrationId}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}"
+		},
+		{
+			"SOMGeographyId__c": "G7_POST7_17481_{{TestUniqueIntegrationId}}",
+			"Type__c": "POST",
+			"Code__c": "17481-{{TestUniqueIntegrationId}}-07",
+			"Country__c": "UK",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "UK",
+			"UniqueIntegrationId__c": "G7_POST7_17481_{{TestUniqueIntegrationId}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}"
+		},
+		{
+			"SOMGeographyId__c": "G3_BRICK3_17481_{{TestUniqueIntegrationId}}",
+			"Type__c": "GEO1",
+			"Code__c": "17481-{{TestUniqueIntegrationId}}-03",
+			"Country__c": "UK",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "UK",
+			"UniqueIntegrationId__c": "G3_BRICK3_17481_{{TestUniqueIntegrationId}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}"
+		},
+		{
+			"SOMGeographyId__c": "G4_BRICK4_17481_{{TestUniqueIntegrationId}}",
+			"Type__c": "GEO1",
+			"Code__c": "17481-{{TestUniqueIntegrationId}}-04",
+			"Country__c": "UK",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "UK",
+			"UniqueIntegrationId__c": "G4_BRICK4_17481_{{TestUniqueIntegrationId}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}"
+		},
+		{
+			"SOMGeographyId__c": "G8_BRICK8_17481_{{TestUniqueIntegrationId}}",
+			"Type__c": "GEO1",
+			"Code__c": "17481-{{TestUniqueIntegrationId}}-08",
+			"Country__c": "UK",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "UK",
+			"UniqueIntegrationId__c": "G8_BRICK8_17481_{{TestUniqueIntegrationId}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}"
+		},
+		{
+			"SOMGeographyId__c": "G5_STATE5_17481_{{TestUniqueIntegrationId}}",
+			"Type__c": "STAT",
+			"Code__c": "17481-{{TestUniqueIntegrationId}}-05",
+			"Country__c": "UK",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "UK",
+			"UniqueIntegrationId__c": "G5_STATE5_17481_{{TestUniqueIntegrationId}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}"
+		},
+		{
+			"SOMGeographyId__c": "G6_STATE6_17481_{{TestUniqueIntegrationId}}",
+			"Type__c": "STAT",
+			"Code__c": "17481-{{TestUniqueIntegrationId}}-06",
+			"Country__c": "UK",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "UK",
+			"UniqueIntegrationId__c": "G6_STATE6_17481_{{TestUniqueIntegrationId}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}"
+		},
+		{
+			"SOMGeographyId__c": "G9_STATE9_17481_{{TestUniqueIntegrationId}}",
+			"Type__c": "STAT",
+			"Code__c": "17481-{{TestUniqueIntegrationId}}-09",
+			"Country__c": "UK",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "UK",
+			"UniqueIntegrationId__c": "G9_STATE9_17481_{{TestUniqueIntegrationId}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}"
+		}
+	]
+}

@@ -1,0 +1,145 @@
+{
+  "BaseData": {
+    "som_region_id": "REG01",
+    "regionUID": "REG01",
+    "salesforceUID": "13845-SF",
+    "territoryUID": "13845",
+    "explicit_accountUId": "45ACCTEXP", // explicit 1
+    "exclude_accountUId": "CHRISTOPOULOS-GN", // exclusion 0 = oce acct 0
+    "explrule_accountUId": "CHRISTOPOULOS-GN", // explicit 0 = oce acct 0
+    "ruleonly_accountUId": "NO-KJ" // oce acct 2
+    //"prod1UId": "RAMI", // product 0
+    //"prod2UId": "ASPI" // product 1
+  },
+
+    "Scenario": {
+      "Description": "Pre-commit for ATP rules",
+      "Name": "ATP-precommit",
+      "EffectiveDate__c": "2022-01-01",
+      "EndDate__c": "2100-12-31",
+      "OMRegionId__c": "{{som_region_id}}",
+      "ScenarioStatus__c": "PENDG",
+      "UniqueIntegrationId__c": "Initial"
+    },
+
+    "ScenarioSalesForce": [
+      {
+        "Action__c": "ADD",
+        "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+        "SOMRegionId__c": "{{som_region_id}}",
+        "RegionUniqueIntegrationId__c": "{{regionUID}}",
+        "Type__c": "KOL",
+        "Name": "13845"
+      }
+    ],
+
+    "ScenarioTerritory": [
+      {
+        "Action__c": "ADD",
+        "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+        "TerritorySalesForceType__c": "PRIM",
+        "SOMRegionId__c": "{{som_region_id}}",
+        "Name": "13845-T0",
+        "UniqueIntegrationId__c": "{{territoryUID}}-T0-{{TestUniqueIntegrationId}}",
+        "RegionUniqueIntegrationId__c": "{{regionUID}}",
+        "Type__c": "TERR"
+      },
+      {
+        "Action__c": "ADD",
+        "OMScenarioId__c": "{{Scenario.Id}}",
+        "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+        "TerritorySalesForceType__c": "PRIM",
+        "SOMRegionId__c": "{{som_region_id}}",
+        "Name": "13845-T1",
+        "UniqueIntegrationId__c": "{{territoryUID}}-T1-{{TestUniqueIntegrationId}}",
+        "RegionUniqueIntegrationId__c": "{{regionUID}}",
+        "Type__c": "TERR"
+      }
+    ],
+
+    "ScenarioAccountExplicit": [
+      {
+        "Action__c": "ADD",
+        "Purpose__c": "COMP",
+        "AccountUniqueIntegrationId__c": "{{explrule_accountUId}}",
+        "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "EffectiveDate__c": "2069-01-01",
+        "EndDate__c": "2069-12-31"
+      },
+      {
+        "Action__c": "ADD",
+        "Purpose__c": "COMP",
+        "AccountUniqueIntegrationId__c": "{{explicit_accountUId}}",
+        "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "EffectiveDate__c": "2069-01-01",
+        "EndDate__c": "2070-12-31"
+      }
+    ],
+
+  "ScenarioAccountExclusion": [
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "COMP",
+      "AccountUniqueIntegrationId__c": "{{exclude_accountUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "EffectiveDate__c": "2071-01-01",
+      "EndDate__c": "2071-12-31"
+    }
+  ],
+
+  "ScenarioAccountProductExplicit": [
+    {
+      "Action__c": "ADD",
+      "AccountUniqueIntegrationId__c": "{{explrule_accountUId}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "APE-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "2069-01-01",
+      "EndDate__c": "2069-12-31"
+    }
+  ],
+
+    "ScenarioAccountProductTerrExplicit": [
+      {
+        "Action__c": "ADD",
+        "AccountUniqueIntegrationId__c": "{{explicit_accountUId}}",
+        "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[1]}}",
+        "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "UniqueIntegrationId__c": "APTE-{{TestUniqueIntegrationId}}",
+        "EffectiveDate__c": "2069-01-01",
+        "EndDate__c": "2070-12-31"
+      }
+    ],
+
+  "Tests": {
+    "AlignmentResults": [
+      {
+        "testname": "PreCondition-ExplicitAlign",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{explicit_accountUId}},EffectiveDate:{{ScenarioAccountExplicit.EffectiveDate__c[1]}},EndDate:{{ScenarioAccountExplicit.EndDate__c[1]}},Source:EXPL,Reason:},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{explrule_accountUId}},EffectiveDate:{{ScenarioAccountExplicit.EffectiveDate__c[0]}},EndDate:{{ScenarioAccountExplicit.EndDate__c[0]}},Source:EXPL,Reason:}]",
+        "account_uids": "{{explicit_accountUId}},{{ruleonly_accountUId}},{{explrule_accountUId}},{{exclude_accountUId}}",
+        "territory_uids": "{{territoryUID}}-T0-{{TestUniqueIntegrationId}},{{territoryUID}}-T1-{{TestUniqueIntegrationId}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}},{{ScenarioTerritory.SOMTerritoryId__c[1]}}"
+      }
+    ],
+    "Exclusions": [
+      {
+        "testname": "PreCondition-ExclusionMerge",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{exclude_accountUId}},EffectiveDate:{{ScenarioAccountExclusion.EffectiveDate__c}},EndDate:{{ScenarioAccountExclusion.EndDate__c}}}]",
+        "account_uids": "{{explicit_accountUId}},{{ruleonly_accountUId}},{{explrule_accountUId}},{{exclude_accountUId}}",
+        "territory_uids": "{{territoryUID}}-T0-{{TestUniqueIntegrationId}},{{territoryUID}}-T1-{{TestUniqueIntegrationId}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}},{{ScenarioTerritory.SOMTerritoryId__c[1]}}"
+      }
+    ],
+    "MergeResults": [
+      {
+        "testname": "PreCondition-ExplicitAP",
+        "query": "select ac.\"UniqueIntegrationId\" \"Account\", p.\"UniqueIntegrationId\" \"Product\" , act.\"Status\", act.\"EffectiveDate\", act.\"EndDate\" from output.\"OMAccountProductExplicit\" act join static.\"OMProduct\" p on p.\"SOMProductId\" = act.\"SOMProductId\" join static.\"OMAccount\" ac on ac.\"Id\" = act.\"OMAccountId\" where act.\"UniqueIntegrationId\" in ('APE-{{TestUniqueIntegrationId}}')",
+        "exp_result": "[{Account:{{explrule_accountUId}},Product:{{Product.UniqueIntegrationId__c[0]}},Status:ACTV,EffectiveDate:{{ScenarioAccountProductExplicit.EffectiveDate__c}},EndDate:{{ScenarioAccountProductExplicit.EndDate__c}}}]"
+      },
+      {
+        "testname": "PreCondition-ExplicitAPT",
+        "query": "select ac.\"UniqueIntegrationId\" \"Account\", p.\"UniqueIntegrationId\" \"Product\" ,t.\"UniqueIntegrationId\" \"Territory\", act.\"Status\", act.\"EffectiveDate\", act.\"EndDate\" from output.\"OMAccountProductTerritoryExplicit\" act join static.\"OMProduct\" p on p.\"SOMProductId\" = act.\"SOMProductId\" join static.\"OMAccount\" ac on ac.\"Id\" = act.\"OMAccountId\" join output.\"OMTerritory\" t on t.\"SOMTerritoryId\" = act.\"SOMTerritoryId\" where act.\"UniqueIntegrationId\" in ('APTE-{{TestUniqueIntegrationId}}')",
+        "exp_result": "[{Account:{{explicit_accountUId}},Product:{{Product.UniqueIntegrationId__c[1]}},Territory:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Status:ACTV,EffectiveDate:{{ScenarioAccountProductTerrExplicit.EffectiveDate__c}},EndDate:{{ScenarioAccountProductTerrExplicit.EndDate__c}}}]"
+      }
+    ]
+  }
+  }

@@ -1,0 +1,80 @@
+﻿{
+  "Configs": {
+    "loadData": "Smoketest\\LoadData\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "EffectiveDate": "2023-01-15",
+    "EndDate": "2023-10-15",
+    "som_region_id": "REG01",
+    "productUId": "PROD-PAR-CS", // Parent cascade A
+    "productUId2": "PROD-CHI-CS", // Child cascade  B
+    "productUId3": "PROD-GRCH-CS", // GChild cascade C
+    "productUId4": "PROD-PR-NCS", // Parent no cascade D
+    "productUId5": "PROD-CH-NCS", // Child no cascade  E
+    "productUId6": "PROD-GCH-NCS", // GChild no cascade F
+    "salesforceUID": "SF505", // SF A
+    "salesforceUID2": "SF605", // SF B
+    "territoryUID": "T1_SFA",
+    "territoryUID2": "T1_SFB",
+    "territoryUID3": "T2_SFA"
+  },
+
+  "Scenario": {
+    "Description": "",
+    "Name": "TCs 8620676,8620672",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "2-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioProductExplicit": [
+    // Add Parent prod to T1_SFA with overlap
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+      "ProductAlignmentType__c": "DETL",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "2023-02-15"
+    }
+  ],
+
+  "ScenarioProductSalesForce": [
+    // TC 8620672(T87664308) 2step: EFFE  Prod B==>SF B
+    {
+      "Action__c": "EFFE",
+      "SOMProductId__c": "{{productUId2}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+      "SOMProductSalesForceId__c": "{{ScenarioProductSalesForce.SOMProductSalesForceId__c[0]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "{{EffectiveDate}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      // Check aligntment after Add Parent prod to T1_SFA with overlap
+      {
+        "testname": "merge_prodAlig_casc_on",
+        "query": "select \"SOMProductId\",\"SOMTerritoryId\",\"Source\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMProductTerritory\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c}}' AND  \"Status\" = 'ACTV' AND \"SOMProductId\" in ('PROD-PR-NCS','PROD-CH-NCS','PROD-GCH-NCS','PROD-PAR-CS','PROD-CHI-CS','PROD-GRCH-CS') order by \"SOMProductId\",\"EffectiveDate\"",
+        "exp_result": "[{SOMProductId:{{productUId2}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Source:CASC;EXPL,Status:ACTV,EffectiveDate:{{ScenarioProductExplicit.EffectiveDate__c}},EndDate:2023-02-15},{SOMProductId:{{productUId3}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Source:CASC;EXPL,Status:ACTV,EffectiveDate:{{ScenarioProductExplicit.EffectiveDate__c[0]}},EndDate:{{ScenarioProductExplicit.EndDate__c[1]}}},{SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Source:EXPL,Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[2]}},EndDate:2023-02-15}]",
+        "odataQuery": "/OMProductTerritory?$select=SOMProductId,SOMTerritoryId,Source,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c}}' and SOMProductId in ('PROD-PR-NCS','PROD-CH-NCS','PROD-GCH-NCS','PROD-PAR-CS','PROD-CHI-CS','PROD-GRCH-CS') and Status eq 'ACTV'&$orderBy=SOMProductId,EffectiveDate",
+        "sfQuery": null
+      },
+      // check recalculated alignment after EFFE  ProductSalesForce
+      {
+        "testname": "merge_EFFEprodSf_casc_on",
+        "query": "select \"SOMProductId\",\"SOMTerritoryId\",\"Source\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMProductTerritory\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[1]}}' AND  \"Status\" = 'ACTV' AND \"SOMProductId\" in ('PROD-PAR-CS','PROD-CHI-CS','PROD-GRCH-CS') order by \"SOMProductId\"",
+        "exp_result": "[{SOMProductId:{{productUId2}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},Source:DSHR,Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[2]}},EndDate:{{ScenarioProductSalesForce.EndDate__c}}},{SOMProductId:{{productUId3}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},Source:CASC,Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[2]}},EndDate:{{ScenarioProductSalesForce.EndDate__c}}}]",
+        "odataQuery": "/OMProductTerritory?$select=SOMProductId,SOMTerritoryId,Source,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[1]}}' and SOMProductId in ('PROD-PAR-CS','PROD-CHI-CS','PROD-GRCH-CS') and Status eq 'ACTV'&$orderBy=SOMProductId",
+        "sfQuery": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "Bulkload": {
+    "S3Path": "autotestdata/adjudication",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "ValidateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "AdjudicationAccount.csv",
+        "table": "OMAccount"
+      },
+      {
+        "file": "AdjudicationAffiliation.csv",
+        "table": "OMAffiliation"
+      },
+      {
+        "file": "AdjudicationAccountAddress.csv",
+        "table": "OMAccountAddress"
+      }
+    ]
+  }
+}

@@ -1,0 +1,179 @@
+﻿{
+  "Configs": {
+    "loadData": "Smoketest\\LoadData\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "EffectiveDate": "2021-01-01",
+    "EndDate": "2023-12-31",
+    "som_region_id": "REG01",
+    "productUId": "PROD-PAR-CS", // Parent cascade A
+    "productUId2": "PROD-CHI-CS", // Child cascade  B region (REG01)2
+    "productUId3": "PROD-GRCH-CS", // GChild cascade C region (US)
+    "productUId4": "PROD-PR-NCS", // Parent no cascade D
+    "productUId5": "PROD-CH-NCS", // Child no cascade  E
+    "productUId6": "PROD-GCH-NCS", // GChild no cascade F
+    "salesforceUID": "SF505", // SF A
+    "salesforceUID2": "SF605", // SF B
+    "territoryUID": "T1_SFA",
+    "territoryUID2": "T1_SFB",
+    "territoryUID3": "T2_SFA",
+    "territoryUID5": "T2_SFB"
+
+  },
+
+  "Scenario": {
+    "Description": "",
+    "Name": "TCs 8622273,8620675,8620658, precondition for: 8620672,8620676,8620677",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "SET{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "Name": "SF 505"
+    },
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID2}}-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "Name": "SF 605"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "T1 SFA",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID2}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "T1 SFB",
+      "UniqueIntegrationId__c": "{{territoryUID2}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "T2 SFA",
+      "UniqueIntegrationId__c": "{{territoryUID3}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID2}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "T2 SFB",
+      "UniqueIntegrationId__c": "{{territoryUID5}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    }
+  ],
+  // precondition for: TC 8620677(T87664772) ; TC 8620676(T87664656)
+  "ScenarioProductExplicit": [
+    // TC 8620661 alignment witn multiple parent Prod B==>T1
+    // TC 8620658(T87662137) ADD Prod B==>T1
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{productUId2}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2023-01-01",
+      "EndDate__c": "2023-01-31"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{productUId3}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2023-02-01",
+      "EndDate__c": "2023-02-28"
+    },
+    // TC 8620657(T87662136) check multilevel cascade
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryUID3}}-{{TestUniqueIntegrationID}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2023-01-01",
+      "EndDate__c": "2023-05-30"
+    }
+  ],
+
+  "ScenarioProductSalesForce": [
+    // TC 8622273(T87908584) Mid-level Add Prod B==>SF B; TC C8620675(T87664540) cascade in multiple region;
+    // TC 8620672(T87664308) 1step: alignment Prod B==>SF B 
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{productUId2}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID2}}-{{TestUniqueIntegrationID}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2023-09-01",
+      "EndDate__c": "2023-12-30"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      // check alignment product A(REG01),B(REG01),C(US) to T1_SFB/T2_SFB uder SF B TC TCC8622273 Cascade on; 
+      // TC C8620675 cascade in multiple region productUId2 ProductUId3 (US);
+      {
+        "testname": "merge_prodAlig_casc_on",
+        "query": "select \"SOMProductId\",\"SOMTerritoryId\",\"Source\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMProductTerritory\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[1]}}' AND  \"SOMProductId\" in ('PROD-PAR-CS','PROD-CHI-CS','PROD-GRCH-CS') order by \"SOMProductId\"",
+        "exp_result": "[{SOMProductId:{{productUId2}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},Source:DSHR,Status:ACTV,EffectiveDate:{{ScenarioProductSalesForce.EffectiveDate__c}},EndDate:{{ScenarioProductSalesForce.EndDate__c}}},{SOMProductId:{{productUId3}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},Source:CASC,Status:ACTV,EffectiveDate:{{ScenarioProductSalesForce.EffectiveDate__c}},EndDate:{{ScenarioProductSalesForce.EndDate__c}}}]",
+        "odataQuery": "/OMProductTerritory?$select=SOMProductId,SOMTerritoryId,Source,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[1]}}'&SOMProductId in ('PROD-PAR-CS','PROD-CHI-CS','PROD-GRCH-CS')&$orderBy=SOMProductId"
+      },
+      {
+        "testname": "merge_prodAlig_casc_on",
+        "query": "select \"SOMProductId\",\"SOMTerritoryId\",\"Source\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMProductTerritory\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[3]}}' AND  \"SOMProductId\" in ('PROD-PAR-CS','PROD-CHI-CS','PROD-GRCH-CS') order by \"SOMProductId\"",
+        "exp_result": "[{SOMProductId:{{productUId2}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[3]}},Source:DSHR,Status:ACTV,EffectiveDate:{{ScenarioProductSalesForce.EffectiveDate__c}},EndDate:{{ScenarioProductSalesForce.EndDate__c}}},{SOMProductId:{{productUId3}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[3]}},Source:CASC,Status:ACTV,EffectiveDate:{{ScenarioProductSalesForce.EffectiveDate__c}},EndDate:{{ScenarioProductSalesForce.EndDate__c}}}]",
+        "odataQuery": "/OMProductTerritory?$select=SOMProductId,SOMTerritoryId,Source,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[3]}}'&SOMProductId in ('PROD-PAR-CS','PROD-CHI-CS','PROD-GRCH-CS')&$orderBy=SOMProductId"
+      },
+      // TC 8620657(T87662136) check multilevel cascade
+      {
+        "testname": "merge_prodTerr_casc_on_multulevel",
+        "query": "select \"SOMProductId\",\"SOMTerritoryId\",\"Source\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMProductTerritory\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[2]}}' AND  \"SOMProductId\" in ('PROD-PAR-CS','PROD-CHI-CS','PROD-GRCH-CS') order by \"SOMProductId\"",
+        "exp_result": "[{SOMProductId:{{productUId2}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[2]}},Source:CASC,Status:ACTV,EffectiveDate:{{ScenarioProductExplicit.EffectiveDate__c[2]}},EndDate:{{ScenarioProductExplicit.EndDate__c[2]}}},{SOMProductId:{{productUId3}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[2]}},Source:CASC,Status:ACTV,EffectiveDate:{{ScenarioProductExplicit.EffectiveDate__c[2]}},EndDate:{{ScenarioProductExplicit.EndDate__c[2]}}},{SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[2]}},Source:EXPL,Status:ACTV,EffectiveDate:{{ScenarioProductExplicit.EffectiveDate__c[2]}},EndDate:{{ScenarioProductExplicit.EndDate__c[2]}}}]",
+        "odataQuery": "/OMProductTerritory?$select=SOMProductId,SOMTerritoryId,Source,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[2]}}'&SOMProductId in ('PROD-PAR-CS','PROD-CHI-CS','PROD-GRCH-CS')&$orderBy=SOMProductId"
+      },
+      // check alignment witn multiple parent TC 8620661;
+      // TC 8620658(T87662137) check source='CASC' Prod C==>T1;
+      {
+        "testname": "merge_proTerr_multiple_par",
+        "query": "select \"SOMProductId\",\"SOMTerritoryId\",\"Source\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMProductTerritory\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[0]}}' AND  \"SOMProductId\" in ('PROD-PR-NCS','PROD-CH-NCS','PROD-GCH-NCS','PROD-PAR-CS','PROD-CHI-CS','PROD-GRCH-CS') order by \"SOMProductId\"",
+        "exp_result": "[{SOMProductId:{{productUId2}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},Source:EXPL,Status:ACTV,EffectiveDate:{{ScenarioProductExplicit.EffectiveDate__c}},EndDate:{{ScenarioProductExplicit.EndDate__c}}},{SOMProductId:{{productUId3}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},Source:CASC;EXPL,Status:ACTV,EffectiveDate:{{ScenarioProductExplicit.EffectiveDate__c}},EndDate:{{ScenarioProductExplicit.EndDate__c[1]}}}]",
+        "odataQuery": "/OMProductTerritory?$select=SOMProductId,SOMTerritoryId,Source,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[0]}}'&SOMProductId in ('PROD-PR-NCS','PROD-CH-NCS','PROD-GCH-NCS','PROD-PAR-CS','PROD-CHI-CS','PROD-GRCH-CS')&$orderBy=SOMProductId"
+      }
+    ]
+  }
+}

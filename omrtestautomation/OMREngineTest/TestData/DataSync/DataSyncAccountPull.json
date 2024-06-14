@@ -1,0 +1,17 @@
+﻿{
+  "DataSyncRequest": {
+    "Target": "Snowflake",
+    "Tables": "OMAccount",
+    "JobType": "OCEPAccountPull",
+    "PreProcessing": "OMAccountPullPreProcessingStep",
+    "PostProcessing": "OMAccountPullPostProcessingStep",
+    "SalesforceEnvironmentType": "OCEP",
+    "Mode": "OCE",
+    "StartDate": "1999-01-01",
+    "Parameters": {
+      "ExplicitAccountTerritoryAlignment": true,
+      "InactivateAccountsDeletedinOCESales": true,
+      "InactivateUncalledOnUserCreatedAlignments": 100
+    }
+  }
+}

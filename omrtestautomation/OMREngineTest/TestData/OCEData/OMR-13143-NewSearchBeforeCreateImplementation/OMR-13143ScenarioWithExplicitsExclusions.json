@@ -1,0 +1,88 @@
+{
+  "BaseData": {
+    "som_region_id": "REG01",
+    "regionUID": "REG01",
+    "salesforceUID": "SF-13143",
+    "territoryUID": "T-13143"
+  },
+
+  "Scenario": {
+    "Description": "C10190744,C10190747,C10190748,C10204429,C10348344",
+    "Name": "OMR13143 SBC with existing explicit exclusion ",
+    "EffectiveDate__c": "2020-01-01",
+    "EndDate__c": "2030-10-21",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "Type__c": "USER",
+    "UniqueIntegrationId__c": ""
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "RegionUniqueIntegrationId__c": "{{som_region_id}}",
+      "Type__c": "KOL",
+      "Name": "SF-13143",
+      "EndDate__c": "2070-10-21"
+    }
+  ],
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "T-13143",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationId}}",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "TERR",
+      "EndDate__c": "2070-10-21"
+    }
+  ],
+  "ScenarioAccountExclusion": [
+    { // Current exclusion
+      "Action__c": "ADD",
+      "Purpose__c": "COMP",
+      "AccountUniqueIntegrationId__c": "{{Account.OCE__UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "OMScenarioId__c": "{{Scenario.Id}}"
+    },
+    { // Future exclusion
+      "Action__c": "ADD",
+      "Purpose__c": "COMP",
+      "AccountUniqueIntegrationId__c": "{{Account.OCE__UniqueIntegrationId__c[1]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "EffectiveDate__c": "2050-10-21",
+      "EndDate__c": "2070-10-21",
+      "OMScenarioId__c": "{{Scenario.Id}}"
+    }
+  ],
+  "ScenarioAccountExplicit": [
+    { // Current explicit (SBC rejected)
+      "Action__c": "ADD",
+      "Purpose__c": "COMP",
+      "AccountUniqueIntegrationId__c": "{{Account.OCE__UniqueIntegrationId__c[2]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "OMScenarioId__c": "{{Scenario.Id}}"
+    },
+    { // Current explicit
+      "Action__c": "ADD",
+      "Purpose__c": "COMP",
+      "AccountUniqueIntegrationId__c": "{{Account.OCE__UniqueIntegrationId__c[3]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "OMScenarioId__c": "{{Scenario.Id}}"
+    },
+    { // Future explicit
+      "Action__c": "ADD",
+      "Purpose__c": "COMP",
+      "AccountUniqueIntegrationId__c": "{{Account.OCE__UniqueIntegrationId__c[4]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "EffectiveDate__c": "2050-10-21",
+      "EndDate__c": "2070-10-21",
+      "OMScenarioId__c": "{{Scenario.Id}}"
+    }
+  ]
+}

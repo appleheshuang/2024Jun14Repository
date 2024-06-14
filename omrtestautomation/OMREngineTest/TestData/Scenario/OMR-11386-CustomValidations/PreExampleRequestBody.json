@@ -1,0 +1,10 @@
+{
+	"CustomValidation": [
+		{
+			"DeveloperName": "PreCustomValidationCalc",
+			"ErrorCode": "Error",
+			"ValidationType": "PRE",
+			"Query": "select 'OMAccountExplicit' \"TableName\", '1' \"PKey\", 'ErrMsg!@#$%^&*()' \"ErrorMessage\", '!@#$%^&*()' \"InstructionId\" from &input.\"OMScenarioRule\" where \"RuleData\" ilike '%Institution%'"
+		}
+	]
+} 

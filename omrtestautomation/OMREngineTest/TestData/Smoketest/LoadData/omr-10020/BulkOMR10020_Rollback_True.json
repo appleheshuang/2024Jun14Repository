@@ -1,0 +1,47 @@
+{
+    "Bulkload": {
+        "S3Path": "autotestdata/OMR-10020/",
+        "FileFormat": "CSV",
+        "Rollback": true,
+        "VaildateOnly": false,
+        "ReplaceExistingData": false,
+        "ValidateOnly": false,
+        "PicklistValidate": true,
+        "Files": [
+            {
+                "file": "OMAccount_10020.csv",
+                "table": "OMAccount"
+            }
+        ]
+    },
+    "Errors": [
+        {
+            "table": "OMAccount",
+            "file": "autotestdata/OMR-10020/{{TestUniqueIntegrationId}}/OMAccount_10020.csv",
+            "error": "Record Invalid_Account failed. Code (INST) is not valid for column (AccountType).",
+            "lineNumber": 4
+        }
+    ],
+    "Tests": {
+        "MergeResults": [
+            {
+                "testname": "Account_Valid",
+                "query": "OMAccount,Name,Status,UniqueIntegrationId:'Valid_{{TestUniqueIntegrationId}}'",
+                "exp_result": "[]",
+                "sfQuery": null
+            },
+            {
+                "testname": "Account_Valid_Null_Specialty",
+                "query": "OMAccount,Name,Status,UniqueIntegrationId:'NullValid_{{TestUniqueIntegrationId}}'",
+                "exp_result": "[]",
+                "sfQuery": null
+            },
+            {
+                "testname": "Account_Invalid",
+                "query": "OMAccount,Name,Status,UniqueIntegrationId:'Invalid_Account'",
+                "exp_result": "[]",
+                "sfQuery": null
+            }
+        ]
+    }
+}

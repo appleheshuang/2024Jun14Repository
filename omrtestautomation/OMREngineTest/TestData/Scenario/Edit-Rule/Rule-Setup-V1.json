@@ -1,0 +1,168 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\LoadData\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "EffectiveDate": "2021-01-01",
+    "EndDate": "2022-12-31",
+    "geographyUID": "1234",
+    "som_region_id": "VG",
+    "aligned_accountUId": "ACCT05",
+    "salesforceUID": "SF405",
+    "salesforceUID2": "SF505",
+    "salesforceUID3": "SF605",
+    "territoryUID": "T505",
+    "territoryUID2": "T605",
+    "territoryUID3": "705",
+    "ruleUID": "R201"
+  },
+
+  "Scenario": {
+    "Description": "OMR-5337 Edit rule effective in the past (with multiple past versions)",
+    "Name": "C8081277",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "V1{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "Name": "SF 405"
+    },
+    // precondition for C7876776 Restart+End no overlap Rule
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID2}}-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "Name": "SF 505"
+    },
+    // precondition for C7663419 Edit Rule Twice, INAC some RuleVersion
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID3}}-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "Name": "SF 505"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "Terr 505",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    // precondition for C7876776 Restart+End no overlap Rule
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID2}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "Terr 605",
+      "UniqueIntegrationId__c": "{{territoryUID2}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "AREA"
+    },
+    // precondition for C7663419 Edit Rule Twice, INAC some RuleVersion
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID3}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "Terr 705",
+      "UniqueIntegrationId__c": "{{territoryUID3}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    }
+  ],
+
+  "ScenarioRule": [
+    {
+      "Name": "RuleTest {{ruleUID}}{{TestUniqueIntegrationId}}",
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{ruleUID}}-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "RuleData__c": "{\"geography\":true,\"explicit\":false,\"filter\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"MP\"}}"
+    },
+    // precondition for C7663419 Edit Rule Twice, INAC some RuleVersion
+    {
+      "Name": "Rule-2 {{TestUniqueIntegrationId}}",
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "Rule-2 {{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID3}}-{{TestUniqueIntegrationId}}",
+      "RuleData__c": "{\"geography\":true,\"explicit\":false,\"filter\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"MP\"}}",
+      "EffectiveDate__c": "2021-06-15",
+      "EndDate__c": "2021-07-15"
+    }
+  ],
+
+  "ScenarioGeographyTerritory": [
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "GEO01",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c}}",
+      "GeographyUniqueIntegrationId__c": "{{geographyUID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "UniqueIntegrationId__c": "GEO1-{{TestUniqueIntegrationId}}"
+    },
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "GEO01",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "GeographyUniqueIntegrationId__c": "{{geographyUID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "UniqueIntegrationId__c": "GEO2-{{TestUniqueIntegrationId}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "merge_Rule_1Vesion_1",
+        "query": "OMRuleVersion,Name,Status,VersionNumber,EffectiveDate,EndDate,SOMRuleId:'{{ScenarioRule.SOMRuleId__c}}'",
+        "exp_result": "[{Name:{{ScenarioRule.Name[0]}},Status:ACTV,VersionNumber:1,EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}}}]",
+        "odataQuery": "/OMRuleVersion?$select=Name,Status,VersionNumber,EffectiveDate,EndDate&$filter=SOMRuleId eq '{{ScenarioRule.SOMRuleId__c}}'"
+      },
+      // check C7663419 Edit Rule Twice, INAC some RuleVersion
+      {
+        "testname": "merge_Rule_2Vesion_1",
+        "query": "OMRuleVersion,Name,Status,VersionNumber,EffectiveDate,EndDate,SOMRuleId:'{{ScenarioRule.SOMRuleId__c[1]}}'",
+        "exp_result": "[{Name:{{ScenarioRule.Name[1]}},Status:ACTV,VersionNumber:1,EffectiveDate:{{ScenarioRule.EffectiveDate__c[1]}},EndDate:{{ScenarioRule.EndDate__c[1]}}}]",
+        "odataQuery": "/OMRuleVersion?$select=Name,Status,VersionNumber,EffectiveDate,EndDate&$filter=SOMRuleId eq '{{ScenarioRule.SOMRuleId__c[1]}}'"
+      }
+    ],
+    "AlignmentResults": [
+      {
+        "testname": "alignments",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c}},AccountUID:{{aligned_accountUId}},EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}},Source:DSHR,Reason:{{ScenarioRule.Name}}|{{ScenarioRule.SOMRuleId__c}}}]",
+        "account_uids": "{{aligned_accountUId}}",
+        "territory_uids": "{{territoryUID}}-{{TestUniqueIntegrationId}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c}}"
+      }
+    ]
+  }
+}

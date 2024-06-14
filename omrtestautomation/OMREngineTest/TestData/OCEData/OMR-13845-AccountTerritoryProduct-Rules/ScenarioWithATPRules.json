@@ -1,0 +1,124 @@
+{
+  "BaseData": {
+    "som_region_id": "REG01",
+    "regionUID": "REG01",
+    "salesforceUID": "13845-SF",
+    "territoryUID": "13845",
+    "geoUID": "1234",
+    "explicit_accountUId": "45ACCTEXP", // explicit 1
+    "exclude_accountUId": "CHRISTOPOULOS-GN", // exclusion 0 = oce acct 0
+    "explrule_accountUId": "CHRISTOPOULOS-GN", // explicit 0 = oce acct 0
+    "ruleonly_accountUId": "NO-KJ" // oce acct 2
+    //"prod1UId": "RAMI", // product 0
+    //"prod2UId": "ASPI" // product 1
+  },
+
+  "Scenario": {
+    "Description": "AccountTerritoryProduct rules in alignments and eng plans",
+    "Name": "AccountTerritoryProductRules",
+    "EffectiveDate__c": "2070-01-01",
+    "EndDate__c": "2079-12-31",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "Rules"
+  },
+  "ScenarioRule": [
+    {
+      "Name": "Ramiton 6+ {{TestUniqueIntegrationId}}",
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "0Ramiton-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "RuleData__c": "{\"geography\":false,\"explicit\":false,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC\"},{\"type\":\"Equals\",\"table\":\"OMAccountTerritoryProduct\",\"column\":\"SOMProductId\",\"value\":\"{{Product.SOMProductId__c[0]}}\"},{\"type\":\"GreaterThanEqual\",\"table\":\"OMAccountTerritoryProduct\",\"column\":\"Decile\",\"value\":\"6\"}]},\"hierarchy\":\"TERR\"}",
+      "RuleScope": "ALGN_ENGP",
+      "AlignmentLimitedToRegion": false
+    },
+    {
+      "Name": "Aspirin 6+ {{TestUniqueIntegrationId}}",
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "1Aspirin-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "RuleData__c": "{\"geography\":false,\"explicit\":false,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC\"},{\"type\":\"Equals\",\"table\":\"OMAccountTerritoryProduct\",\"column\":\"SOMProductId\",\"value\":\"{{Product.SOMProductId__c[1]}}\"},{\"type\":\"GreaterThanEqual\",\"table\":\"OMAccountTerritoryProduct\",\"column\":\"Decile\",\"value\":\"6\"}]},\"hierarchy\":\"TERR\"}",
+      "RuleScope": "ALGN_ENGP",
+      "AlignmentLimitedToRegion": false
+    },
+    {
+      "Name": "All 8s {{TestUniqueIntegrationId}}",
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "2Any8s-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "RuleData__c": "{\"geography\":false,\"explicit\":false,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC\"},{\"type\":\"Equals\",\"table\":\"OMAccountTerritoryProduct\",\"column\":\"Decile\",\"value\":\"8\"}]},\"hierarchy\":\"TERR\"}",
+      "RuleScope": "ALGN_ENGP",
+      "AlignmentLimitedToRegion": false
+    }
+  ],
+
+  "ScenarioAccountProductRule": [
+    {
+      "Action__c": "ADD",
+      "Name": "Under8s {{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "0Under8s-{{TestUniqueIntegrationID}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC\"},{\"type\":\"LessThan\",\"table\":\"OMAccountTerritoryProduct\",\"column\":\"Decile\",\"value\":\"8\"}]},\"ProductRule\":{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Brand,Detail\"}}"
+    },
+    // Fails due to OMR-15656, Uncomment when fixed.
+    {
+      // Same rule, no salesforce -> Restrict on AccountProduct rather than AccountProductTerritory
+      "Action__c": "ADD",
+      "Name": "Under8-AccountProduct {{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "1Under8APR-{{TestUniqueIntegrationID}}",
+      //"RuleData__c": "{{ScenarioAccountProductRule.RuleData__c[0]}}" - this doesn't work so copy/paste below
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC\"},{\"type\":\"LessThan\",\"table\":\"OMAccountTerritoryProduct\",\"column\":\"Decile\",\"value\":\"8\"}]},\"ProductRule\":{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Brand,Detail\"}}"
+    }
+
+  ],
+
+  "ScenarioEngagementPlan": [
+    {
+      "Name": "ATP Rule Plan {{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "0ATPR-{{TestUniqueIntegrationId}}",
+      "Action__c": "ADD",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.somsalesforceid__c}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "WorkingDays": 120,
+      "TargetCallRate": 3,
+      "OMEngagementSegment__c": "[{\"Description\":\"\",\"Name\":\"A-Any8\",\"Rank\":1,\"SOMEngagementSegmentId\":\"A-{{TestUniqueIntegrationID}}\",\"SOMRuleId\":\"{{ScenarioRule.SOMRuleId__c[2]}}\",\"Targets\":[{\"Channel\":\"REMO\",\"Frequency\":3,\"SOMEngagementSegmentTargetId\":\"AREMO-{{TestUniqueIntegrationID}}\"}]},{\"Description\":\"\",\"Name\":\"B-Ramiton6+\",\"Rank\":2,\"SOMEngagementSegmentId\":\"B-{{TestUniqueIntegrationID}}\",\"SOMRuleId\":\"{{ScenarioRule.SOMRuleId__c[0]}}\",\"Targets\":[{\"Channel\":\"REMO\",\"Frequency\":2,\"SOMEngagementSegmentTargetId\":\"BREMO-{{TestUniqueIntegrationID}}\"}]},{\"Description\":\"\",\"Name\":\"C-Aspirin6+\",\"Rank\":3,\"SOMEngagementSegmentId\":\"C-{{TestUniqueIntegrationID}}\",\"SOMRuleId\":\"{{ScenarioRule.SOMRuleId__c[1]}}\",\"Targets\":[{\"Channel\":\"REMO\",\"Frequency\":1,\"SOMEngagementSegmentTargetId\":\"CREMO-{{TestUniqueIntegrationID}}\"}]}]"
+    }
+  ],
+
+    "Tests": {
+      "MergeResults": [
+        {
+          "testname": "PreCondition-AccountTerritoryProductSync",
+          "query": "select ac.\"UniqueIntegrationId\" \"Account\", p.\"UniqueIntegrationId\" \"Product\" ,'NotSupported' \"Territory\", act.\"OceSalesId\", act.\"UniqueIntegrationId\", act.\"Decile\" from static.\"OMAccountTerritoryProduct\" act join static.\"OMProduct\" p on p.\"SOMProductId\" = act.\"SOMProductId\" join static.\"OMAccount\" ac on ac.\"Id\" = act.\"OMAccountId\" left outer join output.\"OMTerritory\" t on t.\"SOMTerritoryId\" = act.\"SOMTerritoryId\" where act.\"UniqueIntegrationId\" in ('{{AccountTerritoryProduct.UniqueIntegrationID__c[0]}}','{{AccountTerritoryProduct.UniqueIntegrationID__c[1]}}') order by act.\"UniqueIntegrationId\"",
+          "exp_result": "[{Account:{{Account.OCE__UniqueIntegrationID__c[0]}},Product:{{Product.UniqueIntegrationId__c[0]}},Territory:NotSupported,OceSalesId:{{AccountTerritoryProduct.Id[0]}},UniqueIntegrationId:{{AccountTerritoryProduct.UniqueIntegrationID__c[0]}},Decile:{{AccountTerritoryProduct.Decile__c[0]}}},{Account:{{Account.OCE__UniqueIntegrationID__c[2]}},Product:{{Product.UniqueIntegrationId__c[1]}},Territory:NotSupported,OceSalesId:{{AccountTerritoryProduct.Id[1]}},UniqueIntegrationId:{{AccountTerritoryProduct.UniqueIntegrationID__c[1]}},Decile:{{AccountTerritoryProduct.Decile__c[1]}}}]"
+        },
+        {
+          "testname": "OMR-13845_engagement_result",
+          "query": "select acc.\"UniqueIntegrationId\" \"AccountUId\",t.\"UniqueIntegrationId\" \"TerritoryUId\",\"SOMEngagementSegmentId\" from {{schema}}.\"OMEngagementResult\" er join static.\"OMAccount\" acc on acc.\"Id\" = er.\"OMAccountId\" join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = er.\"SOMTerritoryId\" where \"SOMEngagementPlanId\" = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}' and acc.\"UniqueIntegrationId\" in ('{{explicit_accountUId}}','{{ruleonly_accountUId}}','{{explrule_accountUId}}','{{exclude_accountUId}}') order by acc.\"UniqueIntegrationId\", t.\"UniqueIntegrationId\"",
+          "exp_result": "[{AccountUId:{{explrule_accountUId}},TerritoryUId:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},SOMEngagementSegmentId:A-{{TestUniqueIntegrationId}}},{AccountUId:{{ruleonly_accountUId}},TerritoryUId:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},SOMEngagementSegmentId:C-{{TestUniqueIntegrationId}}},{AccountUId:{{ruleonly_accountUId}},TerritoryUId:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},SOMEngagementSegmentId:C-{{TestUniqueIntegrationId}}}]"
+        },
+        {
+          // Fails due to OMR-15656, Uncomment when fixed.
+          "testname": "OMR-13845_AccountProductRestriction",
+          "query": "select ac.\"UniqueIntegrationId\" \"Account\", p.\"UniqueIntegrationId\" \"Product\", \"Reason\", \"Source\", apr.\"EffectiveDate\", apr.\"EndDate\" from {{schema}}.\"OMAccountProductRestriction\" apr join static.\"OMAccount\" ac on ac.\"Id\" = apr.\"OMAccountId\" join static.\"OMProduct\" p on p.\"SOMProductId\" = apr.\"SOMProductId\" where p.\"UniqueIntegrationId\" in ('{{Product.UniqueIntegrationId__c[0]}}','{{Product.UniqueIntegrationId__c[1]}}') order by ac.\"UniqueIntegrationId\",p.\"UniqueIntegrationId\"",
+          "exp_result": "[{Account:{{explrule_accountUId}},Product:{{Product.UniqueIntegrationId__c[0]}},Reason:,Source:EXPL,EffectiveDate:{{ScenarioAccountProductExplicit.EffectiveDate__c}},EndDate:{{ScenarioAccountProductExplicit.EndDate__c}}},{Account:{{ruleonly_accountUId}},Product:{{Product.UniqueIntegrationId__c[1]}},Reason:{{ScenarioAccountProductRule.Name[1]}}|{{ScenarioAccountProductRule.SOMAccountProductRuleId__c[1]}},Source:DSHR,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}}}]"
+        },
+        {
+          "testname": "OMR-13845_AccountProductTerritoryRestriction",
+          "query": "select ac.\"UniqueIntegrationId\" \"Account\", p.\"UniqueIntegrationId\" \"Product\", t.\"UniqueIntegrationId\" \"Territory\", \"Reason\", \"Source\", aptr.\"EffectiveDate\", aptr.\"EndDate\" from {{schema}}.\"OMAccountProductTerritoryRestriction\" aptr join static.\"OMAccount\" ac on ac.\"Id\" = aptr.\"OMAccountId\" join static.\"OMProduct\" p on p.\"SOMProductId\" = aptr.\"SOMProductId\" join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = aptr.\"SOMTerritoryId\" where aptr.\"SOMTerritoryId\" in ('{{ScenarioTerritory.SOMTerritoryId__c[0]}}','{{ScenarioTerritory.SOMTerritoryId__c[1]}}') and p.\"UniqueIntegrationId\" in ('{{Product.UniqueIntegrationId__c[0]}}','{{Product.UniqueIntegrationId__c[1]}}') order by ac.\"UniqueIntegrationId\",t.\"UniqueIntegrationId\",p.\"UniqueIntegrationId\"",
+          "exp_result": "[{Account:{{explicit_accountUId}},Product:{{Product.UniqueIntegrationId__c[1]}},Territory:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Reason:,Source:EXPL,EffectiveDate:{{ScenarioAccountProductTerrExplicit.EffectiveDate__c}},EndDate:{{ScenarioAccountProductTerrExplicit.EndDate__c}}},{Account:{{ruleonly_accountUId}},Product:{{Product.UniqueIntegrationId__c[1]}},Territory:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Reason:{{ScenarioAccountProductRule.Name[0]}}|{{ScenarioAccountProductRule.SOMAccountProductRuleId__c[0]}},Source:DSHR,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}}},{Account:{{ruleonly_accountUId}},Product:{{Product.UniqueIntegrationId__c[1]}},Territory:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},Reason:{{ScenarioAccountProductRule.Name[0]}}|{{ScenarioAccountProductRule.SOMAccountProductRuleId__c[0]}},Source:DSHR,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}}}]"
+        }
+      ],
+
+      "AlignmentResults": [
+        {
+          // Note: Alignment #5 is invalid for orgs configured for territory populated in ATP ratings. (non-baseline configuration)
+          "testname": "OCE-ATP rule alignments",
+          "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{explicit_accountUId}},EffectiveDate:2069-01-01,EndDate:2070-12-31,Source:EXPL,Reason:},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{explrule_accountUId}},EffectiveDate:{{ScenarioAccountExplicit.EffectiveDate__c[0]}},EndDate:2070-12-31,Source:DSHR;EXPL,Reason:All 8s {{TestUniqueIntegrationId}}|{{ScenarioRule.SOMRuleId__c[2]}},Ramiton 6+ {{TestUniqueIntegrationId}}|{{ScenarioRule.SOMRuleId__c[0]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{explrule_accountUId}},EffectiveDate:2072-01-01,EndDate:{{Scenario.EndDate__c[1]}},Source:DSHR,Reason:All 8s {{TestUniqueIntegrationId}}|{{ScenarioRule.SOMRuleId__c[2]}},Ramiton 6+ {{TestUniqueIntegrationId}}|{{ScenarioRule.SOMRuleId__c[0]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{ruleonly_accountUId}},EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}},Source:DSHR,Reason:Aspirin 6+ {{TestUniqueIntegrationId}}|{{ScenarioRule.SOMRuleId__c[1]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountUID:{{explrule_accountUId}},EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}},Source:DSHR,Reason:All 8s {{TestUniqueIntegrationId}}|{{ScenarioRule.SOMRuleId__c[2]}},Ramiton 6+ {{TestUniqueIntegrationId}}|{{ScenarioRule.SOMRuleId__c[0]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountUID:{{ruleonly_accountUId}},EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}},Source:DSHR,Reason:Aspirin 6+ {{TestUniqueIntegrationId}}|{{ScenarioRule.SOMRuleId__c[1]}}}]",
+          "account_uids": "{{explicit_accountUId}},{{ruleonly_accountUId}},{{explrule_accountUId}},{{exclude_accountUId}}",
+          "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}},{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+          "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}},{{ScenarioTerritory.SOMTerritoryId__c[1]}}"
+        }
+      ]
+    }
+}

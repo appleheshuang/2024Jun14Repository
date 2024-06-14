@@ -1,0 +1,75 @@
+﻿{
+  "Configs": {
+    "loadData": "Smoketest\\LoadData\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "adjudicate"
+  },
+  "BaseData": {
+    "EffectiveDate": "2025-10-25",
+    "EndDate": "3999-12-31",
+    "som_region_id": "IE",
+    "explicit_accountUId": "45ACCTEXP",
+    "explrule_accountUId": "51ACCTEXPLR"
+  },
+  "Adjudication": {
+    "Id": "",
+    "Name": "",
+    "Type__c": "FUTURE",
+    "ReviewStartDate__c": "{{today}}",
+    "ReviewStartDate1__c": "{{today}}",
+    "ReviewStartDate2__c": "{{today}}",
+    "ReviewEndDate__c": "{{today+20}}",
+    "ReviewEndDate1__c": "{{today+10}}",
+    "ReviewEndDate2__c": "{{today+20}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "AdjudicationStatus__c": "PEND",
+    "UserAssignmentType__c": "SECN",
+    "AdjudicationScope__c": "ALGN",
+    "AdjudicationEffectiveDate__c": "{{EffectiveDate}}",
+    "AdjudicationEndDate__c": "{{EndDate}}",
+    "RefScenarioEffectiveDate__c": "{{EffectiveDate}}",
+    "RefScenarioEndDate__c": "{{EndDate}}",
+    "RefScenarioUniqueIntegrationId__c": "{{Scenario.UniqueIntegrationId__c}}",
+    "AutoApplyOnManagerApproval__c": false,
+    "AutoApproveAccountCRsOnSubmit__c": false,
+    "AutoApproveGeographyCRsOnSubmit__c": false
+  },
+  "AdjudicationLevel": [
+    {
+      "Id": "",
+      "TerritoryType__c": "DIST",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "ResponseDays__c": "10.0",
+      "PermittedActions__c": "ADD;DEL;APPRREJ;VIEW"
+    },
+    {
+      "Id": "",
+      "TerritoryType__c": "TERR",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "ResponseDays__c": "10.0",
+      "AutomaticAction__c": "REJT",
+      "PermittedActions__c": "ADD;DEL;VIEW"
+    }
+  ],
+  "AdjudicationGuardRail": {
+    "Id": "",
+    "OMAdjudicationId__c": "{{Adjudication.Id}}",
+    "TerritoryType__c": "TERR",
+    "MaxAccountPercent__c": "100.0",
+    "MaxGeographyPercent__c": "100.0"
+  },
+  "AdjudicationTerritory": [
+    {
+      "Id": "",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UserAssignmentType__c": "SECN",
+      "Generated__c": false,
+      "RefTerritoryType__c": "DIST"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+			"add": "ADD",
+			"edit": "EDIT",
+			"remove": "PEXP",
+			"start": "EFFE",
+			"end": "EXPR",
+			"delete": "DEL"
+}

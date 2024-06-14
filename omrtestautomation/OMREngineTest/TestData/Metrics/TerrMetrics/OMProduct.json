@@ -1,0 +1,52 @@
+﻿{
+	"Product": [
+		{
+			"Name": "InSF-Global",
+			"EffectiveDate__c": "2024-01-01",
+			"EndDate__c": "3999-12-31",
+			"Type__c": "Detail",
+			"DetailType__c": "Brand",
+			"UniqueIntegrationId__c": "17566-InSF-Global",
+			"Status__c": "ACTV"
+		},
+		{
+			"Name": "InSF-IE",
+			"EffectiveDate__c": "2024-01-01",
+			"EndDate__c": "3999-12-31",
+			"Type__c": "Detail",
+			"DetailType__c": "Brand",
+			"UniqueIntegrationId__c": "17566-InSF-IE",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "IE"
+		},
+		{
+			"Name": "OutsideSF-Global",
+			"EffectiveDate__c": "2024-01-01",
+			"EndDate__c": "3999-12-31",
+			"Type__c": "Brand",
+			"DetailType__c": "Brand",
+			"UniqueIntegrationId__c": "17566-OutsideSF-Global",
+			"Status__c": "ACTV"
+		},
+		{
+			"Name": "OutsideSF-IE",
+			"EffectiveDate__c": "2024-01-01",
+			"EndDate__c": "3999-12-31",
+			"Type__c": "Detail",
+			"DetailType__c": "Brand",
+			"UniqueIntegrationId__c": "17566-OutsideSF-IE",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "IE"
+		},
+		{
+			"Name": "OutsideSF-FX",
+			"EffectiveDate__c": "2024-01-01",
+			"EndDate__c": "3999-12-31",
+			"Type__c": "Bundle",
+			"DetailType__c": "Brand",
+			"UniqueIntegrationId__c": "17566-OutsideSF-FX",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "FX"
+		}
+	]
+}

@@ -1,0 +1,95 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "commit"
+  },
+
+  "BaseData": {
+    "som_region_id": "FK",
+    "productUId": "Product-OMR-15271-4",
+    "accountexplicitUId": "PrAccTerrExplicit-3",
+    "accountexclusionUId": "PrAccTerrExclusion-3",
+    "salesforceUID": "SF-OMR-15271-3",
+    "territoryExplUID": "TExpl1-OMR-15271-4",
+    "territoryExclUID": "TExcl1-OMR-15271-4"
+  },
+
+  "Scenario": {
+    //Product dates are set in bulkloaded csv file and are constant 01.01.2021-31.12.2223
+    //Scenario dates are definitely after than time
+    "Description": "OMProdAccTerrExplicitExclusionsValidation_ProductTerritoryDoNotOverlap-{{TestUniqueIntegrationID}}",
+    "Name": "OMR-OMProdAccTerrExplicitExclusionsValidation_ProductTerritoryDoNotOverlap-{{TestUniqueIntegrationID}}",
+    "EffectiveDate__c": "{{today+73300}}",
+    "EndDate__c": "{{today+73500}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "{{TestUniqueIntegrationID}}-2"
+  },
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "TerrExpl-OMR-15271-CV2",
+      "UniqueIntegrationId__c": "{{territoryExplUID}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "TerrExcl-OMR-15271-CV2",
+      "UniqueIntegrationId__c": "{{territoryExclUID}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    }
+  ],
+
+  "ScenarioProductAccTerrExplicit": [
+    // precondition for ValidationScenarios
+    {
+      //ADD OMProductAccTerrExplicit
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "OMPrAccTerrExpl-{{TestUniqueIntegrationID}}-CV3",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountexplicitUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryExplUID}}-{{TestUniqueIntegrationID}}"
+    }
+  ],
+
+  "ScenarioProductAccTerrExclusion": [
+    // precondition for ValidationScenarios
+    {
+      //ADD OMProductAccTerrExclusion
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "OMPrAccTerrExcl-{{TestUniqueIntegrationID}}-CV3",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountexclusionUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryExclUID}}-{{TestUniqueIntegrationID}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      // check scenario Error for failure to create OMProductAccTerrExplicit with non overlapping Product and Territory
+      {
+        "testname": "fail_to_create_OMProductAccTerrExplicit_with_non-overlapping_Product_and_Territory",
+        "query": "select \"TableName\", \"ErrorCode\" from {{schema}}.\"OMScenarioError\" where \"OMScenarioId\" = '{{Scenario.Id[1]}}' AND \"TableName\"='OMProductAccTerrExplicit'",
+        "exp_result": "[{TableName:OMProductAccTerrExplicit,ErrorCode:ParentDated}]"
+      },
+      // check scenario Error for failure to create OMProductAccTerrExclusion with non overlapping Product and Territory
+      {
+        "testname": "fail_to_create_OMProductAccTerrExclusion_with_non-overlapping_Product_and_Territory",
+        "query": "select \"TableName\", \"ErrorCode\" from {{schema}}.\"OMScenarioError\" where \"OMScenarioId\" = '{{Scenario.Id[1]}}' AND \"TableName\"='OMProductAccTerrExclusion'",
+        "exp_result": "[{TableName:OMProductAccTerrExclusion,ErrorCode:ParentDated}]"
+      }
+    ]
+  }
+}

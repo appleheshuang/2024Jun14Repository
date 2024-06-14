@@ -1,0 +1,9 @@
+﻿{
+	"OCESyncParams": {
+		"Subtype": "PUBLISH_CUSTOMER_ALIGNMENT",
+		"Mode": "OCE",
+		"Parameters": {
+			"RuleEngineEnabled": "true"
+		}
+	}
+}

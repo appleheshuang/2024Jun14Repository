@@ -1,0 +1,39 @@
+﻿{
+  "BaseData": {
+    "ChangeRequestedAccount": "10ACCTEXC",
+    "explicit_accountUId": "45ACCTEXP",
+    "exclude_accountUId": "10ACCTEXC",
+    "explrule_accountUId": "51ACCTEXPLR"
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "merge_geoterr",
+        "query": "select gt.\"SOMGeographyId\", t.\"Name\", t.\"UniqueIntegrationId\", gt.\"Status\", gt.\"EffectiveDate\", gt.\"EndDate\" from {{schema}}.\"OMGeographyTerritory\" gt join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = gt.\"SOMTerritoryId\" where gt.\"UniqueIntegrationId\"='{{ScenarioGeographyTerritory.UniqueIntegrationId__c}}'",
+        "exp_result": "[{SOMGeographyId:{{ScenarioGeographyTerritory.SOMGeographyId__c}},Name:{{ScenarioTerritory.Name[0]}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}}}]",
+        "sfQuery": "select {{prefix}}OMGeographyId__r.{{prefix}}SOMGeographyId__c, {{prefix}}OMTerritoryId__r.Name, {{prefix}}OMTerritoryId__r.{{prefix}}UniqueIntegrationId__c, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMGeographyTerritory__c where {{prefix}}UniqueIntegrationId__c = '{{ScenarioGeographyTerritory.UniqueIntegrationId__c}}'"
+      },
+      {
+        "testname": "engagement_result",
+        "query": "select \"OMAccountId\",\"SOMTerritoryId\",\"SOMEngagementSegmentId\" from \"{{schema}}\".\"OMEngagementResult\" where \"SOMEngagementPlanId\" = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}' and \"OMAccountId\" in ('10ACCTEXC','45ACCTEXP','51ACCTEXPLR','ACCT01','ACCT02') order by \"OMAccountId\"",
+        "exp_result": "[{OMAccountId:45ACCTEXP,SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMEngagementSegmentId:segB-{{ScenarioRule.SOMRuleId__c[1]}}},{OMAccountId:51ACCTEXPLR,SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMEngagementSegmentId:segA-{{ScenarioRule.SOMRuleId__c[0]}}},{OMAccountId:ACCT01,SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMEngagementSegmentId:segA-{{ScenarioRule.SOMRuleId__c[0]}}},{OMAccountId:ACCT02,SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMEngagementSegmentId:segC-{{ScenarioRule.SOMRuleId__c[2]}}}]"
+      },
+      {
+        "testname": "change_requested_account_results_rep",
+        "query": "select a.\"Name\",a.\"Type\", ar.\"OMAdjudicationId\", ar.\"SOMTerritoryId\", ar.\"OMAccountId\", ar.\"Action\", ar.\"SOMEngagementSegmentId\", ar.\"Targets\", ar.\"CalculatedSegmentId\", ar.\"Reason\",t.\"Name\" \"Terr\" from static.\"OMAdjudication\" a join static.\"OMAccountAdjudicationResult\" ar on ar.\"OMAdjudicationId\" = a.\"Id\" join static.\"OMAdjudicationTerritory\" ad on ad.\"OMAdjudicationId\" = a.\"Id\" join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = ar.\"SOMTerritoryId\" where a.\"Name\" in ('{{Adjudication.Name}}') and ar.\"AccessKey\" in (ad.\"AccessKeyRep\", ad.\"AccessKeyApprover\") and ar.\"AccessKey\" = ad.\"AccessKeyRep\" and ar.\"OMAccountId\" in ('10ACCTEXC','45ACCTEXP','51ACCTEXPLR','ACCT01','ACCT02') order by ar.\"OMAccountId\"",
+        "exp_result": "[{Name:{{Adjudication.Name}},Type:FUTURE,OMAdjudicationId:{{Adjudication.Id}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},OMAccountId:10ACCTEXC,Action:ADD,SOMEngagementSegmentId:null,Targets:null,CalculatedSegmentId:null,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}},Terr:{{ScenarioTerritory.Name[0]}}},{Name:{{Adjudication.Name}},Type:FUTURE,OMAdjudicationId:{{Adjudication.Id}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},OMAccountId:45ACCTEXP,Action:null,SOMEngagementSegmentId:null,Targets:null,CalculatedSegmentId:null,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}},Terr:{{ScenarioTerritory.Name[0]}}},{Name:{{Adjudication.Name}},Type:FUTURE,OMAdjudicationId:{{Adjudication.Id}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},OMAccountId:51ACCTEXPLR,Action:null,SOMEngagementSegmentId:null,Targets:null,CalculatedSegmentId:null,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}},Terr:{{ScenarioTerritory.Name[0]}}},{Name:{{Adjudication.Name}},Type:FUTURE,OMAdjudicationId:{{Adjudication.Id}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},OMAccountId:ACCT01,Action:null,SOMEngagementSegmentId:null,Targets:null,CalculatedSegmentId:null,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}},Terr:{{ScenarioTerritory.Name[0]}}},{Name:{{Adjudication.Name}},Type:FUTURE,OMAdjudicationId:{{Adjudication.Id}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},OMAccountId:ACCT02,Action:null,SOMEngagementSegmentId:null,Targets:null,CalculatedSegmentId:null,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}},Terr:{{ScenarioTerritory.Name[0]}}}]"
+      },
+
+      {
+        "testname": "Check-Account-Adjudication-Result-Gain-on-Account-Add-CR",
+        "query": "select ar.\"OMAdjudicationId\", ar.\"OMAccountId\", ar.\"SOMTerritoryId\", ar.\"Action\", ar.\"GainLoss\" from static.\"OMAccountAdjudicationResult\" ar join static.\"OMAdjudicationTerritory\" ad on ar.\"OMAdjudicationId\" = ad.\"OMAdjudicationId\" where ar.\"OMAdjudicationId\" = '{{Adjudication.Id}}' and ar.\"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c[0]}}' and ar.\"OMAccountId\" in ('{{ChangeRequestedAccount}}') and ar.\"AccessKey\" = ad.\"AccessKeyRep\"",
+        "exp_result": "[{OMAdjudicationId:{{Adjudication.Id}},OMAccountId:{{ChangeRequestedAccount}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},Action:ADD,GainLoss:GAIN}]"
+      },
+      {
+        "testname": "change_requested_account_results_approver",
+        "query": "select a.\"Name\",a.\"Type\", ar.\"OMAdjudicationId\", ar.\"SOMTerritoryId\", ar.\"OMAccountId\", ar.\"Action\", ar.\"SOMEngagementSegmentId\", ar.\"Targets\", ar.\"CalculatedSegmentId\", ar.\"Reason\",t.\"Name\" \"Terr\" from static.\"OMAdjudication\" a join static.\"OMAccountAdjudicationResult\" ar on ar.\"OMAdjudicationId\" = a.\"Id\" join static.\"OMAdjudicationTerritory\" ad on ad.\"OMAdjudicationId\" = a.\"Id\" join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = ar.\"SOMTerritoryId\" where a.\"Name\" in ('{{Adjudication.Name}}') and ar.\"AccessKey\" in (ad.\"AccessKeyRep\", ad.\"AccessKeyApprover\") and ar.\"AccessKey\" = ad.\"AccessKeyApprover\" and ar.\"OMAccountId\" in ('10ACCTEXC','45ACCTEXP','51ACCTEXPLR','ACCT01','ACCT02') order by ar.\"OMAccountId\"",
+        "exp_result": "[{Name:{{Adjudication.Name}},Type:FUTURE,OMAdjudicationId:{{Adjudication.Id}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},OMAccountId:45ACCTEXP,Action:null,SOMEngagementSegmentId:null,Targets:null,CalculatedSegmentId:null,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}},Terr:{{ScenarioTerritory.Name[0]}}},{Name:{{Adjudication.Name}},Type:FUTURE,OMAdjudicationId:{{Adjudication.Id}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},OMAccountId:51ACCTEXPLR,Action:null,SOMEngagementSegmentId:null,Targets:null,CalculatedSegmentId:null,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}},Terr:{{ScenarioTerritory.Name[0]}}},{Name:{{Adjudication.Name}},Type:FUTURE,OMAdjudicationId:{{Adjudication.Id}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},OMAccountId:ACCT01,Action:null,SOMEngagementSegmentId:null,Targets:null,CalculatedSegmentId:null,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}},Terr:{{ScenarioTerritory.Name[0]}}},{Name:{{Adjudication.Name}},Type:FUTURE,OMAdjudicationId:{{Adjudication.Id}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},OMAccountId:ACCT02,Action:null,SOMEngagementSegmentId:null,Targets:null,CalculatedSegmentId:null,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}},Terr:{{ScenarioTerritory.Name[0]}}}]"
+      }
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+﻿{
+  "Configs": {
+    "loadData": "Smoketest\\LoadData\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "EffectiveDate": "2022-08-01",
+    "EndDate": "2023-01-30",
+    "som_region_id": "BM"
+  },
+
+  "Scenario": {
+    "Description": "OMR-525 - Edit SalesForce several times",
+    "Name": "C7652002",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "S5{{TestUniqueIntegrationID}}"
+  },
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "DEL",
+      "SOMRegionId__c": "{{regionUId}}",
+      "OMScenarioId__c": "{{Scenario.Id[4]}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+      "UniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "Name": "{{ScenarioSalesForce.Name[0]}}",
+      "Cascade__c": true
+    }
+  ],
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Cascade SalesForce",
+        "query": "select \"Name\",\"Type\",\"Status\",\"EffectiveDate\",\"EndDate\" from {{schema}}.\"OMSalesForce\" where \"SOMSalesForceId\" in ('{{ScenarioSalesForce.SOMSalesForceId__c[0]}}', '{{ScenarioSalesForce.SOMSalesForceId__c[1]}}, {{ScenarioSalesForce.SOMSalesForceId__c[2]}}') order by \"Name\"",
+        "exp_result": "[{Name:{{ScenarioSalesForce.Name[0]}},Type:KOL,Status:INAC,EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{Scenario.EndDate__c[0]}}}]"
+      },
+      {
+        "testname": "Cascade TerritorySalesForce",
+        "query": "select \"SOMTerritoryId\",\"Status\",\"EffectiveDate\",\"EndDate\" from {{schema}}.\"OMTerritorySalesForce\" where \"SOMTerritoryId\" in ('{{ScenarioTerritory.SOMTerritoryId__c[0]}}') order by \"EffectiveDate\"",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},Status:INAC,EffectiveDate:{{ScenarioTerritory.EffectiveDate__c[0]}},EndDate:2022-02-28},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[0]}}}]"
+      },
+      {
+        "testname": "Cascade Territory",
+        "query": "select \"SOMTerritoryId\",\"Status\",\"EffectiveDate\",\"EndDate\" from {{schema}}.\"OMTerritory\" where \"SOMTerritoryId\" in ('{{ScenarioTerritory.SOMTerritoryId__c[0]}}') order by \"EffectiveDate\"",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[0]}}}]"
+      }
+    ]
+  }
+}

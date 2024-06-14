@@ -1,0 +1,178 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "REG01",
+    "accountUId": "ACCT01",
+    "accountUIdEXPR": "ACCT02",
+    "EffectiveDate": "{{today-10}}",
+    "EndDate": "{{today+10}}"
+  },
+
+  "Scenario": {
+    "Description": "EFFE Account Product Explicit Test",
+    "name": "EFFE Account Product Explicit Test",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "APREFFE-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioAccountProductExplicit": [
+    // EFFE Past
+    {
+      "Action__c": "EFFE",
+      "OMAccountId__c": "{{accountUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "SOMProductId__c": "EFFEPAST-{{TestUniqueIntegrationID}}",
+      "ProductUniqueIntegrationId__c": "EFFEPAST-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMAccountProductExplicitId__c": "{{ScenarioAccountProductExplicit.SOMAccountProductExplicitId__c[0]}}",
+      "EffectiveDate__c": "{{today-5}}",
+      "EndDate__c": "{{today+10}}"
+
+    },
+    // EFFE Current
+    {
+      "Action__c": "EFFE",
+      "OMAccountId__c": "{{accountUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "SOMProductId__c": "EFFECUR-{{TestUniqueIntegrationID}}",
+      "ProductUniqueIntegrationId__c": "EFFECUR-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMAccountProductExplicitId__c": "{{ScenarioAccountProductExplicit.SOMAccountProductExplicitId__c[1]}}",
+      "EffectiveDate__c": "{{today}}",
+      "EndDate__c": "{{today+10}}"
+    },
+    // EFFE Future
+    {
+      "Action__c": "EFFE",
+      "OMAccountId__c": "{{accountUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "SOMProductId__c": "EFFEFUT-{{TestUniqueIntegrationID}}",
+      "ProductUniqueIntegrationId__c": "EFFEFUT-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMAccountProductExplicitId__c": "{{ScenarioAccountProductExplicit.SOMAccountProductExplicitId__c[2]}}",
+      "EffectiveDate__c": "{{today+5}}",
+      "EndDate__c": "{{today+10}}"
+    },
+    //EXPR Past
+    {
+      "Action__c": "EXPR",
+      "OMAccountId__c": "{{accountUIdEXPR}}",
+      "AccountUniqueIntegrationId__c": "{{accountUIdEXPR}}",
+      "SOMProductId__c": "EFFEPAST-{{TestUniqueIntegrationID}}",
+      "ProductUniqueIntegrationId__c": "EFFEPAST-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMAccountProductExplicitId__c": "{{ScenarioAccountProductExplicit.SOMAccountProductExplicitId__c[3]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{today-5}}"
+    },
+    // EXPR Current
+    {
+      "Action__c": "EXPR",
+      "OMAccountId__c": "{{accountUIdEXPR}}",
+      "AccountUniqueIntegrationId__c": "{{accountUIdEXPR}}",
+      "SOMProductId__c": "EFFECUR-{{TestUniqueIntegrationID}}",
+      "ProductUniqueIntegrationId__c": "EFFECUR-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMAccountProductExplicitId__c": "{{ScenarioAccountProductExplicit.SOMAccountProductExplicitId__c[4]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{today}}"
+    },
+    // EXPR Future
+    {
+      "Action__c": "EXPR",
+      "OMAccountId__c": "{{accountUIdEXPR}}",
+      "AccountUniqueIntegrationId__c": "{{accountUIdEXPR}}",
+      "SOMProductId__c": "EFFEFUT-{{TestUniqueIntegrationID}}",
+      "ProductUniqueIntegrationId__c": "EFFEFUT-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMAccountProductExplicitId__c": "{{ScenarioAccountProductExplicit.SOMAccountProductExplicitId__c[5]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{today+5}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Account Product Explicit Past",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductExplicit\" where \"OMAccountId\"='{{accountUId}}' and \"SOMProductId\" ='EFFEPAST-{{TestUniqueIntegrationID}}'  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUId}},SOMProductId:EFFEPAST-{{TestUniqueIntegrationID}},EffectiveDate:{{today-5}},EndDate:{{Scenario.EndDate__c[0]}},Status:ACTV}]",
+        "odataQuery": "/OMAccountProductExplicit?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate,Status&$filter=OMAccountId eq '{{accountUId}}' and SOMProductId eq 'EFFEPAST-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      },
+      {
+        "testname": "Account Product Restriciton Past",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountProductRestriction\" where \"OMAccountId\"='{{accountUId}}' and \"SOMProductId\" ='EFFEPAST-{{TestUniqueIntegrationID}}'  order by \"EffectiveDate\" asc",
+        "exp_result": "[{OMAccountId:{{accountUId}},SOMProductId:EFFEPAST-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{today-11}}},{OMAccountId:{{accountUId}},SOMProductId:EFFEPAST-{{TestUniqueIntegrationID}},EffectiveDate:{{today-5}},EndDate:{{Scenario.EndDate__c[0]}}}]",
+        "odataQuery": "/OMAccountProductRestriction?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate&$filter=OMAccountId eq '{{accountUId}}' and SOMProductId eq 'EFFEPAST-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      },
+      {
+        "testname": "Account Product Explicit Current",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductExplicit\" where \"OMAccountId\"='{{accountUId}}' and \"SOMProductId\" ='EFFECUR-{{TestUniqueIntegrationID}}'  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUId}},SOMProductId:EFFECUR-{{TestUniqueIntegrationID}},EffectiveDate:{{today}},EndDate:{{Scenario.EndDate__c[0]}},Status:ACTV}]",
+        "odataQuery": "/OMAccountProductExplicit?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate,Status&$filter=OMAccountId eq '{{accountUId}}' and SOMProductId eq 'EFFECUR-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      },
+      {
+        "testname": "Account Product Restriciton Current",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountProductRestriction\" where \"OMAccountId\"='{{accountUId}}' and \"SOMProductId\" ='EFFECUR-{{TestUniqueIntegrationID}}'  order by \"EffectiveDate\" asc",
+        "exp_result": "[{OMAccountId:{{accountUId}},SOMProductId:EFFECUR-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{today-11}}},{OMAccountId:{{accountUId}},SOMProductId:EFFECUR-{{TestUniqueIntegrationID}},EffectiveDate:{{today}},EndDate:{{Scenario.EndDate__c[0]}}}]",
+        "odataQuery": "/OMAccountProductRestriction?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate&$filter=OMAccountId eq '{{accountUId}}' and SOMProductId eq 'EFFECUR-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      },
+      {
+        "testname": "Account Product Explicit Future",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductExplicit\" where \"OMAccountId\"='{{accountUId}}' and \"SOMProductId\" ='EFFEFUT-{{TestUniqueIntegrationID}}'  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUId}},SOMProductId:EFFEFUT-{{TestUniqueIntegrationID}},EffectiveDate:{{ScenarioAccountProductExplicit.EffectiveDate__c[8]}},EndDate:{{Scenario.EndDate__c[0]}},Status:ACTV}]",
+        "odataQuery": "/OMAccountProductExplicit?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate,Status&$filter=OMAccountId eq '{{accountUId}}' and SOMProductId eq 'EFFEFUT-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      },
+      {
+        "testname": "Account Product Restriciton Future",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountProductRestriction\" where \"OMAccountId\"='{{accountUId}}' and \"SOMProductId\" ='EFFEFUT-{{TestUniqueIntegrationID}}'  order by \"EffectiveDate\" asc",
+        "exp_result": "[{OMAccountId:{{accountUId}},SOMProductId:EFFEFUT-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{today-11}}},{OMAccountId:{{accountUId}},SOMProductId:EFFEFUT-{{TestUniqueIntegrationID}},EffectiveDate:{{ScenarioAccountProductExplicit.EffectiveDate__c[8]}},EndDate:{{Scenario.EndDate__c[0]}}}]",
+        "odataQuery": "/OMAccountProductRestriction?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate&$filter=OMAccountId eq '{{accountUId}}' and SOMProductId eq 'EFFEFUT-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      },
+      {
+        "testname": "Account Product Explicit EXPR Past",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductExplicit\" where \"OMAccountId\"='{{accountUIdEXPR}}' and \"SOMProductId\" ='EFFEPAST-{{TestUniqueIntegrationID}}'  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUIdEXPR}},SOMProductId:EFFEPAST-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{today-5}},Status:ACTV}]",
+        "odataQuery": "/OMAccountProductExplicit?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate,Status&$filter=OMAccountId eq '{{accountUIdEXPR}}' and SOMProductId eq 'EFFEPAST-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      },
+      {
+        "testname": "Account Product Restriciton EXPR Past",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountProductRestriction\" where \"OMAccountId\"='{{accountUIdEXPR}}' and \"SOMProductId\" ='EFFEPAST-{{TestUniqueIntegrationID}}'  order by \"EffectiveDate\" asc",
+        "exp_result": "[{OMAccountId:{{accountUIdEXPR}},SOMProductId:EFFEPAST-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{today-5}}}]",
+        "odataQuery": "/OMAccountProductRestriction?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate&$filter=OMAccountId eq '{{accountUIdEXPR}}' and SOMProductId eq 'EFFEPAST-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      },
+      {
+        "testname": "Account Product Explicit EXPR Current",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductExplicit\" where \"OMAccountId\"='{{accountUIdEXPR}}' and \"SOMProductId\" ='EFFECUR-{{TestUniqueIntegrationID}}'  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUIdEXPR}},SOMProductId:EFFECUR-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{today}},Status:ACTV}]",
+        "odataQuery": "/OMAccountProductExplicit?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate,Status&$filter=OMAccountId eq '{{accountUIdEXPR}}' and SOMProductId eq 'EFFECUR-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      },
+      {
+        "testname": "Account Product Restriciton EXPR Current",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountProductRestriction\" where \"OMAccountId\"='{{accountUIdEXPR}}' and \"SOMProductId\" ='EFFECUR-{{TestUniqueIntegrationID}}'  order by \"EffectiveDate\" asc",
+        "exp_result": "[{OMAccountId:{{accountUIdEXPR}},SOMProductId:EFFECUR-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{today}}}]",
+        "odataQuery": "/OMAccountProductRestriction?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate&$filter=OMAccountId eq '{{accountUIdEXPR}}' and SOMProductId eq 'EFFECUR-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      },
+      {
+        "testname": "Account Product Explicit EXPR Future",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductExplicit\" where \"OMAccountId\"='{{accountUIdEXPR}}' and \"SOMProductId\" ='EFFEFUT-{{TestUniqueIntegrationID}}'  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUIdEXPR}},SOMProductId:EFFEFUT-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{ScenarioAccountProductExplicit.EndDate__c[11]}},Status:ACTV}]",
+        "odataQuery": "/OMAccountProductExplicit?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate,Status&$filter=OMAccountId eq '{{accountUIdEXPR}}' and SOMProductId eq 'EFFEFUT-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      },
+      {
+        "testname": "Account Product Restriciton EXPR Future",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountProductRestriction\" where \"OMAccountId\"='{{accountUIdEXPR}}' and \"SOMProductId\" ='EFFEFUT-{{TestUniqueIntegrationID}}'  order by \"EffectiveDate\" asc",
+        "exp_result": "[{OMAccountId:{{accountUIdEXPR}},SOMProductId:EFFEFUT-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{ScenarioAccountProductExplicit.EndDate__c[11]}}}]",
+        "odataQuery": "/OMAccountProductRestriction?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate&$filter=OMAccountId eq '{{accountUIdEXPR}}' and SOMProductId eq 'EFFEFUT-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      }
+    ]
+  }
+}

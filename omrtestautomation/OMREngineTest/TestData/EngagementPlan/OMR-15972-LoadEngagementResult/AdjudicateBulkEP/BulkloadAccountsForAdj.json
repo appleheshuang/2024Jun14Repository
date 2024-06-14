@@ -1,0 +1,19 @@
+{
+  "Bulkload": {
+    "S3Path": "autotestdata/OMR-15972/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "ValidateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "AdjudicationAccount_15972.csv",
+        "table": "OMAccount"
+      },
+      {
+        "file": "AdjudicationAffiliation_15972.csv",
+        "table": "OMAffiliation"
+      }
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "BaseData": {
+    "addGeoId": "US-95129",
+    "dynAccount1_oncology": "MP01",
+    "addAccount2_pediatrics": "MP02"
+  },
+  "ScenarioGeographyTerritory": [
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "{{addGeoId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "SOMGeographyTerritoryId__c": "{{addGeoId}}-{{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "{{addGeoId}}-{{TestUniqueIntegrationId}}"
+    }
+  ],
+  "ScenarioAccountExplicit": [
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "COMP",
+      "AccountUniqueIntegrationId__c": "{{addAccount2_pediatrics}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}"
+    }
+  ],
+  "Tests": {
+    "MetricSummary": [
+      {
+        "testname": "ModelWithScenarioActions-SummaryCalculation",
+        "territory": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "columns": "AccountsTotal,GeographiesTotal",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountType:Total,AccountsTotal:5,GeographiesTotal:1}]"
+      }
+    ]
+  }
+}

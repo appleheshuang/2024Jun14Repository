@@ -1,0 +1,104 @@
+{
+	"BaseData": {
+		"som_region_id": "FX", //This region has AccountDataProtectionAction = DEL
+		"som_region_id2": "BM", //This region has AccountDataProtectionAction = MASK
+		"som_region_id3": "GB", //This region has AccountDataProtectionAction = NONE
+		"ACC1_ActiveAndInFX": "OMR-18946-1-{{TestUniqueIntegrationId}}",
+		"ACC2_InactiveAndInFX": "OMR-18946-2-{{TestUniqueIntegrationId}}",
+		"ACC3_ActiveAndGlobalAcc": "OMR-18946-3-{{TestUniqueIntegrationId}}",
+		"ACC4_InactiveAndGlobalAcc": "OMR-18946-4-{{TestUniqueIntegrationId}}",
+		"ACC5_ActiveAndInBM": "OMR-18946-5-{{TestUniqueIntegrationId}}",
+		"ACC6_InactiveAndBM": "OMR-18946-6-{{TestUniqueIntegrationId}}",
+		"ACC7_ActiveAndInGB": "OMR-18946-7-{{TestUniqueIntegrationId}}",
+		"ACC8_InactiveAndGB": "OMR-18946-8-{{TestUniqueIntegrationId}}"
+	},
+	"Tests": {
+		"MergeResults": [
+			{
+				"testname": "CheckOMAccountPurgeTableContents",
+				"query": "select \"OMAccountId\", \"UniqueIntegrationId\", \"PurgeAction\" from static.\"OMAccountPurge\" where \"OMAccountId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"OMAccountId\"",
+				"exp_result": "[{OMAccountId:{{ACC1_ActiveAndInFX}},UniqueIntegrationId:{{ACC1_ActiveAndInFX}},PurgeAction:\"DEL\"},{OMAccountId:{{ACC2_InactiveAndInFX}},UniqueIntegrationId:{{ACC2_InactiveAndInFX}},PurgeAction:\"DEL\"},{OMAccountId:{{ACC3_ActiveAndGlobalAcc}},UniqueIntegrationId:{{ACC3_ActiveAndGlobalAcc}},PurgeAction:\"DEL\"},{OMAccountId:{{ACC4_InactiveAndGlobalAcc}},UniqueIntegrationId:{{ACC4_InactiveAndGlobalAcc}},PurgeAction:\"DEL\"},{OMAccountId:{{ACC5_ActiveAndInBM}},UniqueIntegrationId:{{ACC5_ActiveAndInBM}},PurgeAction:\"MASK\"},{OMAccountId:{{ACC6_InactiveAndBM}},UniqueIntegrationId:{{ACC6_InactiveAndBM}},PurgeAction:\"MASK\"}]"
+			},
+			{
+				"testname": "CheckNoUnexpectedAccountsInOMAccountPurge",
+				"query": "select count(*) \"count\" from static.\"OMAccountPurge\" ap join static.\"OMAccount\" a on ap.\"OMAccountId\" = a.\"Id\" where a.\"DataProtected\" is null or 'FALSE'\r\n",
+				"exp_result": "[{count:0}]"
+			},
+			{
+				"testname": "CheckOMAccount",
+				"query": "select \"Id\", \"Name\", \"FirstName\", \"MiddleName\", \"LastName\", \"SecondLastName\", \"Status\", \"UniqueIntegrationId\", \"DataProtected\" from static.\"OMAccount\" where \"Id\" ilike '%{{TestUniqueIntegrationId}}%' order by \"Id\"",
+				"exp_result": "[{Id:{{ACC5_ActiveAndInBM}},Name:\"Data Protected\",FirstName:\"Data Protected\",MiddleName:\"Data Protected\",LastName:\"DataProtected\",SecondLastName:\"Data Protected\",Status:INAC,UniqueIntegrationId:{{ACC5_ActiveAndInBM}},DataProtected:\"true\"},{Id:{{ACC6_InactiveAndBM}},Name:\"OMR-18946-6\",FirstName:\"OMR-18946\",MiddleName:\"Test\",LastName:\"Load\",SecondLastName:null,Status:INAC,UniqueIntegrationId:{{ACC6_InactiveAndBM}},DataProtected:\"true\"},{Id:{{ACC7_ActiveAndInGB}},Name:\"OMR-18946-7\",FirstName:\"OMR-18946\",MiddleName:\"Test\",LastName:\"Load\",SecondLastName:null,Status:ACTV,UniqueIntegrationId:{{ACC7_ActiveAndInGB}},DataProtected:\"true\"},{Id:{{ACC8_InactiveAndGB}},Name:\"OMR-18946-8\",FirstName:\"OMR-18946\",MiddleName:\"Test\",LastName:\"Load\",SecondLastName:null,Status:INAC,UniqueIntegrationId:{{ACC8_InactiveAndGB}},DataProtected:\"true\"}]"
+			},
+			{
+				"testname": "CheckOMAccountAdjudicatoinResult",
+				"query": "select a.\"Name\",a.\"Type\", ar.\"SOMTerritoryId\", ar.\"Source\", ar.\"OMAccountId\", ar.\"Action\" from static.\"OMAdjudication\" a join static.\"OMAccountAdjudicationResult\" ar on ar.\"OMAdjudicationId\" = a.\"Id\" join static.\"OMAdjudicationTerritory\" ad on ad.\"OMAdjudicationId\" = a.\"Id\" where a.\"Name\" in ('{{Adjudication.Name}}') and ar.\"AccessKey\" = ad.\"AccessKeyRep\" order by ar.\"OMAccountId\"",
+				"exp_result": "[{Name:{{Adjudication.Name}},Type:CURRENT,SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Source:EXPL,OMAccountId:{{ACC7_ActiveAndInGB}},Action:null}]"
+			},
+			{
+				"testname": "CheckOMAccountExclusion",
+				"query": "select \"OMAccountId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountExclusion\" where \"SOMSalesForceId\"='{{ScenarioSalesForce.SOMSalesForceId__c[0]}}' or \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[0]}}' order by \"OMAccountId\"",
+				"exp_result": "[{OMAccountId:{{ACC5_ActiveAndInBM}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{dbt_yesterday}}}]"
+			},
+			{
+				"testname": "CheckOMAccountExplicit",
+				"query": "select \"OMAccountId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountExplicit\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[0]}}' order by \"OMAccountId\"",
+				"exp_result": "[{OMAccountId:{{ACC7_ActiveAndInGB}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}}}]"
+			},
+			{
+				"testname": "CheckOMAccountOwner",
+				"query": "select \"OMAccountId\",\"SOMTerritoryId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountOwner\" where \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c[0]}}' order by \"OMAccountId\" desc",
+				"exp_result": "[]"
+			},
+			{
+				"testname": "CheckOMAccountProductExplicit",
+				"query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountProductExplicit\" where \"OMAccountId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"OMAccountId\" desc",
+				"exp_result": "[]"
+			},
+			{
+				"testname": "CheckOMAccountProductFields",
+				"query": "select \"OMAccountId\",\"SOMProductId\",\"UniqueIntegrationId\" from \"STATIC\".\"OMAccountProductFields\" where \"OMAccountId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"OMAccountId\" desc",
+				"exp_result": "[]"
+			},
+			{
+				"testname": "CheckOMAccountProductRestricition",
+				"query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Source\" from \"{{schema}}\".\"OMAccountProductRestriction\" where \"SOMProductId\" = 'PROD1' and \"OMAccountId\" like '%-{{TestUniqueIntegrationID}}' order by \"OMAccountId\" asc",
+				"exp_result": "[]"
+			},
+			{
+				"testname": "CheckOMAccountProductRestricitionRule",
+				"query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountProductRestrictionRule\"  where \"SOMProductId\" = 'PROD1' and \"OMAccountId\" like '%-{{TestUniqueIntegrationID}}' order by \"OMAccountId\" asc",
+				"exp_result": "[]"
+			},
+			{
+				"testname": "CheckOMAccountProductTerritoryExplicit",
+				"query": "select \"OMAccountId\", \"SOMProductId\" , \"SOMTerritoryId\", \"Status\", \"EffectiveDate\", \"EndDate\" from output.\"OMAccountProductTerritoryExplicit\" where \"OMAccountId\" ilike '%{{TestUniqueIntegrationID}}%'",
+				"exp_result": "[]"
+			},
+			{
+				"testname": "CheckOMAccountProductTerritoryRestriction",
+				"query": "select \"OMAccountId\", \"SOMProductId\" , \"SOMTerritoryId\", \"EffectiveDate\", \"EndDate\" from output.\"OMAccountProductTerritoryRestriction\" where \"OMAccountId\" ilike '%{{TestUniqueIntegrationID}}%'",
+				"exp_result": "[]"
+			},
+			{
+				"testname": "CheckOMAccountSalesForceFields",
+				"query": "select \"OMAccountId\", \"SOMSalesForceId\" , \"UniqueIntegrationId\" from static.\"OMAccountSalesForceFields\" where \"OMAccountId\" ilike '%{{TestUniqueIntegrationID}}%'",
+				"exp_result": "[]"
+			},
+			{
+				"testname": "CheckOMAccountTerritory",
+				"query": "select \"OMAccountId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountExplicit\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[0]}}' order by \"OMAccountId\"",
+				"exp_result": "[{OMAccountId:{{ACC7_ActiveAndInGB}},EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}}}]"
+			},
+			{
+				"testname": "CheckOMAccountTerritoryFields",
+				"query": "select \"OMAccountId\", \"SOMTerritoryId\" , \"UniqueIntegrationId\" from static.\"OMAccountTerritoryFields\" where \"OMAccountId\" ilike '%{{TestUniqueIntegrationID}}%'",
+				"exp_result": "[]"
+			},
+			{
+				"testname": "CheckOMAccountTerritoryRule",
+				"query": "select \"OMAccountId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountTerritoryRule\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[0]}}' order by \"OMAccountId\"",
+				"exp_result": "[{OMAccountId:{{ACC7_ActiveAndInGB}},EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}}}]"
+			}
+		]
+	}
+}

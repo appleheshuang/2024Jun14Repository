@@ -1,0 +1,13 @@
+﻿{
+  "OCESyncParams": {
+    "Type": "OCESYNC",
+    "Subtype": "PULL_ACCOUNT",
+    "Mode": "OCE",
+    "StartFrom": "1999-12-31T00:00:00.000Z",
+    "EffectiveDate": "",
+    "EndDate": "",
+    "Parameters": {
+      "ExplicitAccountTerritoryAlignment": true
+    }
+  }
+}

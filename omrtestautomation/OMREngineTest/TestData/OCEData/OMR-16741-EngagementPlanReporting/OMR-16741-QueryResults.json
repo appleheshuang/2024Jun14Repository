@@ -1,0 +1,20 @@
+{
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "CheckOMActivityPlanSync",
+        "query": "select ap.\"OMAccountId\", ap.\"AccountUniqueIntegrationId\", ap.\"Channel\", ap.\"Planned\", ap.\"Actual\" from STATIC.\"OMActivityPlan\" ap join STATIC.\"OMPlanCycle\" pc on ap.\"OMPlanCycleId\" = pc.\"Id\" where pc.\"SOMEngagementPlanId\" = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}' order by \"AccountUniqueIntegrationId\"",
+        "exp_result": "[{OMAccountId:{{Account.Id[0]}},AccountUniqueIntegrationId:{{Account.OCE__UniqueIntegrationID__c[0]}},Channel:MEET,Planned:50,Actual:null},{OMAccountId:{{Account.Id[1]}},AccountUniqueIntegrationId:{{Account.OCE__UniqueIntegrationID__c[1]}},Channel:MEET,Planned:100,Actual:null},{OMAccountId:{{Account.Id[2]}},AccountUniqueIntegrationId:{{Account.OCE__UniqueIntegrationID__c[2]}},Channel:MEET,Planned:100,Actual:null},{OMAccountId:{{Account.Id[3]}},AccountUniqueIntegrationId:{{Account.OCE__UniqueIntegrationID__c[3]}},Channel:MEET,Planned:50,Actual:null}]"
+      },
+      /*
+      C18049765 - Verify updated plan cycle name in OCEP is synced to OCEO
+      Added Name field to the OMPlanCycle query
+      */
+      {
+        "testname": "CheckOMPlanCycleSync",
+        "query": "select \"Type\", \"UniqueIntegrationId\", \"Status\", \"TerritoryName\", \"SOMTerritoryId\", \"Name\" from STATIC.\"OMPlanCycle\" where \"SOMEngagementPlanId\" = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}'",
+        "exp_result": "[{Type:AccountGoal,UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c}}-{{ScenarioEngagementPlan.UniqueIntegrationId__c}},Status:Approved,TerritoryName:{{ScenarioTerritory.Name}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Name:EP_Name_Edit_{{TestUniqueIntegrationId}}}]"
+      }
+    ]
+  }
+}

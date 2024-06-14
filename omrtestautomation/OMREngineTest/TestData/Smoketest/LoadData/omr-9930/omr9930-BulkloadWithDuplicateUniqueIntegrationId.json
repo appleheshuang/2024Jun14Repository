@@ -1,0 +1,29 @@
+{
+  "Bulkload": {
+    "S3Path": "autotestdata/OMR-9930/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMAccountDuplicateUId.csv",
+        "table": "OMAccount"
+      }
+    ]
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "OldAccountNoDuplicates",
+        "query": "select \"Id\", \"UniqueIntegrationId\", \"Name\" from STATIC.\"OMAccount\" where \"Id\" = 'OMR9930' order by \"Id\"",
+        "exp_result": "[{Id:OMR9930,UniqueIntegrationId:OMR9930,Name:OMR9930-{{TestUniqueIntegrationId}}}]"
+      },
+      {
+        "testname": "NewAccountNoDuplicates",
+        "query": "select \"Id\", \"UniqueIntegrationId\", \"Name\" from STATIC.\"OMAccount\" where \"Id\" = 'ACCT06{{TestUniqueIntegrationId}}' order by \"Id\"",
+        "exp_result": "[{Id:ACCT06{{TestUniqueIntegrationId}},UniqueIntegrationId:ACCT06-{{TestUniqueIntegrationId}},Name:ACCT06-2}]"
+      }
+    ]
+  }
+}

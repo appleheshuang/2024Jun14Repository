@@ -1,0 +1,54 @@
+﻿{
+	"Account": [
+		{
+			"FirstName": "ApprovedWithExclusion",
+			"LastName": "X0-{{TestUniqueIntegrationId}}",
+			"OCE__ProfessionalTitle__c": "Medical Doctors",
+			"OCE__Status__c": "Active",
+			"OCE__Specialty__c": "Internal medicine",
+			"OCE__Specialty2__c": "Not applicable",
+			"OCE__UniqueIntegrationID__c": "ApprovedWithExclusion-{{TestUniqueIntegrationId}}",
+			"OCE__CountryCode__c": "US"
+		},
+		{
+			"FirstName": "PendingFutureExclusion",
+			"LastName": "X1-{{TestUniqueIntegrationId}}",
+			"OCE__ProfessionalTitle__c": "Medical Doctors",
+			"OCE__Status__c": "Active",
+			"OCE__Specialty__c": "Internal medicine",
+			"OCE__Specialty2__c": "Not applicable",
+			"OCE__UniqueIntegrationID__c": "PendingFutureExclusion-{{TestUniqueIntegrationId}}",
+			"OCE__CountryCode__c": null
+		},
+		{
+			"FirstName": "RejectedWithExplicit",
+			"LastName": "X2-{{TestUniqueIntegrationId}}",
+			"OCE__ProfessionalTitle__c": "Medical Doctors",
+			"OCE__Status__c": "Active",
+			"OCE__Specialty__c": "Internal medicine",
+			"OCE__Specialty2__c": "Not applicable",
+			"OCE__UniqueIntegrationID__c": "RejectedWithExplicit-{{TestUniqueIntegrationId}}",
+			"OCE__CountryCode__c": "US"
+		},
+		{
+			"FirstName": "PendingWithExplicit",
+			"LastName": "X3-{{TestUniqueIntegrationId}}",
+			"OCE__ProfessionalTitle__c": "Medical Doctors",
+			"OCE__Status__c": "Active",
+			"OCE__Specialty__c": "Internal medicine",
+			"OCE__Specialty2__c": "Not applicable",
+			"OCE__UniqueIntegrationID__c": "PendingWithExplicit-{{TestUniqueIntegrationId}}",
+			"OCE__CountryCode__c": "US"
+		},
+		{
+			"FirstName": "ApprovedFutureExplicit",
+			"LastName": "X4-{{TestUniqueIntegrationId}}",
+			"OCE__ProfessionalTitle__c": "Medical Doctors",
+			"OCE__Status__c": "Active",
+			"OCE__Specialty__c": "Internal medicine",
+			"OCE__Specialty2__c": "Not applicable",
+			"OCE__UniqueIntegrationID__c": "ApprovedFutureExplicit-{{TestUniqueIntegrationId}}",
+			"OCE__CountryCode__c": "US"
+		}
+	]
+}

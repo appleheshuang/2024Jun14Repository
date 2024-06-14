@@ -1,0 +1,8 @@
+{
+  "Bulkload": {
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false
+  }
+}

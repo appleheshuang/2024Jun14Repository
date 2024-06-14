@@ -1,0 +1,56 @@
+{
+  "Configs": {
+    "name": "OMR-18279",
+    "jobtype": "commit",
+    "jobparams": "CalculateMaps=false;RuleEngineEnabled=true"
+  },
+
+  "BaseData": {
+    "som_region_id": "REG01",
+    "regionUID": "REG01",
+    "salesforceUID": "18279-SF",
+    "territoryUID": "18279-TERR",
+    "explicit_accountUId": "45ACCTEXP"
+  },
+
+  "Scenario": {
+    "Description": "OMR-18279PublishSetup",
+    "Name": "OMR-18279PublishSetup",
+    "EffectiveDate__c": "{{dbt_today-1}}",
+    "EndDate__c": "{{dbt_today-1}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": ""
+  },
+  "ScenarioProductExplicit": [
+    {
+      "Action__c": "DEL",
+      "SOMProductId__c": "{{Product.SOMProductId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "SOMProductExplicitId__c": "{{ScenarioProductExplicit.SOMProductExplicitId__c[2]}}",
+      "ProductAlignmentType__c": "SMPL",
+      "EffectiveDate__c": "{{Scenario.EffectiveDate__c[1]}}"
+    },
+    {
+      "Action__c": "EXPR",
+      "SOMProductId__c": "{{Product.SOMProductId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "SOMProductExplicitId__c": "{{ScenarioProductExplicit.SOMProductExplicitId__c[6]}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[0]}}",
+      "RefProductName__c": "{{Product.Name[0]}}",
+      "RefProductType__c": "{{Product.Type__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[3]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[3]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[3]}}",
+      "UniqueIntegrationId__c": "PE-DUPE-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "PROM",
+      "EffectiveDate__c": "{{dbt_today-2}}",
+      "EndDate__c": "{{dbt_today+2}}"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "BaseData": {
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "OMCall_Valid_New",
+        "query": "select \"Id\",\"Channel\",to_date(\"CallDateTime\") as \"CallDateTime\",\"DurationPicklist\",\"Name\",\"CallType\",\"OMAccountId\",\"CreatedById\",to_date(\"CreatedDate\") as \"CreatedDate\",to_date(\"EndCallDateTime\") as \"EndCallDateTime\",\"UniqueIntegrationId\",\"ParentCallId\",to_date(\"PlannedDate\") as \"PlannedDate\",\"SOMUserId\",\"Status\",\"LastModifiedById\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\" from static.\"OMCall\" where \"Id\"='CallId{{TestUniqueIntegrationID}}'",
+        "exp_result": "[{Id:CallId{{TestUniqueIntegrationID}},Channel:Face To Face,CallDateTime:{{dbt_today}},DurationPicklist:12,Name:CallName-{{TestUniqueIntegrationID}}_WithValidBusinessUnit_WithValidBusinessUnit_WithValidBusiness,CallType:Detail Only,OMAccountId:NDAccount_{{TestUniqueIntegrationID}}_WithValidBU,CreatedById:0051N000005pIXVQA2,CreatedDate:{{dbt_today}},EndCallDateTime:{{dbt_today}},UniqueIntegrationId:Call{{TestUniqueIntegrationID}},ParentCallId:2342343,PlannedDate:{{dbt_today}},SOMUserId:0051N000005pIXVQA2,Status:ACTV,LastModifiedById:Automation,LastModifiedDate:{{dbt_today}}}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "OMCall_MandatoryFieldsOnly_New",
+        "query": "select \"Id\",\"Channel\",to_date(\"CallDateTime\") as \"CallDateTime\",\"DurationPicklist\",\"Name\",\"CallType\",\"OMAccountId\",\"CreatedById\",to_date(\"CreatedDate\") as \"CreatedDate\",to_date(\"EndCallDateTime\") as \"EndCallDateTime\",\"UniqueIntegrationId\",\"ParentCallId\",to_date(\"PlannedDate\") as \"PlannedDate\",\"SOMUserId\",\"Status\",\"LastModifiedById\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\" from static.\"OMCall\" where \"Id\"='CallID{{TestUniqueIntegrationID}}MandatoryFieldsOnly'",
+        "exp_result": "[{Id:CallID{{TestUniqueIntegrationID}}MandatoryFieldsOnly,Channel:null,CallDateTime:null,DurationPicklist:null,Name:C-{{TestUniqueIntegrationID}}_MandatoryFieldsOnly,CallType:null,OMAccountId:NDAccount_{{TestUniqueIntegrationID}}_MandatoryFieldsOnly,CreatedById:0051N000005pIXVQA2,CreatedDate:{{dbt_today}},EndCallDateTime:null,UniqueIntegrationId:null,ParentCallId:null,PlannedDate:null,SOMUserId:null,Status:INAC,LastModifiedById:Automation,LastModifiedDate:{{dbt_today}}}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "OMCall_Invalid_New",
+        "query": "select count(*) from STATIC.\"OMCall\" where \"Id\" in ('CallID{{TestUniqueIntegrationID}}Past','CallID{{TestUniqueIntegrationID}}OtherCRM','CallID{{TestUniqueIntegrationID}}OtherBU','CallID{{TestUniqueIntegrationID}}NOBU')",
+        "exp_result": "[{COUNT(*):0}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "OMCall_Count_New",
+        "query": "select count(*) from STATIC.\"OMCall\" where \"Id\" like ('%{{TestUniqueIntegrationID}}%')",
+        "exp_result": "[{COUNT(*):2}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      }
+    ]
+  }
+}

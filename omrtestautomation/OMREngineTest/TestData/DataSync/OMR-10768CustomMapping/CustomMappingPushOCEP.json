@@ -1,0 +1,50 @@
+﻿{
+  "DataSyncRequest": {
+    "Target": "SFDC",
+    "Tables": "account-_-ルtable(STATIC.OMAccountAddress/OCE__Address__c)",
+    "LastUpdate": false,
+    "Mapping": [
+      {
+        "Table": "account-_-ルtable",
+        "MapByName": true,
+        "Columns": [
+          {
+            "Snowflake": "AddressLine1",
+            "Salesforce": "Name"
+          },
+          {
+            "Snowflake": "Brick1",
+            "Salesforce": "OCE__Brick__c"
+          },
+          {
+            "Snowflake": "Brick1",
+            "Exclude": true
+          },
+          {
+            "Snowflake": "Country",
+            "Salesforce": "OCE__CountryCode__c"
+          },
+          {
+            "Snowflake": "Latitude",
+            "Salesforce": "OCE__GeoLocation__Latitude__s"
+          },
+          {
+            "Snowflake": "Longitude",
+            "Salesforce": "OCE__GeoLocation__Longitude__s"
+          }
+        ]
+      }
+    ],
+    "JobType": "TestPush"
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "datasync-push",
+        "query": "skip",
+        "sfQuery": "select Name, OCE__Brick__c, OCE__CountryCode__c, OCE__GeoLocation__Latitude__s, OCE__GeoLocation__Longitude__s from OCE__Address__c where Id = 'ADDR-{{TestUniqueIntegrationId}}'",
+        "exp_result": "[{}]"
+      }
+    ]
+  }
+}

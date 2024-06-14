@@ -1,0 +1,25 @@
+{
+  "Bulkload": {
+    "S3Path": "autotestdata/OMR-19132/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "PicklistValidate": true,
+    "Files": [
+      {
+        "file": "UpdateToInvalidAccountType.csv",
+        "table": "OMAccount"
+      }
+    ]
+  },
+
+  "Errors": [
+    {
+      "table": "OMAccount",
+      "file": "autotestdata/OMR-19132/UpdateToInvalidAccountType.csv",
+      "error": "Record ACCT-19132-INV failed. Code (ZZZ) is not valid for column (AccountType).",
+      "lineNumber": 2
+    }
+  ]
+}

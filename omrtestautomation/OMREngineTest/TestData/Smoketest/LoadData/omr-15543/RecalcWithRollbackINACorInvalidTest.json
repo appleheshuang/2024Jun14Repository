@@ -1,0 +1,35 @@
+{
+	"Tests": {
+		"MergeResults": [
+			{
+				"testname": "check_recalc_notification",
+				"query": "select \"SOMRegionId\", \"PercentageChange\", \"ErrorMessage\" from static.\"OMRecalcNotification\" where \"SOMRegionId\" in ('ZW','ZM','ZR') order by \"LastModifiedDate\" desc, \"SOMRegionId\" asc limit 3",
+				"exp_result": "[{SOMRegionId:ZM,PercentageChange:50.00,ErrorMessage:Error - this region has experienced greater than expected change due to the nightly recalc. To protect against unexpected changes the Nightly Recalc has been cancelled and these changes are not processed.},{SOMRegionId:ZR,PercentageChange:25.00,ErrorMessage:null},{SOMRegionId:ZW,PercentageChange:50.00,ErrorMessage:Error - this region has experienced greater than expected change due to the nightly recalc. To protect against unexpected changes the Nightly Recalc has been cancelled and these changes are not processed.}]"
+			},
+			{
+				//5 Accounts unchanged by recalc, 2 rolled back from the ZM and ZW rollback (1 each). 5 + 1 + 1 = 7 accounts still with their original rule and one account endDated
+				"testname": "check_unchanged_OMAccountTerritory",
+				"query": "select count(*) \"count\" from output.\"OMAccountTerritory\" where \"OMAccountId\" in ('OMR-15543-1','OMR-15543-2','OMR-15543-3','OMR-15543-4','OMR-15543-5','OMR-15543-6','OMR-15543-7','OMR-15543-8') and \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}' and \"Reason\" = '{{ScenarioRule.Name[0]}}|{{ScenarioRule.SOMRuleId__c[0]}}' and \"EndDate\" = '3999-12-31'",
+				"exp_result": "[{count:7}]"
+			},
+			{
+				//5 Accounts unchanged by recalc, 2 rolled back from the ZM and ZW rollback (1 each). 5 + 1 + 1 = 7 accounts still with their original rule and one account endDated
+				"testname": "check_unchanged_OMPublish",
+				"query": "select count(*) \"count\" from output.\"OMPublish\" where \"OMAccountId\" in ('OMR-15543-1','OMR-15543-2','OMR-15543-3','OMR-15543-4','OMR-15543-5','OMR-15543-6','OMR-15543-7','OMR-15543-8') and \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}' and \"Reason\" = '{{ScenarioRule.Name[0]}}|{{ScenarioRule.SOMRuleId__c[0]}}' and \"EndDate\" = '3999-12-31'",
+				"exp_result": "[{count:7}]"
+			},
+			{
+				//1 account changed by the recalc and not rolled back. Hence has been endDated (i.e. EndDate is no longer 3999-12-31)
+				"testname": "check_changes_OMAccountTerritory",
+				"query": "select \"OMAccountId\" from output.\"OMAccountTerritory\" where \"OMAccountId\" in ('OMR-15543-1','OMR-15543-2','OMR-15543-3','OMR-15543-4','OMR-15543-5','OMR-15543-6','OMR-15543-7','OMR-15543-8') and \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}' and \"Reason\" = '{{ScenarioRule.Name[0]}}|{{ScenarioRule.SOMRuleId__c[0]}}' and \"EndDate\" != '3999-12-31'",
+				"exp_result": "[{OMAccountId:OMR-15543-8}]"
+			},
+			{
+				//1 account changed by the recalc and not rolled back. Hence has been endDated (i.e. EndDate is no longer 3999-12-31)
+				"testname": "check_changes_OMPublish",
+				"query": "select \"OMAccountId\" from output.\"OMPublish\" where \"OMAccountId\" in ('OMR-15543-1','OMR-15543-2','OMR-15543-3','OMR-15543-4','OMR-15543-5','OMR-15543-6','OMR-15543-7','OMR-15543-8') and \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}' and \"Reason\" = '{{ScenarioRule.Name[0]}}|{{ScenarioRule.SOMRuleId__c[0]}}' and \"EndDate\" != '3999-12-31'",
+				"exp_result": "[{OMAccountId:OMR-15543-8}]"
+			}
+		]
+	}
+}

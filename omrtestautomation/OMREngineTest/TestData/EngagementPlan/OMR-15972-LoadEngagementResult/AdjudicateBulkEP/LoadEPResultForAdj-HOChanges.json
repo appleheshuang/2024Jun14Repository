@@ -1,0 +1,81 @@
+{
+	"BaseData": {
+		"EffectiveDate": "3025-03-01",
+		"EndDate": "3025-10-31",
+		"som_region_id": "US",
+		"hoedit_affiliated_accountUId": "AFFILIATED-15972",
+		"repedit_affil2_accountUId": "AFFIL2-15972",
+		"hoedit_segA_accountUId": "HOEDITED-15972",
+		"expAtargets": "[{Channel:MEET,Frequency:3},{Channel:EMAIL,Frequency:10}]",
+		"modifiedtargets": "[{\"Channel\":\"MEET\",\"Frequency\":2},{\"Channel\":\"EMAIL\",\"Frequency\":2}]",
+		"expModifiedtargets": "[{Channel:MEET,Frequency:2},{Channel:EMAIL,Frequency:2}]"
+	},
+	"ScenarioChangeRequest": [
+		{
+			"Action__c": "EDIT",
+			"OMAccountId__c": "{{hoedit_affiliated_accountUId}}",
+			"AccountUniqueIntegrationId__c": "{{hoedit_affiliated_accountUId}}",
+			"RefAccountName__c": "Parent of Eng-plan-load-only",
+			"SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+			"OMScenarioEngagementPlanId__c": "{{ScenarioEngagementPlan.Id[0]}}",
+			"SOMEngagementSegmentId__c": "segB-{{TestUniqueIntegrationId}}",
+			"RefSegmentName__c": "SegB",
+			"Targets__c": "{{modifiedtargets}}",
+			"OMScenarioId__c": "{{Scenario.Id}}"
+		},
+		{
+			"Action__c": "EDIT",
+			"OMAccountId__c": "{{repedit_affil2_accountUId}}",
+			"AccountUniqueIntegrationId__c": "{{repedit_affil2_accountUId}}",
+			"RefAccountName__c": "Parent of Eng-plan-load-only",
+			"SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+			"OMScenarioEngagementPlanId__c": "{{ScenarioEngagementPlan.Id[0]}}",
+			"SOMEngagementSegmentId__c": "segB-{{TestUniqueIntegrationId}}",
+			"RefSegmentName__c": "SegB",
+			"Targets__c": "{{modifiedtargets}}",
+			"OMScenarioId__c": "{{Scenario.Id}}"
+		},
+		{
+			"Action__c": "EDIT",
+			"OMAccountId__c": "{{hoedit_segA_accountUId}}",
+			"AccountUniqueIntegrationId__c": "{{hoedit_segA_accountUId}}",
+			"RefAccountName__c": "Exclusion covering the entire eng plan interval",
+			"SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+			"OMScenarioEngagementPlanId__c": "{{ScenarioEngagementPlan.Id[0]}}",
+			"SOMEngagementSegmentId__c": "segB-{{TestUniqueIntegrationId}}",
+			"RefSegmentName__c": "SegB",
+			"Targets__c": "{{modifiedtargets}}",
+			"OMScenarioId__c": "{{Scenario.Id}}"
+		}
+	],
+	"Tests": {
+		"EngagementResults": [
+			{
+				"testname": "EngagementTargets-Added",
+				"type": "Result,Explicit",
+				"exp_territory_uid": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"exp_segment_id": "segB-{{TestUniqueIntegrationId}}",
+				"exp_target": "{{expModifiedtargets}}",
+				"account_uids": "{{repedit_affil2_accountUId}},{{hoedit_affiliated_accountUId}}",
+				"territory_somid": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+				"engplan_somid": "{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}"
+			},
+			{
+				"testname": "17916-EngagementTargets-Edited",
+				"type": "Result,Explicit", 
+				"exp_territory_uid": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"exp_segment_id": "segB-{{TestUniqueIntegrationId}}",
+				"exp_target": "{{expModifiedtargets}}",
+				"account_uids": "{{hoedit_segA_accountUId}}",
+				"territory_somid": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+				"engplan_somid": "{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}"
+			}
+		]
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"Url": "https://prodomreuldevenv.dev.optimizer.iqvia.io/",
+	"EnvRoot": "latest",
+	"TestDataBucket": "guardians-testdata-east1",
+	"AwsRegion": "eu-west-2",
+	"tenantcreator": "master-tenantcreator",
+	"creator_pswd": "8xsTbcsCvHwa2bwvGQ5D1pYytwmURm@!",
+	"master_apikey": "OAGkekRgrF51pPX2goBSb3dJ28NWOmhy1B61Pl6N1",
+	"generic_sfApiKey": "SZLWvZHCeI5sxXLIs2IRb9NRYGoNnV7D8OfKTmps1"
+}

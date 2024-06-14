@@ -1,0 +1,15 @@
+{
+  "RootCauseRequest": {
+    "OMAccountId": "{{Account.Id[2]}}",
+    "SOMTerritoryId": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+    "EffectiveDate": "{{EngEffectiveDate}}T00:00:00",
+    "EndDate": "{{EngEndDate}}T00:00:00"
+  },
+  "RootCauseResponse": {
+    "omAccountId": "{{Account.Id[2]}}",
+    "somTerritoryId": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+    "effectiveDate": "{{EngEffectiveDate}}T00:00:00",
+    "endDate": "{{EngEndDate}}T00:00:00",
+    "rules": []
+  }
+}

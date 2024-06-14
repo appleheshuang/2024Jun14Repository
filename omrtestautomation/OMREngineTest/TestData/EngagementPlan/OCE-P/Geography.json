@@ -1,0 +1,14 @@
+﻿{
+	"Geography": [
+		{
+			"Code__c": "{{TestUniqueIntegrationId}}",
+			"Type__c": "GEO1",
+			"EffectiveDate__c": "2020-01-01",
+			"EndDate__c": "3999-12-31",
+			"Status__c": "ACTV",
+			"UniqueIntegrationId__c": "AUTO-{{TestUniqueIntegrationId}}",
+			"Country__c": "US",
+			"OMRegionId__c": "US"
+		}
+	]
+}

@@ -1,0 +1,40 @@
+﻿{
+	"Product": [
+		{
+			"Name": "Add - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "Add-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV",
+			"SOMProductId__c": "Add-{{TestUniqueIntegrationID}}"
+		},
+		{
+			"Name": "Delete - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "Delete-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV",
+			"SOMProductId__c": "Delete-{{TestUniqueIntegrationID}}"
+		},
+		{
+			"Name": "Move - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "Move-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV",
+			"SOMProductId__c": "Move-{{TestUniqueIntegrationID}}"
+		}
+	],
+	"Tests": {
+		"MergeResults": [
+			{
+				"testname": "APRProducts",
+				"query": "select \"UniqueIntegrationId\",\"Status\" from static.\"OMProduct\" where \"UniqueIntegrationId\" in ('Add-{{TestUniqueIntegrationId}}','Delete-{{TestUniqueIntegrationId}}','Move-{{TestUniqueIntegrationId}}') order by \"UniqueIntegrationId\"",
+				"exp_result": "[{UniqueIntegrationId:Add-{{TestUniqueIntegrationId}},Status:ACTV},{UniqueIntegrationId:Delete-{{TestUniqueIntegrationId}},Status:ACTV},{UniqueIntegrationId:Move-{{TestUniqueIntegrationId}},Status:ACTV}]"
+			}
+		]
+	}
+}

@@ -1,0 +1,94 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "REG01",
+    "accountUId": "ACCT01",
+    "EffectiveDate": "{{today+1}}",
+    "EndDate": "{{today+10}}"
+  },
+
+  "Scenario": {
+    "Description": "Delete Move Account Product Explicit Test",
+    "name": "Delete Move Account Product Explicit Test",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "APR-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioAccountProductExplicit": [
+    // Delete Action
+    {
+      "Action__c": "DEL",
+      "OMAccountId__c": "{{accountUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "SOMProductId__c": "Delete-{{TestUniqueIntegrationID}}",
+      "ProductUniqueIntegrationId__c": "Delete-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMAccountProductExplicitId__c": "{{ScenarioAccountProductExplicit.SOMAccountProductExplicitId__c[1]}}"
+
+    },
+    // Move- Past Expiry
+    {
+      "Action__c": "PEXP",
+      "OMAccountId__c": "{{accountUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "SOMProductId__c": "Add-{{TestUniqueIntegrationID}}",
+      "ProductUniqueIntegrationId__c": "Add-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMAccountProductExplicitId__c": "{{ScenarioAccountProductExplicit.SOMAccountProductExplicitId__c[0]}}"
+    },
+    // Move- Add
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "ProductUniqueIntegrationId__c": "Move-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}",
+      "UniqueIntegrationId__c": "ADDMOVEEXPL-{{TestUniqueIntegrationID}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Account Product Explicit Delete",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductExplicit\" where \"OMAccountId\"='{{accountUId}}' and \"SOMProductId\" ='Delete-{{TestUniqueIntegrationID}}'  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUId}},SOMProductId:Delete-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{Scenario.EndDate__c[0]}},Status:INAC}]",
+        "odataQuery": "/OMAccountProductExplicit?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate,Status&$filter=OMAccountId eq '{{accountUId}}' and SOMProductId eq 'Delete-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      },
+      {
+        "testname": "Account Product Restriciton Delete",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountProductRestriction\" where \"OMAccountId\"='{{accountUId}}' and \"SOMProductId\" ='Delete-{{TestUniqueIntegrationID}}'  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUId}},SOMProductId:Delete-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{dbt_yesterday}}}]",
+        "odataQuery": "/OMAccountProductRestriction?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate&$filter=OMAccountId eq '{{accountUId}}' and SOMProductId eq 'Delete-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      },
+      {
+        "testname": "Account Product Explicit PEXP",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductExplicit\" where \"OMAccountId\"='{{accountUId}}' and \"SOMProductId\" ='Add-{{TestUniqueIntegrationID}}'  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUId}},SOMProductId:Add-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{today}},Status:ACTV}]",
+        "odataQuery": "/OMAccountProductExplicit?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate,Status&$filter=OMAccountId eq '{{accountUId}}' and SOMProductId eq 'Add-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      },
+      {
+        "testname": "Account Product Restriction PEXP",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountProductRestriction\" where \"OMAccountId\"='{{accountUId}}' and \"SOMProductId\" ='Add-{{TestUniqueIntegrationID}}'  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUId}},SOMProductId:Add-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{today}}}]",
+        "odataQuery": "/OMAccountProductRestriction?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate&$filter=OMAccountId eq '{{accountUId}}' and SOMProductId eq 'Add-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      },
+      {
+        "testname": "Account Product Restriction ADD for Move Case",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountProductRestriction\" where \"OMAccountId\"='{{accountUId}}' and \"SOMProductId\" ='Move-{{TestUniqueIntegrationID}}'  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUId}},SOMProductId:Move-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}}}]",
+        "odataQuery": "/OMAccountProductRestriction?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate&$filter=OMAccountId eq '{{accountUId}}' and SOMProductId eq 'Move-{{TestUniqueIntegrationID}}'&$orderBy=SOMProductId asc"
+      }
+    ]
+  }
+}

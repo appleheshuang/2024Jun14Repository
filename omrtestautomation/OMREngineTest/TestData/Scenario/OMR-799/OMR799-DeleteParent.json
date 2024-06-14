@@ -1,0 +1,50 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "FX",
+    "salesforceUID": "ERRORSF",
+    "territoryUID": "ERRORSFT",
+    "EffectiveDate": "{{today}}",
+    "EndDate": "{{today+10}}"
+  },
+
+  "Scenario": {
+    //Add precondition for OMR-799
+    "Description": "Delete Parent for OMR 799",
+    "name": "Delete Parent for OMR 799",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "DELEPRT-{{TestUniqueIntegrationID}}",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "DEL",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMSalesForceId__c": "{{salesforceUID}}{{TestUniqueIntegrationID}}",
+      "name": "{{salesforceUID}}"
+    }
+  ],
+
+  "Tests": {
+    "ValidationErrors": [
+      //OMR-799 - C7644682
+      {
+        "testname": "Sales Force Foreign key validation",
+        "table": "OMSalesForce",
+        "ErrorCode": "ChildExists",
+        "ErrorMessage": "Foreign key violation",
+        "Item1": "\"{{salesforceUID}}\"",
+        "Item2": "[{{salesforceUID}}-{{TestUniqueIntegrationID}}]"
+      }
+    ]
+  }
+}

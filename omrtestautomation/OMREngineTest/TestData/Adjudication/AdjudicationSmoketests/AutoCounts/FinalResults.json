@@ -1,0 +1,39 @@
+{
+  "BaseData": {
+    "R1_terr_acc_cnt_after": "2", // -1 account removed
+    "R1_terr_geo_cnt_after": "1",
+    "R2_terr_acc_cnt_after": "1", // -1 removed by geo remove
+    "R2_terr_geo_cnt_after": "2", // -1 geo removed
+    "R3_terr_acc_cnt_after": "5", // +1 account added, +1 added by geo add
+    "R3_terr_geo_cnt_after": "2"  // +0 geo added is of non-matching type
+  },
+
+  "Tests": {
+    "MetricResult": [
+      {
+        "testname": "AutoCount-R1Territory-FinalResult",
+        "entity": "Territory",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "columns": "AccountCount,GeographyCount",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountCount:{{R1_terr_acc_cnt_after}},GeographyCount:{{R1_terr_geo_cnt_after}}}]"
+      },
+      {
+        "testname": "AutoCount-R2Territory-FinalResult",
+        "entity": "Territory",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "columns": "AccountCount,GeographyCount",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountCount:{{R2_terr_acc_cnt_after}},GeographyCount:{{R2_terr_geo_cnt_after}}}]"
+      },
+      {
+        "testname": "AutoCount-R3Territory-FinalResult",
+        "entity": "Territory",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[2]}}",
+        "entityId": "{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+        "columns": "AccountCount,GeographyCount",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[2]}},AccountCount:{{R3_terr_acc_cnt_after}},GeographyCount:{{R3_terr_geo_cnt_after}}}]"
+      }
+    ]
+  }
+}

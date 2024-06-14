@@ -1,0 +1,12 @@
+Id,AffiliationType,AddressType,From,To,AddressId,Status,UniqueIntegrationId,IsPrimary
+A1-A-BILL-{{TestUniqueIntegrationId}},HARD,Billing,A1-17481-{{TestUniqueIntegrationId}},A1-17481-{{TestUniqueIntegrationId}},A-17481-{{TestUniqueIntegrationId}},ACTV,A1-A-BILL-{{TestUniqueIntegrationId}},TRUE
+A1-B-BILL-{{TestUniqueIntegrationId}},HARD,Billing,A1-17481-{{TestUniqueIntegrationId}},A1-17481-{{TestUniqueIntegrationId}},B-17481-{{TestUniqueIntegrationId}},ACTV,A1-B-BILL-{{TestUniqueIntegrationId}},
+A2-D-RES-{{TestUniqueIntegrationId}},HARD,Residential,A2-17481-{{TestUniqueIntegrationId}},A2-17481-{{TestUniqueIntegrationId}},D-17481-{{TestUniqueIntegrationId}},ACTV,A2-D-RES-{{TestUniqueIntegrationId}},TRUE
+A2-D-BILL-{{TestUniqueIntegrationId}},HARD,Billing,A2-17481-{{TestUniqueIntegrationId}},A2-17481-{{TestUniqueIntegrationId}},D-17481-{{TestUniqueIntegrationId}},ACTV,A2-D-BILL-{{TestUniqueIntegrationId}},
+A2-F-RES-{{TestUniqueIntegrationId}},HARD,Residential,A2-17481-{{TestUniqueIntegrationId}},A2-17481-{{TestUniqueIntegrationId}},F-17481-{{TestUniqueIntegrationId}},ACTV,A2-F-RES-{{TestUniqueIntegrationId}},
+A3-A-RES-{{TestUniqueIntegrationId}},HARD,Residential,A3-17481-{{TestUniqueIntegrationId}},A3-17481-{{TestUniqueIntegrationId}},A-17481-{{TestUniqueIntegrationId}},ACTV,A3-A-RES-{{TestUniqueIntegrationId}},TRUE
+A3-G-RES-{{TestUniqueIntegrationId}},HARD,Residential,A3-17481-{{TestUniqueIntegrationId}},A3-17481-{{TestUniqueIntegrationId}},G-17481-{{TestUniqueIntegrationId}},ACTV,A3-G-RES-{{TestUniqueIntegrationId}},
+A4-E-RES-{{TestUniqueIntegrationId}},HARD,Residential,A4-17481-{{TestUniqueIntegrationId}},A4-17481-{{TestUniqueIntegrationId}},E-17481-{{TestUniqueIntegrationId}},ACTV,A4-E-RES-{{TestUniqueIntegrationId}},TRUE
+A4-E-BILL-{{TestUniqueIntegrationId}},HARD,Billing,A4-17481-{{TestUniqueIntegrationId}},A4-17481-{{TestUniqueIntegrationId}},E-17481-{{TestUniqueIntegrationId}},ACTV,A4-E-BILL-{{TestUniqueIntegrationId}},
+A4-C-RES-{{TestUniqueIntegrationId}},HARD,Residential,A4-17481-{{TestUniqueIntegrationId}},A4-17481-{{TestUniqueIntegrationId}},C-17481-{{TestUniqueIntegrationId}},ACTV,A4-C-RES-{{TestUniqueIntegrationId}},
+A5-F-RES-{{TestUniqueIntegrationId}},HARD,Residential,A5-17481-{{TestUniqueIntegrationId}},A5-17481-{{TestUniqueIntegrationId}},F-17481-{{TestUniqueIntegrationId}},ACTV,A5-F-RES-HOME-{{TestUniqueIntegrationId}},TRUE

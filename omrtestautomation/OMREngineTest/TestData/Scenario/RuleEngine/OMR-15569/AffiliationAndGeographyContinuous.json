@@ -1,0 +1,121 @@
+﻿{
+  "Configs": {},
+
+  "BaseData": {
+    "regionUId": "US",
+    "geographySId": "US-95129",
+    "instUId1": "INST01",
+    "instUId2": "INST02",
+    "mpUId": "MP01",
+    "mpUId2" : "MP02"
+  },
+
+  "Scenario": {
+    "Name": "Affiliation-based Rules",
+    "Description": "OMR-8624 Affiliation-based Rules: C8625304 - with account filtering, C8625307 - with explicits and excusions",
+    "ScenarioStatus__c": "PENDG",
+    "OMRegionId__c": "{{regionUId}}",
+    "EffectiveDate__c": "2021-05-01", // May - Dec
+    "EndDate__c": "2021-12-30"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "Name": "SalesForce {{TestUniqueIntegrationId}}",
+      "Type__c": "INST",
+      "UniqueIntegrationId__c": "SF-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "RegionUniqueIntegrationId__c": "{{regionUId}}",
+      "SOMRegionId__c": "{{regionUId}}",
+      "EffectiveDate__c": "2021-05-01", // May - Dec
+      "EndDate__c": "2021-12-30"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "Territory {{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "T-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{regionUId}}",
+      "Type__c": "TERR",
+      "EffectiveDate__c": "2021-05-01", // May - Dec
+      "EndDate__c": "2021-12-30"
+    }
+  ],
+
+  "ScenarioGeographyTerritory": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "GT-{{TestUniqueIntegrationId}}",
+      "SOMGeographyId__c": "{{geographySId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c}}",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "EffectiveDate__c": "2021-05-01", // May - Jul
+      "EndDate__c": "2021-07-31"
+    }
+  ],
+
+  // C8625304: with account filtering
+  // C8625307: with explicits and excusions
+  "ScenarioRule": [
+    {
+      "Action__c": "ADD",
+      "Name": "Affiliation-based Rule 1 {{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "UniqueIntegrationId__c": "R1-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c}}",
+      "RuleData__c": "{\"geography\":true,\"explicit\":true,\"filter\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"MP\"},\"affiliation\":{\"direction\":\"up\",\"restricted\":false,\"recursive\":true,\"filter\":null,\"account\":{\"geography\":true,\"filter\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Institution\"}}},\"hierarchy\":\"\"}",
+      "RuleScope__c": "ALGN",
+      "EffectiveDate__c": "2021-05-01", // May - Dec
+      "EndDate__c": "2021-12-30"
+    }
+  ],
+
+  "ScenarioAccountExplicit": [
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{mpUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c}}",
+      "UniqueIntegrationId__c": "{{mpUId}}-EXPL-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "2021-08-01", // Nov - Dec
+      "EndDate__c": "2021-12-30"
+    }
+  ],
+
+  "ScenarioAccountExclusion": [
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{mpUId2}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c}}",
+      "UniqueIntegrationId__c": "{{mpUId2}}-EXCL-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "2021-07-01", // Sep
+      "EndDate__c": "2021-09-30"
+    }
+  ],
+
+  //INST02 is aligned by the geography part the rule only. INST01 is aligned by both the explicit and rule. 
+  //MP01 is aligned by the explicit affiliation and also the geography with a full overlap
+  "Tests": {
+    "AlignmentResults": [
+      {
+        "testname": "Affiliation-based alignment",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c}},AccountUID:INST01,EffectiveDate:2021-05-01,EndDate:2021-12-30,Source:DSHR,Reason:{{ScenarioRule.Name[0]}}|{{ScenarioRule.SOMRuleId__c[0]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c}},AccountUID:INST02,EffectiveDate:2021-05-01,EndDate:2021-12-30,Source:DSHR,Reason:{{ScenarioRule.Name[0]}}|{{ScenarioRule.SOMRuleId__c[0]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c}},AccountUID:MP01,EffectiveDate:2021-05-01,EndDate:2021-12-30,Source:DSHR;EXPL,Reason:{{ScenarioRule.Name[0]}}|{{ScenarioRule.SOMRuleId__c[0]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c}},AccountUID:MP02,EffectiveDate:2021-05-01,EndDate:2021-06-30,Source:DSHR,Reason:{{ScenarioRule.Name[0]}}|{{ScenarioRule.SOMRuleId__c[0]}}}]",
+        "account_uids": "{{instUId1}},{{instUId2}},{{mpUId}},{{mpUId2}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c}}"
+      }
+    ]
+  }
+}

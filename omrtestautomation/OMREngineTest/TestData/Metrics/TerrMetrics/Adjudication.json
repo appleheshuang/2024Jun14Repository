@@ -1,0 +1,106 @@
+﻿{
+  "BaseData": {
+    "som_region_id": "IE",
+    "TA_ProductCount_Total": "5.000",
+    "TA_ProductCount_InSF": "2.000",
+    "TB_ProductCount_Total": "3.000",
+    "TB_ProductCount_InSF": "2.000",
+    "adj_type": "FUTURE"
+  },
+  "Adjudication": {
+    "Id": "",
+    "Name": "",
+    "Type__c": "{{adj_type}}",
+    "ReviewStartDate__c": "{{today}}",
+    "ReviewStartDate1__c": "{{today}}",
+    "ReviewStartDate2__c": "{{today}}",
+    "ReviewEndDate__c": "{{today+20}}",
+    "ReviewEndDate1__c": "{{today+10}}",
+    "ReviewEndDate2__c": "{{today+20}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "AdjudicationStatus__c": "PEND",
+    "UserAssignmentType__c": "SECN",
+    "AdjudicationScope__c": "ALGN",
+    "AdjudicationEffectiveDate__c": "{{Scenario.EffectiveDate}}",
+    "AdjudicationEndDate__c": "{{Scenario.EndDate}}",
+    "RefScenarioEffectiveDate__c": "{{Scenario.EffectiveDate}}",
+    "RefScenarioEndDate__c": "{{Scenario.EndDate}}",
+    "RefScenarioUniqueIntegrationId__c": "{{Scenario.UniqueIntegrationId__c}}",
+    "AutoApplyOnManagerApproval__c": false,
+    "AutoApproveAccountCRsOnSubmit__c": false,
+    "AutoApproveGeographyCRsOnSubmit__c": false
+  },
+  "AdjudicationLevel": [
+    {
+      "Id": "",
+      "TerritoryType__c": "DIST",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "ResponseDays__c": "10.0",
+      "PermittedActions__c": "ADD;DEL;APPRREJ;VIEW",
+      "Role__c": "APPR"
+    },
+    {
+      "Id": "",
+      "TerritoryType__c": "TERR",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "ResponseDays__c": "10.0",
+      "AutomaticAction__c": "REJT",
+      "PermittedActions__c": "ADD;DEL;VIEW",
+      "Role__c": "REQ"
+    }
+  ],
+  "AdjudicationGuardRail": {
+    "Id": "",
+    "OMAdjudicationId__c": "{{Adjudication.Id}}",
+    "TerritoryType__c": "TERR",
+    "MaxAccountPercent__c": "100.0",
+    "MaxGeographyPercent__c": "100.0"
+  },
+  "AdjudicationTerritory": [
+    {
+      "Id": "",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UserAssignmentType__c": "SECN",
+      "Generated__c": false,
+      "RefTerritoryType__c": "TERR"
+    },
+    {
+      "Id": "",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "UserAssignmentType__c": "SECN",
+      "Generated__c": false,
+      "RefTerritoryType__c": "TERR"
+    }
+  ],
+
+  "Tests": {
+    "AdjudicationResult": [
+      {
+        "testname": "InitialTerritoryResults_Total",
+        "entity": "Territory",
+        "adjudicationId": "{{Adjudication.Id}}",
+        "entityUId": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}},{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "columns": "Metric03Before,GeographyCountBefore",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Metric03Before:{{TA_ProductCount_Total}},GeographyCountBefore:1},{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},Metric03Before:{{TB_ProductCount_Total}},GeographyCountBefore:0}]"
+      },
+      {
+        "testname": "InitialTerritoryResults_InSF",
+        "entity": "Territory",
+        "adjudicationId": "{{Adjudication.Id}}",
+        "entityUId": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}},{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "columns": "Metric03Before,GeographyCountBefore",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Metric03Before:{{TA_ProductCount_InSF}},GeographyCountBefore:1},{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},Metric03Before:{{TB_ProductCount_InSF}},GeographyCountBefore:0}]"
+      }
+    ]
+  }
+}

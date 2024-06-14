@@ -1,0 +1,22 @@
+{
+  "Bulkload": {
+    "S3AccessKey": "",
+    "S3SecretKey": "",
+    "S3BucketName": "guardians-testdata-east1",
+    "S3Path": "autotestdata/NewAccount5757/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMAccount5757.csv",
+        "table": "OMAccount"
+      },
+      {
+        "file": "OMAffiliation5757.csv",
+        "table": "OMAffiliation"
+      }
+    ]
+  }
+}

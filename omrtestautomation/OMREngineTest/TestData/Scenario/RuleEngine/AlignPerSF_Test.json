@@ -1,0 +1,86 @@
+{
+  "Configs": {},
+
+  "BaseData": {
+    "regionUId": "FX",
+    "geographySId": "GEO01",
+    "accountUId": "ACCT05",
+    "accountUId2": "PrAccTerrExplicit-2",
+    "productUId": "Product-OMR-15271-2"
+  },
+
+  "Scenario": {
+    "Name": "Alignment per SF Hierarchy Test",
+    "Description": "Account Alignment Rules: C7688660 - Create/Add alignment, C7688661 - Remove alignment",
+    "EffectiveDate__c": "2021-03-01",
+    "EndDate__c": "2021-03-31",
+    "ScenarioStatus__c": "PENDG",
+    "OMRegionId__c": "{{regionUId}}",
+    "UniqueIntegrationId__c": "RUN{{TestUniqueIntegrationId}}"
+  },
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD", // A <-- T3 (Adds T3 to rule scope)
+      "UniqueIntegrationId__c": "T3-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "SOMRegionId__c": "{{regionUId}}",
+      "Name": "T3 {{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "EDIT", // A <-- T2 (Adds T2 to rule scope)
+      "UniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "Name": "{{ScenarioTerritory.Name[1]}}",
+      "SOMRegionId__c": "{{regionUId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "EXPR", // End T1 (Ends alignment)
+      "UniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "Cascade__c": "true"
+    }
+  ],
+
+  "ScenarioGeographyTerritory": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "GT3-{{TestUniqueIntegrationId}}",
+      "SOMGeographyId__c": "{{geographySId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}", // T3
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      // check  OMProductAccTerrExplicit EndDated after Territory cascade EndDate
+      {
+        "testname": "OMProductAccTerrExplicit EndDated after Territory cascade EndDate",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"SOMTerritoryId\",\"UniqueIntegrationId\",\"Status\",\"EffectiveDate\",\"EndDate\",\"SOMCreatedById\",\"LastScenario\"  from {{schema}}.\"OMProductAccTerrExplicit\" where \"SOMProductId\"='{{productUId}}' AND \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c}}' AND \"OMAccountId\"='{{accountUId2}}'",
+        "exp_result": "[{OMAccountId:{{accountUId2}},SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},UniqueIntegrationId:OMPrAccTerrExpl-{{TestUniqueIntegrationID}}-1,Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c[1]}},SOMCreatedById:{{SFUSER_ID}},LastScenario:{{Scenario.Id[1]}}|{{Scenario.Name[1]}}}]"
+      },
+      // check  OMProductAccTerrExclusion EndDated after Territory cascade EndDate
+      {
+        "testname": "OMProductAccTerrExclusion EndDated after Territory cascade EndDate",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"SOMTerritoryId\",\"UniqueIntegrationId\",\"Status\",\"EffectiveDate\",\"EndDate\",\"SOMCreatedById\",\"LastScenario\"  from {{schema}}.\"OMProductAccTerrExclusion\" where \"SOMProductId\"='{{productUId}}' AND \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c}}' AND \"OMAccountId\"='{{accountUId2}}'",
+        "exp_result": "[{OMAccountId:{{accountUId2}},SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},UniqueIntegrationId:OMPrAccTerrExcl-{{TestUniqueIntegrationID}}-1,Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c[1]}},SOMCreatedById:{{SFUSER_ID}},LastScenario:{{Scenario.Id[1]}}|{{Scenario.Name[1]}}}]"
+      }
+    ],
+    "AlignmentResults": [
+      {
+        "testname": "Align per SF Hierarchy 2", // T1 ends, T2 starts, T3 starts
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{accountUId}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{Scenario.EndDate__c[1]}},Source:DSHR,Reason:{{ScenarioRule.Name}}|{{ScenarioRule.SOMRuleId__c}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountUID:{{accountUId}},EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[0]}},Source:DSHR,Reason:{{ScenarioRule.Name}}|{{ScenarioRule.SOMRuleId__c}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[2]}},AccountUID:{{accountUId}},EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}},Source:DSHR,Reason:{{ScenarioRule.Name}}|{{ScenarioRule.SOMRuleId__c}}}]",
+        "account_uids": "{{accountUId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}},{{ScenarioTerritory.UniqueIntegrationId__c[1]}},{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}},{{ScenarioTerritory.SOMTerritoryId__c[1]}},{{ScenarioTerritory.SOMTerritoryId__c[2]}}"
+      }
+    ]
+  }
+}

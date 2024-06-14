@@ -1,0 +1,36 @@
+{
+  "BaseData": {
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "CallMsgAllFields-New",
+        "query": "select \"Id\",\"OMCallId\",\"OMAccountId\",\"OMCallDetailId\",\"SOMProductId\",\"OMProductMessageId\",\"Reaction\",\"UniqueIntegrationId\",\"Status\",to_date(\"CreatedDate\") as \"CreatedDate\",\"CreatedById\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\",\"LastModifiedById\" from static.\"OMCallMessage\" where \"Id\" like 'CallMsg{{TestUniqueIntegrationID}}AllFields%'",
+        "exp_result": "[{Id:CallMsg{{TestUniqueIntegrationID}}AllFields,OMCallId:CallId{{TestUniqueIntegrationID}},OMAccountId:Account_{{TestUniqueIntegrationID}}_WithValidBU,OMCallDetailId:a2J3t000002GHGDEA4,SOMProductId:a4v3t0000003mavAAA,OMProductMessageId:{{TestUniqueIntegrationID}}AllFields,Reaction:Positive,UniqueIntegrationId:{{TestUniqueIntegrationID}}AllFields,Status:ACTV,CreatedDate:{{dbt_today}},CreatedById:0051N000005pIXVQA2,LastModifiedDate:{{dbt_today}},LastModifiedById:Automation}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "CallMsgMandatoryFields-New",
+        "query": "select \"Id\",\"OMCallId\",\"OMAccountId\",\"OMCallDetailId\",\"SOMProductId\",\"OMProductMessageId\",\"Reaction\",\"UniqueIntegrationId\",\"Status\",to_date(\"CreatedDate\") as \"CreatedDate\",\"CreatedById\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\",\"LastModifiedById\" from static.\"OMCallMessage\" where \"Id\" like 'CallMsg{{TestUniqueIntegrationID}}MandatoryFields%'",
+        "exp_result": "[{Id:CallMsg{{TestUniqueIntegrationID}}MandatoryFields,OMCallId:CallId{{TestUniqueIntegrationID}},OMAccountId:Account_{{TestUniqueIntegrationID}}_WithValidBU,OMCallDetailId:null,SOMProductId:null,OMProductMessageId:null,Reaction:null,UniqueIntegrationId:null,Status:ACTV,CreatedDate:{{dbt_today}},CreatedById:null,LastModifiedDate:{{dbt_today}},LastModifiedById:null}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "CallMsgInvalid-New",
+        "query": "select count(*)  from static.\"OMCallMessage\" where \"Id\" in ('CallMsg{{TestUniqueIntegrationID}}NoCallID','CallMsg{{TestUniqueIntegrationID}}Past','CallMsg{{TestUniqueIntegrationID}}OtherCRM','CallMsg{{TestUniqueIntegrationID}}OtherBU','CallMsg{{TestUniqueIntegrationID}}NOBU')",
+        "exp_result": "[{COUNT(*):0}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "CallMsgValid-New",
+        "query": "select count(*)  from static.\"OMCallMessage\" where \"Id\" like ('%{{TestUniqueIntegrationID}}%')",
+        "exp_result": "[{COUNT(*):2}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      }
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "Bulkload": {
+    "S3AccessKey": "",
+    "S3SecretKey": "",
+    "S3BucketName": "",
+    "S3Path": "autotestdata/OMR-13631/",
+    "FileFormat": "CSV",
+    "Rollback": false,
+    "ValidateOnly": false,
+    "ReplaceExistingData": false,
+    "PicklistValidate": false,
+    "Files": [
+      {
+        "file": "OMR-13631_C10414335_OMUser_2-Update.csv",
+        "table": "OMUser"
+      }
+    ]
+  },
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "C10414335 - Parent record update – active record – child records active – update effective/end dates: valid -> invalid -- OMUser - Update",
+        "query": "SELECT creg.\"SOMUserId\", creg.\"UniqueIntegrationId\", creg.\"Status\", creg.\"EffectiveDate\", creg.\"EndDate\" FROM STATIC.\"OMUser\" creg WHERE creg.\"UniqueIntegrationId\" IN ('UID_OMR-13631_C10414335_01--{{TestUniqueIntegrationId}}') ORDER BY creg.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMUserId:SOMUserId_OMR-13631_C10414335_01--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414335_01--{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:2020-01-01,EndDate:3999-12-31}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "C10414335 - Parent record update – active record – child records active – update effective/end dates: valid -> invalid -- OMFieldTitle - Update",
+        "query": "SELECT creg.\"SOMFieldTitleId\", creg.\"UniqueIntegrationId\", creg.\"Status\" FROM STATIC.\"OMFieldTitle\" creg WHERE creg.\"UniqueIntegrationId\" IN ('UID_OMR-13631_C10414335_01--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414335_02--{{TestUniqueIntegrationId}}') ORDER BY creg.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMFieldTitleId:SOMFieldTitleId_OMR-13631_C10414335_01,UniqueIntegrationId:UID_OMR-13631_C10414335_01--{{TestUniqueIntegrationId}},Status:ACTV},{SOMFieldTitleId:SOMFieldTitleId_OMR-13631_C10414335_02,UniqueIntegrationId:UID_OMR-13631_C10414335_02--{{TestUniqueIntegrationId}},Status:ACTV}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "C10414335 - Parent record update – active record – child records active – update effective/end dates: valid -> invalid -- OMUserTitle - Update",
+        "query": "SELECT creg.\"SOMUserTitleId\", creg.\"SOMUserId\", creg.\"SOMFieldTitleId\", creg.\"UniqueIntegrationId\", creg.\"Status\", creg.\"EffectiveDate\", creg.\"EndDate\" FROM STATIC.\"OMUserTitle\" creg WHERE creg.\"UniqueIntegrationId\" IN ('UID_OMR-13631_C10414335_01--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414335_02--{{TestUniqueIntegrationId}}') ORDER BY creg.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMUserTitleId:SOMUserTitleId_OMR-13631_C10414335_01--{{TestUniqueIntegrationId}},SOMUserId:SOMUserId_OMR-13631_C10414335_01--{{TestUniqueIntegrationId}},SOMFieldTitleId:SOMFieldTitleId_OMR-13631_C10414335_01,UniqueIntegrationId:UID_OMR-13631_C10414335_01--{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:2020-01-01,EndDate:2999-12-31},{SOMUserTitleId:SOMUserTitleId_OMR-13631_C10414335_02--{{TestUniqueIntegrationId}},SOMUserId:SOMUserId_OMR-13631_C10414335_01--{{TestUniqueIntegrationId}},SOMFieldTitleId:SOMFieldTitleId_OMR-13631_C10414335_02,UniqueIntegrationId:UID_OMR-13631_C10414335_02--{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:3000-01-01,EndDate:3999-12-31}]",
+        "sfQuery": null
+      }
+    ]
+  },
+
+  "Errors": [
+    {
+      "table": "OMUser",
+      "file": "autotestdata/OMR-13631/{{TestUniqueIntegrationId}}/OMR-13631_C10414335_OMUser_2-Update.csv",
+      "error": "Parent/Child Key not in date range for SOMUserId: SOMUserId_OMR-13631_C10414335_01--{{TestUniqueIntegrationId}} on table: OMUserTitle",
+      "lineNumber": 2
+    }
+  ]
+}

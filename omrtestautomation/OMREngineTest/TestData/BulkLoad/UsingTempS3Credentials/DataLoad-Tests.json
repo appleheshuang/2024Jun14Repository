@@ -1,0 +1,38 @@
+{
+  "BaseData": {
+    "A1_UK_UId": "A1-17481-{{TestUniqueIntegrationId}}",
+    "A2_UK_UId": "A2-17481-{{TestUniqueIntegrationId}}",
+    "A3_UK_UId": "A3-17481-{{TestUniqueIntegrationId}}",
+    "A4_US_UId": "A4-17481-{{TestUniqueIntegrationId}}",
+    "A5_PN_UId": "A5-17481-{{TestUniqueIntegrationId}}",
+    "G1_Post_UId": "G1-POST1-17481-{{TestUniqueIntegrationId}}",
+    "G2_Post_UId": "G2-POST2-17481-{{TestUniqueIntegrationId}}",
+    "G3_Brick_UId": "G3-BRICK3-17481-{{TestUniqueIntegrationId}}",
+    "G4_Brick_UId": "G4-BRICK4-17481-{{TestUniqueIntegrationId}}",
+    "G5_State_UId": "G5-STATE5-17481-{{TestUniqueIntegrationId}}",
+    "G6_State_UId": "G6-STATE6-17481-{{TestUniqueIntegrationId}}",
+    "G7_Post_UId": "G7-POST7-17481-{{TestUniqueIntegrationId}}",
+    "G8_Brick_UId": "G8-BRICK8-17481-{{TestUniqueIntegrationId}}",
+    "G9_State_UId": "G9-STATE9-17481-{{TestUniqueIntegrationId}}"
+  },
+  "Tests": 
+  {
+    "MergeResults": [
+      {
+        "testname": "17481_AccountAddress_Precheck",
+        "query": "select distinct a.\"Name\", \"AddressType\", \"IsPrimary\",\"ZipCode\",\"Brick1\",\"State\" from static.\"OMAccount\" a left outer join static.\"OMAffiliation\" aff on aff.\"From\" = a.\"Id\" and aff.\"From\" = aff.\"To\" left outer join static.\"OMAccountAddress\" add on add.\"Id\" = aff.\"AddressId\" where a.\"UniqueIntegrationId\" like 'A%-17481-{{TestUniqueIntegrationId}}' order by a.\"Name\",\"IsPrimary\",\"ZipCode\",\"Brick1\",\"State\",\"AddressType\"",
+        "exp_result": "[{Name:A1-17481,AddressType:Billing,IsPrimary:true,ZipCode:17481-{{TestUniqueIntegrationId}}-01,Brick1:17481-{{TestUniqueIntegrationId}}-03,State:17481-{{TestUniqueIntegrationId}}-05},{Name:A1-17481,AddressType:Billing,IsPrimary:null,ZipCode:17481-{{TestUniqueIntegrationId}}-01,Brick1:17481-{{TestUniqueIntegrationId}}-03,State:17481-{{TestUniqueIntegrationId}}-06},{Name:A2-17481,AddressType:Residential,IsPrimary:true,ZipCode:17481-{{TestUniqueIntegrationId}}-07,Brick1:17481-{{TestUniqueIntegrationId}}-03,State:17481-{{TestUniqueIntegrationId}}-09},{Name:A2-17481,AddressType:Billing,IsPrimary:null,ZipCode:17481-{{TestUniqueIntegrationId}}-07,Brick1:17481-{{TestUniqueIntegrationId}}-03,State:17481-{{TestUniqueIntegrationId}}-09},{Name:A2-17481,AddressType:Residential,IsPrimary:null,ZipCode:17481-{{TestUniqueIntegrationId}}-07,Brick1:17481-{{TestUniqueIntegrationId}}-04,State:17481-{{TestUniqueIntegrationId}}-09},{Name:A3-17481,AddressType:Residential,IsPrimary:true,ZipCode:17481-{{TestUniqueIntegrationId}}-01,Brick1:17481-{{TestUniqueIntegrationId}}-03,State:17481-{{TestUniqueIntegrationId}}-05},{Name:A3-17481,AddressType:Residential,IsPrimary:null,ZipCode:17481-{{TestUniqueIntegrationId}}-02,Brick1:17481-{{TestUniqueIntegrationId}}-03,State:17481-{{TestUniqueIntegrationId}}-05},{Name:A4-17481,AddressType:Residential,IsPrimary:true,ZipCode:17481-{{TestUniqueIntegrationId}}-02,Brick1:17481-{{TestUniqueIntegrationId}}-04,State:17481-{{TestUniqueIntegrationId}}-09},{Name:A4-17481,AddressType:Residential,IsPrimary:null,ZipCode:17481-{{TestUniqueIntegrationId}}-02,Brick1:17481-{{TestUniqueIntegrationId}}-03,State:17481-{{TestUniqueIntegrationId}}-09},{Name:A4-17481,AddressType:Billing,IsPrimary:null,ZipCode:17481-{{TestUniqueIntegrationId}}-02,Brick1:17481-{{TestUniqueIntegrationId}}-04,State:17481-{{TestUniqueIntegrationId}}-09},{Name:A5-17481,AddressType:Residential,IsPrimary:true,ZipCode:17481-{{TestUniqueIntegrationId}}-07,Brick1:17481-{{TestUniqueIntegrationId}}-04,State:17481-{{TestUniqueIntegrationId}}-09}]"
+      },
+      {
+        "testname": "17481_Address_Precheck",
+        "query": "select \"UniqueIntegrationId\" from STATIC.\"OMAccountAddress\" where \"UniqueIntegrationId\" like 'BSZ-%-{{TestUniqueIntegrationId}}' order by \"UniqueIntegrationId\"",
+        "exp_result": "[{UniqueIntegrationId:BSZ-351-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:BSZ-352-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:BSZ-361-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:BSZ-392-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:BSZ-397-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:BSZ-492-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:BSZ-497-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:BSZ-897-{{TestUniqueIntegrationId}}}]"
+      },
+      {
+        "testname": "17481_Geography_Precheck",
+        "query": "select \"UniqueIntegrationId\" from STATIC.\"OMGeography\" where \"UniqueIntegrationId\" like 'G%-17481-{{TestUniqueIntegrationId}}' order by \"UniqueIntegrationId\"",
+        "exp_result": "[{UniqueIntegrationId:{{G1_Post_UId}}},{UniqueIntegrationId:{{G2_Post_UId}}},{UniqueIntegrationId:{{G3_Brick_UId}}},{UniqueIntegrationId:{{G4_Brick_UId}}},{UniqueIntegrationId:{{G5_State_UId}}},{UniqueIntegrationId:{{G6_State_UId}}},{UniqueIntegrationId:{{G7_Post_UId}}},{UniqueIntegrationId:{{G8_Brick_UId}}},{UniqueIntegrationId:{{G9_State_UId}}}]"
+      }
+    ]
+  }
+}

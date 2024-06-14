@@ -1,0 +1,59 @@
+{
+  "Bulkload": {
+    "S3AccessKey": "",
+    "S3SecretKey": "",
+    "S3BucketName": "",
+    "S3Path": "autotestdata/OMR-13631/",
+    "FileFormat": "CSV",
+    "Rollback": false,
+    "ValidateOnly": false,
+    "ReplaceExistingData": false,
+    "PicklistValidate": false,
+    "Files": [
+      {
+        "file": "OMR-13631_C10414325_OMUser.csv",
+        "table": "OMUser"
+      },
+      {
+        "file": "OMR-13631_C10414325_OMFieldTitle.csv",
+        "table": "OMFieldTitle"
+      },
+      {
+        "file": "OMR-13631_C10414325_OMUserTitle.csv",
+        "table": "OMUserTitle"
+      }
+    ]
+  },
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "C10414325 - Child record load – active records – parent record exists and is active with invalid date range -- OMUser",
+        "query": "SELECT creg.\"SOMUserId\", creg.\"UniqueIntegrationId\", creg.\"Status\", creg.\"EffectiveDate\", creg.\"EndDate\" FROM STATIC.\"OMUser\" creg WHERE creg.\"UniqueIntegrationId\" IN ('UID_OMR-13631_C10414325_01--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414325_02--{{TestUniqueIntegrationId}}') ORDER BY creg.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMUserId:SOMUserId_OMR-13631_C10414325_01--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414325_01--{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:2020-01-01,EndDate:3999-12-31},{SOMUserId:SOMUserId_OMR-13631_C10414325_02--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414325_02--{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:2020-01-01,EndDate:3888-12-31}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "C10414325 - Child record load – active records – parent record exists and is active with invalid date range -- OMFieldTitle",
+        "query": "SELECT creg.\"SOMFieldTitleId\", creg.\"UniqueIntegrationId\", creg.\"Status\" FROM STATIC.\"OMFieldTitle\" creg WHERE creg.\"UniqueIntegrationId\" IN ('UID_OMR-13631_C10414325_01--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414325_02--{{TestUniqueIntegrationId}}') ORDER BY creg.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMFieldTitleId:SOMFieldTitleId_OMR-13631_C10414325_01,UniqueIntegrationId:UID_OMR-13631_C10414325_01--{{TestUniqueIntegrationId}},Status:ACTV},{SOMFieldTitleId:SOMFieldTitleId_OMR-13631_C10414325_02,UniqueIntegrationId:UID_OMR-13631_C10414325_02--{{TestUniqueIntegrationId}},Status:ACTV}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "C10414325 - Child record load – active records – parent record exists and is active with invalid date range -- OMUserTitle",
+        "query": "SELECT creg.\"SOMUserTitleId\", creg.\"SOMUserId\", creg.\"SOMFieldTitleId\", creg.\"UniqueIntegrationId\", creg.\"Status\", creg.\"EffectiveDate\", creg.\"EndDate\" FROM STATIC.\"OMUserTitle\" creg WHERE creg.\"UniqueIntegrationId\" IN ('UID_OMR-13631_C10414325_01--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414325_02--{{TestUniqueIntegrationId}}') ORDER BY creg.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMUserTitleId:SOMUserTitleId_OMR-13631_C10414325_01--{{TestUniqueIntegrationId}},SOMUserId:SOMUserId_OMR-13631_C10414325_01--{{TestUniqueIntegrationId}},SOMFieldTitleId:SOMFieldTitleId_OMR-13631_C10414325_01,UniqueIntegrationId:UID_OMR-13631_C10414325_01--{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:2020-08-01,EndDate:3999-12-31}]",
+        "sfQuery": null
+      }
+    ]
+  },
+
+  "Errors": [
+    {
+      "table": "OMUserTitle",
+      "file": "autotestdata/OMR-13631/{{TestUniqueIntegrationId}}/OMR-13631_C10414325_OMUserTitle.csv",
+      "error": "Parent/Child Key not in date range for SOMUserTitleId: SOMUserTitleId_OMR-13631_C10414325_02--{{TestUniqueIntegrationId}} on table: OMUser",
+      "lineNumber": 3
+    }
+  ]
+}

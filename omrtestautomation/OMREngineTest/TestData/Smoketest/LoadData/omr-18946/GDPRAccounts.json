@@ -1,0 +1,27 @@
+{
+  "Bulkload": {
+    "S3Path": "autotestdata/OMR-18946/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMR-18946-OMAccount.csv",
+        "table": "OMAccount"
+      },
+      {
+        "file": "OMR-18946-OMAccountAddress.csv",
+        "table": "OMAccountAddress"
+      },
+      {
+        "file": "OMR-18946-OMAffiliation.csv",
+        "table": "OMAffiliation"
+      },
+      {
+        "file": "OMR-18946-OMAccountProductFields.csv",
+        "table": "OMAccountProductFields"
+      }
+    ]
+  }
+}

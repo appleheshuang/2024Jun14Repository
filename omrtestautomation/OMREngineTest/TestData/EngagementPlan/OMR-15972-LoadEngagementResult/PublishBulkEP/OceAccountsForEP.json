@@ -1,0 +1,40 @@
+﻿{
+	"Account": [
+		{
+			"FirstName": "NO",
+			"LastName": "RULE-ALL",
+			"OCE__ProfessionalTitle__c": "Medical Professional",
+			"OCE__Status__c": "Active",
+			"OCE__Specialty__c": "Clinical genetics",
+			"OCE__UniqueIntegrationID__c": "NO-RULA-15972P",
+			"OCE__CountryCode__c": "US"
+		},
+		{
+			"FirstName": "EXCLUDE-LEFT",
+			"LastName": "RULE-ALL",
+			"OCE__ProfessionalTitle__c": "Medical Professional",
+			"OCE__Status__c": "Active",
+			"OCE__Specialty__c": "Clinical genetics",
+			"OCE__UniqueIntegrationID__c": "EXCL-RULA-15972P",
+			"OCE__CountryCode__c": "US"
+		},
+		{
+			"FirstName": "NONE",
+			"LastName": "NO-RULE",
+			"OCE__ProfessionalTitle__c": "Medical Professional",
+			"OCE__Status__c": "Active",
+			"OCE__Specialty__c": "Aerospace medicine",
+			"OCE__UniqueIntegrationID__c": "NONE-15972P",
+			"OCE__CountryCode__c": "US"
+		},
+		{
+			"FirstName": "EXPLICIT-RIGHT",
+			"LastName": "NO-RULE",
+			"OCE__ProfessionalTitle__c": "Medical Professional",
+			"OCE__Status__c": "Active",
+			"OCE__Specialty__c": "Aerospace medicine",
+			"OCE__UniqueIntegrationID__c": "EXPR-NO-15972P",
+			"OCE__CountryCode__c": "US"
+		}
+	]
+}

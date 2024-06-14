@@ -1,0 +1,10 @@
+{
+	"CustomValidation": [
+		{
+			"DeveloperName": "CustomValidationCalc",
+			"ErrorCode": "Error",
+			"ValidationType": "POST",
+			"Query": "select 'OMAccountExplicit' \"TableName\", '1' \"PKey\", 'ErrMsg!@#$%^&*()' \"ErrorMessage\", '!@#$%^&*()' \"InstructionId\" from &output.\"OMAccountExplicit\" where \"OMAccountId\" ilike '%45ACCTEXP%'"
+		}
+	]
+} 

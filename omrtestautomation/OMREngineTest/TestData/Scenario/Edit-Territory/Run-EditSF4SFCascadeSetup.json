@@ -1,0 +1,38 @@
+﻿{
+  "Configs": {
+    "loadData": "Smoketest\\LoadData\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "EffectiveDate": "2022-08-01",
+    "EndDate": "2023-01-30",
+    "som_region_id": "BM"
+  },
+
+  "Scenario": {
+    "Description": "OMR-525 - Edit SalesForce several times",
+    "Name": "C7652002",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "S4{{TestUniqueIntegrationID}}"
+  },
+  "ScenarioTerritory": [
+    // C7652002 Edit Terr => SF2 TerrSF2 2021-12-15 => 2022-02-10
+    {
+      "Action__c": "EDIT",
+      "OMScenarioId__c": "{{Scenario.Id[3]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[2]}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[2]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "{{ScenarioTerritory.Name}}",
+      "UniqueIntegrationId__c": "T1-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+Id,Type,AccountType,Name,FirstName,LastName,Status,UniqueIntegrationId,SOMRegionId,CountryCode
+A1-17481-{{TestUniqueIntegrationId}},Other,MP,A1-17481,A1,17481,ACTV,A1-17481-{{TestUniqueIntegrationId}},UK,UK
+A2-17481-{{TestUniqueIntegrationId}},Other,MP,A2-17481,A2,17481,ACTV,A2-17481-{{TestUniqueIntegrationId}},UK,UK
+A3-17481-{{TestUniqueIntegrationId}},Other,MP,A3-17481,A3,17481,ACTV,A3-17481-{{TestUniqueIntegrationId}},UK,UK
+A4-17481-{{TestUniqueIntegrationId}},Other,MP,A4-17481,A4,17481,ACTV,A4-17481-{{TestUniqueIntegrationId}},US,US
+A5-17481-{{TestUniqueIntegrationId}},Other,MP,A5-17481,A5,17481,ACTV,A5-17481-{{TestUniqueIntegrationId}},PN,PN

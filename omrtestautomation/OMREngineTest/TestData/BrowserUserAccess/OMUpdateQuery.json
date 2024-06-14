@@ -1,0 +1,15 @@
+{
+  "BaseData": {
+    "accountId": "ACCT01",
+    "updatedName": "ACCT01"
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "UpdateRecord",
+        "query": "update static.\"OMAccount\" set \"Name\" = '{{updatedName}}' where \"Id\" ='{{accountId}}'",
+        "exp_result": "Error"
+      }
+    ]
+  }
+}

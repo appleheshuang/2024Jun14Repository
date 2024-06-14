@@ -1,0 +1,13 @@
+﻿{
+	"SalesForce": [
+		{
+			"Name": "SF - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "INST",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "SFUID-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV",
+			"SOMSalesForceId__c": "SOMID-{{TestUniqueIntegrationID}}"
+		}
+	]
+}

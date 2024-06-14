@@ -1,0 +1,160 @@
+﻿{
+  "Configs": {
+    "jobparams": "CalculateMaps=false;RuleEngineEnabled=true;FieldTitleValidation=User-Territory"
+  },
+
+  "BaseData": {
+    "som_region_id": "FX", //This region has AccountDataProtectionAction = DEL
+    "som_region_id2": "BM", //This region has AccountDataProtectionAction = MASK
+    "som_region_id3": "GB", //This region has AccountDataProtectionAction = NONE
+    "User1_ActiveAndInFX": "OMR-18947-FX-1-{{TestUniqueIntegrationId}}",
+    "User2_ActiveAndGlobal": "OMR-18947-Global-1-{{TestUniqueIntegrationId}}",
+    "User3_ActiveAndInBM": "OMR-18947-BM-1-{{TestUniqueIntegrationId}}",
+    "User4_ActiveAndInGB": "OMR-18947-GB-1-{{TestUniqueIntegrationId}}",
+    "salesforceUID": "SF_GDPR",
+    "territoryUID": "Terr_GDPR",
+    "SOMFieldTitleIdFX": "OMR-18947-FX-1-FT",
+    "SOMFieldTitleIdBM": "OMR-18947-BM-1-FT",
+    "SOMFieldTitleIdGB": "OMR-18947-GB-1-FT",
+    "TitleDescriptionDEL": "UDPA = DEL OMUserTerritoryTitle.Description {{TestUniqueIntegrationId}}",
+    "TitleDescriptionGlobal": "Global User Territory Title Description {{TestUniqueIntegrationId}}",
+    "TitleDescriptionMASK": "UDPA = MASK OMUserTerritoryTitle.Description {{TestUniqueIntegrationId}}",
+    "TitleDescriptionNONE": "UDPA = NONE OMUserTerritoryTitle.Description {{TestUniqueIntegrationId}}"
+  },
+
+  "Scenario": {
+    "Description": "OMR-18947 GDPR User Assignment and Territory Data Setup",
+    "Name": "OMR-18947 GDPR User Deletion",
+    "OMRegionId__c": "",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "OMR-18947_{{TestUniqueIntegrationID}}",
+    "EffectiveDate__c": "2023-05-01",
+    "EndDate__c": "3999-12-31"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "INST",
+      "Name": "SF_GDPR",
+      "EffectiveDate__c": "2023-05-01",
+      "EndDate__c": "3999-12-31"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "territoryUID-{{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR",
+      "EffectiveDate__c": "2023-05-01",
+      "EndDate__c": "3999-12-31"
+    }
+  ],
+  "ScenarioUserAssignment": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "UA1_{{TestUniqueIntegrationId}}",
+      "AssignmentType__c": "SECN",
+      "ImpactedRegions__c": "{{som_region_id}}",
+      "SOMUserId__c": "{{User1_ActiveAndInFX}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UserUniqueIntegrationId__c": "{{User1_ActiveAndInFX}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[0]}}",
+      "SOMFieldTitleId__c": "{{SOMFieldTitleIdFX}}",
+      "TitleDescription__c": "UDPA = DEL OMUserTerritoryTitle.Description {{TestUniqueIntegrationId}}"
+    },
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "UA2_{{TestUniqueIntegrationId}}",
+      "AssignmentType__c": "SECN",
+      "ImpactedRegions__c": "{{som_region_id2}}",
+      "SOMUserId__c": "{{User2_ActiveAndGlobal}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UserUniqueIntegrationId__c": "{{User2_ActiveAndGlobal}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[0]}}",
+      "SOMFieldTitleId__c": "{{SOMFieldTitleIdFX}}",
+      "TitleDescription__c": "Global User Territory Title Description {{TestUniqueIntegrationId}}"
+    },
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "UA3_{{TestUniqueIntegrationId}}",
+      "AssignmentType__c": "SECN",
+      "ImpactedRegions__c": "{{som_region_id2}}",
+      "SOMUserId__c": "{{User3_ActiveAndInBM}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UserUniqueIntegrationId__c": "{{User3_ActiveAndInBM}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[0]}}",
+      "SOMFieldTitleId__c": "{{SOMFieldTitleIdBM}}",
+      "TitleDescription__c": "UDPA = MASK OMUserTerritoryTitle.Description {{TestUniqueIntegrationId}}"
+    },
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "UA4_{{TestUniqueIntegrationId}}",
+      "AssignmentType__c": "SECN",
+      "ImpactedRegions__c": "{{som_region_id3}}",
+      "SOMUserId__c": "{{User4_ActiveAndInGB}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UserUniqueIntegrationId__c": "{{User4_ActiveAndInGB}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[0]}}",
+      "SOMFieldTitleId__c": "{{SOMFieldTitleIdGB}}",
+      "TitleDescription__c": "UDPA = NONE OMUserTerritoryTitle.Description {{TestUniqueIntegrationId}}"
+    }
+  ],
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "CheckInitialOMSalesForcefor GDPR",
+        "query": "select \"Name\", \"Type\", \"SOMRegionId\", \"UniqueIntegrationId\", \"Status\" from output.\"OMSalesForce\" where \"UniqueIntegrationId\" ilike '%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[{Name:{{salesforceUID}},Type:INST,SOMRegionId:{{som_region_id}},UniqueIntegrationId:{{salesforceUID}}-{{TestUniqueIntegrationID}},Status:ACTV}]"
+      },
+      {
+        "testname": "CheckInitialOMTerritoryforGDPR",
+        "query": "select \"Name\", \"Type\", \"SOMRegionId\", \"UniqueIntegrationId\", \"Status\" from output.\"OMTerritory\" where \"UniqueIntegrationId\" ilike '%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[{Name:{{territoryUID}}-{{TestUniqueIntegrationID}},Type:TERR,SOMRegionId:{{som_region_id}},UniqueIntegrationId:{{territoryUID}}-{{TestUniqueIntegrationID}},Status:ACTV}]"
+      },
+      {
+        "testname": "CheckInitialOMUserAssignmentforGDPR",
+        "query": "select \"SOMTerritoryId\", \"SOMUserId\", \"AssignmentType\", \"UniqueIntegrationId\", \"Status\" from output.\"OMUserAssignment\" where \"UniqueIntegrationId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMUserId:{{User3_ActiveAndInBM}},AssignmentType:SECN,UniqueIntegrationId:UA3_{{TestUniqueIntegrationID}},Status:ACTV},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMUserId:{{User1_ActiveAndInFX}},AssignmentType:SECN,UniqueIntegrationId:UA1_{{TestUniqueIntegrationID}},Status:ACTV},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMUserId:{{User4_ActiveAndInGB}},AssignmentType:SECN,UniqueIntegrationId:UA4_{{TestUniqueIntegrationID}},Status:ACTV},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMUserId:{{User2_ActiveAndGlobal}},AssignmentType:SECN,UniqueIntegrationId:UA2_{{TestUniqueIntegrationID}},Status:ACTV}]"
+      },
+      {
+        "testname": "CheckInitialOMUserTerritoryTitleforGDPR",
+        "query": "select \"SOMTerritoryId\", \"SOMUserId\", \"SOMFieldTitleId\",\"TitleDescription\", \"Status\" from output.\"OMUserTerritoryTitle\" where \"SOMUserId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMUserId:{{User3_ActiveAndInBM}},SOMFieldTitleId:{{SOMFieldTitleIdBM}},TitleDescription:{{TitleDescriptionMASK}},Status:ACTV},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMUserId:{{User1_ActiveAndInFX}},SOMFieldTitleId:{{SOMFieldTitleIdFX}},TitleDescription:{{TitleDescriptionDEL}},Status:ACTV},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMUserId:{{User4_ActiveAndInGB}},SOMFieldTitleId:{{SOMFieldTitleIdGB}},TitleDescription:{{TitleDescriptionNONE}},Status:ACTV},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMUserId:{{User2_ActiveAndGlobal}},SOMFieldTitleId:{{SOMFieldTitleIdFX}},TitleDescription:{{TitleDescriptionGlobal}},Status:ACTV}]"
+      },
+      {
+        "testname": "GDPRCheckInitialOMAuditforOMUserAssignment",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewId\" from static.\"OMAudit\" where \"TableName\" = 'OMUserAssignment' and \"NewId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"NewId\" asc",
+        "exp_result": "[{TableName:OMUserAssignment,ColumnName:SOMUserId,Operation:Add,NewId:{{User3_ActiveAndInBM}}},{TableName:OMUserAssignment,ColumnName:SOMUserId,Operation:Add,NewId:{{User1_ActiveAndInFX}}},{TableName:OMUserAssignment,ColumnName:SOMUserId,Operation:Add,NewId:{{User4_ActiveAndInGB}}},{TableName:OMUserAssignment,ColumnName:SOMUserId,Operation:Add,NewId:{{User2_ActiveAndGlobal}}}]"
+      },
+      {
+        "testname": "GDPRCheckInitialOMAuditforOMUserTerritoryTitle",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserTerritoryTitle' and \"NewValue\" ilike '%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserTerritoryTitle,ColumnName:TitleDescription,Operation:Add,NewValue:{{TitleDescriptionGlobal}}},{TableName:OMUserTerritoryTitle,ColumnName:TitleDescription,Operation:Add,NewValue:{{TitleDescriptionDEL}}},{TableName:OMUserTerritoryTitle,ColumnName:TitleDescription,Operation:Add,NewValue:{{TitleDescriptionMASK}}},{TableName:OMUserTerritoryTitle,ColumnName:TitleDescription,Operation:Add,NewValue:{{TitleDescriptionNONE}}}]"
+      }
+    ]
+  }
+}
+
+

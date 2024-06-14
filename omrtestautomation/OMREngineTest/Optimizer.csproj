@@ -1,0 +1,158 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;xUnit1026;CS8632;CS0649</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;xUnit1026;CS8632;CS0649</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="DevCode\**" />
+    <Compile Remove="EngineTestResults\Performance\**" />
+    <Compile Remove="OutputFiles\DevCodeCsvS\**" />
+    <Compile Remove="TestData\Tenant\**" />
+    <Compile Remove="TestDefinitions\**" />
+    <Compile Remove="Tests\ScenarioAPITests\**" />
+    <Compile Remove="Tests\SnowflakeTest\**" />
+    <Compile Remove="Tests\Tenant\**" />
+    <EmbeddedResource Remove="DevCode\**" />
+    <EmbeddedResource Remove="EngineTestResults\Performance\**" />
+    <EmbeddedResource Remove="OutputFiles\DevCodeCsvS\**" />
+    <EmbeddedResource Remove="TestData\Tenant\**" />
+    <EmbeddedResource Remove="TestDefinitions\**" />
+    <EmbeddedResource Remove="Tests\ScenarioAPITests\**" />
+    <EmbeddedResource Remove="Tests\SnowflakeTest\**" />
+    <EmbeddedResource Remove="Tests\Tenant\**" />
+    <None Remove="DevCode\**" />
+    <None Remove="EngineTestResults\Performance\**" />
+    <None Remove="OutputFiles\DevCodeCsvS\**" />
+    <None Remove="TestData\Tenant\**" />
+    <None Remove="TestDefinitions\**" />
+    <None Remove="Tests\ScenarioAPITests\**" />
+    <None Remove="Tests\SnowflakeTest\**" />
+    <None Remove="Tests\Tenant\**" />
+    <SpecFlowFeatureFiles Remove="TestData\Tenant\**" />
+    <SpecFlowFeatureFiles Remove="Tests\SnowflakeTest\**" />
+    <SpecFlowFeatureFiles Remove="Tests\Tenant\**" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="TestData\Tenant\**" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\SnowflakeTest\**" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\Tenant\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ScenarioUtils\QueryResultDic.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Amazon.Extensions.CognitoAuthentication" Version="1.0.3" />
+    <PackageReference Include="Amazon.Lambda.APIGatewayEvents" Version="1.2.0" />
+    <PackageReference Include="Amazon.Lambda.Core" Version="1.1.0" />
+    <PackageReference Include="AWSSDK.CognitoIdentityProvider" Version="3.3.103" />
+    <PackageReference Include="AWSSDK.Core" Version="3.3.103.58" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.101.72" />
+    <PackageReference Include="AWSSDK.Lambda" Version="3.3.103.25" />
+    <PackageReference Include="AWSSDK.S3" Version="3.3.106" />
+    <PackageReference Include="DeveloperForce.Force" Version="2.1.0" />
+    <PackageReference Include="JsonDiffPatch.Net" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="Moq" Version="4.13.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Serilog" Version="2.9.0" />
+    <PackageReference Include="Snowflake.Data" Version="1.1.0" />
+    <PackageReference Include="SpecFlow" Version="3.9.8" />
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.8" />
+    <PackageReference Include="SpecFlow.xUnit" Version="3.9.8" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="XunitXml.TestLogger" Version="2.1.26" />
+    <ProjectReference Include="..\MainFramework\MainFramework.csproj" />
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="TestData\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="testdata\engagementplan\omr-15972-loadengagementresult\adjudicatebulkep\FinalResults.json" />
+    <None Remove="TestData\Smoketest\LoadData\omr-18947\GDPRUserData.json" />
+    <None Remove="TestData\Smoketest\LoadData\omr-18947\GDPRUserDeletionTests.json" />
+    <None Remove="TestData\Smoketest\LoadData\omr-18947\GDPRUserInitialDataChecks.json" />
+    <None Remove="TestData\Smoketest\LoadData\omr-18947\GDPRUserOMAuditConfig.json" />
+    <None Remove="TestData\Smoketest\LoadData\omr-18947\GDPRUserScenario.json" />
+    <None Remove="TestData\Smoketest\LoadData\omr-18947\GDPRUsersToSF.json" />
+    <None Remove="TestData\Smoketest\LoadData\omr-18947\GDPRUserSubData.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="Tests\Smoketests\Specflow\Features\Engine\GDPR Account Deletion - Copy.feature.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Tests\Smoketests\Specflow\Features\BulkLoad\OpsBulkBucket.feature.cs">
+      <DependentUpon>OpsBulkBucket.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\Smoketests\Specflow\Features\Engine\OptionalDatingScenarioEntities.feature.cs">
+      <DependentUpon>OptionalDatingScenarioEntities.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\Smoketests\Specflow\Features\Engine\Rules.feature.cs">
+      <DependentUpon>RuleEngine.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\Smoketests\Specflow\Features\Engine\Metrics.feature.cs">
+      <DependentUpon>Metrics.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Tests\Smoketests\Specflow\Features\Engine\Scenario.feature.cs">
+      <DependentUpon>Scenario.feature</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <SpecFlowFeatureFiles Update="Tests\Smoketests\Specflow\Features\BulkLoad\OpsBulkBucket.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\Smoketests\Specflow\Features\Engine\8622-ScenarioMergeInclRuleVersionTerrSF.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\Smoketests\Specflow\Features\Engine\GDPR User Deletion.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\Smoketests\Specflow\Features\Engine\OptionalDatingScenarioEntities.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\Smoketests\Specflow\Features\Engine\RuleEngine.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\Smoketests\Specflow\Features\Engine\Metrics.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Tests\Smoketests\Specflow\Features\Engine\Scenario.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+  </ItemGroup>
+
+</Project>

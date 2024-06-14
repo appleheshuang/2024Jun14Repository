@@ -1,0 +1,13 @@
+﻿{
+	"Product": [
+		{
+			"Name": "Brand-{{TestUniqueIntegrationId}}-EDITED",
+			"EffectiveDate__c": "2670-01-01", //OriginalEffectiveDate is 2500-01-01
+			"Type__c": "Brand",
+			"UniqueIntegrationId__c": "Brand-{{TestUniqueIntegrationId}}",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "US",
+			"CascadeStatus__c": "PENDWITHCHILDREN"
+		}
+	]
+}

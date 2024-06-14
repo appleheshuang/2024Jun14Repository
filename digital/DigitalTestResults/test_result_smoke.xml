@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assemblies timestamp="06/14/2024 15:04:18">
+  <assembly name="/Users/shuanghe/Desktop/NewPlace/digitaltest/digital/bin/Debug/netcoreapp3.1/Digital.dll" run-date="2024-06-14" run-time="15:04:18" total="1" passed="0" failed="1" skipped="0" time="7.093" errors="0">
+    <errors />
+    <collection total="1" passed="0" failed="1" skipped="0" name="Test collection for Digital.Tests.SpecFlow.Features.MCM.CallFeature" time="7.093">
+      <test name="Call: digital-org0325.json" type="Digital.Tests.SpecFlow.Features.MCM.CallFeature" method="Call_Digital_Org0325_Json" time="7.0930741" result="Fail">
+        <output>Given the tenant configuration defined by 'digital-org0325.json'
+The file was not found: 'Amazon.S3.AmazonS3Exception: !!! Config file not found in env or global configs: digital-org0325.json
+
+   at MainFramework.s3TenantFixture..ctor(String filename) in /Users/shuanghe/Desktop/NewPlace/digitaltest/omrtestautomation/MainFramework/Fixtures/s3TenantFixture.cs:line 39
+   at OMREngineTest.Utils.EngineTest.SetTenantConfig(String tconfig) in /Users/shuanghe/Desktop/NewPlace/digitaltest/omrtestautomation/OMREngineTest/Utils/EngineTest.cs:line 64'
+-&gt; done: TenantTestSteps.GivenTheTenantConfigurationDefinedBy("digital-org0325.json") (6.5s)
+And a unique id for the test
+-&gt; error: Exception has been thrown by the target of an invocation. (0.5s)
+Given I post Digital record to table from Table
+  --- table step argument ---
+  | DE                                  | datafileNew                                 |
+  | DE_Call_Master_Message__IQ          | MCM/Call/CallMasterMessage/New.json         |
+  | DE_Contact_Master__IQ               | MCM/Contact/ContactMaster/New.json          |
+  | DE_Call_Master__IQ                  | MCM/Call/Call/New.json                      |
+  | DE_Call_Master_Promotional_Item__IQ | MCM/Call/CallMasterPromotionalItem/New.json |
+  | DE_Call_Master_Sample_Order__IQ     | MCM/Call/CallSampleOrder/New.json           |
+  | DE_Call_Master_Sample__IQ           | MCM/Call/CallSample/New.json                |
+  | DE_Call_Master_Product_Detail__IQ   | MCM/Call/CallProductDetail/New.json         |
+-&gt; skipped because of previous errors
+When I trigger a DigitalDataSync with Type 'ScheduledSFMCDataSync' and cache 'true' with ExcludedAliases 'OMAccountActivityResponse'
+-&gt; skipped because of previous errors
+Then check all DigitalDataSync jobs finished
+-&gt; skipped because of previous errors
+Then check digital results from table
+  --- table step argument ---
+  | DE  | resultNew                                                   |
+  | all | MCM/Call/Call/NewSyncQueryResults.json                      |
+  | all | MCM/Call/CallMasterPromotionalItem/NewSyncQueryResults.json |
+  | all | MCM/Call/CallSampleOrder/NewSyncQueryResults.json           |
+  | all | MCM/Call/CallSample/NewSyncQueryResults.json                |
+  | all | MCM/Call/CallProductDetail/NewSyncQueryResults.json         |
+  | all | MCM/Call/CallMasterMessage/NewSyncQueryResults.json         |
+-&gt; skipped because of previous errors
+Given I post Digital record to table from Table
+  --- table step argument ---
+  | DE                                  | datafileUpdate                                 |
+  | DE_Call_Master_Message__IQ          | MCM/Call/CallMasterMessage/Update.json         |
+  | DE_Call_Master__IQ                  | MCM/Call/Call/Update.json                      |
+  | DE_Call_Master_Promotional_Item__IQ | MCM/Call/CallMasterPromotionalItem/Update.json |
+  | DE_Call_Master_Sample_Order__IQ     | MCM/Call/CallSampleOrder/Update.json           |
+  | DE_Call_Master_Sample__IQ           | MCM/Call/CallSample/Update.json                |
+  | DE_Call_Master_Product_Detail__IQ   | MCM/Call/CallProductDetail/Update.json         |
+-&gt; skipped because of previous errors
+When I trigger a DigitalDataSync with Type 'ScheduledSFMCDataSync' and cache 'true' with ExcludedAliases 'OMAccountActivityResponse'
+-&gt; skipped because of previous errors
+Then check all DigitalDataSync jobs finished
+-&gt; skipped because of previous errors
+Then check digital results from table
+  --- table step argument ---
+  | DE  | resultUpdate                                                   |
+  | all | MCM/Call/Call/UpdateSyncQueryResults.json                      |
+  | all | MCM/Call/CallMasterPromotionalItem/UpdateSyncQueryResults.json |
+  | all | MCM/Call/CallProductDetail/UpdateSyncQueryResults.json         |
+  | all | MCM/Call/CallSampleOrder/UpdateSyncQueryResults.json           |
+  | all | MCM/Call/CallSample/UpdateSyncQueryResults.json                |
+  | all | MCM/Call/CallMasterMessage/UpdateSyncQueryResults.json         |
+-&gt; skipped because of previous errors
+
+</output>
+        <failure>
+          <message>System.NullReferenceException : Object reference not set to an instance of an object.</message>
+          <stack-trace>   at OMREngineTest.ScenarioUtils.Jobs.OptimizerJob..ctor(TenantConfig tenant_info, eToken token, String id) in /Users/shuanghe/Desktop/NewPlace/digitaltest/omrtestautomation/OMREngineTest/ScenarioUtils/Jobs/OptimizerJob.cs:line 39
+   at OMREngineTest.ScenarioUtils.Jobs.ScenarioJob..ctor(TenantConfig tenant_info, eToken token, String id, String query_tag) in /Users/shuanghe/Desktop/NewPlace/digitaltest/omrtestautomation/OMREngineTest/ScenarioUtils/Jobs/ScenarioJob.cs:line 46
+   at OMREngineTest.ScenarioUtils.Jobs.RecalcJob..ctor(TenantConfig tenant_info, eToken token, String app) in /Users/shuanghe/Desktop/NewPlace/digitaltest/omrtestautomation/OMREngineTest/ScenarioUtils/Jobs/RecalcJob.cs:line 13
+   at OMREngineTest.Tests.Smoketests.Specflow.Step_Definitions.PerformanceSteps..ctor(ScenarioContext scenarioContext, ITestOutputHelper output) in /Users/shuanghe/Desktop/NewPlace/digitaltest/omrtestautomation/OMREngineTest/Tests/Smoketests/Specflow/StepDefinitions/PerformanceSteps.cs:line 76</stack-trace>
+        </failure>
+        <traits>
+          <trait name="FeatureTitle" value="Call" />
+          <trait name="Description" value="Call: digital-org0325.json" />
+          <trait name="Category" value="EvaJun" />
+        </traits>
+      </test>
+    </collection>
+  </assembly>
+</assemblies>

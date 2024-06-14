@@ -1,0 +1,55 @@
+﻿{
+  "Tests": {
+		"MergeResults": [
+			{
+				"testname": "account-sync",
+				"query": "select \"FirstName\", \"LastName\",\"Status\",\"Specialty\" from static.\"OMAccount\" where \"UniqueIntegrationId\" in ('CHRISTOPOULOS-GN','EVANS-WB','NO-KJ','RIZVI-ZH') order by \"UniqueIntegrationId\"",
+				"exp_result": "[{FirstName:GEORGE,LastName:CHRISTOPOULOS,Status:ACTV,Specialty:Internal medicine},{FirstName:WILLIAM,LastName:EVANS,Status:ACTV,Specialty:Veterinarian},{FirstName:KAP,LastName:NO,Status:ACTV,Specialty:Veterinarian},{FirstName:ZULFIQAR,LastName:RIZVI,Status:ACTV,Specialty:Internal medicine}]",
+				"odataQuery": "\\OMAccount?$select=FirstName,LastName,Status,Specialty&$filter=contains('CHRISTOPOULOS-GN,EVANS-WB,NO-KJ,RIZVI-ZH',UniqueIntegrationId)&$orderby=UniqueIntegrationId"
+			}
+		],
+		"OCEResults": [
+			{
+				"testname": "Territory2",
+				"exp_result": "[{Name:{{ScenarioTerritory.Name[0]}},DeveloperName:O{{ScenarioTerritory.SOMTerritoryId__c[0]}}}]",
+				"sfQuery": "select Name, DeveloperName from Territory2 where DeveloperName ='O{{ScenarioTerritory.SOMTerritoryId__c[0]}}'"
+			},
+			{
+				"testname": "NewGeoTerrAlignment",
+				"query": "select g.\"Code\" \"Name\",'Brick To Territory' \"RecordTypeName\",t.\"Name\" \"Territories\" from OUTPUT.\"OMGeographyTerritory\" gt join OUTPUT.\"OMTerritory\" t on t.\"SOMTerritoryId\" = gt.\"SOMTerritoryId\" join STATIC.\"OMGeography\" g on g.\"SOMGeographyId\" = gt.\"SOMGeographyId\" where gt.\"SOMGeographyId\" = '{{Geography.SOMGeographyId__c}}' and gt.\"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c[0]}}' and gt.\"EffectiveDate\" = '{{Scenario.EffectiveDate__c}}'",
+				"exp_result": "[{Name:{{Geography.Code__c}},RecordTypeName:Brick To Territory,Territories:{{ScenarioTerritory.Name[0]}}}]",
+				"sfQuery": "select Name, OCE__RecordTypeName__c, OCE__Territories__c from OCE__TerritoryAlignmentRule__c where Name = '{{Geography.Code__c}}'"
+			},
+			{
+				"testname": "ObjectTerritory2Association",
+				"exp_result": "[{Name:{{ScenarioTerritory.Name[0]}},LastName:CHRISTOPOULOS},{Name:{{ScenarioTerritory.Name[0]}},LastName:EVANS},{Name:{{ScenarioTerritory.Name[0]}},LastName:NO},{Name:{{ScenarioTerritory.Name[0]}},LastName:RIZVI}]",
+				"sfQuery": "select Territory2.Name, Object.LastName from ObjectTerritory2Association where Object.LastName in ('CHRISTOPOULOS','EVANS','NO','RIZVI') and Territory2.Name in ('{{ScenarioTerritory.Name[0]}}') order by Territory2.Name, Object.Id"
+			},
+			{
+				"testname": "engplan-period",
+				"query": "select \"EffectiveDate\" \"StartDate\", \"EndDate\" from OUTPUT.\"OMEngagementPlan\" where \"SOMEngagementPlanId\" = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}'",
+				"exp_result": "[{StartDate:{{Scenario.effectivedate__c}},EndDate:{{Scenario.EndDate__c}}}]",
+				"sfQuery": "select OCE__StartDate__c, OCE__EndDate__c from OCE__Period__c where OCE__UniqueIntegrationID__c = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}' order by OCE__StartDate__c"
+			},
+			{
+				//Added verification for OMR-19933 to check Name for PlanCycle
+				"testname": "engplan-plancycle",
+				"query": "select distinct e.\"EffectiveDate\" \"StartDate\", e.\"EndDate\", 'Approved' \"Status\", terr.\"Name\" \"Territory\", 'AccountGoal' \"Type\", terr.\"Name\"||'-'||e.\"UniqueIntegrationId\" \"UniqueIntegrationID\",terr.\"Name\"||'-'||e.\"Name\" \"Name\" from OUTPUT.\"OMEngagementResult\" r join OUTPUT.\"OMEngagementPlan\" e on e.\"SOMEngagementPlanId\" = r.\"SOMEngagementPlanId\" join OUTPUT.\"OMTerritory\" terr on terr.\"SOMTerritoryId\" = r.\"SOMTerritoryId\" where r.\"SOMEngagementPlanId\" = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}'",
+				"exp_result": "[{StartDate:{{Scenario.effectivedate__c}},EndDate:{{Scenario.EndDate__c}},Status:Approved,Territory:{{ScenarioTerritory.Name[0]}},Type:AccountGoal,UniqueIntegrationID:{{ScenarioTerritory.Name[0]}}-{{ScenarioEngagementPlan.UniqueIntegrationId__c}},Name:{{ScenarioTerritory.Name[0]}}-{{ScenarioEngagementPlan.Name}}}]",
+				"sfQuery": "select OCE__StartDate__c, OCE__EndDate__c, OCE__Status__c, OCE__Territory__c, OCE__Type__c,OCE__UniqueIntegrationID__c,Name from OCE__PlanCycle__c where OCE__Period__r.OCE__UniqueIntegrationID__c = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}' order by OCE__StartDate__c"
+			},
+			{
+				"testname": "engplan-accountgoal",
+				"query": "SELECT acc.\"Name\", terr.\"Name\" \"Territory\" FROM output.\"OMEngagementResult\" r join static.\"OMAccount\" acc on acc.\"Id\" = r.\"OMAccountId\" join output.\"OMTerritory\" terr on terr.\"SOMTerritoryId\" = r.\"SOMTerritoryId\" where r.\"SOMEngagementPlanId\" = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}' ORDER BY acc.\"Name\";",
+				"exp_result": "[{Name:GEORGE CHRISTOPOULOS,Territory:{{ScenarioTerritory.Name[0]}}},{Name:KAP NO,Territory:{{ScenarioTerritory.Name[0]}}},{Name:WILLIAM EVANS,Territory:{{ScenarioTerritory.Name[0]}}},{Name:ZULFIQAR RIZVI,Territory:{{ScenarioTerritory.Name[0]}}}]",
+				"sfQuery": "select OCE__Account__r.Name, OCE__PlanCycle__r.OCE__Territory__c from OCE__AccountGoal__c where OCE__AccountGoal__c.OCE__Plancycle__r.OCE__Period__r.OCE__UniqueIntegrationId__c = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}' order by OCE__Account__r.Name"
+			},
+			{
+				"testname": "engplan-activityplan",
+				"query": "with ind as ( select position(':',\"Targets\",position('Channel' IN \"Targets\"))+2 as channel_pos, position('\"',\"Targets\",position(':',\"Targets\",position('Channel' IN \"Targets\"))+2) as channel_end, position(':',\"Targets\",position('Frequency' IN \"Targets\"))+1 as freq_pos, position(',',\"Targets\",position(':',\"Targets\",position('Frequency' IN \"Targets\"))+1) as freq_end, \"SOMEngagementResultId\" from OUTPUT.\"OMEngagementResult\" ) select acc.\"Name\",Terr.\"UniqueIntegrationId\" \"Territory\", substr(\"Targets\",channel_pos, channel_end-channel_pos) \"ActivityPlanConfigName\", substr(\"Targets\",freq_pos, freq_end-freq_pos) \"HQGoal\" from OUTPUT.\"OMEngagementResult\" er join static.\"OMAccount\" acc on acc.\"Id\" = er.\"OMAccountId\" join ind on ind.\"SOMEngagementResultId\" = er.\"SOMEngagementResultId\" join output.\"OMTerritory\" terr on terr.\"SOMTerritoryId\" = er.\"SOMTerritoryId\" where er.\"SOMEngagementPlanId\" = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}' order by acc.\"Name\";",
+				"exp_result": "[{Name:GEORGE CHRISTOPOULOS,Territory:{{ScenarioTerritory.Name[0]}},ActivityPlanConfigName:MEET,HQGoal:50},{Name:KAP NO,Territory:{{ScenarioTerritory.Name[0]}},ActivityPlanConfigName:MEET,HQGoal:100},{Name:WILLIAM EVANS,Territory:{{ScenarioTerritory.Name[0]}},ActivityPlanConfigName:MEET,HQGoal:100},{Name:ZULFIQAR RIZVI,Territory:{{ScenarioTerritory.Name[0]}},ActivityPlanConfigName:MEET,HQGoal:50}]",
+				"sfQuery": "select OCE__AccountGoal__r.OCE__Account__r.Name, OCE__AccountGoal__r.OCE__PlanCycle__r.OCE__Territory__c, OCE__ActivityPlanConfigName__c, OCE__HQGoal__c from OCE__ActivityPlan__c where OCE__AccountGoal__r.OCE__PlanCycle__r.OCE__Period__r.OCE__UniqueIntegrationID__c = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}' order by OCE__AccountGoal__r.OCE__Account__r.Name"
+			}
+		]
+  }
+}

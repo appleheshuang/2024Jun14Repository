@@ -1,0 +1,29 @@
+{
+  "Configs": {},
+
+  "BaseData": {
+    "regionUId": "IO"
+  },
+
+  "Scenario": {
+    "Name": "Multiple Actions on Scenario Entity Setup Negative",
+    "Description": "C7848137, C7847212 Different Dates Error",
+    "EffectiveDate__c": "2021-03-01",
+    "EndDate__c": "2021-09-30",
+    "OMRegionId__c": "{{regionUId}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "Setup-{{TestUniqueIntegrationId}}"
+  },
+
+  // For C7848137 EDIT+EFFE SalesForce
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "Name": "SalesForce INST {{TestUniqueIntegrationId}}",
+      "Type__c": "INST",
+      "UniqueIntegrationId__c": "SF-ADD-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "SOMRegionId__c": "{{regionUId}}"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "BaseData": {
+    "som_region_id": "REG01",
+    "regionUID": "REG01",
+    "salesforceUID": "582-SF",
+    "territoryUID": "582",
+    "ProductId": "PROD1",
+    "EffectiveDate": "{{today-5}}",
+    "EndDate": "3999-12-31",
+    "RuleStart": "{{today+25}}",
+    "RuleEnd": "3999-12-31"
+  },
+
+  "Scenario": {
+    "Description": "Commit for explicits and exclusions for Acount Merge",
+    "Name": "AccountMerge-precommit",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "{{TestUniqueIntegrationId}}-582"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "KOL",
+      "Name": "NZ-582"
+    }
+  ],
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "NZ582-T0",
+      "UniqueIntegrationId__c": "{{territoryUID}}-T0-{{TestUniqueIntegrationId}}",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "NZ582-T1",
+      "UniqueIntegrationId__c": "{{territoryUID}}-T1-{{TestUniqueIntegrationId}}",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "TERR"
+    }
+  ],
+
+  "ScenarioRule": [
+    {
+      "Name": "Gastro",
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "AddRule-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "RuleData__c": "{\"geography\":false,\"explicit\":false,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Practices,MP\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Gastroenterology\"}]},\"hierarchy\":\"TERR\"}",
+      "RuleScope": "ALGN",
+      "FilterRegions__c": "{{som_region_id}}",
+      "AlignmentLimitedToRegion": false,
+      "EffectiveDate__c": "{{RuleStart}}",
+      "EndDate__c": "{{RuleEnd}}"
+    }
+  ],
+  "Tests": 
+  {
+    "MergeResults": [
+      {
+        "testname": "SetUpAccounts",
+        "query": "select \"Name\" from static.\"OMAccount\" where \"Id\" like 'AM-%-{{TestUniqueIntegrationId}}' and \"Status\" = 'ACTV' order by \"Name\"",
+        "exp_result": "[{Name:357LOS},{Name:357WIN},{Name:369LOS},{Name:369WIN},{Name:370LOS},{Name:370WIN},{Name:371LOS},{Name:371WIN},{Name:372LOS},{Name:372WIN},{Name:373LOS},{Name:373WIN}]"
+      }
+    ]
+  }
+}

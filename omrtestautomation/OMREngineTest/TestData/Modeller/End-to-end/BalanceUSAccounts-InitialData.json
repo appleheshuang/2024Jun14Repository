@@ -1,0 +1,79 @@
+{
+  "BaseData": {
+    "som_region_id": "US",
+    "salesforcePrefix": "SJ-ONC",
+    "territoryPrefix": "SJ-ONC",
+    "ruleUID": "G-ONCOL"
+  },
+
+  "Scenario": {
+    "Description": "BasicModeller-InitialLoad",
+    "Name": "Basic Modeller - Initial data",
+    "EffectiveDate__c": "{{today}}",
+    "EndDate__c": "3999-12-31",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": ""
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{salesforcePrefix}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "RegionUniqueIntegrationId__c": "{{som_region_id}}",
+      "Type__c": "KOL",
+      "Name": "{{salesforcePrefix}}"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "{{territoryPrefix}}-00",
+      "UniqueIntegrationId__c": "{{territoryPrefix}}-00-{{TestUniqueIntegrationId}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "{{territoryPrefix}}-01",
+      "UniqueIntegrationId__c": "{{territoryPrefix}}-01-{{TestUniqueIntegrationId}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "{{territoryPrefix}}-02",
+      "UniqueIntegrationId__c": "{{territoryPrefix}}-02-{{TestUniqueIntegrationId}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "{{territoryPrefix}}-03",
+      "UniqueIntegrationId__c": "{{territoryPrefix}}-03-{{TestUniqueIntegrationId}}",
+      "Type__c": "TERR"
+    }
+  ],
+
+  "ScenarioRule": [
+    {
+      "Name": "{{ruleUID}}-{{TestUniqueIntegrationId}}",
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{ruleUID}}-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "RuleData__c": "{\"geography\":true,\"explicit\":false,\"filter\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Oncology\"}}"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "BaseData": {
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "OMCallSampleAllFields",
+        "query": "select \"Id\",\"OMCallId\",\"SOMProductId\",\"ProductOceSalesId\",\"SampleSOMProductId\",\"SampleProductOceSalesId\",\"SampleProductUniqueIntegrationId\",\"ProductUniqueIntegrationId\",\"Quantity\",\"UniqueIntegrationId\",to_date(\"CreatedDate\") as \"CreatedDate\",\"LastModifiedById\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\" from static.\"OMCallSample\" where \"OMCallId\"='CallId{{TestUniqueIntegrationID}}'",
+        "exp_result": "[{Id:CallSample{{TestUniqueIntegrationID}}AllFields,OMCallId:CallId{{TestUniqueIntegrationID}},SOMProductId:23423,ProductOceSalesId:null,SampleSOMProductId:null,SampleProductOceSalesId:a5C4x000000kHiJEAU,SampleProductUniqueIntegrationId:null,ProductUniqueIntegrationId:null,Quantity:10,UniqueIntegrationId:CallSample{{TestUniqueIntegrationID}}AllFields,CreatedDate:{{dbt_today}},LastModifiedById:Automation-Update,LastModifiedDate:{{dbt_today}}}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "OMCallSampleValid-Update",
+        "query": "select count(*) from STATIC.\"OMCallSample\" where \"Id\" like ('%{{TestUniqueIntegrationID}}%')",
+        "exp_result": "[{COUNT(*):5}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      }
+    ]
+  }
+}

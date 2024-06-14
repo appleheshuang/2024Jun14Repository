@@ -1,0 +1,71 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "commit"
+  },
+
+  "BaseData": {
+    "regionUId": "AI",
+    "accountUId": "ACCT01",
+    "salesforceUId": "SF1-{{TestUniqueIntegrationId}}",
+    "territoryUId": "T1-{{TestUniqueIntegrationId}}"
+  },
+
+  "Scenario": {
+    "Name": "OMR-132_setup1_",
+    "Description": "",
+    "EffectiveDate__c": "2021-09-01",
+    "EndDate__c": "2021-09-30",
+    "ScenarioStatus__c": "PENDG",
+    "OMRegionId__c": "{{regionUId}}",
+    "UniqueIntegrationId__c": "S-{{TestUniqueIntegrationId}}"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "Name": "SalesForce INST",
+      "Type__c": "INST",
+      "UniqueIntegrationId__c": "{{salesforceUId}}",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "SOMRegionId__c": "{{regionUId}}"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "Name": "PRIM Terr",
+      "Type__c": "TERR",
+      "TerritorySalesForceType__c": "PRIM",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUId}}",
+      "UniqueIntegrationId__c": "{{territoryUId}}",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "SOMRegionId__c": "{{regionUId}}"
+    }
+  ],
+
+  "ScenarioAccountExplicit": [
+    { // OMR-132 C7958568 Exclusion wins, Terri Expli first, SF exclu over Terri Expli unchecked, Terri exclusion overlap right side with Terri Explicit
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryUId}}",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "EffectiveDate__c": "2021-09-01",
+      "EndDate__c": "2021-09-20"
+    }
+  ],
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "territory_comitted",
+        "query": "OMTerritory,Name,Status,EffectiveDate,EndDate,UniqueIntegrationId:'{{ScenarioTerritory.UniqueIntegrationId__c}}'",
+        "exp_result": "[{Name:{{ScenarioTerritory.Name}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}}}]",
+        "odataQuery": "/OMTerritory?$select=Name,Status,EffectiveDate,EndDate&$filter=UniqueIntegrationId eq '{{ScenarioTerritory.UniqueIntegrationId__c}}'",
+        "sfQuery": null
+      }
+    ]
+  }
+}

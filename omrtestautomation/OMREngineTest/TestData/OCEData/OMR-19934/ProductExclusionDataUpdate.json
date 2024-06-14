@@ -1,0 +1,27 @@
+{
+  "Configs": {
+    "name": "OMR-19934 Update",
+    "jobtype": "commit",
+    "jobparams": "CalculateMaps=false;RuleEngineEnabled=true"
+  },
+
+  "BaseData": {
+    "som_region_id": "REG01",
+    "regionUID": "REG01",
+    "salesforceUID": "19934-SF",
+    "territoryUID": "19934-TERR",
+    "EffectiveDate__c": "{{dbt_today-5}}",
+    "EndDate__c": "{{dbt_today+5}}"
+  },
+
+  "Scenario": {
+    "Description": "Commit for Territory Product Exclusion Update",
+    "Name": "ProductExclusion-Data Update",
+    "EffectiveDate__c": "{{EffectiveDate__c}}",
+    "EndDate__c": "{{EndDate__c}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "{{TestUniqueIntegrationId}}-19934-Update"
+  }
+  
+}

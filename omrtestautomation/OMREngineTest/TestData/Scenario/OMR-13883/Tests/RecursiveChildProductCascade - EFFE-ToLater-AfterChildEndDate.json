@@ -1,0 +1,97 @@
+{
+  "Configs": {
+    "jobtype": "commit",
+    "jobparams": "CalculateMaps=false;RuleEngineEnabled=true"
+  },
+
+  "BaseData": {
+    "som_region_id": "US",
+    "EffectiveDate": "2500-01-01",
+    "CascadedEffectiveDate": "2670-01-01",
+    "CascadedEndDate": "3000-12-31",
+    "EndDate": "3000-12-31",
+    "DetailEffectiveDate": "2600-01-01",
+    "DetailEndDate": "2900-12-31",
+    "Bundle1EffectiveDate": "2400-01-01",
+    "Bundle2EffectiveDate": "2650-12-31",
+    "Bundle1EndDate": "2700-01-01",
+    "Bundle2EndDate": "3100-12-31"
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        //Check cascade+recursive cascade of OMProduct
+        "testname": "CheckOMProductCascade",
+        "query": "select \"SOMProductId\",\"Status\",\"EffectiveDate\",\"EndDate\",\"PriorEffectiveDate\",\"PriorEndDate\" from static.\"OMProduct\" where \"SOMProductId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"SOMProductId\" desc",
+        "exp_result": "[{SOMProductId:Market-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},PriorEffectiveDate:null,PriorEndDate:null},{SOMProductId:Detail-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{DetailEndDate}},PriorEffectiveDate:{{DetailEffectiveDate}},PriorEndDate:{{DetailEndDate}}},{SOMProductId:Bundle02-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{Bundle2EndDate}},PriorEffectiveDate:{{Bundle1EndDate}},PriorEndDate:{{Bundle2EndDate}}},{SOMProductId:Bundle01-{{TestUniqueIntegrationId}},Status:INAC,EffectiveDate:{{Bundle1EffectiveDate}},EndDate:{{Bundle2EffectiveDate}},PriorEffectiveDate:{{Bundle1EffectiveDate}},PriorEndDate:{{Bundle2EffectiveDate}}},{SOMProductId:Brand-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{EndDate}},PriorEffectiveDate:{{EffectiveDate}},PriorEndDate:{{EndDate}}}]"
+      },
+      //Failing because of https://jiraims.rm.imshealth.com/browse/OMR-17912
+      //{
+      //  //Check cascade+recursive cascade of OMProductHierarchy
+      //  "testname": "CheckTopLevelHierarchyIsNotCascadedAndChildrenAreCascaded",
+      //  "query": "select \"SOMParentProductId\",\"SOMChildProductId\",\"Status\",\"EffectiveDate\",\"EndDate\",\"CascadeStatus\",\"PriorEffectiveDate\",\"PriorEndDate\"  from static.\"OMProductHierarchy\" where \"SOMProductHierarchyId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"SOMProductHierarchyId\" desc",
+      //  "exp_result": "[{SOMParentProductId:Market-{{TestUniqueIntegrationId}},SOMChildProductId:Brand-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{EndDate}},CascadeStatus:DONE,PriorEffectiveDate:{{EffectiveDate}},PriorEndDate:{{EndDate}}},{SOMParentProductId:Detail-{{TestUniqueIntegrationId}},SOMChildProductId:Bundle02-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{DetailEndDate}},CascadeStatus:DONE,PriorEffectiveDate:{{Bundle1EndDate}},PriorEndDate:{{DetailEndDate}}},{SOMParentProductId:Detail-{{TestUniqueIntegrationId}},SOMChildProductId:Bundle01-{{TestUniqueIntegrationId}},Status:INAC,EffectiveDate:{{DetailEffectiveDate}},EndDate:{{Bundle2EffectiveDate}},CascadeStatus:null,PriorEffectiveDate:null,PriorEndDate:null},{SOMParentProductId:Brand-{{TestUniqueIntegrationId}},SOMChildProductId:Detail-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{DetailEndDate}},CascadeStatus:DONE,PriorEffectiveDate:{{DetailEffectiveDate}},PriorEndDate:{{DetailEndDate}}}]"
+      //},
+      {
+        //Check cascade+recursive cascade of OMProductHierarchy. Prior fields omitted due to https://jiraims.rm.imshealth.com/browse/OMR-17912 
+        "testname": "CheckTopLevelHierarchyIsNotCascadedAndChildrenAreCascaded",
+        "query": "select \"SOMParentProductId\",\"SOMChildProductId\",\"Status\",\"EffectiveDate\",\"EndDate\" from static.\"OMProductHierarchy\" where \"SOMProductHierarchyId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"SOMProductHierarchyId\" desc",
+        "exp_result": "[{SOMParentProductId:Market-{{TestUniqueIntegrationId}},SOMChildProductId:Brand-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{EndDate}}},{SOMParentProductId:Detail-{{TestUniqueIntegrationId}},SOMChildProductId:Bundle02-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{DetailEndDate}}},{SOMParentProductId:Detail-{{TestUniqueIntegrationId}},SOMChildProductId:Bundle01-{{TestUniqueIntegrationId}},Status:INAC,EffectiveDate:{{DetailEffectiveDate}},EndDate:{{Bundle2EffectiveDate}}},{SOMParentProductId:Brand-{{TestUniqueIntegrationId}},SOMChildProductId:Detail-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{DetailEndDate}}}]"
+      },
+      {
+        //Check cascade+recursive cascade of OMAccountProductTerritoryExplicits
+        "testname": "CheckOMAccountProductTerritoryExplicitCascade",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"SOMTerritoryId\",\"Status\",\"EffectiveDate\",\"EndDate\" from {{schema}}.\"OMAccountProductTerritoryExplicit\" where \"SOMProductId\" ilike '%{{TestUniqueIntegrationId}}' order by \"SOMProductId\" desc",
+        "exp_result": "[{OMAccountId:45ACCTEXP,SOMProductId:Market-{{TestUniqueIntegrationId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Status:ACTV,EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Detail-{{TestUniqueIntegrationId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{DetailEndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Bundle02-{{TestUniqueIntegrationId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{Bundle2EndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Bundle01-{{TestUniqueIntegrationId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Status:INAC,EffectiveDate:{{Bundle1EffectiveDate}},EndDate:{{Bundle2EffectiveDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Brand-{{TestUniqueIntegrationId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{EndDate}}}]"
+      },
+      {
+        //Check cascade+recursive cascade of OMAccountProductTerritoryRestrictions generated from OMAccountProductTerritoryExplicits
+        "testname": "CheckOMAccountProductTerritoryRestrictionCascade",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"SOMTerritoryId\",\"Source\",\"EffectiveDate\",\"EndDate\" from {{schema}}.\"OMAccountProductTerritoryRestriction\" where \"SOMProductId\" ilike '%{{TestUniqueIntegrationId}}' order by \"SOMProductId\" desc",
+        "exp_result": "[{OMAccountId:45ACCTEXP,SOMProductId:Market-{{TestUniqueIntegrationId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Detail-{{TestUniqueIntegrationId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{DetailEndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Bundle02-{{TestUniqueIntegrationId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{Bundle2EndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Brand-{{TestUniqueIntegrationId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{EndDate}}}]"
+      },
+      {
+        //Check cascade+recursive cascade of OMAccountProductExplicits
+        "testname": "CheckOMAccountProductExplicitCascade",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"Status\",\"EffectiveDate\",\"EndDate\" from {{schema}}.\"OMAccountProductExplicit\" where \"SOMProductId\" ilike '%{{TestUniqueIntegrationId}}' order by \"SOMProductId\" desc",
+        "exp_result": "[{OMAccountId:45ACCTEXP,SOMProductId:Market-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Detail-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{DetailEndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Bundle02-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{Bundle2EndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Bundle01-{{TestUniqueIntegrationId}},Status:INAC,EffectiveDate:{{Bundle1EffectiveDate}},EndDate:{{Bundle2EffectiveDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Brand-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{EndDate}}}]"
+      },
+      {
+        //Check cascade+recursive cascade of OMAccountProductTerritoryRestrictions generated from OMAccountProductTerritoryExplicits
+        "testname": "CheckOMAccountProductRestrictionCascade",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"Source\",\"EffectiveDate\",\"EndDate\" from {{schema}}.\"OMAccountProductRestriction\" where \"SOMProductId\" ilike '%{{TestUniqueIntegrationId}}' order by \"SOMProductId\" desc",
+        "exp_result": "[{OMAccountId:45ACCTEXP,SOMProductId:Market-{{TestUniqueIntegrationId}},Source:EXPL,EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Detail-{{TestUniqueIntegrationId}},Source:EXPL,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{DetailEndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Bundle02-{{TestUniqueIntegrationId}},Source:EXPL,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{Bundle2EndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Brand-{{TestUniqueIntegrationId}},Source:EXPL,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{EndDate}}}]"
+      },
+      {
+        //Check cascade+recursive cascade of OMProductSalesForce
+        "testname": "CheckOMProductSalesForce cascade",
+        "query": "select \"SOMSalesForceId\",\"SOMProductId\",\"Status\",\"EffectiveDate\",\"EndDate\" from {{schema}}.\"OMProductSalesForce\" where \"SOMProductId\" ilike '%{{TestUniqueIntegrationId}}' order by \"SOMProductId\" desc",
+        "exp_result": "[{SOMSalesForceId:{{ScenarioSalesforce.SOMSalesforceId__c}},SOMProductId:Market-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}},{SOMSalesForceId:{{ScenarioSalesforce.SOMSalesforceId__c}},SOMProductId:Detail-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{DetailEndDate}}},{SOMSalesForceId:{{ScenarioSalesforce.SOMSalesforceId__c}},SOMProductId:Bundle02-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{Bundle2EndDate}}},{SOMSalesForceId:{{ScenarioSalesforce.SOMSalesforceId__c}},SOMProductId:Bundle01-{{TestUniqueIntegrationId}},Status:INAC,EffectiveDate:{{Bundle1EffectiveDate}},EndDate:{{Bundle2EffectiveDate}}},{SOMSalesForceId:{{ScenarioSalesforce.SOMSalesforceId__c}},SOMProductId:Brand-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{EndDate}}}]"
+      },
+      {
+        //Check cascade+recursive cascade of OMProductTerritory
+        "testname": "CheckOMProductTerritory cascade",
+        "query": "select \"SOMTerritoryId\",\"SOMProductId\",\"Status\",\"EffectiveDate\",\"EndDate\" from {{schema}}.\"OMProductTerritory\" where \"SOMProductId\" ilike '%{{TestUniqueIntegrationId}}' order by \"SOMProductId\" desc",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},SOMProductId:Market-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},SOMProductId:Detail-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{DetailEndDate}}},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},SOMProductId:Bundle02-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{Bundle2EndDate}}},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},SOMProductId:Bundle01-{{TestUniqueIntegrationId}},Status:INAC,EffectiveDate:{{Bundle1EffectiveDate}},EndDate:{{Bundle2EffectiveDate}}},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},SOMProductId:Brand-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{EndDate}}}]"
+      },
+      {
+        //Check cascade+recursive cascade of OMAccountProductTerritoryRestrictions generated from OMAccountProductTerritoryExplicits
+        "testname": "CheckOMAccountProductRestrictionRuleCascade",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\" from {{schema}}.\"OMAccountProductRestrictionRule\" where \"SOMProductId\" ilike '%{{TestUniqueIntegrationId}}' order by \"SOMProductId\" desc",
+        "exp_result": "[{OMAccountId:45ACCTEXP,SOMProductId:Market-{{TestUniqueIntegrationId}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Detail-{{TestUniqueIntegrationId}},EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{DetailEndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Bundle02-{{TestUniqueIntegrationId}},EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{Bundle2EndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Brand-{{TestUniqueIntegrationId}},EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{EndDate}}}]"
+      },
+      {
+        //Check cascade+recursive cascade of OMAccountProductTerritoryRestrictions generated from OMAccountProductTerritoryExplicits
+        "testname": "CheckOMAccountProductTerritoryRestrictionCascade",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"SOMTerritoryId\",\"EffectiveDate\",\"EndDate\" from {{schema}}.\"OMAccountProductTerritoryRestrictionRule\" where \"SOMProductId\" ilike '%{{TestUniqueIntegrationId}}' order by \"SOMProductId\" desc",
+        "exp_result": "[{OMAccountId:45ACCTEXP,SOMProductId:Market-{{TestUniqueIntegrationId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Detail-{{TestUniqueIntegrationId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{DetailEndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Bundle02-{{TestUniqueIntegrationId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{Bundle2EndDate}}},{OMAccountId:45ACCTEXP,SOMProductId:Brand-{{TestUniqueIntegrationId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},EffectiveDate:{{CascadedEffectiveDate}},EndDate:{{EndDate}}}]"
+      },
+      {
+        //Check OMAccountTerritoryRule generated by the explicit
+        "testname": "CheckOMAccountTerritoryRule",
+        "query": "select \"SOMTerritoryId\",\"OMAccountId\",\"EffectiveDate\",\"EndDate\" from {{schema}}.\"OMAccountTerritoryRule\" where \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}'",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},OMAccountId:45ACCTEXP,EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}}}]"
+      }
+    ]
+  }
+}

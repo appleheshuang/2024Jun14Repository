@@ -1,0 +1,9 @@
+Id,Brick1,State,ZipCode,Status,UniqueIntegrationId,Country,City
+A-17481-{{TestUniqueIntegrationId}},17481-{{TestUniqueIntegrationId}}-03,17481-{{TestUniqueIntegrationId}}-05,17481-{{TestUniqueIntegrationId}}-01,ACTV,BSZ-351-{{TestUniqueIntegrationId}},UK,BSZ-351
+B-17481-{{TestUniqueIntegrationId}},17481-{{TestUniqueIntegrationId}}-03,17481-{{TestUniqueIntegrationId}}-06,17481-{{TestUniqueIntegrationId}}-01,ACTV,BSZ-361-{{TestUniqueIntegrationId}},UK,BSZ-361
+C-17481-{{TestUniqueIntegrationId}},17481-{{TestUniqueIntegrationId}}-03,17481-{{TestUniqueIntegrationId}}-09,17481-{{TestUniqueIntegrationId}}-02,ACTV,BSZ-392-{{TestUniqueIntegrationId}},UK,BSZ-392
+D-17481-{{TestUniqueIntegrationId}},17481-{{TestUniqueIntegrationId}}-03,17481-{{TestUniqueIntegrationId}}-09,17481-{{TestUniqueIntegrationId}}-07,ACTV,BSZ-397-{{TestUniqueIntegrationId}},UK,BSZ-397
+E-17481-{{TestUniqueIntegrationId}},17481-{{TestUniqueIntegrationId}}-04,17481-{{TestUniqueIntegrationId}}-09,17481-{{TestUniqueIntegrationId}}-02,ACTV,BSZ-492-{{TestUniqueIntegrationId}},UK,BSZ-492
+F-17481-{{TestUniqueIntegrationId}},17481-{{TestUniqueIntegrationId}}-04,17481-{{TestUniqueIntegrationId}}-09,17481-{{TestUniqueIntegrationId}}-07,ACTV,BSZ-497-{{TestUniqueIntegrationId}},UK,BSZ-497
+G-17481-{{TestUniqueIntegrationId}},17481-{{TestUniqueIntegrationId}}-03,17481-{{TestUniqueIntegrationId}}-05,17481-{{TestUniqueIntegrationId}}-02,ACTV,BSZ-352-{{TestUniqueIntegrationId}},UK,BSZ-352
+H-17481-{{TestUniqueIntegrationId}},17481-{{TestUniqueIntegrationId}}-08,17481-{{TestUniqueIntegrationId}}-09,17481-{{TestUniqueIntegrationId}}-07,ACTV,BSZ-897-{{TestUniqueIntegrationId}},UK,BSZ-897

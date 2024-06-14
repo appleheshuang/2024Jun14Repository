@@ -1,0 +1,15 @@
+{
+  "Bulkload": {
+    "S3Path": "autotestdata/OMR-10768/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMProductOMR-10768.csv",
+        "table": "OMProduct"
+      }
+    ]
+  }
+}

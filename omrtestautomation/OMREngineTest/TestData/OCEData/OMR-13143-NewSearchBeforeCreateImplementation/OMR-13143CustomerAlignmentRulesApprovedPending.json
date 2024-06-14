@@ -1,0 +1,16 @@
+﻿{
+	"CustomerAlignmentRule": [
+		{
+			"Account__c": "{{Account.Id[0]}}",
+			"UniqueIntegrationId__c": "Auto-{{TestUniqueIntegrationId}}",
+			"Territories__c": "{{ScenarioTerritory.Name[0]}}",
+			"ApprovalStatus__c": "Pending"
+		},
+		{
+			"Account__c": "{{Account.Id[1]}}",
+			"UniqueIntegrationId__c": "Auto1-{{TestUniqueIntegrationId}}",
+			"Territories__c": "{{ScenarioTerritory.Name[0]}}",
+			"ApprovalStatus__c": "Approved"
+		}
+	]
+}

@@ -1,0 +1,88 @@
+﻿{
+	"Product": [
+		{
+			"Name": "MetricProd1 - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2022-01-01",
+			"EndDate__c": "2022-12-31",
+			"Type__c": "Detail",
+			"DetailType__c": "Brand",
+			"UniqueIntegrationId__c": "UID1-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV"
+		},
+		{
+			"Name": "MetricProd2 - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"DetailType__c": "Brand",
+			"OMRegionId__c": "UK",
+			"UniqueIntegrationId__c": "UID2-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV"
+		},
+		{
+			"Name": "MetricProd3 - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"DetailType__c": "Brand",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "UID3-{{TestUniqueIntegrationID}}",
+			"Status__c": "INAC"
+		},
+		{
+			"Name": "MetricProd4 - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"DetailType__c": "Brand",
+			"OMRegionId__c": "PN",
+			"UniqueIntegrationId__c": "UID4-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV"
+		},
+		{
+			"Name": "MetricProd5 - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"DetailType__c": "Brand",
+			"OMRegionId__c": null, //Global product
+			"UniqueIntegrationId__c": "UID5-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV"
+		},
+		{
+			"Name": "MetricProd6 - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"DetailType__c": "Brand",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "UID6-{{TestUniqueIntegrationID}}",
+			"CompetitorProduct__c": true,
+			"Status__c": "ACTV"
+		},
+		{
+			"Name": "MetricProd7 - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"DetailType__c": "Brand",
+			"OMRegionId__c": "REG01",
+			"CompetitorProduct__c": false,
+			"UniqueIntegrationId__c": "UID7-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV"
+		},
+		{
+			"Name": "MetricProd8 - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "3000-01-01",
+			"Type__c": "Detail",
+			"DetailType__c": "Brand",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "UID8-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV"
+		},
+		{
+			//product not aligned to any salesforce
+			"Name": "MetricProd9 - {{TestUniqueIntegrationID}} - Unaligned",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"DetailType__c": "Brand",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "UID9-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV"
+		}
+	]
+}

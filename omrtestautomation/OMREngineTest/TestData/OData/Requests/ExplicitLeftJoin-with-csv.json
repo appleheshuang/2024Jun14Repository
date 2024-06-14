@@ -1,0 +1,30 @@
+﻿{
+  "BaseData": {
+    "som_region_id": "US",
+    "region_name": "United States",
+    "addr_substr": "CITY",
+    "noreg-noaddr": "ACCT16491-00",
+    "noreg-addr": "ACCT16491-01",
+    "reg-noaddr": "ACCT16491-10",
+    "reg-addr": "ACCT16491-11",
+    "exp_address": "CITY01 STATE01 1234"
+  },
+
+   "Tests": {
+    "MergeResults": [
+      {
+        "testname": "account_region_address_snowflake",
+        "query": "select a.\"Id\", r.\"Name\" \"RegionName\", r.\"SOMRegionId\", v.\"Id\" \"Addr\", v.\"RefAddress\" from static.\"OMAccount\" a left outer join static.\"VAccountCalculatedAddress\" v on v.\"Id\" = a.\"Id\" left outer join static.\"OMRegion\" r on r.\"SOMRegionId\" = a.\"SOMRegionId\" where (r.\"Name\" = '{{region_name}}' or  a.\"SOMRegionId\" is null) and (v.\"RefAddress\" like '{{addr_substr}}%' or v.\"RefAddress\" = '') and a.\"Id\" in ('{{noreg-noaddr}}','{{noreg-addr}}','{{reg-noaddr}}','{{reg-addr}}') order by a.\"Id\"",
+        "exp_result": "[{Id:{{noreg-noaddr}},RegionName:null,SOMRegionId:null,Addr:{{noreg-noaddr}},RefAddress:},{Id:{{noreg-addr}},RegionName:null,SOMRegionId:null,Addr:{{noreg-addr}},RefAddress:{{exp_address}}},{Id:{{reg-noaddr}},RegionName:{{region_name}},SOMRegionId:{{som_region_id}},Addr:{{reg-noaddr}},RefAddress:},{Id:{{reg-addr}},RegionName:{{region_name}},SOMRegionId:{{som_region_id}},Addr:{{reg-addr}},RefAddress:{{exp_address}}}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "account_region_address_odata",
+        "query": "skip",
+        "exp_result": "[{Id:{{noreg-noaddr}},SOMRegionId:null,OMRegion:null,VAccountCalculatedAddress:{RefAddress:,Id:{{noreg-noaddr}}}},{Id:{{noreg-addr}},SOMRegionId:null,OMRegion:null,VAccountCalculatedAddress:{RefAddress:{{exp_address}},Id:{{noreg-addr}}}},{Id:{{reg-noaddr}},SOMRegionId:{{som_region_id}},OMRegion:{Name:{{region_name}},SOMRegionId:{{som_region_id}}},VAccountCalculatedAddress:{RefAddress:,Id:{{reg-noaddr}}}},{Id:{{reg-addr}},SOMRegionId:{{som_region_id}},OMRegion:{Name:{{region_name}},SOMRegionId:{{som_region_id}}},VAccountCalculatedAddress:{RefAddress:{{exp_address}},Id:{{reg-addr}}}}]",
+        "odataQuery": "/OMAccount?$select=Id&$filter=(OMRegion/Name eq '{{region_name}}' or SOMRegionId eq null) and (startswith(VAccountCalculatedAddress/RefAddress,'{{addr_substr}}') or VAccountCalculatedAddress/RefAddress eq '') and Id in ('{{noreg-noaddr}}','{{noreg-addr}}','{{reg-noaddr}}','{{reg-addr}}')&$expand=OMRegion($select=Name),VAccountCalculatedAddress($select=RefAddress)&explicitleftjoin=OMRegion,VAccountCalculatedAddress&orderby=Id",
+        "sfQuery": null
+      }
+    ]
+  }
+}

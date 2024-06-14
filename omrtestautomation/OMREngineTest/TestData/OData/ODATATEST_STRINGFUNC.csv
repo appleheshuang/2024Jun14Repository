@@ -1,0 +1,14 @@
+DESCRIPTION|POST_REQUEST|POST_FIELDTOUPDATE|POST_FIELDVALUE|GET_REQUEST|SNOWQUERY
+length|OMRegion|Name|1|OMRegion?$filter=length(Name) eq 1|select * from STATIC."OMRegion" where length("Name") = 1
+indexof|OMAccount|OneKeyID|ZZZZ|OMAccount?$filter=indexof(OneKeyID, 'ZZZZ') eq 1|select * from STATIC."OMAccount" where charindex('ZZZZ', "OneKeyID") = 1
+substr|OMAccountAddress|AddressLine1|__AddressLine1|OMAccountAddress?$filter=substring(AddressLine1, 3) eq 'AddressLine1'|select * from STATIC."OMAccountAddress" where substr("AddressLine1", 3) = 'AddressLine1'
+substring|OMProduct|Strength|__Substr__|OMProduct?$filter=substring(Strength, 3, 6) eq 'Substr'|select * from STATIC."OMProduct" where substr("Strength", 3, 6) = 'Substr'
+toupper|OMAffiliation|Status|active|OMAffiliation?$filter=toupper(Status) eq 'ACTIVE'|select * from STATIC."OMAffiliation" where upper("Status") = 'ACTIVE'
+tolower|OMGeography|ExternalId1|EXTERNAL|OMGeography?$filter=tolower(ExternalId1) eq 'external'|select * from STATIC."OMGeography" where lower("ExternalId1") = 'external'
+trim|OMGeographyAccount|Country|   NUR   |OMGeographyAccount?$filter=trim(Country) eq 'NUR'|select * from STATIC."OMGeographyAccount" where trim("Country") = 'NUR'
+contains|OMGeographyHierarchy|SOMParentGeographyId|xxxThisx|OMGeographyHierarchy?$filter=contains(SOMParentGeographyId, 'This')|select * from STATIC."OMGeographyHierarchy" where contains("SOMParentGeographyId",'This')
+startswith|OMUserEducation|SOMUserId|start>>>>|OMUserEducation?$filter=startswith(SOMUserId, 'start')|select * from STATIC."OMUserEducation" where startswith("SOMUserId",'start')
+endswith|OMUserVehicle|Model|<<<<end|OMUserVehicle?$filter=endswith(Model, 'end')|select * from STATIC."OMUserVehicle" where endswith("Model",'end')
+concat|OMUser|MaritalStatus|ONE|OMUser?$filter=concat(MaritalStatus, '_PlusONE') eq 'ONE_PlusONE'|select * from STATIC."OMUser" where concat("MaritalStatus",'_PlusONE') = 'ONE_PlusONE'
+groupings|OMGeography|Name-Code-Type|OdataGeography-ODATA12-POST|OMGeography?$filter =(Name eq 'OdataGeography' or Code eq 'ODATA12') and Type ne 'GEO1' and SourceId eq 'ODATATEST'|select * from "STATIC"."OMGeography" where ("Name"='OdataGeography' or "Code"='ODATA12') and "Type"!='GEO1' and "SourceId"='ODATATEST'
+any|OMGeographyAccount|OMAccountId-SOMGeographyId|MP01-TestGeography|OMAccount?$filter=OMGeographyAccount/any(t:t/SOMGeographyId eq 'TestGeography')|select * from "STATIC"."OMAccount" where "Id" in (select "OMAccountId" from "STATIC"."OMGeographyAccount" where "SOMGeographyId"='TestGeography')

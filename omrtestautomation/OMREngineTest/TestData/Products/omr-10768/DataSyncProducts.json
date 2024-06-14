@@ -1,0 +1,20 @@
+﻿{
+	"Product": [
+		{
+			"Name": "FilteredIn - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "UIDIn-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV"
+		},
+		{
+			"Name": "FilteredOut - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "UIDOut-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV"
+		}
+	]
+}

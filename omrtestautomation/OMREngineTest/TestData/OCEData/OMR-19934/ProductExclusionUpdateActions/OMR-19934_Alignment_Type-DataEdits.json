@@ -1,0 +1,82 @@
+{
+
+  "BaseData": {
+    "som_region_id": "REG01",
+    "regionUID": "REG01",
+    "salesforceUID": "19934-SF",
+    "territoryUID": "19934-TERR"
+  },
+
+  "ScenarioProductExclusion": [
+    {
+      "Action__c": "EXPR",
+      "SOMProductId__c": "{{Product.SOMProductId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[3]}}",
+      "SOMProductExclusionId__c": "{{ScenarioProductExclusion.SOMProductExclusionId__c[3]}}",
+      "ProductAlignmentType__c": "SMPL",
+      "EndDate__c": "{{dbt_today-1}}"
+    },
+    {
+      "Action__c": "EFFE",
+      "SOMProductId__c": "{{Product.SOMProductId__c[1]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[3]}}",
+      "SOMProductExclusionId__c": "{{ScenarioProductExclusion.SOMProductExclusionId__c[5]}}",
+      "ProductAlignmentType__c": "SMPL",
+      "EffectiveDate__c": "{{dbt_today+1}}"
+    },
+    {
+      "Action__c": "DEL",
+      "SOMProductId__c": "{{Product.SOMProductId__c[2]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[3]}}",
+      "SOMProductExclusionId__c": "{{ScenarioProductExclusion.SOMProductExclusionId__c[7]}}",
+      "ProductAlignmentType__c": "SMPL",
+      "EndDate__c": "{{dbt_today-1}}"
+    },
+    {
+      "Action__c": "DEL",
+      "SOMProductId__c": "{{Product.SOMProductId__c[3]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[3]}}",
+      "SOMProductExclusionId__c": "{{ScenarioProductExclusion.SOMProductExclusionId__c[9]}}",
+      "ProductAlignmentType__c": "SMPL",
+      "EndDate__c": "{{dbt_today-1}}"
+    },
+    {
+      "Action__c": "DEL",
+      "SOMProductId__c": "{{Product.SOMProductId__c[3]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[3]}}",
+      "SOMProductExclusionId__c": "{{ScenarioProductExclusion.SOMProductExclusionId__c[10]}}",
+      "ProductAlignmentType__c": "MIRF",
+      "EndDate__c": "{{dbt_today-1}}"
+    }
+
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Product Exclusion Records for different alignment type 1",
+        "query": "skip",
+        "sfQuery": "select OCE__Territory__c,OCE__Product__r.Name,OCE__UniqueIntegrationID__c from OCE__TerritoryProductExclusion__c where OCE__Territory__c='{{ScenarioTerritory.Name[3]}}' and OCE__Product__r.Name='{{Product.Name[0]}}'",
+        "exp_result": "[{OCE__Territory:{{ScenarioTerritory.Name[3]}},Name:{{Product.Name[0]}},OCE__UniqueIntegrationID:{{Product.SOMProductId__c[0]}}-{{ScenarioTerritory.SOMTerritoryId__c[3]}}}]"
+      },
+      {
+        "testname": "Product Exclusion Records for different alignment type 2",
+        "query": "skip",
+        "sfQuery": "select OCE__Territory__c,OCE__Product__r.Name,OCE__UniqueIntegrationID__c from OCE__TerritoryProductExclusion__c where OCE__Territory__c='{{ScenarioTerritory.Name[3]}}' and OCE__Product__r.Name='{{Product.Name[1]}}'",
+        "exp_result": "[{OCE__Territory:{{ScenarioTerritory.Name[3]}},Name:{{Product.Name[1]}},OCE__UniqueIntegrationID:{{Product.SOMProductId__c[1]}}-{{ScenarioTerritory.SOMTerritoryId__c[3]}}}]"
+      },
+      {
+        "testname": "Product Exclusion Records for different alignment type 3",
+        "query": "skip",
+        "sfQuery": "select OCE__Territory__c,OCE__Product__r.Name,OCE__UniqueIntegrationID__c from OCE__TerritoryProductExclusion__c where OCE__Territory__c='{{ScenarioTerritory.Name[3]}}' and OCE__Product__r.Name='{{Product.Name[2]}}'",
+        "exp_result": "[{OCE__Territory:{{ScenarioTerritory.Name[3]}},Name:{{Product.Name[2]}},OCE__UniqueIntegrationID:{{Product.SOMProductId__c[2]}}-{{ScenarioTerritory.SOMTerritoryId__c[3]}}}]"
+      },
+      {
+        "testname": "Product Exclusion Records for different alignment type 4",
+        "query": "skip",
+        "sfQuery": "select OCE__Territory__c,OCE__Product__r.Name,OCE__UniqueIntegrationID__c from OCE__TerritoryProductExclusion__c where OCE__Territory__c='{{ScenarioTerritory.Name[3]}}' and OCE__Product__r.Name='{{Product.Name[3]}}'",
+        "exp_result": "[]"
+      }
+    ]
+  }
+}

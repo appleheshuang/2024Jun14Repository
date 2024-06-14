@@ -1,0 +1,6 @@
+{
+	"Url": "https://ay5ai2ylx0.execute-api.us-east-1.amazonaws.com/",
+	"EnvRoot": "latest",
+	"AwsRegion": "us-east-1",
+	"TestDataBucket": "guardians-testdata-east1"
+}

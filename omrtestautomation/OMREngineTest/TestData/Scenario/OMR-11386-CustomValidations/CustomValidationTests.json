@@ -1,0 +1,17 @@
+{
+	"Tests": {
+		"MergeResults": [
+			//{
+			//	"testname": "OMR-11386_CustomValidationTestOMJob",
+			//	"query": "select \"ErrorMessage\" from static.\"OMJob\" where \"Details\" ilike '%{{Scenario.Id}}%'",
+			//	"exp_result": "[{ErrorMessage:Scenario {{scenario.id}} : Simulate FAILED.\nScenario input data failed custom validation. Check Scenario Errors for more details on records that failed.}]",
+			//	"sfQuery": "pass"
+			//},
+			{
+				"testname": "OMR-11386_CustomValidationTestOMScenarioError",
+				"query": "select \"ErrorCode\", \"ErrorMessage\", \"InstructionId\" from {{schema}}.\"OMScenarioError\" where \"OMScenarioId\" = '{{Scenario.Id}}'",
+				"exp_result": "[{ErrorCode:Error,ErrorMessage:ErrMsg!@#$%^&*(),InstructionId:!@#$%^&*()}]"
+			}
+		]
+	}
+}

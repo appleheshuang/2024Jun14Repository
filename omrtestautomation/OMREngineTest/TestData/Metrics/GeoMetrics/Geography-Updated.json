@@ -1,0 +1,20 @@
+﻿{
+	"Geography": [
+		{
+			"Country__c": "UK",
+			"OMRegionId__c": "UK",
+			"UniqueIntegrationId__c": "{{Geography.UniqueIntegrationId__c[1]}}"
+		}
+	],
+	"Tests": {
+		"MergeResult": [
+			{
+				"testname": "UpdatedGeoCountry",
+				"query": "OMGeography,SOMRegionId,Country,SOMGeographyId:'{{Geography.UniqueIntegrationId__c[1]}}'",
+				"exp_result": "[{SOMRegionId:UK,Country:UK}]"
+			}
+		]
+
+	}
+
+}

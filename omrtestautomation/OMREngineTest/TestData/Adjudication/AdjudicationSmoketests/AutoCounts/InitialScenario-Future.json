@@ -1,0 +1,337 @@
+{
+  "BaseData": {
+    "region1": "GS",
+    "region2": "MS",
+    "region3": "GB",
+    "EffectiveDate": "{{today+90}}",
+    "EndDate": "{{today+180}}",
+    "ScenarioName": "AutoCounts + CurrencyCode",
+    "salesforceUID": "SF19161",
+    "territoryUID": "19161",
+
+    // currency code data
+    "curr1_code": "GBP",
+    "curr2_code": "XCD",
+    "add_accountUId": "REPREMOVED",
+    "add_geoid": "KILKENNY",
+
+    // Automatic counts data
+    "R1_terr_acc_cnt": "3", // Note: excludes out of region account "REPREMOVED", SS2 tot=4
+    "R1_terr_geo_cnt": "1",
+    "R2_terr_acc_cnt": "2",
+    "R2_terr_geo_cnt": "3", // Note: excludes out of region geography "KILKENNY", SS2 tot=4
+    "R3_terr_acc_cnt": "3",
+    "R3_terr_geo_cnt": "2"
+  },
+  "Scenario": {
+    "Description": "{{ScenarioName}}_{{TestUniqueIntegrationId}}",
+    "Name": "{{ScenarioName}}_{{TestUniqueIntegrationId}}",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "{{TestUniqueIntegrationId}}"
+  },
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{region1}}",
+      "UniqueIntegrationId__c": "C1-{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "Name": "C1-{{salesforceUID}}"
+    },
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{region2}}",
+      "UniqueIntegrationId__c": "C2-{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "Name": "C2-{{salesforceUID}}"
+    },
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{region3}}",
+      "UniqueIntegrationId__c": "C3-{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "Name": "C3-{{salesforceUID}}"
+    }
+  ],
+  "ScenarioTerritory": [
+    // Territory for each currency region
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "C1-T{{territoryUID}}",
+      "UniqueIntegrationId__c": "C1-T{{territoryUID}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{region1}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[1]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "C2-T{{territoryUID}}",
+      "UniqueIntegrationId__c": "C2-T{{territoryUID}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{region2}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[2]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "C3-T{{territoryUID}}",
+      "UniqueIntegrationId__c": "C3-T{{territoryUID}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{region3}}",
+      "Type__c": "TERR"
+    }
+  ],
+  "ScenarioUserAssignment": [
+    // User-territory Assignment for each currency region
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "RepTerr1_{{TestUniqueIntegrationId}}",
+      "AssignmentType__c": "SECN",
+      "ImpactedRegions__c": "{{region1}}",
+      "SOMUserId__c": "{{User.SOMUserId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[0]}}",
+      "RefUserName__c": "{{User.Name[0]}}",
+      "RefUserType__c": "{{User.Type__c[0]}}"
+    },
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "RepTerr2_{{TestUniqueIntegrationId}}",
+      "AssignmentType__c": "SECN",
+      "ImpactedRegions__c": "{{region2}}",
+      "SOMUserId__c": "{{User.SOMUserId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[1]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[1]}}",
+      "RefUserName__c": "{{User.Name[0]}}",
+      "RefUserType__c": "{{User.Type__c[0]}}"
+    }
+  ],
+  "ScenarioAccountExplicit": [
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "COMP",
+      "AccountUniqueIntegrationId__c": "{{add_accountUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}"
+    }
+  ],
+  "ScenarioGeographyTerritory": [
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "{{add_geoid}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "SOMGeographyTerritoryId__c": "{{add_geoid}}-{{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "{{add_geoid}}-{{TestUniqueIntegrationId}}"
+    },
+    //Bricks to T0
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "GS_BRICK1",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "SOMGeographyTerritoryId__c": "GS_BRICK1-{{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "GS_BRICK1-{{TestUniqueIntegrationId}}"
+    },
+    //ZipCodes to T1
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "MS_POST1",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "SOMGeographyTerritoryId__c": "MS_POST1-{{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "MS_POST1-{{TestUniqueIntegrationId}}"
+    },
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "MS_POST2",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "SOMGeographyTerritoryId__c": "MS_POST2-{{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "MS_POST2-{{TestUniqueIntegrationId}}"
+    },
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "MS_POST3",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "SOMGeographyTerritoryId__c": "MS_POST3-{{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "MS_POST3-{{TestUniqueIntegrationId}}"
+    },
+    //StateCodes to T2
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "GB_STCD1",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "SOMGeographyTerritoryId__c": "GB_STCD1-{{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "GB_STCD1-{{TestUniqueIntegrationId}}"
+    },
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "GB_STCD2",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "SOMGeographyTerritoryId__c": "GB_STCD2-{{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "GB_STCD2-{{TestUniqueIntegrationId}}"
+    }
+
+  ],
+  "ScenarioRule": [
+    // Dynamically align psychologists
+    {
+      "Name": "Psychology-{{TestUniqueIntegrationId}}-R1",
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "R1-psych-{{ruleUID}}-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "RuleData__c": "{\"geography\":true,\"explicit\":false,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Practices,MP\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Psychology\"}]},\"hierarchy\":\"TERR\"}",
+      "RuleScope__c": "ALGN"
+    },
+    {
+      "Name": "Psychology-{{TestUniqueIntegrationId}}-R2",
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "R2-psych-{{ruleUID}}-{{TestUni1ueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[1]}}",
+      "RuleData__c": "{\"geography\":true,\"explicit\":false,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Practices,MP\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Psychology\"}]},\"hierarchy\":\"TERR\"}",
+      "RuleScope__c": "ALGN"
+    },
+    {
+      "Name": "Psychology-{{TestUniqueIntegrationId}}-R3",
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "R3-psych-{{ruleUID}}-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[2]}}",
+      "RuleData__c": "{\"geography\":true,\"explicit\":false,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Practices,MP\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Psychology\"}]},\"hierarchy\":\"TERR\"}",
+      "RuleScope__c": "ALGN"
+    }
+  ],
+  "Tests": {
+    "MetricResult": [
+      // Counts for each Account in the salesforce region
+      {
+        "testname": "AutoCount-R1Accounts",
+        "entity": "Account",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "19263-GS1,19263-GS2,19263-GS3,19263-GS4,19263-GS5",
+        "columns": "AccountCount,GeographyCount",
+        "exp_result": "[{Account:19263-GS1,AccountCount:1,GeographyCount:null},{Account:19263-GS2,AccountCount:1,GeographyCount:null},{Account:19263-GS3,AccountCount:1,GeographyCount:null},{Account:19263-GS4,AccountCount:1,GeographyCount:null},{Account:19263-GS5,AccountCount:1,GeographyCount:null}]"
+      },
+      {
+        "testname": "AutoCount-R2Accounts",
+        "entity": "Account",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "19263-MS1,19263-MS2,19263-MS3,19263-MS4",
+        "columns": "AccountCount,GeographyCount",
+        "exp_result": "[{Account:19263-MS1,AccountCount:1,GeographyCount:null},{Account:19263-MS2,AccountCount:1,GeographyCount:null},{Account:19263-MS3,AccountCount:1,GeographyCount:null},{Account:19263-MS4,AccountCount:1,GeographyCount:null}]"
+      },
+      {
+        "testname": "AutoCount-R3Accounts",
+        "entity": "Account",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[2]}}",
+        "entityId": "19263-GB1,19263-GB2,19263-GB3,19263-GB4,19263-GB5",
+        "columns": "AccountCount,GeographyCount",
+        "exp_result": "[{Account:19263-GB1,AccountCount:1,GeographyCount:null},{Account:19263-GB2,AccountCount:1,GeographyCount:null},{Account:19263-GB3,AccountCount:1,GeographyCount:null},{Account:19263-GB4,AccountCount:1,GeographyCount:null},{Account:19263-GB5,AccountCount:1,GeographyCount:null}]"
+      },
+      // Counts for each Geography in the salesforce region. 
+      // Note: Geos with non-matching GeoType are not counted. They may have a record,
+      //   or not, depending on existing MetricDefinitions. So using an outer join for these.
+      {
+        "testname": "AutoCount-R1Geographies",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "GS_BRICK1,GS_POST1,GS_STCD1",
+        "columns": "AccountCount,GeographyCount",
+        "nullAs": "0",
+        "exp_result": "[{Geography:GS_BRICK1,AccountCount:3,GeographyCount:1},{Geography:GS_POST1,AccountCount:0,GeographyCount:0},{Geography:GS_STCD1,AccountCount:0,GeographyCount:0}]"
+      },
+      {
+        "testname": "AutoCount-R2Geographies",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "MS_BRICK1,MS_POST1,MS_POST2,MS_POST3,MS_STCD1",
+        "columns": "AccountCount,GeographyCount",
+        "nullAs": "0",
+        // Unrounded: "exp_result": "[{Geography:MS_BRICK1,AccountCount:0,GeographyCount:0},{Geography:MS_POST1,AccountCount:0.333,GeographyCount:1},{Geography:MS_POST2,AccountCount:0.333,GeographyCount:1},{Geography:MS_POST3,AccountCount:1.333,GeographyCount:1},{Geography:MS_STCD1,AccountCount:0,GeographyCount:0}]"
+        "exp_result": "[{Geography:MS_BRICK1,AccountCount:0,GeographyCount:0},{Geography:MS_POST1,AccountCount:0,GeographyCount:1},{Geography:MS_POST2,AccountCount:0,GeographyCount:1},{Geography:MS_POST3,AccountCount:1,GeographyCount:1},{Geography:MS_STCD1,AccountCount:0,GeographyCount:0}]"
+      },
+      {
+        "testname": "AutoCount-R3Geographies",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[2]}}",
+        "entityId": "GB_BRICK1,GB_POST1,GB_STCD1,GB_STCD2",
+        "columns": "AccountCount,GeographyCount",
+        "nullAs": "0",
+        // Unrounded: "exp_result": "[{Geography:GB_BRICK1,AccountCount:0,GeographyCount:0},{Geography:GB_POST1,AccountCount:0,GeographyCount:0},{Geography:GB_STCD1,AccountCount:0.500,GeographyCount:1},{Geography:GB_STCD2,AccountCount:0.500,GeographyCount:1}]"
+        "exp_result": "[{Geography:GB_BRICK1,AccountCount:0,GeographyCount:0},{Geography:GB_POST1,AccountCount:0,GeographyCount:0},{Geography:GB_STCD1,AccountCount:1,GeographyCount:1},{Geography:GB_STCD2,AccountCount:1,GeographyCount:1}]"
+      },
+      // Count of aligned accounts and geos for each Territory in the salesforce region. 
+      {
+        "testname": "AutoCount-R1Territory",
+        "entity": "Territory",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "columns": "AccountCount,GeographyCount",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountCount:{{R1_terr_acc_cnt}},GeographyCount:{{R1_terr_geo_cnt}}}]"
+      },
+      {
+        "testname": "AutoCount-R2Territory",
+        "entity": "Territory",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "columns": "AccountCount,GeographyCount",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountCount:{{R2_terr_acc_cnt}},GeographyCount:{{R2_terr_geo_cnt}}}]"
+      },
+      {
+        "testname": "AutoCount-R3Territory",
+        "entity": "Territory",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[2]}}",
+        "entityId": "{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+        "columns": "AccountCount,GeographyCount",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[2]}},AccountCount:{{R3_terr_acc_cnt}},GeographyCount:{{R3_terr_geo_cnt}}}]"
+      }
+
+    ],
+    "MetricSummary": [
+      {
+        "testname": "R1-InMetricSummary",
+        "territory": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "columns": "CurrencyIsoCode,AccountsTotal,GeographiesTotal",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountType:Total,CurrencyIsoCode:{{curr1_code}},AccountsTotal:4,GeographiesTotal:1}]"
+      },
+      {
+        "testname": "R2-InMetricSummary",
+        "territory": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "columns": "CurrencyIsoCode,AccountsTotal,GeographiesTotal",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountType:Total,CurrencyIsoCode:{{curr2_code}},AccountsTotal:2,GeographiesTotal:4}]"
+      },
+      {
+        "testname": "R3-InMetricSummary",
+        "territory": "{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+        "columns": "AccountsTotal,GeographiesTotal",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[2]}},AccountType:Total,AccountsTotal:3,GeographiesTotal:2}]"
+      }
+    ]
+  }
+}

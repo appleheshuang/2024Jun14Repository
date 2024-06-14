@@ -1,0 +1,166 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "GS",
+    "productUId": "PROD1",
+    "salesforceUID": "SF506",
+    "territoryUID": "T506",
+    "territoryUID2": "T606",
+    "EffectiveDate": "2020-12-01",
+    "EndDate": "2022-11-29"
+  },
+
+  "Scenario": {
+    "Description": "Run actions on entities OMProductExplicit, OMProductExclusion",
+    "name": "Test case C7644688",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "ProdExpExcRun-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioProductExplicit": [
+    // Action EDIT (territory T1-T2)
+    {
+      "Action__c": "EDIT",
+      "SOMProductId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "SOMProductExplicitId__c": "{{ScenarioProductExplicit.SOMProductExplicitId__c[0]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2021-02-01",
+      "EndDate__c": "2021-03-15"
+    },
+    // Action EFFE
+    {
+      "Action__c": "EFFE",
+      "SOMProductId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "SOMProductExplicitId__c": "{{ScenarioProductExplicit.SOMProductExplicitId__c[0]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2021-02-01",
+      "EndDate__c": "2021-03-15"
+    },
+    // Action EXPR
+    {
+      "Action__c": "EXPR",
+      "SOMProductId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "SOMProductExplicitId__c": "{{ScenarioProductExplicit.SOMProductExplicitId__c[0]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2021-02-01",
+      "EndDate__c": "2021-03-15"
+    },
+    // Action PEXP
+    {
+      "Action__c": "PEXP",
+      "SOMProductId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c}}",
+      "SOMProductExplicitId__c": "{{ScenarioProductExplicit.SOMProductExplicitId__c[1]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2021-07-15"
+    },
+    // Action DEL
+    {
+      "Action__c": "DEL",
+      "SOMProductId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c}}",
+      "SOMProductExplicitId__c": "{{ScenarioProductExplicit.SOMProductExplicitId__c[2]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2021-10-15"
+    }
+  ],
+
+  "ScenarioProductExclusion": [
+    // Action EDIT (territory T1-T2)
+    {
+      "Action__c": "EDIT",
+      "SOMProductId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "SOMProductExclusionId__c": "{{ScenarioProductExclusion.SOMProductExclusionId__c[0]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2022-02-02",
+      "EndDate__c": "2022-02-25"
+    },
+    // Action EFFE
+    {
+      "Action__c": "EFFE",
+      "SOMProductId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "SOMProductExclusionId__c": "{{ScenarioProductExclusion.SOMProductExclusionId__c[0]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2022-02-02",
+      "EndDate__c": "2022-02-25"
+    },
+    // Action EXPR
+    {
+      "Action__c": "EXPR",
+      "SOMProductId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "SOMProductExclusionId__c": "{{ScenarioProductExclusion.SOMProductExclusionId__c[0]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2022-02-02",
+      "EndDate__c": "2022-02-25"
+    },
+    // Action PEXP
+    {
+      "Action__c": "PEXP",
+      "SOMProductId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "SOMProductExclusionId__c": "{{ScenarioProductExclusion.SOMProductExclusionId__c[1]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2022-07-15"
+    },
+    // Action DEL
+    {
+      "Action__c": "DEL",
+      "SOMProductId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "SOMProductExclusionId__c": "{{ScenarioProductExclusion.SOMProductExclusionId__c[2]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2022-10-15"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      // check actions PEXP, DEL OMProductExplicit
+      {
+        "testname": "merge_product_explicit_PEXP_DEL",
+        "query": "select \"SOMProductId\",\"SOMTerritoryId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMProductExplicit\" where \"SOMProductId\"='{{productUId}}' AND \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c}}'  order by \"EffectiveDate\" asc",
+        "exp_result": "[{SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Status:ACTV,EffectiveDate:{{ScenarioProductExplicit.EffectiveDate__c[1]}},EndDate:2021-07-14},{SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Status:INAC,EffectiveDate:{{ScenarioProductExplicit.EffectiveDate__c[2]}},EndDate:{{ScenarioProductExplicit.EndDate__c[2]}}}]",
+        "odataQuery": "/OMProductExplicit?$select=SOMProductId,SOMTerritoryId,Status,EffectiveDate,EndDate&$filter=SOMProductId eq '{{productUId}}' AND SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c}}'&$orderBy=EffectiveDate asc",
+        "sfQuery": null
+      },
+      // check actions EDIT (territory T1-T2), EFFE, EXPR OMProductExplicit
+      {
+        "testname": "merge_product_explicit_EDIT_EFFE_EXPR",
+        "query": "select \"SOMProductId\",\"SOMTerritoryId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMProductExplicit\" where \"SOMProductId\"='{{productUId}}' AND \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[1]}}'  order by \"EffectiveDate\" asc",
+        "exp_result": "[{SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},Status:ACTV,EffectiveDate:2021-02-01,EndDate:2021-03-15}]",
+        "odataQuery": "/OMProductExplicit?$select=SOMProductId,SOMTerritoryId,Status,EffectiveDate,EndDate&$filter=SOMProductId eq '{{productUId}}' AND SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[1]}}'&$orderBy=EffectiveDate asc",
+        "sfQuery": null
+      },
+      // check actions PEXP, DEL OMProductExclusion
+      {
+        "testname": "merge_product_exclusion_PEXP_DEL",
+        "query": "select \"SOMProductId\",\"SOMTerritoryId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMProductExclusion\" where \"SOMProductId\"='{{productUId}}' AND \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[1]}}'  order by \"EffectiveDate\" asc",
+        "exp_result": "[{SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},Status:ACTV,EffectiveDate:{{ScenarioProductExclusion.EffectiveDate__c[1]}},EndDate:2022-07-14},{SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},Status:INAC,EffectiveDate:{{ScenarioProductExclusion.EffectiveDate__c[2]}},EndDate:{{ScenarioProductExclusion.EndDate__c[2]}}}]",
+        "odataQuery": "/OMProductExclusion?$select=SOMProductId,SOMTerritoryId,Status,EffectiveDate,EndDate&$filter=SOMProductId eq '{{productUId}}' AND SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[1]}}'&$orderBy=EffectiveDate asc",
+        "sfQuery": null
+      },
+      // check actions EDIT (territory T1-T2), EFFE, EXPR OMProductExclusion
+      {
+        "testname": "merge_product_exclusion_EDIT_EFFE_EXPR",
+        "query": "select \"SOMProductId\",\"SOMTerritoryId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMProductExclusion\" where \"SOMProductId\"='{{productUId}}' AND \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[2]}}'  order by \"EffectiveDate\" asc",
+        "exp_result": "[{SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[2]}},Status:ACTV,EffectiveDate:2022-02-02,EndDate:2022-02-25}]",
+        "odataQuery": "/OMProductExclusion?$select=SOMProductId,SOMTerritoryId,Status,EffectiveDate,EndDate&$filter=SOMProductId eq '{{productUId}}' AND SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[2]}}'&$orderBy=EffectiveDate asc",
+        "sfQuery": null
+      }
+    ]
+  }
+}

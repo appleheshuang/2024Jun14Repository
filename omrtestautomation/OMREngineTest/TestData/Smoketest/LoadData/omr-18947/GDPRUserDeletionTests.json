@@ -1,0 +1,594 @@
+{
+  "BaseData": {
+    "som_region_id": "FX", //This region has USerDataProtectionAction = DEL
+    "som_region_id2": "BM", //This region has USerDataProtectionAction = MASK
+    "som_region_id3": "GB", //This region has USerDataProtectionAction = NONE
+    "User1_ActiveAndInFX": "OMR-18947-FX-1-{{TestUniqueIntegrationId}}",
+    "User2_ActiveAndGlobal": "OMR-18947-Global-1-{{TestUniqueIntegrationId}}",
+    "User3_ActiveAndInBM": "OMR-18947-BM-1-{{TestUniqueIntegrationId}}",
+    "User4_ActiveAndInGB": "OMR-18947-GB-1-{{TestUniqueIntegrationId}}",
+    "User5_InacAndInFX": "OMR-18947-FX-2-{{TestUniqueIntegrationId}}",
+    "User6_InacAndGlobal": "OMR-18947-Global-2-{{TestUniqueIntegrationId}}",
+    "User7_InacAndInBM": "OMR-18947-BM-2-{{TestUniqueIntegrationId}}",
+    "User8_InacAndInGB": "OMR-18947-GB-2-{{TestUniqueIntegrationId}}",
+    "FX-1-UserAddress": "Paris",
+    "FX-2-UserAddress": "Nice",
+    "BM-1-UserAddress": "Hamilton",
+    "BM-2-UserAddress": "Tucker's Town",
+    "GB-1-UserAddress": "London",
+    "GB-2-UserAddress": "Plymouth",
+    "Global-1-UserAddress": "Arles",
+    "Global-2-UserAddress": "Bordeaux",
+    "FX-1-CommunicationDetail": "Communication detail FX-ACTV-{{TestUniqueIntegrationId}}",
+    "FX-2-CommunicationDetail": "Communication detail FX-INAC-{{TestUniqueIntegrationId}}",
+    "BM-1-CommunicationDetail": "Communication detail BM-ACTV-{{TestUniqueIntegrationId}}",
+    "BM-2-CommunicationDetail": "Communication detail BM-INAC-{{TestUniqueIntegrationId}}",
+    "GB-1-CommunicationDetail": "Communication detail GB-ACTV-{{TestUniqueIntegrationId}}",
+    "GB-2-CommunicationDetail": "Communication detail GB-INAC-{{TestUniqueIntegrationId}}",
+    "Global-1-CommunicationDetail": "Communication detail Global-ACTV-{{TestUniqueIntegrationId}}",
+    "Global-2-CommunicationDetail": "Communication detail Global-INAC-{{TestUniqueIntegrationId}}",
+    "TitleDescriptionDEL": "UDPA = DEL OMUserTerritoryTitle.Description {{TestUniqueIntegrationId}}",
+    "TitleDescriptionGlobal": "Global User Territory Title Description {{TestUniqueIntegrationId}}",
+    "TitleDescriptionMASK": "UDPA = MASK OMUserTerritoryTitle.Description {{TestUniqueIntegrationId}}",
+    "TitleDescriptionNONE": "UDPA = NONE OMUserTerritoryTitle.Description {{TestUniqueIntegrationId}}"
+  },
+	"Tests": {
+    "MergeResults": [
+      //OMUserPurge check for expected OMUser records (in Regions with UDPA DEL/MASK)
+      {
+        "testname": "CheckOMUserPurgeTableforAddedUsers",
+        "query": "select \"SOMUserId\", \"UniqueIntegrationId\", \"PurgeAction\" from static.\"OMUserPurge\" where \"SOMUserId\" ilike '%{{TestUniqueIntegrationId}}%' and \"PurgeScheduled\" is not null and \"PurgeCompleted\" is not null order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},UniqueIntegrationId:{{User3_ActiveAndInBM}},PurgeAction:\"MASK\"},{SOMUserId:{{User7_InacAndInBM}},UniqueIntegrationId:{{User7_InacAndInBM}},PurgeAction:\"MASK\"},{SOMUserId:{{User1_ActiveAndInFX}},UniqueIntegrationId:{{User1_ActiveAndInFX}},PurgeAction:\"DEL\"},{SOMUserId:{{User5_InacAndInFX}},UniqueIntegrationId:{{User5_InacAndInFX}},PurgeAction:\"DEL\"}]"
+      },
+      //OMUserPurge check for no unexpected OMUser records
+      {
+        "testname": "CheckNoUnexpectedUsersInOMUserPurge",
+        "query": "select count(*) \"count\" from static.\"OMUserPurge\" up join static.\"OMUser\" u on up.\"SOMUserId\" = u.\"SOMUserId\" where u.\"DataProtected\" is null or 'FALSE'\r\n",
+        "exp_result": "[{count:0}]"
+      },
+      //Data checks for FX Region with UserDataProtection = DEL
+      //Checking OMUser with DP=true  & sub-tables in FX Region with UserDataProtection  = DEL
+      {
+        "testname": "GDPRCheckGDPRdataforOMUserDEL",
+        "query": "select \"SOMUserId\", \"SOMRegionId\", \"Status\", \"DataProtected\" from static.\"OMUser\" where \"SOMRegionId\" = 'FX' and \"SOMUserId\" ilike '%{{TestUniqueIntegrationId}}%'  order by \"SOMUserId\" asc",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserDEL",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"OldValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUser' and \"Operation\" = 'Delete' and \"OldValue\" ilike '%FX%{{TestUniqueIntegrationId}}%' order by \"OldValue\" asc",
+        "exp_result": "[{TableName:OMUser,ColumnName:UniqueIntegrationId,Operation:Delete,OldValue:{{User1_ActiveAndInFX}}},{TableName:OMUser,ColumnName:UniqueIntegrationId,Operation:Delete,OldValue:{{User5_InacAndInFX}}}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserDELNoADD",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"Parent\" from static.\"OMAudit\" where \"TableName\" = 'OMUser' and \"Operation\" in ('Add','Update') and \"Parent\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserAddress for DEL case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserAddressDEL",
+        "query": "select \"SOMUserId\", \"City\", \"Status\" from static.\"OMUserAddress\" where \"SOMUserId\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserAddressDEL",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserAddress' and \"ColumnName\" = 'City' and \"Parent\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserCommunication for DEL case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserCommunicaionDEL",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserCommunication\" where \"SOMUserId\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserCommunicationDEL",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserCommunication' and \"ColumnName\" = 'CommunicationDetail' and \"NewValue\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserTitle for DEL case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserTitleDEL",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserTitle\" where \"SOMUserId\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserTitleDEL",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserTitle' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserContact for DEL case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserContactDEL",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserContact\" where \"SOMUserId\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserContactDEL",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserContact' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserDependent for DEL case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserDependentDEL",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserDependent\" where \"SOMUserId\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserDependentDEL",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserDependent' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserDriver for DEL case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserDriverDEL",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserDriver\" where \"SOMUserId\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserDriverDEL",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserDriver' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserDriverIncident for DEL case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserDriverIncidentDEL",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserDriverIncident\" where \"SOMUserId\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserDriverIncidentDEL",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserDriverIncident' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserEducation for DEL case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserEducationDEL",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserEducation\" where \"SOMUserId\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserEducationDEL",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserEducation' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserVehicle for DEL case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserVehicleDEL",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserEducation\" where \"SOMUserId\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserVehicleDEL",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserVehicle' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserAssignment for DEL case
+      {
+        "testname": "CheckGDPROMUserAssignmentforGDPRDEL",
+        "query": "select \"SOMTerritoryId\", \"SOMUserId\", \"AssignmentType\", \"UniqueIntegrationId\", \"Status\" from output.\"OMUserAssignment\" where \"UniqueIntegrationId\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserAssignmentDEL",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewId\" from static.\"OMAudit\" where \"TableName\" = 'OMUserAssignment' and \"NewId\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+
+      //Checking data after dataprotection job for OMUserTerritoryTitle for DEL case
+      {
+        "testname": "CheckGDPROMUserTerritoryTitleforGDPRDEL",
+        "query": "select \"SOMTerritoryId\", \"SOMUserId\", \"SOMFieldTitleId\",\"TitleDescription\", \"Status\" from output.\"OMUserTerritoryTitle\" where \"SOMUserId\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserTerritoryTitleDEL",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserTerritoryTitle' and \"NewValue\" ilike '%FX%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking OMUser with DP=true  & sub-tables in BM Region with UserDataProtection  = MASK (table data is preserved, OMAudit data is purged)
+      //Checking data after dataprotection job for OMUser for MASK case
+      {
+        "testname": "GDPRCheckGDPRdataforOMUserMASK",
+        "query": "select \"SOMUserId\", \"SOMRegionId\", \"Status\", \"DataProtected\" from static.\"OMUser\" where \"SOMRegionId\" = 'BM' and \"SOMUserId\" ilike '%BM%{{TestUniqueIntegrationId}}%'  order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},SOMRegionId:BM,Status:ACTV,DataProtected:true},{SOMUserId:{{User7_InacAndInBM}},SOMRegionId:BM,Status:INAC,DataProtected:true}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserMASK",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"OldValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUser' and \"Operation\" = 'Delete' and \"OldValue\" ilike '%BM%{{TestUniqueIntegrationId}}%' order by \"OldValue\" asc",
+        "exp_result": "[{TableName:OMUser,ColumnName:UniqueIntegrationId,Operation:Delete,OldValue:{{User3_ActiveAndInBM}}},{TableName:OMUser,ColumnName:UniqueIntegrationId,Operation:Delete,OldValue:{{User7_InacAndInBM}}}]"
+      },
+      //Checking data after dataprotection job for OMUserAddress for MASK case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserAddressMASK",
+        "query": "select \"SOMUserId\", \"City\", \"Status\" from static.\"OMUserAddress\" where \"SOMUserId\" ilike '%BM%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},City:{{BM-1-UserAddress}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},City:{{BM-2-UserAddress}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserAddressMASK",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserAddress' and \"ColumnName\" = 'City' and \"Parent\" ilike '%BM%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserCommunication for MASK case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserCommunicaionMASK",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserCommunication\" where \"SOMUserId\" ilike '%BM%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserCommunicationMASK",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserCommunication' and \"ColumnName\" = 'CommunicationDetail' and \"NewValue\" ilike '%BM%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserTitle for MASK case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserTitleMASK",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserTitle\" where \"SOMUserId\" ilike '%BM%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserTitleMASK",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserTitle' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%BM%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserContact for MASK case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserContactMASK",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserContact\" where \"SOMUserId\" ilike '%BM%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserContactMASK",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserContact' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%BM%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserDependent for MASK case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserDependentMASK",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserDependent\" where \"SOMUserId\" ilike '%BM%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserDependentMASK",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserDependent' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%BM%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserDriver for MASK case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserDriverMASK",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserDriver\" where \"SOMUserId\" ilike '%BM%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserDriverMASK",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserDriver' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%BM%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserDriverIncident for MASK case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserDriverIncidentMASK",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserDriverIncident\" where \"SOMUserId\" ilike '%BM%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserDriverIncidentMASK",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserDriverIncident' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%BM%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserEducation for MASK case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserEducationMASK",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserEducation\" where \"SOMUserId\" ilike '%BM%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserEducationMASK",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserEducation' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%BM%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserVehicle for MASK case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserVehicleMASK",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserEducation\" where \"SOMUserId\" ilike '%BM%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserVehicleMASK",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserVehicle' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%BM%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+      //Checking data after dataprotection job for OMUserAssignment for MASK case
+      {
+        "testname": "CheckGDPROMUserAssignmentforGDPRMASK",
+        "query": "select \"SOMUserId\", \"Status\" from output.\"OMUserAssignment\" where \"SOMUserId\" ilike '%BM%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserAssignmentMASK",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewId\" from static.\"OMAudit\" where \"TableName\" = 'OMUserAssignment' and \"NewId\" ilike '%BM%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+
+      //Checking data after dataprotection job for OMUserTerritoryTitle for MASK case
+      {
+        "testname": "CheckGDPROMUserTerritoryTitleforGDPRMASK",
+        "query": "select \"SOMUserId\", \"Status\" from output.\"OMUserTerritoryTitle\" where \"SOMUserId\" ilike '%BM%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserTerritoryTitleMASK",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserTerritoryTitle' and \"NewValue\" ilike '%BM%{{TestUniqueIntegrationId}}%'",
+        "exp_result": "[]"
+      },
+
+      //Checking OMUser with DP=true  & sub-tables in GB Region with UserDataProtection not set
+      //Checking data after dataprotection job for OMUser for User Data Protection for the Region (GB) not set case
+      {
+        "testname": "GDPRCheckGDPRdataforOMUserNONE",
+        "query": "select \"SOMUserId\", \"SOMRegionId\", \"Status\", \"DataProtected\" from static.\"OMUser\" where \"SOMUserId\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User4_ActiveAndInGB}},SOMRegionId:GB,Status:ACTV,DataProtected:true},{SOMUserId:{{User8_InacAndInGB}},SOMRegionId:GB,Status:INAC,DataProtected:true}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserNONE",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUser' and \"NewValue\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUser,ColumnName:Name,Operation:Add,NewValue:{{User4_ActiveAndInGB}}}]"
+      },
+      //Checking data after dataprotection job for OMUserAddress for User Data Protection for the Region (GB) not set case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserAddressNONE",
+        "query": "select \"SOMUserId\", \"City\", \"Status\" from static.\"OMUserAddress\" where \"SOMUserId\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User4_ActiveAndInGB}},City:{{GB-1-UserAddress}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},City:{{GB-2-UserAddress}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserAddressNONE",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserAddress' and \"ColumnName\" = 'City' and \"Parent\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserAddress,ColumnName:City,Operation:Add,NewValue:{{GB-1-UserAddress}}},{TableName:OMUserAddress,ColumnName:City,Operation:Add,NewValue:{{GB-2-UserAddress}}}]"
+      },
+      //Checking data after dataprotection job for OMUserCommunication for User Data Protection for the Region (GB) not set case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserCommunicaionNONE",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserCommunication\" where \"SOMUserId\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserCommunicationNONE",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserCommunication' and \"ColumnName\" = 'CommunicationDetail' and \"NewValue\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserCommunication,ColumnName:CommunicationDetail,Operation:Add,NewValue:{{GB-1-CommunicationDetail}}},{TableName:OMUserCommunication,ColumnName:CommunicationDetail,Operation:Add,NewValue:{{GB-2-CommunicationDetail}}}]"
+      },
+      //Checking data after dataprotection job for OMUserTitle for User Data Protection for the Region (GB) not set case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserTitleNONE",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserTitle\" where \"SOMUserId\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserTitleNONE",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserTitle' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserTitle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User4_ActiveAndInGB}}},{TableName:OMUserTitle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User8_InacAndInGB}}}]"
+      },
+      //Checking data after dataprotection job for OMUserContact for User Data Protection for the Region (GB) not set case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserContactNONE",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserContact\" where \"SOMUserId\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserContactNONE",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserContact' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserContact,ColumnName:SOMUserId,Operation:Add,NewValue:{{User4_ActiveAndInGB}}},{TableName:OMUserContact,ColumnName:SOMUserId,Operation:Add,NewValue:{{User8_InacAndInGB}}}]"
+      },
+      //Checking data after dataprotection job for OMUserDependent for User Data Protection for the Region (GB) not set case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserDependentNONE",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserDependent\" where \"SOMUserId\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserDependentNONE",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserDependent' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserDependent,ColumnName:SOMUserId,Operation:Add,NewValue:{{User4_ActiveAndInGB}}},{TableName:OMUserDependent,ColumnName:SOMUserId,Operation:Add,NewValue:{{User8_InacAndInGB}}}]"
+      },
+      //Checking data after dataprotection job for OMUserDriver for User Data Protection for the Region (GB) not set case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserDriverNONE",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserDriver\" where \"SOMUserId\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserDriverNONE",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserDriver' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserDriver,ColumnName:SOMUserId,Operation:Add,NewValue:{{User4_ActiveAndInGB}}},{TableName:OMUserDriver,ColumnName:SOMUserId,Operation:Add,NewValue:{{User8_InacAndInGB}}}]"
+      },
+      //Checking data after dataprotection job for OMUserDriverIncident for User Data Protection for the Region (GB) not set case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserDriverIncidentNONE",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserDriverIncident\" where \"SOMUserId\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserDriverIncidentNONE",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserDriverIncident' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserDriverIncident,ColumnName:SOMUserId,Operation:Add,NewValue:{{User4_ActiveAndInGB}}},{TableName:OMUserDriverIncident,ColumnName:SOMUserId,Operation:Add,NewValue:{{User8_InacAndInGB}}}]"
+      },
+      //Checking data after dataprotection job for OMUserEducation for User Data Protection for the Region (GB) not set case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserEducationNONE",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserEducation\" where \"SOMUserId\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserEducationNONE",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserEducation' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserEducation,ColumnName:SOMUserId,Operation:Add,NewValue:{{User4_ActiveAndInGB}}},{TableName:OMUserEducation,ColumnName:SOMUserId,Operation:Add,NewValue:{{User8_InacAndInGB}}}]"
+      },
+      //Checking data after dataprotection job for OMUserVehicle for User Data Protection for the Region (GB) not set case
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserVehicleNONE",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserEducation\" where \"SOMUserId\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserVehicleNONE",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserVehicle' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserVehicle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User4_ActiveAndInGB}}},{TableName:OMUserVehicle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User8_InacAndInGB}}}]"
+      },
+      //Checking data after dataprotection job for OMUserAssignment for User Data Protection for the Region (GB) not set case
+      {
+        "testname": "CheckGDPROMUserAssignmentforGDPRNONE",
+        "query": "select \"SOMUserId\", \"Status\" from output.\"OMUserAssignment\" where \"SOMUserId\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserAssignmentNONE",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewId\" from static.\"OMAudit\" where \"TableName\" = 'OMUserAssignment' and \"NewId\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"NewId\" asc",
+        "exp_result": "[{TableName:OMUserAssignment,ColumnName:SOMUserId,Operation:Add,NewId:{{User4_ActiveAndInGB}}}]"
+      },
+      //Checking data after dataprotection job for OMUserTerritoryTitle for User Data Protection for the Region (GB) not set case
+
+      {
+        "testname": "CheckGDPROMUserTerritoryTitleforGDPRNONE",
+        "query": "select \"SOMUserId\", \"Status\" from output.\"OMUserTerritoryTitle\" where \"SOMUserId\" ilike '%GB%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserTerritoryTitleNONE",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserTerritoryTitle' and \"NewValue\" ilike '%NONE%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserTerritoryTitle,ColumnName:TitleDescription,Operation:Add,NewValue:{{TitleDescriptionNONE}}}]"
+      },
+
+      //Data checks for Gobal User with DataProtected = True
+      //Checking data after dataprotection job for OMUser for a Global User
+      {
+        "testname": "GDPRCheckGDPRdataforOMUserGlobal",
+        "query": "select \"SOMUserId\", \"SOMRegionId\", \"Status\", \"DataProtected\" from static.\"OMUser\" where \"SOMUserId\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User2_ActiveAndGlobal}},SOMRegionId:null,Status:ACTV,DataProtected:true},{SOMUserId:{{User6_InacAndGlobal}},SOMRegionId:null,Status:INAC,DataProtected:true}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserGlobal",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUser' and \"NewValue\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUser,ColumnName:Name,Operation:Add,NewValue:{{User2_ActiveAndGlobal}}}]"
+      },
+      //Checking data after dataprotection job for OMUserAddress for a Global User
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserAddressGlobal",
+        "query": "select \"SOMUserId\", \"City\", \"Status\" from static.\"OMUserAddress\" where \"SOMUserId\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User2_ActiveAndGlobal}},City:{{Global-1-UserAddress}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},City:{{Global-2-UserAddress}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserAddressGlobal",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserAddress' and \"ColumnName\" = 'City' and \"Parent\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserAddress,ColumnName:City,Operation:Add,NewValue:{{Global-1-UserAddress}}},{TableName:OMUserAddress,ColumnName:City,Operation:Add,NewValue:{{Global-2-UserAddress}}}]"
+      },
+      //Checking data after dataprotection job for OMUserCommunication for a Global User
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserCommunicaionGlobal",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserCommunication\" where \"SOMUserId\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserCommunicationGlobal",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserCommunication' and \"ColumnName\" = 'CommunicationDetail' and \"NewValue\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserCommunication,ColumnName:CommunicationDetail,Operation:Add,NewValue:{{Global-1-CommunicationDetail}}},{TableName:OMUserCommunication,ColumnName:CommunicationDetail,Operation:Add,NewValue:{{Global-2-CommunicationDetail}}}]"
+      },
+      //Checking data after dataprotection job for OMUserTitle for a Global User
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserTitleGlobal",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserTitle\" where \"SOMUserId\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserTitleGlobal",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserTitle' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserTitle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User2_ActiveAndGlobal}}},{TableName:OMUserTitle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User6_InacAndGlobal}}}]"
+      },
+      //Checking data after dataprotection job for OMUserContact for a Global User
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserContactGlobal",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserContact\" where \"SOMUserId\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserContactGlobal",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserContact' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserContact,ColumnName:SOMUserId,Operation:Add,NewValue:{{User2_ActiveAndGlobal}}},{TableName:OMUserContact,ColumnName:SOMUserId,Operation:Add,NewValue:{{User6_InacAndGlobal}}}]"
+      },
+      //Checking data after dataprotection job for OMUserDependent for a Global User
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserDependentGlobal",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserDependent\" where \"SOMUserId\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserDependentGlobal",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserDependent' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserDependent,ColumnName:SOMUserId,Operation:Add,NewValue:{{User2_ActiveAndGlobal}}},{TableName:OMUserDependent,ColumnName:SOMUserId,Operation:Add,NewValue:{{User6_InacAndGlobal}}}]"
+      },
+      //Checking data after dataprotection job for OMUserDriver for a Global User
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserDriverGlobal",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserDriver\" where \"SOMUserId\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserDriverGlobal",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserDriver' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserDriver,ColumnName:SOMUserId,Operation:Add,NewValue:{{User2_ActiveAndGlobal}}},{TableName:OMUserDriver,ColumnName:SOMUserId,Operation:Add,NewValue:{{User6_InacAndGlobal}}}]"
+      },
+      //Checking data after dataprotection job for OMUserDriverIncident for a Global User
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserDriverIncidentGlobal",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserDriverIncident\" where \"SOMUserId\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserDriverIncidentGlobal",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserDriverIncident' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserDriverIncident,ColumnName:SOMUserId,Operation:Add,NewValue:{{User2_ActiveAndGlobal}}},{TableName:OMUserDriverIncident,ColumnName:SOMUserId,Operation:Add,NewValue:{{User6_InacAndGlobal}}}]"
+      },
+      //Checking data after dataprotection job for OMUserEducation for a Global User
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserEducationGlobal",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserEducation\" where \"SOMUserId\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserEducationGlobal",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserEducation' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserEducation,ColumnName:SOMUserId,Operation:Add,NewValue:{{User2_ActiveAndGlobal}}},{TableName:OMUserEducation,ColumnName:SOMUserId,Operation:Add,NewValue:{{User6_InacAndGlobal}}}]"
+      },
+      //Checking data after dataprotection job for OMUserVehicle for a Global User
+      {
+        "testname": "GDPRCheckGDPRDataforOMUserVehicleGlobal",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserEducation\" where \"SOMUserId\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserVehicleGlobal",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserVehicle' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserVehicle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User2_ActiveAndGlobal}}},{TableName:OMUserVehicle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User6_InacAndGlobal}}}]"
+      },
+      //Checking data after dataprotection job for OMUserAssignment for a Global User
+      {
+        "testname": "CheckGDPROMUserAssignmentforGDPRGlobal",
+        "query": "select \"SOMUserId\", \"Status\" from output.\"OMUserAssignment\" where \"SOMUserId\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserAssignmentGlobal",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewId\" from static.\"OMAudit\" where \"TableName\" = 'OMUserAssignment' and \"NewId\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"NewId\" asc",
+        "exp_result": "[{TableName:OMUserAssignment,ColumnName:SOMUserId,Operation:Add,NewId:{{User2_ActiveAndGlobal}}}]"
+      },
+      //Checking data after dataprotection job for OMUserTerritoryTitle for a Global User
+
+      {
+        "testname": "CheckGDPROMUserTerritoryTitleforGDPRGlobal",
+        "query": "select \"SOMUserId\", \"Status\" from output.\"OMUserTerritoryTitle\" where \"SOMUserId\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV}]"
+      },
+      {
+        "testname": "GDPRCheckGDPROMAuditforOMUserTerritoryTitleGlobal",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserTerritoryTitle' and \"NewValue\" ilike '%Global%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserTerritoryTitle,ColumnName:TitleDescription,Operation:Add,NewValue:{{TitleDescriptionGlobal}}}]"
+      }
+    ]
+	}
+}

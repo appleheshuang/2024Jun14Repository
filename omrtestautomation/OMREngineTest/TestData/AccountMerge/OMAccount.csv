@@ -1,0 +1,13 @@
+﻿Id,Type,AccountType,Name,Status,UniqueIntegrationId,SOMRegionId,CountryCode,Specialty
+AM-357WIN-{{TestUniqueIntegrationId}},Other,MP,357WIN,ACTV,AM-357WIN-{{TestUniqueIntegrationId}},REG01,NZ,Gastroenterology
+AM-357LOS-{{TestUniqueIntegrationId}},Other,MP,357LOS,ACTV,AM-357LOS-{{TestUniqueIntegrationId}},REG01,NZ,Gastroenterology
+AM-369WIN-{{TestUniqueIntegrationId}},Other,MP,369WIN,ACTV,AM-369WIN-{{TestUniqueIntegrationId}},REG01,NZ,
+AM-369LOS-{{TestUniqueIntegrationId}},Other,MP,369LOS,ACTV,AM-369LOS-{{TestUniqueIntegrationId}},REG01,NZ,Gastroenterology
+AM-370WIN-{{TestUniqueIntegrationId}},Other,MP,370WIN,ACTV,AM-370WIN-{{TestUniqueIntegrationId}},REG01,NZ,Gastroenterology
+AM-370LOS-{{TestUniqueIntegrationId}},Other,MP,370LOS,ACTV,AM-370LOS-{{TestUniqueIntegrationId}},REG01,NZ,Gastroenterology
+AM-371WIN-{{TestUniqueIntegrationId}},Other,MP,371WIN,ACTV,AM-371WIN-{{TestUniqueIntegrationId}},REG01,NZ,
+AM-371LOS-{{TestUniqueIntegrationId}},Other,MP,371LOS,ACTV,AM-371LOS-{{TestUniqueIntegrationId}},REG01,NZ,
+AM-372WIN-{{TestUniqueIntegrationId}},Other,MP,372WIN,ACTV,AM-372WIN-{{TestUniqueIntegrationId}},REG01,NZ,
+AM-372LOS-{{TestUniqueIntegrationId}},Other,MP,372LOS,ACTV,AM-372LOS-{{TestUniqueIntegrationId}},REG01,NZ,
+AM-373WIN-{{TestUniqueIntegrationId}},Other,MP,373WIN,ACTV,AM-373WIN-{{TestUniqueIntegrationId}},REG01,NZ,Gastroenterology
+AM-373LOS-{{TestUniqueIntegrationId}},Other,MP,373LOS,ACTV,AM-373LOS-{{TestUniqueIntegrationId}},REG01,NZ,Gastroenterology

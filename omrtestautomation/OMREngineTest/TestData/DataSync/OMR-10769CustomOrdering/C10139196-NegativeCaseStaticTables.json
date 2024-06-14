@@ -1,0 +1,25 @@
+﻿{
+  "DataSyncRequest": {
+    "Target": "SFDC",
+    "Tables": "OMRegion,OMProduct",
+    "JobType": "TestPush",
+    "LastUpdate": false,
+    "Order": "(OMProduct),(OMRegion)"
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "datasync-product",
+        "query": "skip",
+        "sfQuery": "select Name from {{prefix}}OMProduct__c where {{prefix}}SOMProductId__c = 'OMR-10769Fail-{{TestUniqueIntegrationId}}'",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "datasync-region",
+        "query": "skip",
+        "sfQuery": "select Name from {{prefix}}OMRegion__c where {{prefix}}SOMRegionId__c = 'OMR-10769Fail-{{TestUniqueIntegrationId}}'",
+        "exp_result": "[{Name:OMR-10769Fail-{{TestUniqueIntegrationId}}}]"
+      }
+    ]
+  }
+}

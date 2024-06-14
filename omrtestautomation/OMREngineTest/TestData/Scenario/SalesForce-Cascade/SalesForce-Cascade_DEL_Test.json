@@ -1,0 +1,56 @@
+{
+  "Configs": {},
+
+  "BaseData": {
+    "regionUId": "REG01",
+    "productUId": "PROD1",
+    "accountUId": "ACCT05"
+  },
+
+  "Scenario": {
+    "Name": "Delete SalesForce cascade Territory Test",
+    "Description": "Delete SalesForce cascade Territory",
+    "EffectiveDate__c": "2021-01-01",
+    "EndDate__c": "2021-12-30",
+    "ScenarioStatus__c": "PENDG",
+    "OMRegionId__c": "{{regionUId}}",
+    "UniqueIntegrationId__c": "Test {{TestUniqueIntegrationId}}"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "DEL",
+      "SOMRegionId__c": "{{regionUId}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+      "UniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "Name": "{{ScenarioSalesForce.Name[0]}}",
+      "Cascade__c": true
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Cascade SalesForce",
+        "query": "select \"Name\",\"Type\",\"Status\",\"EffectiveDate\",\"EndDate\" from {{schema}}.\"OMSalesForce\" where \"SOMSalesForceId\" in ('{{ScenarioSalesForce.SOMSalesForceId__c[0]}}', '{{ScenarioSalesForce.SOMSalesForceId__c[1]}}') order by \"Name\"",
+        "exp_result": "[{Name:{{ScenarioSalesForce.Name[0]}},Type:INST,Status:INAC,EffectiveDate:{{ScenarioSalesForce.EffectiveDate__c[0]}},EndDate:{{ScenarioSalesForce.EndDate__c[0]}}},{Name:{{ScenarioSalesForce.Name[1]}},Type:INST,Status:ACTV,EffectiveDate:{{ScenarioSalesForce.EffectiveDate__c[1]}},EndDate:{{ScenarioSalesForce.EndDate__c[1]}}}]"
+      },
+      {
+        "testname": "Cascade AccountExclusion",
+        "query": "select \"SOMTerritoryId\",\"OMAccountId\",\"Status\",\"EffectiveDate\",\"EndDate\" from {{schema}}.\"OMAccountExclusion\" where \"SOMTerritoryId\" in ('{{ScenarioTerritory.SOMTerritoryId__c[0]}}','{{ScenarioTerritory.SOMTerritoryId__c[1]}}','{{ScenarioTerritory.SOMTerritoryId__c[2]}}') and \"OMAccountId\" in ('{{accountUId}}','{{accountUId2}}') order by \"EffectiveDate\", \"Status\" desc",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[2]}},OMAccountId:{{accountUId2}},Status:INAC,EffectiveDate:{{ScenarioAccountExclusion.EffectiveDate__c[2]}},EndDate:{{ScenarioAccountExclusion.EndDate__c[2]}}},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},OMAccountId:{{accountUId2}},Status:ACTV,EffectiveDate:{{ScenarioAccountExclusion.EffectiveDate__c[2]}},EndDate:{{ScenarioAccountExclusion.EndDate__c[2]}}},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},OMAccountId:{{accountUId}},Status:INAC,EffectiveDate:{{ScenarioAccountExclusion.EffectiveDate__c[0]}},EndDate:{{ScenarioAccountExclusion.EndDate__c[0]}}},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},OMAccountId:{{accountUId}},Status:ACTV,EffectiveDate:{{ScenarioAccountExclusion.EffectiveDate__c[1]}},EndDate:{{ScenarioAccountExclusion.EndDate__c[1]}}}]"
+      },
+      { //First record INACed as the new effectiveDate is later than the end date
+        "testname": "Cascade Rule",
+        "query": "select \"Name\",\"EffectiveDate\",\"EndDate\",\"Status\" from {{schema}}.\"OMRule\" where \"SOMRuleId\" in ('{{ScenarioRule.SOMRuleId__c[0]}}','{{ScenarioRule.SOMRuleId__c[1]}}') order by \"Name\"",
+        "exp_result": "[{Name:{{ScenarioRule.Name[0]}},EffectiveDate:{{ScenarioRule.EffectiveDate__c[0]}},EndDate:{{ScenarioRule.EndDate__c[0]}},Status:INAC},{Name:{{ScenarioRule.Name[1]}},EffectiveDate:{{ScenarioRule.EffectiveDate__c[1]}},EndDate:{{ScenarioRule.EndDate__c[1]}},Status:ACTV}]"
+      },
+      {
+        "testname": "Cascade ProductSalesForce",
+        "query": "select \"SOMProductId\",\"SOMSalesForceId\",\"Status\",\"ProductAlignmentType\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMProductSalesForce\" where \"SOMProductId\"='{{productUId}}' and \"SOMSalesForceId\" in ('{{ScenarioSalesForce.SOMSalesForceId__c[0]}}','{{ScenarioSalesForce.SOMSalesForceId__c[1]}}') and \"ProductAlignmentType\"='{{ScenarioProductSalesForce.ProductAlignmentType__c[0]}}' order by \"EndDate\" desc",
+        "exp_result": "[{SOMProductId:{{productUId}},SOMSalesForceId:{{ScenarioSalesForce.SOMSalesForceId__c[0]}},Status:INAC,ProductAlignmentType:{{ScenarioProductSalesForce.ProductAlignmentType__c[0]}},EffectiveDate:{{ScenarioSalesForce.EffectiveDate__c[0]}},EndDate:{{ScenarioProductSalesForce.EndDate__c[0]}}},{SOMProductId:{{productUId}},SOMSalesForceId:{{ScenarioSalesForce.SOMSalesForceId__c[1]}},Status:ACTV,ProductAlignmentType:{{ScenarioProductSalesForce.ProductAlignmentType__c[1]}},EffectiveDate:{{ScenarioProductSalesForce.EffectiveDate__c[1]}},EndDate:{{ScenarioProductSalesForce.EndDate__c[1]}}}]"
+      }
+    ]
+  }
+}

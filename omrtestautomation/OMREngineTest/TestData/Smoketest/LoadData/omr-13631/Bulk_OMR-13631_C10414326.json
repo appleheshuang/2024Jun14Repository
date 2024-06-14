@@ -1,0 +1,31 @@
+{
+  "Bulkload": {
+    "S3AccessKey": "",
+    "S3SecretKey": "",
+    "S3BucketName": "",
+    "S3Path": "autotestdata/OMR-13631/",
+    "FileFormat": "CSV",
+    "Rollback": false,
+    "ValidateOnly": false,
+    "ReplaceExistingData": false,
+    "PicklistValidate": false,
+    "Files": [
+      {
+        "file": "OMR-13631_C10414326_OMProduct.csv",
+        "table": "OMProduct"
+      }
+    ]
+  },
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "C10414326 - Child record load – active records – parent record exists and is active with valid date range -- OMProduct",
+        //"query": "SELECT creg.\"SOMProductId\", creg.\"Name\", creg.\"UniqueIntegrationId\", creg.\"EffectiveDate\", creg.\"EndDate\", creg.\"Status\", creg.\"SOMRegionId\" FROM STATIC.\"OMProduct\" creg WHERE creg.\"UniqueIntegrationId\" ILIKE '%OMR-13631%' ORDER BY creg.\"UniqueIntegrationId\"",
+        "query": "SELECT creg.\"SOMProductId\", creg.\"Name\", creg.\"UniqueIntegrationId\", creg.\"EffectiveDate\", creg.\"EndDate\", creg.\"Status\", creg.\"SOMRegionId\" FROM STATIC.\"OMProduct\" creg WHERE creg.\"UniqueIntegrationId\" IN ('UID_OMR-13631_C10414326_01--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414326_02--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414326_03--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414326_04--{{TestUniqueIntegrationId}}') ORDER BY creg.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMProductId:ProdId_OMR-13631_C10414326_01--{{TestUniqueIntegrationId}},Name:ProdName_OMR-13631_C10414326_01--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414326_01--{{TestUniqueIntegrationId}},EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:FX},{SOMProductId:ProdId_OMR-13631_C10414326_02--{{TestUniqueIntegrationId}},Name:ProdName_OMR-13631_C10414326_02--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414326_02--{{TestUniqueIntegrationId}},EffectiveDate:2020-08-01,EndDate:2999-12-31,Status:ACTV,SOMRegionId:FX},{SOMProductId:ProdId_OMR-13631_C10414326_03--{{TestUniqueIntegrationId}},Name:ProdName_OMR-13631_C10414326_03--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414326_03--{{TestUniqueIntegrationId}},EffectiveDate:3020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:FX},{SOMProductId:ProdId_OMR-13631_C10414326_04--{{TestUniqueIntegrationId}},Name:ProdName_OMR-13631_C10414326_04--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414326_04--{{TestUniqueIntegrationId}},EffectiveDate:3020-08-01,EndDate:3020-08-31,Status:ACTV,SOMRegionId:FX}]",
+        "sfQuery": null
+      }
+    ]
+  }
+}

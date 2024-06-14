@@ -1,0 +1,221 @@
+{
+  "Configs": {},
+
+  "BaseData": {
+    "regionUId": "IO",
+    "productUId": "PROD1",
+    "accountUId": "ACCT01"
+  },
+
+  "Scenario": {
+    "Name": "Multiple Transactions on Scenario Entity Test Positive",
+    "Description": "C7848136 MOVE AccountExclusion, C7848138 EDIT+EXPR Rule, C7848139 EFFE+EXPR UserAssignment, C7848140 EDIT+EFFE+EXPR ProductExplicit, C7850226 EDIT+EFFE+EXPR SalesForce",
+    "EffectiveDate__c": "2021-03-01",
+    "EndDate__c": "2021-09-01",
+    "ScenarioStatus__c": "PENDG",
+    "OMRegionId__c": "{{regionUId}}",
+    "UniqueIntegrationId__c": "Test"
+  },
+
+  // C7850226 EDIT+EFFE+EXPR SalesForce
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "EDIT",
+      "SOMRegionId__c": "{{regionUId}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+      "UniqueIntegrationId__c": "SF-EDIT-{{TestUniqueIntegrationId}}",
+      "Name": "Edited {{ScenarioSalesForce.Name[0]}}", // Change Name for EDIT
+      "Type__c": "INST",
+      "EffectiveDate__c": "2021-02-01", // Change EffectiveDate__c for EFFE
+      "EndDate__c": "2021-09-01" // Change EndDate__c for EXPR
+    },
+    {
+      "Action__c": "EFFE",
+      "SOMRegionId__c": "{{regionUId}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+      "UniqueIntegrationId__c": "SF-EFFE-{{TestUniqueIntegrationId}}",
+      "Name": "Edited {{ScenarioSalesForce.Name[0]}}", // Changed Name applied
+      "EffectiveDate__c": "2021-02-01", // Same EffectiveDate__c on all transactions
+      "EndDate__c": "2021-09-01"
+    },
+    {
+      "Action__c": "EXPR",
+      "SOMRegionId__c": "{{regionUId}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+      "UniqueIntegrationId__c": "SF-EXPR-{{TestUniqueIntegrationId}}",
+      "Name": "Edited {{ScenarioSalesForce.Name[0]}}", // Changed Name applied
+      "EffectiveDate__c": "2021-02-01",
+      "EndDate__c": "2021-09-01" // Same EndDate__c on all transactions
+    }
+  ],
+
+  // C7848136 MOVE AccountExclusion
+  "ScenarioAccountExclusion": [
+    { // Pre-expire existing T1 exclusion
+      "Action__c": "PEXP",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}", // 1st Territory
+      "UniqueIntegrationId__c": "AExcl-PEXP-{{TestUniqueIntegrationId}}",
+      "SOMAccountExclusionId__c": "{{ScenarioAccountExclusion.SOMAccountExclusionId__c[0]}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "EffectiveDate__c": "2021-06-20", // Updated alignment ends 1 day earlier = 2021-06-19
+      "EndDate__c": "2021-08-01"
+    },
+    { // Create new T2 exclusion
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}", // 2nd Territory
+      "UniqueIntegrationId__c": "AExc2-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "EffectiveDate__c": "2021-06-20",
+      "EndDate__c": "2021-08-01"
+    }
+  ],
+
+  // C7848138 EDIT+EXPR Rule
+  "ScenarioRule": [
+    {
+      "Action__c": "EDIT",
+      "Name": "Edited {{ScenarioRule.Name[0]}}", // Change Name for EDIT
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "{{ScenarioRule.UniqueIntegrationId__c[0]}}", // UId is specifically required to be the same on EDIT action by Apex trigger before insert.
+      "SOMRuleId__c": "{{ScenarioRule.SOMRuleId__c[0]}}",
+      "RuleData__c": "{\"geography\":false,\"explicit\":true,\"filter\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC\"},\"hierarchy\":\"\"}",
+      "EffectiveDate__c": "2021-03-01",
+      "EndDate__c": "2021-08-01"
+    },
+    {
+      "Action__c": "EXPR",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "{{ScenarioRule.UniqueIntegrationId__c[0]}}",
+      "SOMRuleId__c": "{{ScenarioRule.SOMRuleId__c[0]}}",
+      "RuleData__c": "{\"geography\":false,\"explicit\":true,\"filter\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC\"},\"hierarchy\":\"\"}",
+      "EffectiveDate__c": "2021-03-01",
+      "EndDate__c": "2021-08-01" // Same EndDate__c on all transactions
+    }
+  ],
+
+  // C7848140 EDIT+EFFE+EXPR ProductExplicit with cascade
+  "ScenarioProductExplicit": [
+    {
+      "Action__c": "EDIT",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMProductExplicitId__c": "{{ScenarioProductExplicit.SOMProductExplicitId__c[0]}}",
+      "SOMProductId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "PExp-EDIT-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "SMPL", // Change Alignment Type for EDIT
+      "LookupDate__c": "2021-06-01",
+      "EffectiveDate__c": "2021-06-01",
+      "EndDate__c": "2021-08-01"
+    },
+    {
+      "Action__c": "EFFE",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMProductExplicitId__c": "{{ScenarioProductExplicit.SOMProductExplicitId__c[0]}}",
+      "SOMProductId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "PExp-EFFE-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "SMPL",
+      "LookupDate__c": "2021-06-01",
+      "EffectiveDate__c": "2021-06-01", // Same EffectiveDate__c on all transactions
+      "EndDate__c": "2021-08-01"
+    },
+    {
+      "Action__c": "EXPR",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMProductExplicitId__c": "{{ScenarioProductExplicit.SOMProductExplicitId__c[0]}}",
+      "SOMProductId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "PExp-EXPR-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "SMPL",
+      "LookupDate__c": "2021-06-01",
+      "EffectiveDate__c": "2021-06-01",
+      "EndDate__c": "2021-08-01" // Same EndDate__c on all transactions
+    }
+  ],
+
+  // C7848139 EFFE+EXPR UserAssignment
+  "ScenarioUserAssignment": [
+    {
+      "Action__c": "EFFE",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMUserAssignmentId__c": "{{ScenarioUserAssignment.SOMUserAssignmentId__c[0]}}",
+      "SOMUserId__c": "{{User.SOMUserId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UniqueIntegrationId__c": "UA-EFFE-{{TestUniqueIntegrationId}}",
+      "UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "AssignmentType__c": "SECN",
+      "LookupDate__c": "{{ScenarioUserAssignment.EffectiveDate__c[0]}}",
+      "EffectiveDate__c": "2021-06-01", // Same EffectiveDate__c on all transactions
+      "EndDate__c": "2021-08-01"
+    },
+    {
+      "Action__c": "EXPR",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMUserAssignmentId__c": "{{ScenarioUserAssignment.SOMUserAssignmentId__c[0]}}",
+      "SOMUserId__c": "{{User.SOMUserId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UniqueIntegrationId__c": "UA-EXPR-{{TestUniqueIntegrationId}}",
+      "UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "AssignmentType__c": "SECN",
+      "LookupDate__c": "{{ScenarioUserAssignment.EffectiveDate__c[0]}}",
+      "EffectiveDate__c": "2021-06-01",
+      "EndDate__c": "2021-08-01" // Same EndDate__c on all transactions
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "EDIT+EFFE+EXPR SalesForce", // C7850226
+        "query": "OMSalesForce,Name,Type,Status,EffectiveDate,EndDate,SOMSalesForceId:'{{ScenarioSalesForce.SOMSalesForceId__c[0]}}'",
+        "exp_result": "[{Name:{{ScenarioSalesForce.Name[1]}},Type:INST,Status:ACTV,EffectiveDate:{{ScenarioSalesForce.EffectiveDate__c[2]}},EndDate:{{ScenarioSalesForce.EndDate__c[3]}}}]",
+        "odataQuery": "/OMSalesForce?$select=Name,Type,Status,EffectiveDate,EndDate&$filter=SOMSalesForceId eq '{{ScenarioSalesForce.SOMSalesForceId__c[0]}}'"
+      },
+      {
+        "testname": "MOVE AccountExclusion", // C7848136
+        "query": "select \"SOMTerritoryId\",\"OMAccountId\",\"Status\",\"EffectiveDate\",\"EndDate\" from {{schema}}.\"OMAccountExclusion\" where \"SOMTerritoryId\" in ('{{ScenarioTerritory.SOMTerritoryId__c[0]}}','{{ScenarioTerritory.SOMTerritoryId__c[1]}}') and (\"OMAccountId\"='{{accountUId}}') order by \"EffectiveDate\" ",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},OMAccountId:{{accountUId}},Status:ACTV,EffectiveDate:{{ScenarioAccountExclusion.EffectiveDate__c[0]}},EndDate:2021-06-19},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},OMAccountId:{{accountUId}},Status:ACTV,EffectiveDate:{{ScenarioAccountExclusion.EffectiveDate__c[2]}},EndDate:{{ScenarioAccountExclusion.EndDate__c[2]}}}]",
+        "odataQuery": "/OMAccountExclusion?$select=SOMTerritoryId,OMAccountId,Status,EffectiveDate,EndDate&$filter=(SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[0]}}' or SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[1]}}') and OMAccountId eq '{{accountUId}}'&$orderby=EffectiveDate"
+      },
+      {
+        "testname": "EDIT+EXPR Rule", // C7848138
+        "query": "OMRule,Name,EffectiveDate,EndDate,SOMRuleId:'{{ScenarioRule.SOMRuleId__c[0]}}'",
+        "exp_result": "[{Name:{{ScenarioRule.Name[1]}},EffectiveDate:{{ScenarioRule.EffectiveDate__c[1]}},EndDate:{{ScenarioRule.EndDate__c[2]}}}]",
+        "odataQuery": "/OMRule?$select=Name,EffectiveDate,EndDate&$filter=SOMRuleId eq '{{ScenarioRule.SOMRuleId__c[0]}}'"
+      },
+      {
+        "testname": "EFFE+EXPR UserAssignment", // C7848139
+        "query": "select \"SOMUserId\",\"SOMTerritoryId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMUserAssignment\" where \"SOMUserId\"='{{ScenarioUserAssignment.SOMUserId__c[0]}}' and \"SOMTerritoryId\"='{{ScenarioUserAssignment.SOMTerritoryId__c[0]}}'",
+        "exp_result": "[{SOMUserId:{{ScenarioUserAssignment.SOMUserId__c[0]}},SOMTerritoryId:{{ScenarioUserAssignment.SOMTerritoryId__c[0]}},EffectiveDate:{{ScenarioUserAssignment.EffectiveDate__c[1]}},EndDate:{{ScenarioUserAssignment.EndDate__c[2]}}}]",
+        "odataQuery": "/OMUserAssignment?$select=SOMUserId,SOMTerritoryId,EffectiveDate,EndDate&$filter=SOMUserId eq '{{ScenarioUserAssignment.SOMUserId__c[0]}}' and SOMTerritoryId eq '{{ScenarioUserAssignment.SOMTerritoryId__c[0]}}'"
+      },
+      {
+        "testname": "EDIT+EFFE+EXPR ProductExplicit", // C7848140
+        "query": "select \"SOMProductId\",\"SOMTerritoryId\",\"Status\",\"ProductAlignmentType\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMProductExplicit\" where \"SOMProductId\"='{{productUId}}' and \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[0]}}' and \"ProductAlignmentType\"='{{ScenarioProductExplicit.ProductAlignmentType__c[1]}}'",
+        "exp_result": "[{SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioProductExplicit.SOMTerritoryId__c[0]}},Status:ACTV,ProductAlignmentType:{{ScenarioProductExplicit.ProductAlignmentType__c[1]}},EffectiveDate:{{ScenarioProductExplicit.EffectiveDate__c[2]}},EndDate:{{ScenarioProductExplicit.EndDate__c[3]}}}]",
+        "odataQuery": "/OMProductExplicit?$select=SOMProductId,SOMTerritoryId,Status,ProductAlignmentType,EffectiveDate,EndDate&$filter=SOMProductId eq '{{productUId}}' and SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[0]}}' and ProductAlignmentType eq '{{ScenarioProductExplicit.ProductAlignmentType__c[1]}}'"
+      }
+    ]
+  }
+}

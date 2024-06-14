@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29503.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Optimizer", "OMREngineTest\Optimizer.csproj", "{B9E8050C-B7C0-49ED-9AC3-5956D61B057C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MainFramework", "MainFramework\MainFramework.csproj", "{9223A725-9F14-4F88-90DB-D2E232DB60C5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E48F467F-4F84-4811-A1A1-DA6F1326C632}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitlab-ci.yml = .gitlab-ci.yml
+		triggerhappy.js = triggerhappy.js
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B9E8050C-B7C0-49ED-9AC3-5956D61B057C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9E8050C-B7C0-49ED-9AC3-5956D61B057C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9E8050C-B7C0-49ED-9AC3-5956D61B057C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9E8050C-B7C0-49ED-9AC3-5956D61B057C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9223A725-9F14-4F88-90DB-D2E232DB60C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9223A725-9F14-4F88-90DB-D2E232DB60C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9223A725-9F14-4F88-90DB-D2E232DB60C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9223A725-9F14-4F88-90DB-D2E232DB60C5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EBECBC14-26B5-455C-B91F-7D16BD2C3498}
+	EndGlobalSection
+EndGlobal

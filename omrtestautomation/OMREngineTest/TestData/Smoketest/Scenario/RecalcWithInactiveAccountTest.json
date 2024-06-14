@@ -1,0 +1,79 @@
+{
+		"Tests": {
+			"AlignmentResults": [
+				{
+					"testname": "rule_excl_alignments_after_account_inact", //Current dynamic alignment with excl end dated as of yesterday, future removed, past unchanged
+					"exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{recalc_accountUId}},EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:2022-02-28,Source:DSHR,Reason:{{ScenarioRule.Name}}|{{ScenarioRule.SOMRuleId__c}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[3]}},AccountUID:{{recalc_accountUId}},EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:2022-02-28,Source:DSHR,Reason:{{ScenarioRule.Name}}|{{ScenarioRule.SOMRuleId__c}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[3]}},AccountUID:{{recalc_accountUId}},EffectiveDate:2022-04-01,EndDate:{{DBT_YESTERDAY}},Source:DSHR,Reason:{{ScenarioRule.Name}}|{{ScenarioRule.SOMRuleId__c}}}]",
+					"account_uids": "{{recalc_accountUId}}",
+					"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}},{{ScenarioTerritory.UniqueIntegrationId__c[3]}}",
+					"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}},{{ScenarioTerritory.SOMTerritoryId__c[3]}}"
+				},
+				{
+					"testname": "rule_sf_excl_alignments_after_account_inact", //Current dynamic alignment with sf excl end dated as of yesterday, future removed, past unchanged
+					"exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[4]}},AccountUID:{{recalc_accountUId}},EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:2022-02-28,Source:DSHR,Reason:{{ScenarioRule.Name[1]}}|{{ScenarioRule.SOMRuleId__c[1]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[5]}},AccountUID:{{recalc_accountUId}},EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:2022-02-28,Source:DSHR,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[5]}},AccountUID:{{recalc_accountUId}},EffectiveDate:2022-04-01,EndDate:{{DBT_YESTERDAY}},Source:DSHR,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}}}]",
+					"account_uids": "{{recalc_accountUId}}",
+					"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[4]}},{{ScenarioTerritory.UniqueIntegrationId__c[5]}}",
+					"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[4]}},{{ScenarioTerritory.SOMTerritoryId__c[5]}}"
+				},
+				{
+					"testname": "explicit_alignments_after_account_inact", //Current explicit alignment end dated as of yesterday, future removed, past unchanged
+					"exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountUID:{{recalc_accountUId}},EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{DBT_YESTERDAY}},Source:EXPL,Reason:},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[2]}},AccountUID:{{recalc_accountUId}},EffectiveDate:{{EffectivePast}},EndDate:{{EndPast}},Source:EXPL,Reason:}]",
+					"account_uids": "{{recalc_accountUId}}",
+					"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}},{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+					"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[1]}},{{ScenarioTerritory.SOMTerritoryId__c[2]}}"
+				}
+			],
+			"Explicits": [
+				{
+					"testname": "explicit_after_account_inact", //Current explicit end dated as of yesterday, future removed, past unchanged
+					"exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountUID:{{recalc_accountUId}},EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{DBT_YESTERDAY}},Status:ACTV},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[2]}},AccountUID:{{recalc_accountUId}},EffectiveDate:{{EffectivePast}},EndDate:{{EndPast}},Status:ACTV},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[2]}},AccountUID:{{recalc_accountUId}},EffectiveDate:{{EffectiveFuture}},EndDate:{{EndFuture}},Status:INAC}]",
+					"account_uids": "{{recalc_accountUId}}",
+					"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}},{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+					"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[1]}},{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+					"show_inactive": true
+				}
+			],
+			"Exclusions": [
+				{
+					"testname": "exclusion_after_account_inact", //Current exclusion end dated as of yesterday, future removed, past unchanged
+					"exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{recalc_accountUId}},EffectiveDate:{{EffectivePast}},EndDate:{{DBT_YESTERDAY}},Status:ACTV},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[3]}},AccountUID:{{recalc_accountUId}},EffectiveDate:{{EffectivePast}},EndDate:{{EndPast}},Status:ACTV},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[3]}},AccountUID:{{recalc_accountUId}},EffectiveDate:{{EffectiveFuture}},EndDate:{{EndFuture}},Status:INAC}]",
+					"account_uids": "{{recalc_accountUId}}",
+					"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}},{{ScenarioTerritory.UniqueIntegrationId__c[3]}}",
+					"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}},{{ScenarioTerritory.SOMTerritoryId__c[3]}}",
+					"show_inactive": true
+				}
+			],
+			"SfExclusions": [
+				{
+					"testname": "sf_exclusion_after_account_inact", //Current sf exclusion end dated as of yesterday, future removed, past unchanged
+					"exp_result": "[{SalesForceUID:{{ScenarioSalesForce.UniqueIntegrationId__c[1]}},AccountUID:{{recalc_accountUId}},EffectiveDate:{{EffectivePast}},EndDate:{{DBT_YESTERDAY}},Status:ACTV},{SalesForceUID:{{ScenarioSalesForce.UniqueIntegrationId__c[2]}},AccountUID:{{recalc_accountUId}},EffectiveDate:{{EffectivePast}},EndDate:{{EndPast}},Status:ACTV},{SalesForceUID:{{ScenarioSalesForce.UniqueIntegrationId__c[2]}},AccountUID:{{recalc_accountUId}},EffectiveDate:{{EffectiveFuture}},EndDate:{{EndFuture}},Status:INAC}]",
+					"account_uids": "{{recalc_accountUId}}",
+					"salesforce_uids": "{{ScenarioSalesForce.UniqueIntegrationId__c[1]}},{{ScenarioSalesForce.UniqueIntegrationId__c[2]}}",
+					"salesforce_somids": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}},{{ScenarioSalesForce.SOMSalesForceId__c[2]}}",
+					"show_inactive": true
+				}
+			],
+			"MergeResults": [
+				// Covers C7963762, C7967768 of OMR-3577
+				// Covers C15522294 for OMR-17533
+				{
+					"testname": "Account Data after INAC'",
+					"query": "SELECT  \"UniqueIntegrationId\",\"Status\" FROM \"STATIC\".\"OMAccount\" at(timestamp => '{{dbt_current}}'::timestamp_ltz) where \"UniqueIntegrationId\"='{{recalc_accountUId}}';",
+					"exp_result": "[{UniqueIntegrationId:{{recalc_accountUId}},Status:INAC}]",
+					"odataQuery": "/OMAccount?$select=UniqueIntegrationId,Status&$filter=UniqueIntegrationId eq '{{recalc_accountUId}}' &showquery=true&as-of-date={{dbt_current}}"
+				},
+				{
+					"testname": "Account Data before INAC'",
+					"query": "SELECT  \"UniqueIntegrationId\",\"Status\" FROM \"STATIC\".\"OMAccount\" at(timestamp => '{{AccountActiveTime}}'::timestamp_ltz) where \"UniqueIntegrationId\"='{{recalc_accountUId}}';",
+					"exp_result": "[{UniqueIntegrationId:{{recalc_accountUId}},Status:ACTV}]",
+					"odataQuery": "/OMAccount?$select=UniqueIntegrationId,Status&$filter=UniqueIntegrationId eq '{{recalc_accountUId}}' &showquery=true&as-of-date={{AccountActiveTime}}"
+				},
+				{
+					"testname": "Account Data with Yesterday's Date'",
+					"query": "skip",
+					"exp_result": "[]",
+					"odataQuery": "/OMAccount?$select=Name,Status&$filter=UniqueIntegrationId eq '{{recalc_accountUId}}' &showquery=true&as-of-date={{dbt_1dayago}}"
+				}
+			]
+		}
+	}

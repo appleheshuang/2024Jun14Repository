@@ -1,0 +1,119 @@
+{
+  "Configs": {},
+
+  "BaseData": {
+    "regionUId": "IO",
+    "productUId": "PROD1",
+    "accountUId": "ACCT01"
+  },
+  "Scenario": {
+    "Name": "Multiple Actions on Scenario Entity Setup Positive",
+    "Description": "C7848136 MOVE AccountExclusion, C7848138 EDIT+EXPR Rule, C7848139 EFFE+EXPR UserAssignment, C7848140 EDIT+EFFE+EXPR ProductExplicit, C7850226 EDIT+EFFE+EXPR SalesForce",
+    "EffectiveDate__c": "2021-03-01",
+    "EndDate__c": "2021-09-30",
+    "ScenarioStatus__c": "PENDG",
+    "OMRegionId__c": "{{regionUId}}",
+    "UniqueIntegrationId__c": "Setup"
+  },
+
+  // For C7850226 EDIT+EFFE+EXPR SalesForce
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "Name": "SalesForce INST {{TestUniqueIntegrationId}}",
+      "Type__c": "INST",
+      "UniqueIntegrationId__c": "SF-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "RegionUniqueIntegrationId__c": "{{regionUId}}",
+      "SOMRegionId__c": "{{regionUId}}",
+      "EffectiveDate__c": "2021-03-01", // --> 02-01
+      "EndDate__c": "2021-09-30" // --> 09-01
+    }
+  ],
+
+  // For C7848136 MOVE AccountExclusion
+  "ScenarioTerritory": [
+    { // Initial Territory
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "T1 {{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "T1-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{regionUId}}",
+      "Type__c": "DIST",
+      "EffectiveDate__c": "2021-03-01",
+      "EndDate__c": "2021-09-01"
+    },
+    { // Target Territory
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "T2 {{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "T2-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{regionUId}}",
+      "Type__c": "DIST",
+      "EffectiveDate__c": "2021-03-01",
+      "EndDate__c": "2021-09-01"
+    }
+  ],
+
+  // For C7848136 MOVE AccountExclusion
+  "ScenarioAccountExclusion": [
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "AExc1-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "EffectiveDate__c": "2021-06-01",
+      "EndDate__c": "2021-08-01"
+    }
+  ],
+
+  // For C7848138 EDIT+EXPR Rule
+  "ScenarioRule": [
+    {
+      "Action__c": "ADD",
+      "Name": "EDIT+EXPR Rule {{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "UniqueIntegrationId__c": "R-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+      "RuleData__c": "{\"geography\":false,\"explicit\":true,\"filter\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC\"},\"hierarchy\":\"\"}",
+      "RuleScope__c": "ALGN",
+      "EffectiveDate__c": "2021-03-01"
+    }
+  ],
+
+  // For C7848140 EDIT+EFFE+EXPR ProductExplicit with cascade
+  "ScenarioProductExplicit": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "PExp-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2021-03-01",
+      "EndDate__c": "2021-09-01"
+    }
+  ],
+
+  // For C7848139 EFFE+EXPR UserAssignment
+  "ScenarioUserAssignment": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "UniqueIntegrationId__c": "UA-{{TestUniqueIntegrationId}}",
+      "UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}", // T2
+      "AssignmentType__c": "SECN",
+      "EffectiveDate__c": "2021-05-01",
+      "EndDate__c": "2021-09-01"
+    }
+  ]
+}

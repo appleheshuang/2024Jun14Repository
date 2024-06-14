@@ -1,0 +1,11 @@
+{
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "OceAccounts",
+        "query": "select a.\"UniqueIntegrationId\", a.\"Name\", a.\"Specialty\" \"AccSpecialty\" from static.\"OMAccount\" a where a.\"UniqueIntegrationId\" in ('CHRISTOPOULOS-GN','SALLY-NOCALL') order by a.\"UniqueIntegrationId\"",
+        "exp_result": "[{UniqueIntegrationId:CHRISTOPOULOS-GN,Name:GEORGE CHRISTOPOULOS,AccSpecialty:Internal medicine},{UniqueIntegrationId:SALLY-NOCALL,Name:SALLY NOCALL,AccSpecialty:Internal medicine}]"
+      }
+    ]
+  }
+}

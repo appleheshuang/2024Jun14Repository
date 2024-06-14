@@ -1,0 +1,63 @@
+﻿{
+  "DataSyncRequest": {
+    "Target": "Snowflake",
+    "Tables": "prod-_-ル(STATIC.OMProduct/{{prefix}}OMProduct__c)",
+    "LastUpdate": false,
+    "Filters": [
+      {
+        "Table": "prod-_-ル",
+        "Filter": "Name='{{Product.Name}}'"
+      }
+    ],
+    "Mapping": [
+      {
+        "Table": "prod-_-ル",
+        "MapByName": false,
+        "Columns": [
+          {
+            "Snowflake": "SOMProductId",
+            "Salesforce": "{{prefix}}SOMProductId__c"
+          },
+          {
+            "Snowflake": "Status",
+            "Salesforce": "{{prefix}}Status__c"
+          },
+          {
+            "Snowflake": "UniqueIntegrationId",
+            "Salesforce": "{{prefix}}UniqueIntegrationId__c"
+          },
+          {
+            "Snowflake": "EffectiveDate",
+            "Salesforce": "{{prefix}}EffectiveDate__c"
+          },
+          {
+            "Snowflake": "EndDate",
+            "Salesforce": "{{prefix}}EndDate__c"
+          },
+          {
+            "Snowflake": "Name",
+            "Salesforce": "Name"
+          },
+          {
+            "Snowflake": "Type",
+            "Salesforce": "{{prefix}}Type__c"
+          },
+          {
+            "Snowflake": "IsDeleted",
+            "Salesforce": "IsDeleted"
+          }
+        ]
+      }
+    ],
+    "JobType": "TestPull"
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "datasync-product",
+        "query": "select \"Name\",\"Type\",\"SOMProductId\",\"Status\",\"UniqueIntegrationId\",\"EffectiveDate\",\"EndDate\",\"SOMRegionId\" from STATIC.\"OMProduct\" where \"SOMProductId\" in ('{{Product.SOMProductId__c}}','{{Product.SOMProductId__c[1]}}') order by \"Name\"",
+        "exp_result": "[{Name:{{Product.Name}},Type:Detail,SOMProductId:{{Product.SOMProductId__c}},Status:ACTV,UniqueIntegrationId:{{Product.UniqueIntegrationId__c}},EffectiveDate:{{Product.EffectiveDate__c}},EndDate:3999-12-31,SOMRegionId:REG01},{Name:{{Product.Name[1]}},Type:Detail,SOMProductId:{{Product.SOMProductId__c[1]}},Status:ACTV,UniqueIntegrationId:{{Product.UniqueIntegrationId__c[1]}},EffectiveDate:{{Product.EffectiveDate__c[1]}},EndDate:3999-12-31,SOMRegionId:REG01}]"
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+﻿{
+  "AccountTerritoryProduct": [
+    // Account with explicit/exclusion
+    {
+      "Account__c": "{{Account.Id[0]}}",
+      "Decile__c": "8",
+      "UniqueIntegrationId__c": "0Ramiton-{{TestUniqueIntegrationId}}",
+      "Product__c": "{{ProductOCEP.Id[0]}}", // Ramiton
+      "Territory__c": "{{ScenarioTerritory.Name[0]}}"
+    },
+    // Account to be aligned by rule only
+    {
+      "Account__c": "{{Account.Id[2]}}",
+      "Decile__c": "6",
+      "UniqueIntegrationId__c": "1Aspirin-{{TestUniqueIntegrationId}}",
+      "Product__c": "{{ProductOCEP.Id[1]}}" // Aspirin
+    }
+  ]
+}

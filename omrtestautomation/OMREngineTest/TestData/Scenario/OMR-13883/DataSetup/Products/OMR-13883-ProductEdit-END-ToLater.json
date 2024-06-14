@@ -1,0 +1,14 @@
+﻿{
+	"Product": [
+		{
+			"Name": "Brand-{{TestUniqueIntegrationId}}-EDITED",
+			"EffectiveDate__c": "2500-01-01", //OriginalEffectiveDate is 2023-01-01 (no change)
+			"EndDate__c": "3999-12-31", //OriginalEndDate is 3000-12-31
+			"Type__c": "Brand",
+			"UniqueIntegrationId__c": "Brand-{{TestUniqueIntegrationId}}",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "US",
+			"CascadeStatus__c": "PENDWITHCHILDREN"
+		}
+	]
+}

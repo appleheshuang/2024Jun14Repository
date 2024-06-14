@@ -1,0 +1,18 @@
+{
+  "Bulkload": {
+    "S3AccessKey": "",
+    "S3SecretKey": "",
+    "S3BucketName": "",
+    "S3Path": "autotestdata/Metrics/TerrMetrics",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "ValidateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "TerrMetricBasic.csv",
+        "table": "OMMetricDefinition"
+      }
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "BaseData": {
+    "som_region_id": "IE",
+    "EffectiveDate": "3025-10-01",
+    "EndDate": "3025-12-31",
+    "ScenarioName": "FutureAdj"
+  },
+  "Scenario": {
+    "Description": "{{ScenarioName}}_{{TestUniqueIntegrationId}}",
+    "Name": "{{ScenarioName}}_{{TestUniqueIntegrationId}}",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "{{ScenarioName}}_{{TestUniqueIntegrationId}}"
+  },
+  "ScenarioUserAssignment": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "RepTerr_{{TestUniqueIntegrationId}}",
+      "AssignmentType__c": "SECN",
+      "ImpactedRegions__c": "{{som_region_id}}",
+      "SOMUserId__c": "{{User.SOMUserId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[0]}}",
+      "RefUserName__c": "{{User.Name[0]}}",
+      "RefUserType__c": "{{User.Type__c[0]}}"
+    },
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "DmDist_{{TestUniqueIntegrationId}}",
+      "AssignmentType__c": "SECN",
+      "ImpactedRegions__c": "{{som_region_id}}",
+      "SOMUserId__c": "{{User.SOMUserId__c[1]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c[1]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[1]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[1]}}",
+      "RefUserName__c": "{{User.Name[1]}}",
+      "RefUserType__c": "{{User.Type__c[1]}}"
+    }
+  ]
+}

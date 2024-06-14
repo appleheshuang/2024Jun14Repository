@@ -1,0 +1,42 @@
+﻿{
+  "User": [
+    {
+      "Name": "repUser001Auto",
+      "EffectiveDate__c": "2020-01-01",
+      "EndDate__c": "3999-12-31",
+      "UniqueIntegrationId__c": "USR1",
+      "FirstName__c": "rep",
+      "LastName__c": "AutoTest1",
+      "NewHire__c": "false",
+      "Status__c": "ACTV",
+      "Type__c": "FELD",
+      "UserName__c": "repUser1Auto@iqvia.com",
+      "Email__c": "Andon1@iqvia.com",
+      "Country__c": "US",
+      "OMRegionId__c": "REG01",
+      "LocaleSidKey__c": "en_US",
+      "TimeZoneSidKey__c": "America/New_York",
+      "EmailEncodingKey__c": "ISO-8859-1",
+      "LanguageLocaleKey__c": "en_US"
+    },
+    {
+      "Name": "dmUser002Auto",
+      "EffectiveDate__c": "2020-01-01",
+      "EndDate__c": "3999-12-31",
+      "UniqueIntegrationId__c": "USR2",
+      "FirstName__c": "dm",
+      "LastName__c": "AutoTest2",
+      "NewHire__c": "false",
+      "Status__c": "ACTV",
+      "Type__c": "INHS",
+      "UserName__c": "dmUserAuto2@iqvia.com",
+      "Email__c": "Xia2@iqvia.com",
+      "Country__c": "US",
+      "OMRegionId__c": "REG01",
+      "LocaleSidKey__c": "en_US",
+      "TimeZoneSidKey__c": "America/New_York",
+      "EmailEncodingKey__c": "ISO-8859-1",
+      "LanguageLocaleKey__c": "en_US"
+    }
+  ]
+}

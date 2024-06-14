@@ -1,0 +1,43 @@
+{
+  "BaseData": {
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "OMCallSampleAllFields-New",
+        "query": "select \"Id\",\"OMCallId\",\"SOMProductId\",\"ProductOceSalesId\",\"SampleSOMProductId\",\"SampleProductOceSalesId\",\"SampleProductUniqueIntegrationId\",\"ProductUniqueIntegrationId\",\"Quantity\",\"UniqueIntegrationId\",to_date(\"CreatedDate\") as \"CreatedDate\",\"LastModifiedById\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\" from static.\"OMCallSample\" where \"OMCallId\"='CallId{{TestUniqueIntegrationID}}'",
+        "exp_result": "[{Id:CallSample{{TestUniqueIntegrationID}}AllFields,OMCallId:CallId{{TestUniqueIntegrationID}},SOMProductId:23423,ProductOceSalesId:null,SampleSOMProductId:null,SampleProductOceSalesId:a5C4x000000kHiJEAU,SampleProductUniqueIntegrationId:null,ProductUniqueIntegrationId:null,Quantity:5,UniqueIntegrationId:CallSample{{TestUniqueIntegrationID}}AllFields,CreatedDate:{{dbt_today}},LastModifiedById:Automation,LastModifiedDate:{{dbt_today}}}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "OMCallSampleMandatory-New",
+        "query": "select \"Id\",\"OMCallId\",\"SOMProductId\",\"ProductOceSalesId\",\"SampleSOMProductId\",\"SampleProductOceSalesId\",\"SampleProductUniqueIntegrationId\",\"ProductUniqueIntegrationId\",\"Quantity\",\"UniqueIntegrationId\",to_date(\"CreatedDate\") as \"CreatedDate\",\"LastModifiedById\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\" from static.\"OMCallSample\" where \"OMCallId\"='CallID{{TestUniqueIntegrationID}}MandatoryFieldsOnly'",
+        "exp_result": "[{Id:CallSample{{TestUniqueIntegrationID}}MandatoryFieldsOnly,OMCallId:CallID{{TestUniqueIntegrationID}}MandatoryFieldsOnly,SOMProductId:null,ProductOceSalesId:null,SampleSOMProductId:null,SampleProductOceSalesId:null,SampleProductUniqueIntegrationId:null,ProductUniqueIntegrationId:null,Quantity:null,UniqueIntegrationId:null,CreatedDate:{{dbt_today}},LastModifiedById:Automation,LastModifiedDate:{{dbt_today}}}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "OMCallSampleLargeQuantity-New",
+        "query": "select \"Id\",\"OMCallId\",\"SOMProductId\",\"ProductOceSalesId\",\"SampleSOMProductId\",\"SampleProductOceSalesId\",\"SampleProductUniqueIntegrationId\",\"ProductUniqueIntegrationId\",\"Quantity\",\"UniqueIntegrationId\",to_date(\"CreatedDate\") as \"CreatedDate\",\"LastModifiedById\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\" from static.\"OMCallSample\" where \"OMCallId\"='CallID{{TestUniqueIntegrationID}}LargeQuantity'",
+        "exp_result": "[{Id:CallSample{{TestUniqueIntegrationID}}LargeQuantity,OMCallId:CallID{{TestUniqueIntegrationID}}LargeQuantity,SOMProductId:null,ProductOceSalesId:null,SampleSOMProductId:null,SampleProductOceSalesId:null,SampleProductUniqueIntegrationId:null,ProductUniqueIntegrationId:null,Quantity:2147483647,UniqueIntegrationId:null,CreatedDate:{{dbt_today}},LastModifiedById:Automation,LastModifiedDate:{{dbt_today}}}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "OMCallSampleInvalid-New",
+        "query": "select count(*) from STATIC.\"OMCallSample\" where \"Id\" in ('CallSample{{TestUniqueIntegrationID}}NoCallId','CallSample{{TestUniqueIntegrationID}}Past','CallSample{{TestUniqueIntegrationID}}OtherCRM','CallSample{{TestUniqueIntegrationID}}NOBU','CallSample{{TestUniqueIntegrationID}}OtherBU')",
+        "exp_result": "[{COUNT(*):0}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "OMCallSampleValid-New",
+        "query": "select count(*) from STATIC.\"OMCallSample\" where \"Id\" like ('%{{TestUniqueIntegrationID}}%')",
+        "exp_result": "[{COUNT(*):3}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "OCE__Product__c": [
+    {
+      "Name": "P1-{{TestUniqueIntegrationId}}",
+      "OCE__UniqueIntegrationID__c": "P1-{{TestUniqueIntegrationId}}"
+    }
+  ]
+}

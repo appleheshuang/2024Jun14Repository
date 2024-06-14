@@ -1,0 +1,257 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "PN",
+    "salesforceUID": "CEPSF01",
+    "salesforceParentUID": "CPPSF01",
+    "territoryUID": "ET01",
+    "territoryParentUID": "ED01",
+    "som_geo_id": "GEO01",
+    "productExplicitUID": "PROD1",
+    "productExclusionUID": "PROD-PAR-CS",
+    "explicit_accountUId": "ACCT01",
+    "exclusion_accountUId": "ACCT03",
+    "EffectiveDate": "2023-07-01",
+    "EndDate": "2023-07-10"
+  },
+
+  "Scenario": {
+    // Error scenario for EFFE validation outside Date Range
+    "Description": "OMR 252 EFFE Error Case",
+    "name": "EFFE Error",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "EFFE-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioProductExplicit": [
+    {
+      "Action__c": "EFFE",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMProductExplicitId__c": "{{ScenarioProductExplicit.SOMProductExplicitId__c[0]}}",
+      "SOMProductId__c": "{{productExplicitUID}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "ProductUniqueIntegrationId__c": "{{productExplicitUID}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "EFFEEXPL-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "DETL",
+      "LookupDate__c": "2023-04-01",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "2023-07-10"
+    }
+  ],
+
+  "ScenarioSalesForceHierarchy": [
+    {
+      "Action__c": "EFFE",
+      "ChildSalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "SOMChildSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+      "ParentSalesForceUniqueIntegrationId__c": "{{salesforceParentUID}}-{{TestUniqueIntegrationID}}",
+      "SOMParentSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+      "SOMSalesForceHierarchyId__c": "{{ScenarioSalesForceHierarchy.SOMSalesForceHierarchyId__c[0]}}",
+      "RelationType__c": "PRIM",
+      "LookupDate__c": "2023-04-01",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "2023-07-10"
+    }
+  ],
+  "ScenarioProductExclusion": [
+    {
+      "Action__c": "EFFE",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMProductExclusionId__c": "{{ScenarioProductExclusion.SOMProductExclusionId__c[0]}}",
+      "SOMProductId__c": "{{productExclusionUID}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "ProductUniqueIntegrationId__c": "{{productExclusionUID}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "ProductAlignmentType__c": "DETL",
+      "LookupDate__c": "2023-04-01",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "2023-07-10"
+    }
+  ],
+  "ScenarioProductSalesForce": [
+    {
+      "Action__c": "EFFE",
+      "SOMProductId__c": "{{productExplicitUID}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+      "SOMProductSalesForceId__c": "{{ScenarioProductSalesForce.SOMProductSalesForceId__c}}",
+      "ProductAlignmentType__c": "DETL",
+      "LookupDate__c": "2023-04-01",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "2023-07-10"
+    }
+  ],
+  "ScenarioTerritoryHierarchy": [
+    {
+      "Action__c": "EFFE",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "ChildTerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0}}",
+      "SOMChildTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "RefChildTerritoryName__c": "{{ScenarioTerritory.name[0]}}",
+      "ParentTerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "SOMParentTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "SOMTerritoryHierarchyId__c": "{{ScenarioTerritoryHierarchy.SOMTerritoryHierarchyId__c[0]}}",
+      "LookupDate__c": "2023-04-01",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "2023-07-10"
+    }
+  ],
+  "ScenarioUserAssignment": [
+    {
+      "Action__c": "EFFE",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMUserAssignmentId__c": "{{ScenarioUserAssignment.SOMUserAssignmentId__c[0]}}",
+      "SOMUserId__c": "{{User.SOMUserId__c}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UniqueIntegrationId__c": "EFFE-{{TestUniqueIntegrationId}}",
+      "UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "AssignmentType__c": "SECN",
+      "LookupDate__c": "2023-04-01",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "2023-07-10"
+    }
+  ],
+  "ScenarioAccountExplicit": [
+    {
+      "Action__c": "EFFE",
+      "Purpose__c": "ALGN",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "OMAccountId__c": "{{explicit_accountUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "SOMAccountExplicitId__c": "{{ScenarioAccountExplicit.SOMAccountExplicitId__c[0]}}",
+      "LookupDate__c": "2023-04-01",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "2023-07-10"
+    }
+  ],
+  "ScenarioAccountExclusion": [
+    {
+      "Action__c": "EFFE",
+      "Purpose__c": "ALGN",
+      "OMAccountId__c": "{{exclusion_accountUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "SOMAccountExclusionId__c": "{{ScenarioAccountExclusion.SOMAccountExclusionId__c[0]}}",
+      "LookupDate__c": "2023-04-01",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "2023-07-10",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}"
+    }
+  ],
+  "ScenarioAccountSalesForceExclusion": [
+    {
+      "Action__c": "EFFE",
+      "Purpose__c": "ALGN",
+      "OMAccountId__c": "{{exclusion_accountUId}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+      "SOMAccountExclusionId__c": "{{ScenarioAccountExclusion.SOMAccountExclusionId__c[0]}}",
+      "LookupDate__c": "2023-04-01",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "2023-07-10",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}"
+    }
+  ],
+  "ScenarioGeographyTerritory": [
+    {
+      "Action__c": "EFFE",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "{{som_geo_id}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "SOMGeographyTerritoryId__c": "{{ScenarioGeographyTerritory.SOMGeographyTerritoryId__c[0]}}",
+      "LookupDate__c": "2023-04-01",
+      "EffectiveDate__c": "2023-07-01",
+      "EndDate__c": "2023-07-10",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}"
+    }
+  ],
+
+  "Tests": {
+    "ValidationErrors": [
+      //OMR-252 - C7663422
+      {
+        "testname": "Product Explicit EFFE Error",
+        "table": "OMProductExplicit",
+        "ErrorCode": "BadDateRange",
+        "ErrorMessage": "Cannot update record with an end date before the effective date",
+        "Item1": "\"{{territoryUID}}-{{TestUniqueIntegrationID}}\" [{{territoryUID}}-{{TestUniqueIntegrationID}}]",
+        "Item2": "\"Panadol\" [{{productExplicitUID}}]"
+      },
+      {
+        "testname": "Sales Force Hierarchy EFFE Error",
+        "table": "OMSalesForceHierarchy",
+        "ErrorCode": "BadDateRange",
+        "ErrorMessage": "Cannot update record with an end date before the effective date",
+        "Item1": "\"{{salesforceUID}}\" [{{salesforceUID}}-{{TestUniqueIntegrationID}}]",
+        "Item2": "\"{{salesforceParentUID}}\" [{{salesforceParentUID}}-{{TestUniqueIntegrationID}}]"
+      },
+      {
+        "testname": "Product Exclusion EFFE Error",
+        "table": "OMProductExclusion",
+        "ErrorCode": "BadDateRange",
+        "ErrorMessage": "Cannot update record with an end date before the effective date",
+        "Item1": "\"{{territoryUID}}-{{TestUniqueIntegrationID}}\" [{{territoryUID}}-{{TestUniqueIntegrationID}}]",
+        "Item2": "\"Augmentin\" [{{productExclusionUID}}]"
+      },
+      {
+        "testname": "Product Sales Force EFFE Error",
+        "table": "OMProductSalesForce",
+        "ErrorCode": "BadDateRange",
+        "ErrorMessage": "Cannot update record with an end date before the effective date",
+        "Item1": "\"{{salesforceParentUID}}\" [{{salesforceParentUID}}-{{TestUniqueIntegrationID}}]",
+        "Item2": "\"Panadol\" [{{productExplicitUID}}]"
+      },
+      {
+        "testname": "Account Explicit EFFE Error",
+        "table": "OMAccountExplicit",
+        "ErrorCode": "BadDateRange",
+        "ErrorMessage": "Cannot update record with an end date before the effective date",
+        "Item1": "\"{{territoryUID}}-{{TestUniqueIntegrationID}}\" [{{territoryUID}}-{{TestUniqueIntegrationID}}]",
+        "Item2": "\"{{explicit_accountUId}}\" [{{explicit_accountUId}}]"
+      },
+      {
+        "testname": "Account Exclusion EFFE Error",
+        "table": "OMAccountExclusion",
+        "ErrorCode": "BadDateRange",
+        "ErrorMessage": "Cannot update record with an end date before the effective date",
+        "Item1": "\"{{territoryUID}}-{{TestUniqueIntegrationID}}\" [{{territoryUID}}-{{TestUniqueIntegrationID}}]",
+        "Item2": "\"{{exclusion_accountUId}}\" [{{exclusion_accountUId}}]"
+      }, /*
+      {
+       //OMR-16592 - Jira created for error message
+        "testname": "Sales Force Account Exclusion EFFE Error",
+        "table": "OMAccountExclusion",
+        "ErrorCode": "BadDateRange",
+        "ErrorMessage": "Cannot update record with an end date before the effective date",
+        "Item2": "\"{{salesforceParentUID}}-{{TestUniqueIntegrationID}}\" [{{salesforceParentUID}}-{{TestUniqueIntegrationID}}]",
+        "Item1": "\"{{exclusion_accountUId}}\" [{{exclusion_accountUId}}]"
+      }, */
+      {
+        "testname": "Geography Territory EFFE Error",
+        "table": "OMGeographyTerritory",
+        "ErrorCode": "BadDateRange",
+        "ErrorMessage": "Cannot update record with an end date before the effective date",
+        "Item1": "\"{{territoryUID}}-{{TestUniqueIntegrationID}}\" [{{territoryUID}}-{{TestUniqueIntegrationID}}]",
+        "Item2": "\"POST-1234\" [NZ-1234]"
+      },
+      {
+        "testname": "User Territory EFFE Error",
+        "table": "OMUserAssignment",
+        "ErrorCode": "BadDateRange",
+        "ErrorMessage": "Cannot update record with an end date before the effective date",
+        "Item1": "\"{{territoryUID}}-{{TestUniqueIntegrationID}}\" [{{territoryUID}}-{{TestUniqueIntegrationID}}]",
+        "Item2": "\"{{User.Name}}\" [{{User.UniqueIntegrationId__c}}]"
+      }
+    ]
+
+  }
+}

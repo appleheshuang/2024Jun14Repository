@@ -1,0 +1,100 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "regionUId": "US",
+    "instUId1": "INST01",
+    "instUId2": "INST02",
+    "mpUId": "MP01",
+    "scEffectiveDate": "{{today-90}}",
+    "scEndDate": "3999-12-31",
+    "dayBeforeScEffectiveDate": "{{today-91}}",
+    "earlierEffective": "{{today-180}}",
+    "dayBeforeEarlierEffective": "{{today-181}}",
+    "laterEffective": "{{today-30}}"
+  },
+
+  "Scenario": {
+    "Name": "Test Past Dating to Scenario Effective Date {{TestUniqueIntegrationId}}",
+    "Description": "C7628777 - Past dating Account Alignment to Scenario Effective Date",
+    "EffectiveDate__c": "{{scEffectiveDate}}", // 3 months ago
+    "EndDate__c": "{{scEndDate}}",
+    "ScenarioStatus__c": "PENDG",
+    "OMRegionId__c": "{{regionUId}}",
+    "UniqueIntegrationId__c": "T-{{TestUniqueIntegrationId}}"
+  },
+
+  "ScenarioRule": [
+    // EFFE Rule R2 (backdate to later than sc effective => alignment backdated)
+    {
+      "Action__c": "EFFE",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "{{ScenarioRule.UniqueIntegrationId__c[1]}}",
+      "SOMRuleId__c": "{{ScenarioRule.SOMRuleId__c[1]}}",
+      "RuleData__c": "{\"geography\":false,\"explicit\":true,\"filter\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC\"},\"hierarchy\":\"\"}",
+      "EffectiveDate__c": "{{laterEffective}}"
+    },
+    // PEXP Rule R1 (backdate to earlier sc effective => alignment ends at scenario start)
+    {
+      "Action__c": "PEXP",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "{{ScenarioRule.UniqueIntegrationId__c[0]}}",
+      "SOMRuleId__c": "{{ScenarioRule.SOMRuleId__c[0]}}",
+      "RuleData__c": "{\"geography\":true,\"explicit\":true,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Institution\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Oncology\"}]},\"affiliation\":{\"direction\":\"down\",\"restricted\":true,\"recursive\":false,\"filter\":{\"type\":\"Contains\",\"table\":\"OMAffiliation\",\"column\":\"Roles\",\"value\":\"Consulting\"},\"account\":{\"filter\":{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"MP\"}}},\"hierarchy\":\"\"}",
+      "EffectiveDate__c": "{{earlierEffective}}"
+    }
+  ],
+
+  "ScenarioAccountExplicit": [
+    // EFFE Institution 2 (backdate to starts 3 months ago)
+    {
+      "Action__c": "EFFE",
+      "Purpose__c": "ALGN",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "OMAccountId__c": "{{instUId2}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "SOMAccountExplicitId__c": "{{ScenarioAccountExplicit.SOMAccountExplicitId__c[1]}}"
+    },
+    // PEXP Institution 1 (backdate to end 3 months ago)
+    {
+      "Action__c": "PEXP",
+      "Purpose__c": "ALGN",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "OMAccountId__c": "{{instUId1}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "SOMAccountExplicitId__c": "{{ScenarioAccountExplicit.SOMAccountExplicitId__c[0]}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Explicit Institutions",
+        "query": "select \"SOMTerritoryId\",\"OMAccountId\",\"Status\",\"EffectiveDate\",\"EndDate\" from {{schema}}.\"OMAccountExplicit\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[0]}}' and \"OMAccountId\" in ('{{instUId1}}','{{instUId2}}','{{mpUId}}') order by \"OMAccountId\"",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},OMAccountId:{{instUId1}},Status:ACTV,EffectiveDate:{{ScenarioAccountExplicit.EffectiveDate__c[0]}},EndDate:{{dayBeforeScEffectiveDate}}},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},OMAccountId:{{instUId2}},Status:ACTV,EffectiveDate:{{scEffectiveDate}},EndDate:{{ScenarioAccountExplicit.EndDate__c[1]}}}]",
+        "odataQuery": "/OMAccountExplicit?$select=SOMTerritoryId,OMAccountId,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[0]}}' and OMAccountId in ('{{instUId1}}','{{instUId2}}','{{mpUId}}')&$orderby=OMAccountId"
+      },
+      {
+        "testname": "Rules",
+        "query": "select \"UniqueIntegrationId\", \"Status\", \"EffectiveDate\", \"EndDate\" from {{schema}}.\"OMRule\" where \"UniqueIntegrationId\" in ('R1-{{TestUniqueIntegrationId}}','R2-{{TestUniqueIntegrationId}}') order by \"UniqueIntegrationId\"",
+        "exp_result": "[{UniqueIntegrationId:R1-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{ScenarioRule.EffectiveDate__c[0]}},EndDate:{{dayBeforeEarlierEffective}}},{UniqueIntegrationId:R2-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{laterEffective}},EndDate:{{ScenarioRule.EndDate__c[1]}}}]"
+      }
+    ],
+
+    "AlignmentResults": [
+      {
+        "testname": "Institutions with affiliated MPs",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{instUId1}},EffectiveDate:{{ScenarioAccountExplicit.EffectiveDate__c[0]}},EndDate:{{dayBeforeScEffectiveDate}},Source:DSHR;EXPL,Reason:{{ScenarioRule.Name[0]}}|{{ScenarioRule.SOMRuleId__c[0]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{instUId2}},EffectiveDate:{{scEffectiveDate}},EndDate:{{ScenarioAccountExplicit.EndDate__c[1]}},Source:DSHR;EXPL,Reason:{{ScenarioRule.Name[1]}}|{{ScenarioRule.SOMRuleId__c[1]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{mpUId}},EffectiveDate:{{ScenarioRule.EffectiveDate__c[0]}},EndDate:{{dayBeforeScEffectiveDate}},Source:DSHR,Reason:{{ScenarioRule.Name[0]}}|{{ScenarioRule.SOMRuleId__c[0]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{mpUId}},EffectiveDate:{{laterEffective}},EndDate:{{ScenarioRule.EndDate__c[1]}},Source:DSHR,Reason:{{ScenarioRule.Name[1]}}|{{ScenarioRule.SOMRuleId__c[1]}}}]",
+        "account_uids": "{{instUId1}},{{instUId2}},{{mpUId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+      }
+    ]
+  }
+}

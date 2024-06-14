@@ -1,0 +1,29 @@
+﻿{
+	"Product": [
+		{
+			"Name": "AddEXPL{{TestUniqueIntegrationId}}",
+			"EffectiveDate__c": "2023-01-01",
+			"Type__c": "Detail",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "AddEXPL{{TestUniqueIntegrationId}}",
+			"Status__c": "ACTV"
+		},
+		{
+			"Name": "DeleteEXPL{{TestUniqueIntegrationId}}",
+			"EffectiveDate__c": "2023-01-01",
+			"Type__c": "Detail",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "DeleteEXPL{{TestUniqueIntegrationId}}",
+			"Status__c": "ACTV"
+		}
+	],
+	"Tests": {
+		"MergeResults": [
+			{
+				"testname": "Initial Products",
+				"query": "select \"Name\",\"Status\" from static.\"OMProduct\" where \"UniqueIntegrationId\" like '%{{TestUniqueIntegrationId}}' order by \"Name\"",
+				"exp_result": "[{Name:AddEXPL{{TestUniqueIntegrationId}},Status:ACTV},{Name:DeleteEXPL{{TestUniqueIntegrationId}},Status:ACTV}]"
+			}
+		]
+	}
+}

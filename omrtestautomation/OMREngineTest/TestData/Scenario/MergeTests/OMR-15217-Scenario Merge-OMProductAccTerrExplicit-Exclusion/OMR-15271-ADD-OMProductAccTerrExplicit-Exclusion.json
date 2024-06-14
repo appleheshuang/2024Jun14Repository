@@ -1,0 +1,294 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "commit"
+  },
+
+  "BaseData": {
+    "som_region_id": "FK",
+    "productUId": "Product-OMR-15271",
+    "accountexplicitUId": "PrAccTerrExplicit",
+    "accountexclusionUId": "PrAccTerrExclusion",
+    "salesforceUID": "SF-OMR-15271",
+    "territoryExplUID": "TExpl1-OMR-15271",
+    "territoryExplUID2": "TExpl2-OMR-15271",
+    "territoryExplUID3": "TExpl3-OMR-15271",
+    "territoryExplUID4": "TExpl4-OMR-15271",
+    "territoryExplUID5": "TExpl5-OMR-15271",
+    "territoryExclUID": "TExcl1-OMR-15271",
+    "territoryExclUID2": "TExcl2-OMR-15271",
+    "territoryExclUID3": "TExcl3-OMR-15271",
+    "territoryExclUID4": "TExcl4-OMR-15271",
+    "territoryExclUID5": "TExcl5-OMR-15271"
+  },
+
+  "Scenario": {
+    "Description": "OMProdAccTerrExplicitExclusionsADD-{{TestUniqueIntegrationID}}",
+    "Name": "OMR-15271_OMProductAccTerrExplicitExclusionADD",
+    "EffectiveDate__c": "{{today+73048}}",
+    "EndDate__c": "{{today+73413}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "name": "SF-OMR-15271"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "TerrExpl-OMR-15271-1",
+      "UniqueIntegrationId__c": "{{territoryExplUID}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "TerrExpl-OMR-15271-2",
+      "UniqueIntegrationId__c": "{{territoryExplUID2}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "TerrExpl-OMR-15271-3",
+      "UniqueIntegrationId__c": "{{territoryExplUID3}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "TerrExpl-OMR-15271-4",
+      "UniqueIntegrationId__c": "{{territoryExplUID4}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "TerrExpl-OMR-15271-5",
+      "UniqueIntegrationId__c": "{{territoryExplUID5}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "TerrExcl-OMR-15271-1",
+      "UniqueIntegrationId__c": "{{territoryExclUID}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "TerrExcl-OMR-15271-2",
+      "UniqueIntegrationId__c": "{{territoryExclUID2}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "TerrExcl-OMR-15271-3",
+      "UniqueIntegrationId__c": "{{territoryExclUID3}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "TerrExcl-OMR-15271-4",
+      "UniqueIntegrationId__c": "{{territoryExclUID4}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "TerrExcl-OMR-15271-5",
+      "UniqueIntegrationId__c": "{{territoryExclUID5}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    }
+  ],
+
+  "ScenarioProductAccTerrExplicit": [
+    // precondition fo Actions as follows
+    {
+      //ADD for EFFE
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "OMPrAccTerrExpl-{{TestUniqueIntegrationID}}-1",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountexplicitUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryExplUID}}-{{TestUniqueIntegrationID}}",
+      "EffectiveDate__c": "{{today+73108}}",
+      "EndDate__c": "{{today+73168}}"
+    },
+    {
+      //ADD for END
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "OMPrAccTerrExpl-{{TestUniqueIntegrationID}}-2",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountexplicitUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryExplUID2}}-{{TestUniqueIntegrationID}}",
+      "EffectiveDate__c": "{{today+73108}}",
+      "EndDate__c": "{{today+73168}}"
+    },
+    {
+      //ADD for DELETE
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "OMPrAccTerrExpl-{{TestUniqueIntegrationID}}-3",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountexplicitUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryExplUID3}}-{{TestUniqueIntegrationID}}",
+      "EffectiveDate__c": "{{today+73108}}",
+      "EndDate__c": "{{today+73168}}"
+    },
+    {
+      //ADD for MOVE
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "OMPrAccTerrExpl-{{TestUniqueIntegrationID}}-4",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountexplicitUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryExplUID4}}-{{TestUniqueIntegrationID}}",
+      "EffectiveDate__c": "{{today+73108}}",
+      "EndDate__c": "{{today+73168}}"
+    },
+    {
+      //ADD for RESTART+END
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "OMPrAccTerrExpl-{{TestUniqueIntegrationID}}-5",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountexplicitUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryExplUID5}}-{{TestUniqueIntegrationID}}",
+      "EffectiveDate__c": "{{today+73108}}",
+      "EndDate__c": "{{today+73168}}"
+    }
+  ],
+
+  "ScenarioProductAccTerrExclusion": [
+    // precondition fo Actions EDIT, EFFE, EXPR
+    {
+      //ADD for EFFE
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "OMPrAccTerrExcl-{{TestUniqueIntegrationID}}-1",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountexclusionUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryExclUID}}-{{TestUniqueIntegrationID}}",
+      "EffectiveDate__c": "{{today+73123}}",
+      "EndDate__c": "{{today+73183}}"
+    },
+    {
+      //ADD for END
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "OMPrAccTerrExcl-{{TestUniqueIntegrationID}}-2",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountexclusionUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryExclUID2}}-{{TestUniqueIntegrationID}}",
+      "EffectiveDate__c": "{{today+73123}}",
+      "EndDate__c": "{{today+73183}}"
+    },
+    {
+      //ADD for DELETE
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "OMPrAccTerrExcl-{{TestUniqueIntegrationID}}-3",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountexclusionUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryExclUID3}}-{{TestUniqueIntegrationID}}",
+      "EffectiveDate__c": "{{today+73123}}",
+      "EndDate__c": "{{today+73183}}"
+    },
+    {
+      //ADD for MOVE
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "OMPrAccTerrExcl-{{TestUniqueIntegrationID}}-4",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountexclusionUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryExclUID4}}-{{TestUniqueIntegrationID}}",
+      "EffectiveDate__c": "{{today+73123}}",
+      "EndDate__c": "{{today+73183}}"
+    },
+    {
+      //ADD for RESTART + END
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "OMPrAccTerrExcl-{{TestUniqueIntegrationID}}-5",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountexclusionUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryExclUID5}}-{{TestUniqueIntegrationID}}",
+      "EffectiveDate__c": "{{today+73123}}",
+      "EndDate__c": "{{today+73183}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      // check actions ADD OMProductAccTerrExplicit
+      {
+        "testname": "merge_productaccterr_explicit_ADD-1",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"SOMTerritoryId\",\"UniqueIntegrationId\",\"Status\",\"EffectiveDate\",\"EndDate\",\"SOMCreatedById\",\"LastScenario\"  from OUTPUT.\"OMProductAccTerrExplicit\" where \"SOMProductId\"='{{productUId}}' AND \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c}}' AND \"OMAccountId\"='{{accountexplicitUId}}'",
+        "exp_result": "[{OMAccountId:{{accountexplicitUId}},SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},UniqueIntegrationId:OMPrAccTerrExpl-{{TestUniqueIntegrationID}}-1,Status:ACTV,EffectiveDate:{{ScenarioProductAccTerrExplicit.EffectiveDate__c}},EndDate:{{ScenarioProductAccTerrExplicit.EndDate__c}},SOMCreatedById:{{SFUSER_ID}},LastScenario:{{Scenario.Id}}|{{Scenario.Name}}}]"
+      },
+      {
+        "testname": "merge_productaccterr_explicit_ADD-2",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"SOMTerritoryId\",\"UniqueIntegrationId\",\"Status\",\"EffectiveDate\",\"EndDate\",\"SOMCreatedById\",\"LastScenario\"  from OUTPUT.\"OMProductAccTerrExplicit\" where \"SOMProductId\"='{{productUId}}' AND \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[1]}}' AND \"OMAccountId\"='{{accountexplicitUId}}'",
+        "exp_result": "[{OMAccountId:{{accountexplicitUId}},SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},UniqueIntegrationId:OMPrAccTerrExpl-{{TestUniqueIntegrationID}}-2,Status:ACTV,EffectiveDate:{{ScenarioProductAccTerrExplicit.EffectiveDate__c}},EndDate:{{ScenarioProductAccTerrExplicit.EndDate__c}},SOMCreatedById:{{SFUSER_ID}},LastScenario:{{Scenario.Id}}|{{Scenario.Name}}}]"
+      },
+      // check actions ADD OMProductAccTerrExclusion
+      {
+        "testname": "merge_productaccterr_exclusion_ADD-1",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"SOMTerritoryId\",\"UniqueIntegrationId\",\"Status\",\"EffectiveDate\",\"EndDate\",\"SOMCreatedById\",\"LastScenario\"  from OUTPUT.\"OMProductAccTerrExclusion\" where \"SOMProductId\"='{{productUId}}' AND \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[5]}}' AND \"OMAccountId\"='{{accountexclusionUId}}'",
+        "exp_result": "[{OMAccountId:{{accountexclusionUId}},SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[5]}},UniqueIntegrationId:OMPrAccTerrExcl-{{TestUniqueIntegrationID}}-1,Status:ACTV,EffectiveDate:{{ScenarioProductAccTerrExclusion.EffectiveDate__c}},EndDate:{{ScenarioProductAccTerrExclusion.EndDate__c}},SOMCreatedById:{{SFUSER_ID}},LastScenario:{{Scenario.Id}}|{{Scenario.Name}}}]"
+      },
+      {
+        "testname": "merge_productaccterr_exclusion_ADD-2",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"SOMTerritoryId\",\"UniqueIntegrationId\",\"Status\",\"EffectiveDate\",\"EndDate\",\"SOMCreatedById\",\"LastScenario\"  from OUTPUT.\"OMProductAccTerrExclusion\" where \"SOMProductId\"='{{productUId}}' AND \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[6]}}' AND \"OMAccountId\"='{{accountexclusionUId}}'",
+        "exp_result": "[{OMAccountId:{{accountexclusionUId}},SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[6]}},UniqueIntegrationId:OMPrAccTerrExcl-{{TestUniqueIntegrationID}}-2,Status:ACTV,EffectiveDate:{{ScenarioProductAccTerrExclusion.EffectiveDate__c}},EndDate:{{ScenarioProductAccTerrExclusion.EndDate__c}},SOMCreatedById:{{SFUSER_ID}},LastScenario:{{Scenario.Id}}|{{Scenario.Name}}}]"
+      }
+    ]
+  }
+}

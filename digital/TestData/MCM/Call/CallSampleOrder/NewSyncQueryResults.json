@@ -1,0 +1,43 @@
+{
+  "BaseData": {
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "OMCallSampleOrderAllFields-New",
+        "query": "select \"Id\",\"OMCallId\",to_date(\"ActualDeliveryDate\") as \"ActualDeliveryDate\",to_date(\"DateShipped\") as \"DateShipped\",to_date(\"ExpectedDeliveryDate\") as \"ExpectedDeliveryDate\",\"DeliveryStatus\",\"Status\",\"SOMProductId\",\"Quantity\",\"QuantityShipped\",\"UniqueIntegrationId\",\"CreatedById\",to_date(\"CreatedDate\") as \"CreatedDate\",to_date(\"UpdatedDate\") as \"UpdatedDate\",\"UpdatedById\" from static.\"OMCallSampleOrder\" where \"Id\"='CallSampleOrder{{TestUniqueIntegrationID}}AllFields'",
+        "exp_result": "[{Id:CallSampleOrder{{TestUniqueIntegrationID}}AllFields,OMCallId:CallId{{TestUniqueIntegrationID}},ActualDeliveryDate:{{dbt_today}},DateShipped:{{dbt_today}},ExpectedDeliveryDate:{{dbt_today}},DeliveryStatus:34534,Status:ACTV,SOMProductId:a4v3t0000003mavAAA,Quantity:5,QuantityShipped:5,UniqueIntegrationId:{{TestUniqueIntegrationID}}AllFields,CreatedById:Automation,CreatedDate:{{dbt_today}},UpdatedDate:{{dbt_today}},UpdatedById:Automation}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "OMCallSampleOrderMandatoryFields-New",
+        "query": "select \"Id\",\"OMCallId\",to_date(\"ActualDeliveryDate\") as \"ActualDeliveryDate\",to_date(\"DateShipped\") as \"DateShipped\",to_date(\"ExpectedDeliveryDate\") as \"ExpectedDeliveryDate\",\"DeliveryStatus\",\"Status\",\"SOMProductId\",\"Quantity\",\"QuantityShipped\",\"UniqueIntegrationId\",\"CreatedById\",to_date(\"CreatedDate\") as \"CreatedDate\",to_date(\"UpdatedDate\") as \"UpdatedDate\",\"UpdatedById\" from static.\"OMCallSampleOrder\" where \"Id\"='CallSampleOrder{{TestUniqueIntegrationID}}MandatoryFieldsOnly'",
+        "exp_result": "[{Id:CallSampleOrder{{TestUniqueIntegrationID}}MandatoryFieldsOnly,OMCallId:CallIdNoBU{{TestUniqueIntegrationID}},ActualDeliveryDate:{{dbt_today}},DateShipped:null,ExpectedDeliveryDate:null,DeliveryStatus:null,Status:ACTV,SOMProductId:a4v3t0000003mavAAA,Quantity:null,QuantityShipped:null,UniqueIntegrationId:null,CreatedById:Automation,CreatedDate:{{dbt_today}},UpdatedDate:{{dbt_today}},UpdatedById:Automation}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "OMCallSampleOrderLargeQuantity-New",
+        "query": "select \"Id\",\"OMCallId\",to_date(\"ActualDeliveryDate\") as \"ActualDeliveryDate\",to_date(\"DateShipped\") as \"DateShipped\",to_date(\"ExpectedDeliveryDate\") as \"ExpectedDeliveryDate\",\"DeliveryStatus\",\"Status\",\"SOMProductId\",\"Quantity\",\"QuantityShipped\",\"UniqueIntegrationId\",\"CreatedById\",to_date(\"CreatedDate\") as \"CreatedDate\",to_date(\"UpdatedDate\") as \"UpdatedDate\",\"UpdatedById\" from static.\"OMCallSampleOrder\" where \"Id\"='CallSampleOrder{{TestUniqueIntegrationID}}LargeQuantity'",
+        "exp_result": "[{Id:CallSampleOrder{{TestUniqueIntegrationID}}LargeQuantity,OMCallId:CallIdNoBU{{TestUniqueIntegrationID}},ActualDeliveryDate:{{dbt_today}},DateShipped:null,ExpectedDeliveryDate:null,DeliveryStatus:null,Status:ACTV,SOMProductId:a4v3t0000003mavAAA,Quantity:2147483647,QuantityShipped:2147483647,UniqueIntegrationId:null,CreatedById:Automation,CreatedDate:{{dbt_today}},UpdatedDate:{{dbt_today}},UpdatedById:Automation}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "NoCallSampleInvalid-New",
+        "query": "select count(*) from STATIC.\"OMCallSampleOrder\" where \"Id\" in ('CallSampleOrder{{TestUniqueIntegrationID}}Past','CallSample{{TestUniqueIntegrationID}}OtherCRM','CallSampleOrder{{TestUniqueIntegrationID}}BUOther','CallSampleOrder{{TestUniqueIntegrationID}}NOBU')",
+        "exp_result": "[{COUNT(*):0}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "NoCallSampleValid-New",
+        "query": "select count(*) from STATIC.\"OMCallSampleOrder\" where \"Id\" like ('%{{TestUniqueIntegrationID}}%')",
+        "exp_result": "[{COUNT(*):4}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      }
+    ]
+  }
+}

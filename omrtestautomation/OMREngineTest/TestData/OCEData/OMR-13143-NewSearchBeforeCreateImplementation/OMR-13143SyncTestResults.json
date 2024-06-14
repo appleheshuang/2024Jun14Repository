@@ -1,0 +1,19 @@
+﻿{
+  "Tests": {
+		"MergeResults": [
+			{
+				"testname": "account-sync",
+				"query": "select \"FirstName\", \"LastName\",\"Status\",\"Specialty\" from static.\"OMAccount\" where \"UniqueIntegrationId\" in ('CHRISTOPOULOS-GN','EVANS-WB','NO-KJ','RIZVI-ZH') order by \"UniqueIntegrationId\"",
+				"exp_result": "[{FirstName:GEORGE,LastName:CHRISTOPOULOS,Status:ACTV,Specialty:Internal medicine},{FirstName:WILLIAM,LastName:EVANS,Status:ACTV,Specialty:Veterinarian},{FirstName:KAP,LastName:NO,Status:ACTV,Specialty:Veterinarian},{FirstName:ZULFIQAR,LastName:RIZVI,Status:ACTV,Specialty:Internal medicine}]",
+				"odataQuery": "\\OMAccount?$select=FirstName,LastName,Status,Specialty&$filter=contains('CHRISTOPOULOS-GN,EVANS-WB,NO-KJ,RIZVI-ZH',UniqueIntegrationId)&$orderby=UniqueIntegrationId"
+			}
+		],
+		"OCEResults": [
+			{
+				"testname": "Territory2",
+				"exp_result": "[{Name:{{ScenarioTerritory.Name[0]}},DeveloperName:O{{ScenarioTerritory.SOMTerritoryId__c[0]}}}]",
+				"sfQuery": "select Name, DeveloperName from Territory2 where DeveloperName ='O{{ScenarioTerritory.SOMTerritoryId__c}}'"
+			}
+		]
+  }
+}

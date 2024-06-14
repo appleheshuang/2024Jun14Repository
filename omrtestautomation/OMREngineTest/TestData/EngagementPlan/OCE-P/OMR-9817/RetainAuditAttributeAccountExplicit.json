@@ -1,0 +1,18 @@
+﻿{
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "OMR-9817_ExplicitAccountTerritoryFromOCETests",
+        "query": "select \"Purpose\", \"FromOCEPersonal\", \"SourceId\", \"SOMCreatedById\" from OUTPUT.\"OMAccountExplicit\" where \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c[0]}}' and \"OMAccountId\" = '{{Account.Id[0]}}'",
+        "exp_result": "[{Purpose:ALGN,FromOCEPersonal:true,SourceId:{{Account.Id[0]}},SOMCreatedById:{{SFUSER_ID}}}]",
+        "odataQuery": "/OMAccountExplicit?$select=Purpose,FromOCEPersonal,SourceId,SOMCreatedById&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[0]}}' and OMAccountId eq '{{Account.Id[0]}}'"
+      },
+      {
+        "testname": "OMR-19933_PlanCycleName",
+        "query": "select \"SOMEngagementPlanId\",\"Name\", \"UniqueIntegrationId\", \"TerritoryName\" from STATIC.\"OMPlanCycle\" where \"SOMEngagementPlanId\" = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}'",
+        "exp_result": "[{SOMEngagementPlanId:{{ScenarioEngagementPlan.SOMEngagementPlanId__c}},Name:{{ScenarioTerritory.Name[0]}}-{{ScenarioEngagementPlan.Name}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[0]}}-{{ScenarioEngagementPlan.UniqueIntegrationId__c}},TerritoryName:{{ScenarioTerritory.Name[0]}}}]",
+        "odataQuery": "/OMPlanCycle?$select=SOMEngagementPlanId,Name,UniqueIntegrationId,TerritoryName&$filter=SOMEngagementPlanId eq '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}'"
+      }
+    ]
+  }
+  }

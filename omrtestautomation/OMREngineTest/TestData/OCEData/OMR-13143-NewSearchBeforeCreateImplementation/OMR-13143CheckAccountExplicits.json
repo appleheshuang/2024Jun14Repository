@@ -1,0 +1,19 @@
+﻿{
+  "Tests": {
+		"MergeResults": [
+			{
+				//OMR-15933
+				"testname": "ApprovedPendingResults",
+				"query": "select \"Purpose\", \"FromOCEPersonal\", \"SourceId\", \"SOMCreatedById\", \"Status\", \"EffectiveDate\", \"EndDate\" from OUTPUT.\"OMAccountExplicit\" where \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c[0]}}' order by \"OMAccountId\"",
+				"exp_result": "[{Purpose:ALGN,FromOCEPersonal:true,SourceId:{{Account.Id[0]}},SOMCreatedById:{{SFUSER_ID}},Status:ACTV,EffectiveDate:{{DBT_TODAY}},EndDate:{{Scenario.EndDate__c[0]}}},{Purpose:ALGN,FromOCEPersonal:true,SourceId:{{Account.Id[1]}},SOMCreatedById:{{SFUSER_ID}},Status:ACTV,EffectiveDate:{{DBT_TODAY}},EndDate:{{Scenario.EndDate__c[0]}}}]",
+				"odataQuery": "/OMAccountExplicit?$select=Purpose,FromOCEPersonal,SourceId,SOMCreatedById,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[0]}}'&$orderBy=OMAccountId"
+			},
+			{
+				"testname": "RejectedResults",
+				"query": "select \"Purpose\", \"FromOCEPersonal\", \"SourceId\", \"SOMCreatedById\", \"Status\" from OUTPUT.\"OMAccountExplicit\" where \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c[0]}}' and \"OMAccountId\" = '{{Account.Id[0]}}'",
+				"exp_result": "[{Purpose:ALGN,FromOCEPersonal:true,SourceId:{{Account.Id[0]}},SOMCreatedById:{{SFUSER_ID}},Status:INAC}]",
+				"odataQuery": "/OMAccountExplicit?$select=Purpose,FromOCEPersonal,SourceId,SOMCreatedById,Status&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[0]}}' and OMAccountId eq '{{Account.Id[0]}}'"
+			}
+		]
+  }
+}

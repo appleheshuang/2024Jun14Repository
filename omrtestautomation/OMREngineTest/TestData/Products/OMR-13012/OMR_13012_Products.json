@@ -1,0 +1,43 @@
+﻿{
+    "Product": [
+        {
+            "Name": "SnowProduct-{{TestUniqueIntegrationID}}",
+            "EffectiveDate__c": "2020-01-01",
+            "Type__c": "Detail",
+            "OMRegionId__c": "REG01",
+            "UniqueIntegrationId__c": "SnowProduct-{{TestUniqueIntegrationID}}",
+            "Status__c": "ACTV"
+        }
+    ],
+
+    "Tests": {
+        "ProductTest": [
+            {
+                "testname": "SF Product",
+                "query": "OMProduct,Name,Status,UniqueIntegrationId:'SFProduct_{TestUniqueIntegrationID}'",
+                "exp_result": "[Name:SFProduct_{{TestUniqueIntegrationID}},Status:ACTV]",
+                "sfQuery": "SELECT Name,{{prefix}}Status__c FROM {{prefix}}OMProduct__c where {{prefix}}UniqueIntegrationId__c ='SFProduct_{{TestUniqueIntegrationID}}'"
+            },
+            {
+                "testname": "Snow Product",
+                "query": "OMProduct,Name,Status,UniqueIntegrationId:'SnowProduct-{{TestUniqueIntegrationID}}'",
+                "exp_result": "[Name:SnowProduct-{{TestUniqueIntegrationID}},Status:ACTV]",
+                "sfQuery": "SELECT Name,{{prefix}}Status__c FROM {{prefix}}OMProduct__c where {{prefix}}UniqueIntegrationId__c ='SnowProduct-{{TestUniqueIntegrationID}}'"
+            }
+        ],
+        "SalesForceTest": [
+            {
+                "testname": "SF SalesForce",
+                "query": "OMSalesForce,Name,Status,UniqueIntegrationId:'SFUID-{{TestUniqueIntegrationID}}'",
+                "exp_result": "[Name:SF - {{TestUniqueIntegrationID}},Status:ACTV]",
+                "sfQuery": "SELECT Name,{{prefix}}Status__c  FROM {{prefix}}__OMSalesForce__c where {{prefix}}UniqueIntegrationId__c ='SFUID-{{TestUniqueIntegrationID}}'"
+            },
+            {
+                "testname": "Snow SalesForce",
+                "query": "OMSalesForce,Name,Status,UniqueIntegrationId:'ReSyncTest_{{TestUniqueIntegrationID}}'",
+                "exp_result": "[Name:ReSyncSF_{{TestUniqueIntegrationID}},Status:ACTV]",
+                "sfQuery": "SELECT Name,{{prefix}}Status__c  FROM {{prefix}}__OMSalesForce__c where {{prefix}}UniqueIntegrationId__c ='ReSyncTest_{{TestUniqueIntegrationID}}'"
+            }
+        ]
+    }
+}

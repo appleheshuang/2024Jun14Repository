@@ -1,0 +1,199 @@
+{
+  "Bulkload": {
+    "S3Path": "InTestJustine/Metrics/146861011/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "ValidateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "GeoMetrics/OMGeography_17565.csv",
+        "table": "OMGeography"
+      },
+      {
+        "file": "GeoMetrics/OMAccount_17565.csv",
+        "table": "OMAccount"
+      },
+      {
+        "file": "AcctToGeo/OMAccountAddress_17481.csv",
+        "table": "OMAccountAddress"
+      },
+      {
+        "file": "AcctToGeo/OMAffiliation_17481.csv",
+        "table": "OMAffiliation"
+      },
+      {
+        "file": "CurrencyFilter/OMAccountSales_17991.csv",
+        "table": "OMAccountSales"
+      },
+      {
+        "file": "AcctToGeo/OMAccountTerritoryFields_17481.csv",
+        "table": "OMAccountTerritoryFields"
+      },
+      {
+        "file": "GeoMetrics/OMGeographySales_17565.csv",
+        "table": "OMGeographySales"
+      }
+    ]
+  },
+  "BaseData": {
+    "A1_UK_UId": "A1-17481-{{TestUniqueIntegrationId}}",
+    "A2_UK_UId": "A2-17481-{{TestUniqueIntegrationId}}",
+    "A3_UK_UId": "A3-17481-{{TestUniqueIntegrationId}}",
+    "A4_US_UId": "A4-17481-{{TestUniqueIntegrationId}}",
+    "A5_PN_UId": "A5-17481-{{TestUniqueIntegrationId}}",
+    "A1_Copromote_Sales": "11.000",
+    "A2_Copromote_Sales": "20.000",
+    "A3_Copromote_Sales": "30.000",
+    "A4_Copromote_Sales": "n/a",
+    "A5_Copromote_Sales": "40.000",
+    "G1_Post_UId": "G1-POST1-17481-{{TestUniqueIntegrationId}}",
+    "G2_Post_UId": "G2-POST2-17481-{{TestUniqueIntegrationId}}",
+    "G3_Brick_UId": "G3-BRICK3-17481-{{TestUniqueIntegrationId}}",
+    "G4_Brick_UId": "G4-BRICK4-17481-{{TestUniqueIntegrationId}}",
+    "G5_State_UId": "G5-STATE5-17481-{{TestUniqueIntegrationId}}",
+    "G6_State_UId": "G6-STATE6-17481-{{TestUniqueIntegrationId}}",
+    "G7_Post_UId": "G7-POST7-17481-{{TestUniqueIntegrationId}}",
+    "G8_Brick_UId": "G8-BRICK8-17481-{{TestUniqueIntegrationId}}",
+    "G9_State_UId": "G9-STATE9-17481-{{TestUniqueIntegrationId}}"
+  },
+  "Tests": {
+    "MetricResult": [
+      {
+        "testname": "AccountMetricResult_Precheck",
+        "entity": "Account",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{A1_UK_UId}},{{A2_UK_UId}},{{A3_UK_UId}},{{A4_US_UId}},{{A5_PN_UId}}",
+        "columns": "Metric11,Metric13,Metric14,Metric15,Metric16",
+        "exp_result": "[{Account:{{A1_UK_UId}},Metric11:7.000,Metric13:{{A1_Copromote_Sales}},Metric14:{{A1_Copromote_Sales}},Metric15:{{A1_Copromote_Sales}},Metric16:{{A1_Copromote_Sales}}},{Account:{{A2_UK_UId}},Metric11:5.000,Metric13:{{A2_Copromote_Sales}},Metric14:{{A2_Copromote_Sales}},Metric15:{{A2_Copromote_Sales}},Metric16:{{A2_Copromote_Sales}}},{Account:{{A3_UK_UId}},Metric11:3.000,Metric13:{{A3_Copromote_Sales}},Metric14:{{A3_Copromote_Sales}},Metric15:{{A3_Copromote_Sales}},Metric16:{{A3_Copromote_Sales}}},{Account:{{A5_PN_UId}},Metric11:3.000,Metric13:{{A5_Copromote_Sales}},Metric14:{{A5_Copromote_Sales}},Metric15:{{A5_Copromote_Sales}},Metric16:{{A5_Copromote_Sales}}}]"
+      },
+      {
+        "testname": "AccountMetricResult_Precheck_Metric12",
+        "entity": "Account",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{A1_UK_UId}},{{A2_UK_UId}},{{A3_UK_UId}},{{A4_US_UId}},{{A5_PN_UId}}",
+        "columns": "Metric12",
+        "exp_result": "[{Account:{{A1_UK_UId}},Metric12:400.030},{Account:{{A2_UK_UId}},Metric12:{{A2_Copromote_Sales}}},{Account:{{A3_UK_UId}},Metric12:{{A3_Copromote_Sales}}},{Account:{{A5_PN_UId}},Metric12:40.010}]"
+      },
+      {
+        "testname": "PostGeoRollupResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G1_Post_UId}},{{G2_Post_UId}},{{G7_Post_UId}}",
+        "columns": "Metric13,Metric16",
+        "exp_result": "[{Geography:{{G1_Post_UId}},Metric13:30.000,Metric16:41.000},{Geography:{{G7_Post_UId}},Metric13:60.000,Metric16:60.000}]"
+      },
+      {
+        "testname": "BrickGeoRollupResult_Primary",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G3_Brick_UId}},{{G4_Brick_UId}},{{G8_Brick_UId}}",
+        "columns": "Metric12",
+        "exp_result": "[{Geography:{{G3_Brick_UId}},Metric12:50.000},{Geography:{{G4_Brick_UId}},Metric12:40.010}]"
+      },
+      {
+        "testname": "BrickGeoRollupResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G3_Brick_UId}},{{G4_Brick_UId}},{{G8_Brick_UId}}",
+        "columns": "Metric11,Metric15",
+        "exp_result": "[{Geography:{{G3_Brick_UId}},Metric11:5.500,Metric15:40.000},{Geography:{{G4_Brick_UId}},Metric11:5.500,Metric15:50.000}]"
+      },
+      {
+        "testname": "StateGeoRollupResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G5_State_UId}},{{G6_State_UId}},{{G9_State_UId}}",
+        "columns": "Metric14",
+        "exp_result": "[{Geography:{{G5_State_UId}},Metric14:5.500},{Geography:{{G6_State_UId}},Metric14:5.500},{Geography:{{G9_State_UId}},Metric14:20.000}]"
+      },
+      {
+        "testname": "AccountMetricNoRollup_Precheck",
+        "entity": "Account",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{A1_UK_UId}},{{A2_UK_UId}},{{A3_UK_UId}},{{A4_US_UId}},{{A5_PN_UId}}",
+        "columns": "Metric17",
+        "exp_result": "[{Account:{{A1_UK_UId}},Metric17:{{A1_Copromote_Sales}}},{Account:{{A2_UK_UId}},Metric17:{{A2_Copromote_Sales}}},{Account:{{A3_UK_UId}},Metric17:{{A3_Copromote_Sales}}},{Account:{{A5_PN_UId}},Metric17:{{A5_Copromote_Sales}}}]"
+      },
+      {
+        "testname": "NoGeoRollupMetricResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G1_Post_UId}},{{G2_Post_UId}},{{G3_Brick_UId}},{{G4_Brick_UId}},{{G5_State_UId}},{{G6_State_UId}}",
+        "columns": "Metric17",
+        "exp_result": "[{Geography:{{G1_Post_UId}},Metric17:null},{Geography:{{G3_Brick_UId}},Metric17:null},{Geography:{{G4_Brick_UId}},Metric17:null},{Geography:{{G5_State_UId}},Metric17:null},{Geography:{{G6_State_UId}},Metric17:null}]"
+      },
+      {
+        "testname": "GeoPostMetricResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G1_Post_UId}},{{G2_Post_UId}},{{G7_Post_UId}}",
+        "columns": "Metric20",
+        "exp_result": "[{Geography:{{G1_Post_UId}},Metric20:11.100},{Geography:{{G7_Post_UId}},Metric20:70.700}]"
+      },
+      {
+        "testname": "GeoBrickMetricResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G3_Brick_UId}},{{G4_Brick_UId}},{{G8_Brick_UId}}",
+        "columns": "Metric19",
+        "exp_result": "[{Geography:{{G3_Brick_UId}},Metric19:33.300},{Geography:{{G4_Brick_UId}},Metric19:0.000}]"
+      },
+      {
+        "testname": "GeoStateMetricResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G5_State_UId}},{{G6_State_UId}},{{G9_State_UId}}",
+        "columns": "Metric10",
+        "exp_result": "[{Geography:{{G5_State_UId}},Metric10:2.000},{Geography:{{G6_State_UId}},Metric10:0.000},{Geography:{{G9_State_UId}},Metric10:5.000}]"
+      }
+    ],
+    "EmptyMetrics": [
+      {
+        "testname": "PostGeoRollupEmpty",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G3_Brick_UId}},{{G4_Brick_UId}},{{G5_State_UId}},{{G6_State_UId}}",
+        "columns": "Metric13,Metric16"
+      },
+      {
+        "testname": "BrickGeoRollupEmpty",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G1_Post_UId}},{{G5_State_UId}},{{G6_State_UId}}",
+        "columns": "Metric11,Metric12,Metric15"
+      },
+      {
+        "testname": "StateGeoRollupEmpty",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G1_Post_UId}},{{G3_Brick_UId}},{{G4_Brick_UId}}",
+        "columns": "Metric14"
+      },
+      {
+        "testname": "NoGeoMetricResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G1_Post_UId}},{{G3_Brick_UId}},{{G4_Brick_UId}},{{G5_State_UId}},{{G6_State_UId}}",
+        "columns": "Metric18"
+      }
+    ],
+    "MergeResults": [
+      {
+        "testname": "17481_AccountAddress_Precheck",
+        "query": "select distinct a.\"Name\", \"AddressType\", \"IsPrimary\",\"ZipCode\",\"Brick1\",\"State\" from static.\"OMAccount\" a left outer join static.\"OMAffiliation\" aff on aff.\"From\" = a.\"Id\" and aff.\"From\" = aff.\"To\" left outer join static.\"OMAccountAddress\" add on add.\"Id\" = aff.\"AddressId\" where a.\"UniqueIntegrationId\" like 'A%-17481-{{TestUniqueIntegrationId}}' order by a.\"Name\",\"IsPrimary\",\"ZipCode\",\"Brick1\",\"State\",\"AddressType\"",
+        "exp_result": "[{Name:A1-17481,AddressType:Billing,IsPrimary:true,ZipCode:17481-{{TestUniqueIntegrationId}}-01,Brick1:17481-{{TestUniqueIntegrationId}}-03,State:17481-{{TestUniqueIntegrationId}}-05},{Name:A1-17481,AddressType:Billing,IsPrimary:null,ZipCode:17481-{{TestUniqueIntegrationId}}-01,Brick1:17481-{{TestUniqueIntegrationId}}-03,State:17481-{{TestUniqueIntegrationId}}-06},{Name:A2-17481,AddressType:Residential,IsPrimary:true,ZipCode:17481-{{TestUniqueIntegrationId}}-07,Brick1:17481-{{TestUniqueIntegrationId}}-03,State:17481-{{TestUniqueIntegrationId}}-09},{Name:A2-17481,AddressType:Billing,IsPrimary:null,ZipCode:17481-{{TestUniqueIntegrationId}}-07,Brick1:17481-{{TestUniqueIntegrationId}}-03,State:17481-{{TestUniqueIntegrationId}}-09},{Name:A2-17481,AddressType:Residential,IsPrimary:null,ZipCode:17481-{{TestUniqueIntegrationId}}-07,Brick1:17481-{{TestUniqueIntegrationId}}-04,State:17481-{{TestUniqueIntegrationId}}-09},{Name:A3-17481,AddressType:Residential,IsPrimary:true,ZipCode:17481-{{TestUniqueIntegrationId}}-01,Brick1:17481-{{TestUniqueIntegrationId}}-03,State:17481-{{TestUniqueIntegrationId}}-05},{Name:A3-17481,AddressType:Residential,IsPrimary:null,ZipCode:17481-{{TestUniqueIntegrationId}}-02,Brick1:17481-{{TestUniqueIntegrationId}}-03,State:17481-{{TestUniqueIntegrationId}}-05},{Name:A4-17481,AddressType:Residential,IsPrimary:true,ZipCode:17481-{{TestUniqueIntegrationId}}-02,Brick1:17481-{{TestUniqueIntegrationId}}-04,State:17481-{{TestUniqueIntegrationId}}-09},{Name:A4-17481,AddressType:Residential,IsPrimary:null,ZipCode:17481-{{TestUniqueIntegrationId}}-02,Brick1:17481-{{TestUniqueIntegrationId}}-03,State:17481-{{TestUniqueIntegrationId}}-09},{Name:A4-17481,AddressType:Billing,IsPrimary:null,ZipCode:17481-{{TestUniqueIntegrationId}}-02,Brick1:17481-{{TestUniqueIntegrationId}}-04,State:17481-{{TestUniqueIntegrationId}}-09},{Name:A5-17481,AddressType:Residential,IsPrimary:true,ZipCode:17481-{{TestUniqueIntegrationId}}-07,Brick1:17481-{{TestUniqueIntegrationId}}-04,State:17481-{{TestUniqueIntegrationId}}-09}]"
+      },
+      {
+        "testname": "17481_Address_Precheck",
+        "query": "select \"UniqueIntegrationId\" from STATIC.\"OMAccountAddress\" where \"UniqueIntegrationId\" like 'BSZ-%-{{TestUniqueIntegrationId}}' order by \"UniqueIntegrationId\"",
+        "exp_result": "[{UniqueIntegrationId:BSZ-351-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:BSZ-352-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:BSZ-361-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:BSZ-392-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:BSZ-397-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:BSZ-492-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:BSZ-497-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:BSZ-897-{{TestUniqueIntegrationId}}}]"
+      },
+      {
+        "testname": "17481_Geography_Precheck",
+        "query": "select \"UniqueIntegrationId\" from STATIC.\"OMGeography\" where \"UniqueIntegrationId\" like 'G%-17481-{{TestUniqueIntegrationId}}' order by \"UniqueIntegrationId\"",
+        "exp_result": "[{UniqueIntegrationId:G1-POST1-17481-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:G2-POST2-17481-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:G3-BRICK3-17481-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:G4-BRICK4-17481-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:G5-STATE5-17481-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:G6-STATE6-17481-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:G7-POST7-17481-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:G8-BRICK8-17481-{{TestUniqueIntegrationId}}},{UniqueIntegrationId:G9-STATE9-17481-{{TestUniqueIntegrationId}}}]"
+      }
+    ]
+  }
+}

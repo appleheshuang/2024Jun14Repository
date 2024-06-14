@@ -1,0 +1,19 @@
+{
+  "Bulkload": {
+    "S3Path": "autotestdata/OMR-18946/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMR-18946-OMAccountSalesForceFields.csv",
+        "table": "OMAccountSalesForceFields"
+      },
+      {
+        "file": "OMR-18946-OMAccountTerritoryFields.csv",
+        "table": "OMAccountTerritoryFields"
+      }
+    ]
+  }
+}

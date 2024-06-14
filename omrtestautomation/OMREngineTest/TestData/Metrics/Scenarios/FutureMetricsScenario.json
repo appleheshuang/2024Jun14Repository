@@ -1,0 +1,224 @@
+{
+  "BaseData": {
+    "som_region_id": "PN",
+    "metric_acc1": "MetricAcct-1", //SOMRegionId=UK
+    "metric_acc2": "MetricAcct-2", //SOMRegionId=UKUK
+    "metric_acc3": "MetricAcct-3", //SOMRegionId=PN (Child of UK)
+    "metric_acc4": "MetricAcct-4", //SOMRegionId=PN (Child of UK)
+    "metric_acc5": "MetricAcct-5", //SOMRegionId=PN (Child of UK)
+    "metric_acc6": "MetricAcct-6", //SOMRegionId=PN (Child of UK)
+    "metric_acc7": "MetricAcct-7", //SOMRegionId=PN, INAC (Child of UK)
+    "salesforceUID": "SF405",
+    "territoryUID": "T505"
+  },
+
+  "Scenario": {
+    "Description": "",
+    "Name": "",
+    "EffectiveDate__c": "3001-01-01",
+    "EndDate__c": "3002-12-31",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": ""
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}-0",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "RegionUniqueIntegrationId__c": "{{som_region_id}}",
+      "Type__c": "KOL",
+      "Name": "MetricSF-Past-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "2022-01-01",
+      "EndDate__c": "2022-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}-1",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "RegionUniqueIntegrationId__c": "{{som_region_id}}",
+      "Type__c": "KOL",
+      "Name": "MetricSF-CurrentChild-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "{{dbt_today}}",
+      "EndDate__c": "{{today+1}}"
+    },
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}-2",
+      "SOMRegionId__c": "UK",
+      "RegionUniqueIntegrationId__c": "{{som_region_id}}",
+      "Type__c": "KOL",
+      "Name": "MetricSF-CurrentParent-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "{{dbt_today}}",
+      "EndDate__c": "{{today+1}}"
+    },
+    { //TC where no account SOMRegionIds match the salesforce SOMRegionId
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}-3",
+      "SOMRegionId__c": "MS",
+      "RegionUniqueIntegrationId__c": "{{som_region_id}}",
+      "Type__c": "KOL",
+      "Name": "MetricSF-CurrentNoAccounts-{{TestUniqueIntegrationId}}-4",
+      "EffectiveDate__c": "{{dbt_today}}",
+      "EndDate__c": "{{today+1}}"
+    },
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}-5",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "RegionUniqueIntegrationId__c": "{{som_region_id}}",
+      "Type__c": "KOL",
+      "Name": "MetricSF-FutureChild-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "3000-01-01",
+      "EndDate__c": "3999-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}-6",
+      "SOMRegionId__c": "UK",
+      "RegionUniqueIntegrationId__c": "{{som_region_id}}",
+      "Type__c": "KOL",
+      "Name": "MetricSF-FutureParent-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "3000-01-01",
+      "EndDate__c": "3999-12-31"
+    }
+  ],
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[4]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "Terr 505-{{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationId}}-0",
+      "RegionUniqueIntegrationId__c": "PN",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[5]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "UK",
+      "Name": "Terr 506-{{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationId}}-1",
+      "RegionUniqueIntegrationId__c": "UK",
+      "Type__c": "TERR"
+    }
+  ],
+  "ScenarioAccountExplicit": [
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "COMP",
+      "AccountUniqueIntegrationId__c": "{{metric_acc3}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "OMScenarioId__c": "{{Scenario.Id}}"
+    },
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "COMP",
+      "AccountUniqueIntegrationId__c": "{{metric_acc3}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "OMScenarioId__c": "{{Scenario.Id}}"
+    },
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "COMP",
+      "AccountUniqueIntegrationId__c": "{{metric_acc2}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "OMScenarioId__c": "{{Scenario.Id}}"
+    },
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "COMP",
+      "AccountUniqueIntegrationId__c": "{{metric_acc4}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "OMScenarioId__c": "{{Scenario.Id}}"
+    }
+  ],
+  "ScenarioProductSalesForce": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[0]}}", //Expired product
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c[0]}}", //expired Salesforce
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2022-01-01",
+      "EndDate__c": "2022-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[1]}}", //UK Product
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c[2]}}", //UK Salesforce
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "{{dbt_today}}",
+      "EndDate__c": "{{today+1}}"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[3]}}", //PN Product
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c[1]}}", //PN Salesforce
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "{{dbt_today}}",
+      "EndDate__c": "{{today+1}}"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[3]}}", //PN Product
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c[2]}}", //UK Salesforce
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "{{dbt_today}}",
+      "EndDate__c": "{{today+1}}"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[4]}}", //Global Product
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c[2]}}", //UK Salesforce
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "{{dbt_today}}",
+      "EndDate__c": "{{today+1}}"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[4]}}", //Global Product
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c[1]}}", //PN Salesforce
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "{{dbt_today}}",
+      "EndDate__c": "{{today+1}}"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[5]}}", //CompetitorProduct=TRUE Product
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c[2]}}", //UK Salesforce
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "{{dbt_today}}",
+      "EndDate__c": "{{today+1}}"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[6]}}", //CompetitorProduct=FALSE Product
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c[2]}}", //UK Salesforce
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "{{dbt_today}}",
+      "EndDate__c": "{{today+1}}"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[7]}}", //Effective in future Product
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c[4]}}", //UK Salesforce
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "3000-01-01",
+      "EndDate__c": "3999-12-31"
+    }
+  ]
+}

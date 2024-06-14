@@ -1,0 +1,13 @@
+{
+  "Tests": {
+    "MergeResults": [
+      {
+        //Check cascade+recursive cascade of OMProduct
+        "testname": "CheckOMProductCascadeBrand",
+        "query": "skip",
+        "exp_result": "[{CascadeStatus:PENDWITHCHILDREN}]",
+        "sfQuery": "select {{prefix}}CascadeStatus__c from {{prefix}}OMProduct__c where {{prefix}}UniqueIntegrationID__c = 'Brand-{{TestUniqueIntegrationId}}'"
+      }
+    ]
+  }
+}

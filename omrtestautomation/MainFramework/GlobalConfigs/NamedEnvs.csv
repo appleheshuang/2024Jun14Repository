@@ -1,0 +1,7 @@
+master,demo,staging,prod,preprod
+stagingpreprod,stagingprod, stagingpreprod-canada, stagingpreprod-tokyo
+stagingpreprod-eu,stagingprod-eu,stagingpreprod-us,stagingprod-us,stagingpreprod-ap,stagingprod-ap
+preprod-eu,preprod-us,preprod-ap
+prod-eu,prod-us,prod-ap
+justine,andon,jane,gab,eva,gerard,anup
+edge

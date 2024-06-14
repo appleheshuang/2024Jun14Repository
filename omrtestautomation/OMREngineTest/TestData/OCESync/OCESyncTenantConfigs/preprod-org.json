@@ -1,0 +1,18 @@
+{
+	"orgURL": "https://oce-itgomroce2.my.salesforce.com",
+	"clientID": "3MVG9LBJLApeX_PClJSDPvr2CF4CZxpp4_RtqiekVQiXLe8u42PxlX9aC2hqRLPv0PWC8E7F92pA5uA4NDRx7",
+	"clientSecret": "F48368D78E030900DF513B99926E06104F8004FE15EB015F655F556274343EC1",
+	"orgUserName": "omocesysadmin@gmail.com",
+	"orgPassword": "cegedim1234",
+	"TenantId": "3072a2d6b2d54ba0a3d8e940e9d0040f",
+	"TenantUser": "ITGPreProd",
+	"TenantPassword": "ITGPreProd",
+	//	"snowConnection": "account=iqviaomrdev;user=TITGPREPROD_PROD_3072A2D6B2D54BA0A3D8E940E9D0040F_UR;password=anb$$$RKP214ajG@8q4sXhZZjHiWm9;db=TITGPREPROD_PROD_3072A2D6B2D54BA0A3D8E940E9D0040F_DB;host=iqviaomrdev.us-east-1.snowflakecomputing.com",
+	"snowConnection": "ACCOUNT=iqviaomrdev;HOST=iqviaomrdev.us-east-1.snowflakecomputing.com;USER=TITGPREPROD_PROD_3072A2D6B2D54BA0A3D8E940E9D0040F_UR;PASSWORD=anb$$$RKP214ajG@8q4sXhZZjHiWm9;DB=TITGPREPROD_PROD_3072A2D6B2D54BA0A3D8E940E9D0040F_DB;ROLE=TITGPREPROD_PROD_3072A2D6B2D54BA0A3D8E940E9D0040F_RL;WAREHOUSE=API_WH;SCHEMA=PUBLIC",
+	"sfApiKey": "kGDzsKwWdu7EjWLCrfBb27LBiTIw9VAt6onALwio",
+	"lexiApiKey": "ypjIkFpShD36KW3NSB3xI9Jon6hQWilwptCnI9vg",
+	"sfnamespace": "iq_sj_omr_01",
+	"sfDBName": "TITGPREPROD_PROD_3072A2D6B2D54BA0A3D8E940E9D0040F_DB",
+	"targetEnv": "preprod",
+	"RulesEnabled": true
+}

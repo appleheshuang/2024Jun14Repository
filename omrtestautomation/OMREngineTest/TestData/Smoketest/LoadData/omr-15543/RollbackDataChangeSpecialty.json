@@ -1,0 +1,15 @@
+{
+  "Bulkload": {
+    "S3Path": "autotestdata/OMR-15543/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMR-15543-OMAccount-SpecialtyChange-Test.csv",
+        "table": "OMAccount"
+      }
+    ]
+  }
+}

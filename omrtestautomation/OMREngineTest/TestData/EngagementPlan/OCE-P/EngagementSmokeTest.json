@@ -1,0 +1,219 @@
+{
+	"Configs": {
+		"loadData": "Smoketest\\Bulkload.json",
+		"resetData": "false",
+		"jobtype": "calculate"
+	},
+	"BaseData": {
+		"EffectiveDate": "2021-10-01",
+		"EndDate": "2025-12-31",
+		"som_region_id": "US",
+		"alignedAccount1UID": "CHRISTOPOULOS-GN",
+		"alignedAccount2UID": "EVANS-WB",
+		"alignedAccount3UID": "NO-KJ",
+		"alignedAccount4UID": "RIZVI-ZH",
+		"salesforceUID": "SF405",
+		"territoryUID": "T505",
+		"ruleUID": "R201"
+	},
+	"Scenario": {
+		"Description": "",
+		"Name": "",
+		"EffectiveDate__c": "{{EffectiveDate}}",
+		"EndDate__c": "{{EndDate}}",
+		"OMRegionId__c": "{{som_region_id}}",
+		"ScenarioStatus__c": "PENDG",
+		"UniqueIntegrationId__c": "",
+		"Type__c": "USER"
+	},
+	"ScenarioSalesForce": [
+		{
+			"Action__c": "ADD",
+			"SOMRegionId__c": "{{som_region_id}}",
+			"UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"Type__c": "INST",
+			"Name": "SF 405",
+			"RegionUniqueIntegrationId__c": "{{som_region_id}}",
+			"RefRegionName__c": "US-95129"
+		}
+	],
+	"ScenarioTerritory": [
+		{
+			"Action__c": "ADD",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+			"TerritorySalesForceType__c": "PRIM",
+			"Name": "Adju_ChildTerr_{{TestUniqueIntegrationId}}",
+			"UniqueIntegrationId__c": "Adju_ChildTerr_{{TestUniqueIntegrationId}}",
+			"SOMRegionId__c": "{{som_region_id}}",
+			"Type__c": "TERR"
+		},
+		{
+			"Action__c": "ADD",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+			"TerritorySalesForceType__c": "PRIM",
+			"Name": "Adju_ParentTerr_{{TestUniqueIntegrationId}}",
+			"UniqueIntegrationId__c": "Adju_ParentTerr_{{TestUniqueIntegrationId}}",
+			"SOMRegionId__c": "{{som_region_id}}",
+			"Type__c": "DIST"
+		}
+	],
+	" TerritoryHierarchy": [
+		{
+			"Action__c": "ADD",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"ChildTerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"SOMChildTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"UniqueIntegrationId__c": "AdjuHierarchy_{{TestUniqueIntegrationId}}",
+			"RefChildTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+			"ParentTerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+			"SOMParentTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+			"RefParentTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+			"RelationType__c": "PRIM"
+		}
+	],
+	"ScenarioUserAssignment": [
+		{
+			"Action__c": "ADD",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"UniqueIntegrationId__c": "RepChildTerr_{{TestUniqueIntegrationId}}",
+			"AssignmentType__c": "SECN",
+			"SOMUserId__c": "{{User.SOMUserId__c[0]}}",
+			"SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c[0]}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+			"RefTerritoryType__c": "{{ScenarioTerritory.Type__c[0]}}",
+			"RefUserType__c": "{{User.Type__c[0]}}"
+		},
+		{
+			"Action__c": "ADD",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"UniqueIntegrationId__c": "DMParentDist_{{TestUniqueIntegrationId}}",
+			"AssignmentType__c": "SECN",
+			"SOMUserId__c": "{{User.SOMUserId__c[1]}}",
+			"SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+			"UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c[1]}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+			"RefTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+			"RefTerritoryType__c": "{{ScenarioTerritory.Type__c[1]}}",
+			"RefUserType__c": "{{User.Type__c[1]}}"
+		}
+	],
+	"ScenarioRule": [
+		{
+			"Name": "specialtyA-{{ruleUID}}-{{TestUniqueIntegrationId}}",
+			"Action__c": "ADD",
+			"UniqueIntegrationId__c": "specialtyA-{{ruleUID}}-{{TestUniqueIntegrationId}}",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+			"RuleData__c": "{\"geography\":false,\"explicit\":false,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Veterinarian\"}]},\"hierarchy\":\"TERR\"}",
+			"RuleScope__c": "ENGP"
+		},
+		{
+			"Name": "specialtyB-{{ruleUID}}-{{TestUniqueIntegrationId}}",
+			"Action__c": "ADD",
+			"UniqueIntegrationId__c": "specialtyB-{{ruleUID}}-{{TestUniqueIntegrationId}}",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+			"RuleData__c": "{\"geography\":false,\"explicit\":false,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty2\",\"value\":\"Veterinarian\"}]},\"hierarchy\":\"TERR\"}",
+			"RuleScope__c": "ENGP"
+		},
+		{
+			"Name": "specialtyC-{{ruleUID}}-{{TestUniqueIntegrationId}}",
+			"Action__c": "ADD",
+			"UniqueIntegrationId__c": "specialtyC-{{ruleUID}}-{{TestUniqueIntegrationId}}",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+			"RuleData__c": "{\"geography\":false,\"explicit\":false,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC\"},{\"type\":\"or\",\"filters\":[{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Veterinarian\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty2\",\"value\":\"Veterinarian\"}]}]},\"hierarchy\":\"TERR\"}",
+			"RuleScope__c": "ALGN_ENGP"
+		}
+	],
+	//"ScenarioAccountExclusion": [
+	//  {
+	//    "Action__c": "ADD",
+	//    "Purpose__c": "COMP",
+	//    "AccountUniqueIntegrationId__c": "{{exclude_accountUId}}",
+	//    "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+	//    "OMScenarioId__c": "{{Scenario.Id}}"
+	//  }
+	//],
+	"ScenarioGeographyTerritory": [
+		{
+			"Action__c": "ADD",
+			"Source__c": "EXPL",
+			"Purpose__c": "SFA",
+			"SOMGeographyId__c": "{{Geography.SOMGeographyId__c}}",
+			"SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"SOMGeographyTerritoryId__c": "{{Geography.SOMGeographyId__c}}-{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"UniqueIntegrationId__c": "{{Geography.UniqueIntegrationId__c}}-{{ScenarioTerritory.UniqueIntegrationId__c[0]}}"
+		}
+	],
+	"ScenarioEngagementPlan": [
+		{
+			"Name": "EngagementPlan",
+			"UniqueIntegrationId__c": "EngP-{{TestUniqueIntegrationId}}",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"Action__c": "ADD",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"SOMSalesForceId__c": "{{ScenarioSalesForce.somsalesforceid__c}}",
+			"SOMRegionId__c": "{{som_region_id}}",
+			"OMEngagementSegment__c": "[{\"SOMEngagementSegmentId\":\"segA-{{ScenarioRule.SOMRuleId__c[0]}}\",\"Name\":\"SegA\",\"Description\":\"\",\"Rank\":1,\"SOMRuleId\":\"{{ScenarioRule.SOMRuleId__c[0]}}\",\"Targets\":[{\"SOMEngagementSegmentTargetId\":\"segtargA-{{ScenarioRule.SOMRuleId__c[0]}}\",\"Channel\":\"MEET\",\"Frequency\":100}]},{\"SOMEngagementSegmentId\":\"segB-{{ScenarioRule.SOMRuleId__c[1]}}\",\"Name\":\"SegB\",\"Description\":\"\",\"Rank\":2,\"SOMRuleId\":\"{{ScenarioRule.SOMRuleId__c[1]}}\",\"Targets\":[{\"SOMEngagementSegmentTargetId\":\"segtargB-{{ScenarioRule.SOMRuleId__c[1]}}\",\"Channel\":\"MEET\",\"Frequency\":50}]},{\"SOMEngagementSegmentId\":\"segC-{{ScenarioRule.SOMRuleId__c[2]}}\",\"Name\":\"SegC\",\"Description\":\"\",\"Rank\":3,\"SOMRuleId\":\"{{ScenarioRule.SOMRuleId__c[2]}}\",\"Targets\":[{\"SOMEngagementSegmentTargetId\":\"segtargC-{{ScenarioRule.SOMRuleId__c[2]}}\",\"Channel\":\"MEET\",\"Frequency\":25}]}]"
+		}
+	],
+	"Tests": {
+		"MergeResults": [
+			{
+				"testname": "merge_territory",
+				"query": "OMTerritory,Name,Status,EffectiveDate,EndDate,UniqueIntegrationId:'{{ScenarioTerritory.UniqueIntegrationId__c[1]}}'",
+				"exp_result": "[{Name:{{ScenarioTerritory.Name[1]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}}}]",
+				"odataQuery": "/OMTerritory?$select=Name,Status,EffectiveDate,EndDate&$filter=UniqueIntegrationId eq '{{ScenarioTerritory.UniqueIntegrationId__c[1]}}'"
+			},
+			{
+				"testname": "merge_geoterr",
+				"query": "select gt.\"SOMGeographyId\", t.\"Name\", t.\"UniqueIntegrationId\", gt.\"Status\", gt.\"EffectiveDate\", gt.\"EndDate\" from {{schema}}.\"OMGeographyTerritory\" gt join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = gt.\"SOMTerritoryId\" where gt.\"UniqueIntegrationId\"='{{ScenarioGeographyTerritory.UniqueIntegrationId__c}}'",
+				"exp_result": "[{SOMGeographyId:{{ScenarioGeographyTerritory.SOMGeographyId__c}},Name:{{ScenarioTerritory.Name[0]}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}}}]"
+				//"sfQuery": "select {{prefix}}OMGeographyId__r.{{prefix}}SOMGeographyId__c, {{prefix}}OMTerritoryId__r.Name, {{prefix}}OMTerritoryId__r.{{prefix}}UniqueIntegrationId__c, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMGeographyTerritory__c where {{prefix}}UniqueIntegrationId__c = '{{ScenarioGeographyTerritory.UniqueIntegrationId__c}}'"
+			},
+			{
+				"testname": "engagement_result",
+				"query": "select acc.\"UniqueIntegrationId\" \"AccountUId\",\"SOMTerritoryId\",\"SOMEngagementSegmentId\" from {{schema}}.\"OMEngagementResult\" er join static.\"OMAccount\" acc on acc.\"Id\" = er.\"OMAccountId\" where \"SOMEngagementPlanId\" = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}' order by acc.\"UniqueIntegrationId\"",
+				"exp_result": "[{AccountUId:{{alignedAccount1UID}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMEngagementSegmentId:segB-{{ScenarioRule.SOMRuleId__c[1]}}},{AccountUId:{{alignedAccount2UID}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMEngagementSegmentId:segA-{{ScenarioRule.SOMRuleId__c[0]}}},{AccountUId:{{alignedAccount3UID}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMEngagementSegmentId:segA-{{ScenarioRule.SOMRuleId__c[0]}}},{AccountUId:{{alignedAccount4UID}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMEngagementSegmentId:segB-{{ScenarioRule.SOMRuleId__c[1]}}}]"
+			}
+		],
+		"AlignmentResults": [
+			{
+				"testname": "alignments",
+				"exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{alignedAccount1UID}},EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}},Source:DSHR,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{alignedAccount2UID}},EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}},Source:DSHR,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{alignedAccount3UID}},EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}},Source:DSHR,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{alignedAccount4UID}},EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}},Source:DSHR,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}}}]",
+				"account_uids": "{{alignedAccount1UID}},{{alignedAccount2UID}},{{alignedAccount3UID}},{{alignedAccount4UID}}",
+				"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+			}
+		],
+		"ScenarioSummary": [
+			{
+				"accounttype": "BC",
+				"territory": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"acc_gain": 4,
+				"acc_lost": 0,
+				"geo_gain": 1,
+				"geo_lost": 0,
+				"acc_tot": 4,
+				"geo_tot": 1
+			},
+			{
+				"accounttype": "Total",
+				"territory": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"acc_gain": 4,
+				"acc_lost": 0,
+				"geo_gain": 1,
+				"geo_lost": 0,
+				"acc_tot": 4,
+				"geo_tot": 1
+			}
+		]
+	}
+}

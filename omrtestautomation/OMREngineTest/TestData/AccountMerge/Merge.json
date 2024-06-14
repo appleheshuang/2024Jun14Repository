@@ -1,0 +1,29 @@
+{
+  "Merge":
+    [
+      {
+        "WinnerId": "AM-357WIN-{{TestUniqueIntegrationId}}",
+        "LoserId": "AM-357LOS-{{TestUniqueIntegrationId}}"
+      },
+      {
+        "WinnerId": "AM-369WIN-{{TestUniqueIntegrationId}}",
+        "LoserId": "AM-369LOS-{{TestUniqueIntegrationId}}"
+      },
+      {
+        "WinnerId": "AM-370WIN-{{TestUniqueIntegrationId}}",
+        "LoserId": "AM-370LOS-{{TestUniqueIntegrationId}}"
+      },
+      {
+        "WinnerId": "AM-371WIN-{{TestUniqueIntegrationId}}",
+        "LoserId": "AM-371LOS-{{TestUniqueIntegrationId}}"
+      },
+      {
+        "WinnerId": "AM-372WIN-{{TestUniqueIntegrationId}}",
+        "LoserId": "AM-372LOS-{{TestUniqueIntegrationId}}"
+      },
+      {
+        "WinnerId": "AM-373WIN-{{TestUniqueIntegrationId}}",
+        "LoserId": "AM-373LOS-{{TestUniqueIntegrationId}}"
+      }
+    ]
+}

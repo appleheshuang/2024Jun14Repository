@@ -1,0 +1,97 @@
+{
+  "Configs": {
+    "loaddata": "smoketest\\loaddata\\bulkload.json",
+    "resetdata": "false",
+    "jobtype": "calculate",
+    "rca": "true"
+  },
+
+  "BaseData": {
+    "som_region_id": "US",
+    "aligned_accountUId_IND-01": "ACCT_OMR-11925_IND-01",
+    "aligned_accountUId_IND-02": "ACCT_OMR-11925_IND-02",
+    "aligned_accountUId_IND-03": "ACCT_OMR-11925_IND-03",
+    "aligned_accountUId_ORG-01": "ACCT_OMR-11925_ORG-01",
+    "aligned_accountUId_ORG-02": "ACCT_OMR-11925_ORG-02",
+    "aligned_accountUId_ORG-03": "ACCT_OMR-11925_ORG-03",
+    "aligned_accountUId_NUL-01": "ACCT_OMR-11925_NUL-01",
+    "aligned_accountUId_NUL-02": "ACCT_OMR-11925_NUL-02",
+    "aligned_accountUId_NUL-03": "ACCT_OMR-11925_NUL-03",
+    "aligned_accountUId_NUL-04": "ACCT_OMR-11925_NUL-04",
+    "salesforceUID": "SF_GB_OMR-11925",
+    "territoryUID": "T_GB_OMR-11925",
+    "ruleUID": "R_GB_OMR-11925",
+    "regionUID": "REG02"
+  },
+
+  "Scenario": {
+    "Description": "",
+    "Name": "",
+    "EffectiveDate__c": "2020-01-01",
+    "EndDate__c": "3099-12-31",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": ""
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "RegionUniqueIntegrationId__c": "{{som_region_id}}",
+      "Type__c": "KOL",
+      "Name": "SF GB OMR-11925"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "Terr GB 505",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationId}}",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "TERR"
+    }
+  ],
+
+  "ScenarioRule": [
+    {
+      "Name": "Smoketest {{ruleUID}}-{{TestUniqueIntegrationId}}",
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{ruleUID}}-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "RuleData__c": "{\"geography\":false,\"explicit\":false,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC,Department,GPO,Ins_Doc,Institution,IDN,MP,Payer,Pharmacy,PBM,Plan,Practices,Wholesaler\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Gastroenterology\"}]},\"hierarchy\":\"TERR\"}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "View=LexiIndAccountTerritory",
+        "query": "SELECT \"AccountId\", \"Status\", \"AccountType\", \"MappedCustomerType\" FROM STATIC.\"LexiIndAccountTerritory\" WHERE \"AccountId\" ILIKE '%ACCT_OMR-11925_%' AND \"TerritoryId\" = '{{ScenarioTerritory.UniqueIntegrationId__c}}' ORDER BY \"AccountId\" ASC",
+        "exp_result": "[{AccountId:{{aligned_accountUId_IND-01}},Status:ACTV,AccountType:MP,MappedCustomerType:Person},{AccountId:{{aligned_accountUId_IND-02}},Status:ACTV,AccountType:Institution,MappedCustomerType:Individual},{AccountId:{{aligned_accountUId_IND-03}},Status:ACTV,AccountType:Wholesaler,MappedCustomerType:Person},{AccountId:{{aligned_accountUId_NUL-01}},Status:ACTV,AccountType:PBM,MappedCustomerType:Person}]"
+      },
+      {
+        "testname": "View=LexiOrgAccountTerritory",
+        "query": "SELECT \"AccountId\", \"Status\", \"AccountType\", \"MappedCustomerType\" FROM STATIC.\"LexiOrgAccountTerritory\" WHERE \"AccountId\" ILIKE '%ACCT_OMR-11925_%' AND \"TerritoryId\" = '{{ScenarioTerritory.UniqueIntegrationId__c}}' ORDER BY \"AccountId\" ASC",
+        "exp_result": "[{AccountId:{{aligned_accountUId_NUL-02}},Status:ACTV,AccountType:Pharmacy,MappedCustomerType:Organization},{AccountId:{{aligned_accountUId_NUL-03}},Status:ACTV,AccountType:BC,MappedCustomerType:Organization},{AccountId:{{aligned_accountUId_NUL-04}},Status:ACTV,AccountType:Wholesaler,MappedCustomerType:Organization},{AccountId:{{aligned_accountUId_ORG-01}},Status:ACTV,AccountType:PBM,MappedCustomerType:Organization},{AccountId:{{aligned_accountUId_ORG-02}},Status:ACTV,AccountType:Department,MappedCustomerType:Organization},{AccountId:{{aligned_accountUId_ORG-03}},Status:ACTV,AccountType:Wholesaler,MappedCustomerType:Organization}]"
+      },
+      {
+        "testname": "View=OMAccountFirstPublishedPerson",
+        "query": "SELECT \"AccountId\", \"AccountType\", \"CustomerType\" FROM STATIC.\"OMAccountFirstPublishedPerson\" WHERE \"AccountId\" ILIKE '%ACCT_OMR-11925_%' ORDER BY \"AccountId\" ASC",
+        "exp_result": "[{AccountId:{{aligned_accountUId_IND-01}},AccountType:MP,CustomerType:Person},{AccountId:{{aligned_accountUId_IND-02}},AccountType:Institution,CustomerType:Individual},{AccountId:{{aligned_accountUId_IND-03}},AccountType:Wholesaler,CustomerType:Person},{AccountId:{{aligned_accountUId_NUL-01}},AccountType:PBM,CustomerType:Person}]"
+      },
+      {
+        "testname": "View=OMAccountFirstPublishedOrg",
+        "query": "SELECT \"AccountId\", \"AccountType\", \"CustomerType\" FROM STATIC.\"OMAccountFirstPublishedOrg\" WHERE \"AccountId\" ILIKE '%ACCT_OMR-11925_%' ORDER BY \"AccountId\" ASC",
+        "exp_result": "[{AccountId:{{aligned_accountUId_NUL-02}},AccountType:Pharmacy,CustomerType:Organization},{AccountId:{{aligned_accountUId_NUL-03}},AccountType:BC,CustomerType:Organization},{AccountId:{{aligned_accountUId_NUL-04}},AccountType:Wholesaler,CustomerType:Organization},{AccountId:{{aligned_accountUId_ORG-01}},AccountType:PBM,CustomerType:Organization},{AccountId:{{aligned_accountUId_ORG-02}},AccountType:Department,CustomerType:Organization},{AccountId:{{aligned_accountUId_ORG-03}},AccountType:Wholesaler,CustomerType:Organization}]"
+      }
+    ]
+  }
+}

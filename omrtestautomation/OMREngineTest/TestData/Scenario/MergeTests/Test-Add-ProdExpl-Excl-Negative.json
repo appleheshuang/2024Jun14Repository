@@ -1,0 +1,73 @@
+﻿{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "GS",
+    "productUId": "PROD1",
+    "salesforceUID": "SF506",
+    "territoryUID": "T506",
+    "territoryUID2": "T606",
+    "EffectiveDate": "2020-12-01",
+    "EndDate": "2022-11-29"
+  },
+
+  "Scenario": {
+    "Description": "Run actions on entities OMProductExplicit, OMProductExclusion NEGATIVE case, EFFE Product Exclusion (Negative), EXPR Product Explicit (Negative)",
+    "name": "Test cases C7694300, C7694301, C7707133, C7707140",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "3{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioProductExplicit": [
+    // Action ADD ProductExplicit Prod1 → T1 2022/06/15 - 2022/08/15 to ProductExclusion Prod1 → T1 2022/07/01 - 2022/08/01 TC C7694301 (ERRORED)
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2022-07-15",
+      "EndDate__c": "2022-08-15"
+    },
+    // EXPR ProductExplicit  C7707140  Product Explicit to be 2021/05/31 --> Error
+    {
+      "Action__c": "EXPR",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[3]}}",
+      "SOMProductExplicitId__c": "{{ScenarioProductExplicit.SOMProductExplicitId__c[3]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EndDate__c": "2021-05-31"
+    }
+  ],
+
+  "ScenarioProductExclusion": [
+    // Action ADD ProductExclusion Prod1 → T2 2021/06/15 - 2021/08/15 to ProductExplicit  Prod1 → T2 2021/07/01 - 2021/08/01 TC C7694301 (ERRORED)
+    {
+      "Action__c": "ADD",
+      "SOMProductId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2021-07-15",
+      "EndDate__c": "2021-08-15"
+    },
+    // EFFE ProductExclusion  C7707133 Product Exclusion to be 2021/04/08 --> Error
+    {
+      "Action__c": "EFFE",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[3]}}",
+      "SOMProductExclusionId__c": "{{ScenarioProductExclusion.SOMProductExclusionId__c[3]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2021-04-08"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": []
+  }
+}

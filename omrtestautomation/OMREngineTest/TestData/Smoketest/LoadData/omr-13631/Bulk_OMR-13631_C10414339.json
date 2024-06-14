@@ -1,0 +1,50 @@
+{
+  "Bulkload": {
+    "S3AccessKey": "",
+    "S3SecretKey": "",
+    "S3BucketName": "",
+    "S3Path": "autotestdata/OMR-13631/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "ValidateOnly": false,
+    "ReplaceExistingData": false,
+    "PicklistValidate": false,
+    "Files": [
+      {
+        "file": "OMR-13631_C10414339_OMProduct_File1.csv",
+        "table": "OMProduct"
+      },
+      {
+        "file": "OMR-13631_C10414339_OMProduct_File2.csv",
+        "table": "OMProduct"
+      }
+    ]
+  },
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "C10414339 - Rollback: Load multiple child files, with one file containing some invalid-date-range records – rollback = true -- OMProduct",
+        //"query": "SELECT creg.\"SOMProductId\", creg.\"Name\", creg.\"UniqueIntegrationId\", creg.\"EffectiveDate\", creg.\"EndDate\", creg.\"Status\", creg.\"SOMRegionId\" FROM STATIC.\"OMProduct\" creg WHERE creg.\"UniqueIntegrationId\" ILIKE '%OMR-13631%' ORDER BY creg.\"UniqueIntegrationId\"",
+        "query": "SELECT creg.\"SOMProductId\", creg.\"Name\", creg.\"UniqueIntegrationId\", creg.\"EffectiveDate\", creg.\"EndDate\", creg.\"Status\", creg.\"SOMRegionId\" FROM STATIC.\"OMProduct\" creg WHERE creg.\"UniqueIntegrationId\" IN ('UID_OMR-13631_C10414339_01--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414339_02--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414339_03--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414339_04--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414339_05--{{TestUniqueIntegrationId}}') ORDER BY creg.\"UniqueIntegrationId\"",
+        "exp_result": "[]",
+        "sfQuery": null
+      }
+    ]
+  },
+
+  "Errors": [
+    {
+      "table": "OMProduct",
+      "file": "autotestdata/OMR-13631/{{TestUniqueIntegrationId}}/OMR-13631_C10414339_OMProduct_File2.csv",
+      "error": "Parent/Child Key not in date range for SOMProductId: ProdId_OMR-13631_C10414339_03--{{TestUniqueIntegrationId}} on table: OMRegion",
+      "lineNumber": 2
+    },
+    {
+      "table": "OMProduct",
+      "file": "autotestdata/OMR-13631/{{TestUniqueIntegrationId}}/OMR-13631_C10414339_OMProduct_File2.csv",
+      "error": "Parent/Child Key not in date range for SOMProductId: ProdId_OMR-13631_C10414339_05--{{TestUniqueIntegrationId}} on table: OMRegion",
+      "lineNumber": 4
+    }
+  ]
+}

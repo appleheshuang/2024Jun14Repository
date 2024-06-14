@@ -1,0 +1,18 @@
+{
+	"orgURL": "https://nextgenomoce.my.salesforce.com",
+	"clientID": "3MVG9LBJLApeX_PCkCRT_VcgkTUJ3jamtcumF9z2.6u0zHYYuD9XwH30DWSy4TYYovD.lJrRU8UDPv8ljMTpF",
+	"clientSecret": "572DEA23D9D28071A60730E2E35D427395B837D7FED180C9ED59D64D767F948B",
+	"orgUserName": "csimone@nextgenomoce.com",
+	"orgPassword": "NextGenOM_01",
+	"TenantId": "7af1ccb42b8d4c68bc3bf975bf4f79c8",
+	"TenantUser": "",
+	"TenantPassword": "",
+	//	"snowConnection": "account=iqviaomrdev;user=TITGPREPROD_PROD_3072A2D6B2D54BA0A3D8E940E9D0040F_UR;password=anb$$$RKP214ajG@8q4sXhZZjHiWm9;db=TITGPREPROD_PROD_3072A2D6B2D54BA0A3D8E940E9D0040F_DB;host=iqviaomrdev.us-east-1.snowflakecomputing.com",
+	"snowConnection": "account=iqviaomrdev;user=T91ITG1112_PROD_7AF1CCB42B8D4C68BC3BF975BF4F79C8_UR;password=den@$$TMB326RVlABzC1ZrjLXtfR6O;db=T91ITG1112_PROD_7AF1CCB42B8D4C68BC3BF975BF4F79C8_DB;host=iqviaomrdev.us-east-1.snowflakecomputing.com;ROLE=T91ITG1112_PROD_7AF1CCB42B8D4C68BC3BF975BF4F79C8_RL;WAREHOUSE=API_WH;SCHEMA=PUBLIC",
+	"sfApiKey": "iaSFceVP5eavHjntGS05i1pMmnxNTUOY2bW4Xmm8",
+	"lexiApiKey": "J5lB6LbcCAv47kDVSat9al1IH4Li2EV9PmEUz6Qg",
+	"sfnamespace": "OCEOTEST",
+	"sfDBName": "T91ITG1112_PROD_7AF1CCB42B8D4C68BC3BF975BF4F79C8_DB",
+	"targetEnv": "master",
+	"RulesEnabled": true
+}

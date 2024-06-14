@@ -1,0 +1,22 @@
+{
+  "Bulkload": {
+    "S3AccessKey": "",
+    "S3SecretKey": "",
+    "S3BucketName": "",
+    "S3Path": "autotestdata/OMR-11925/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMAccount--OMR-11925.csv",
+        "table": "OMAccount"
+      },
+      {
+        "file": "OMCustomerTypeMapping--OMR-11925.csv",
+        "table": "OMCustomerTypeMapping"
+      }
+    ]
+  }
+}

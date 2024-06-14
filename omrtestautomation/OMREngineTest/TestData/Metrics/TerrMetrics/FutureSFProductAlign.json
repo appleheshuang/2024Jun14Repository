@@ -1,0 +1,249 @@
+{
+  "Configs": {
+    "name": "TerritoryMetric - ProductCounts",
+    "jobtype": "calculate",
+    "jobparams": "CalculateMaps=false;RuleEngineEnabled=true",
+    "preload": { "Product": "Metrics/TerrMetrics/OMProduct.json" }
+  },
+
+  "BaseData": {
+    "som_region_id": "IE",
+    "salesforceUId": "SF17566",
+    "territoryAUId": "T17566_A",
+    "territoryBUId": "T17566_B",
+    "districtUId": "D17566",
+    "geographyUID": "CONNACHT",
+    "TA_ProductCount_Total": "5.000",
+    "TA_ProductCount_InSF": "2.000",
+    "TB_ProductCount_Total": "3.000",
+    "TB_ProductCount_InSF": "2.000",
+    "product_in_sf_1": "17566-InSF-Global",
+    "product_in_sf_2": "17566-InSF-IE",
+    "product_in_ie_1": "17566-InSF-IE",
+    "product_in_ie_2": "17566-OutsideSF-IE",
+    "product1": "17566-InSF-Global",
+    "product2": "17566-InSF-IE",
+    "product3": "17566-OutsideSF-IE",
+    "product4": "17566-OutsideSF-FX",
+    "product5": "17566-OutsideSF-Global"
+  },
+
+  "Scenario": {
+    "Description": "",
+    "Name": "",
+    "EffectiveDate__c": "{{today+180}}",
+    "EndDate__c": "3999-12-31",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": ""
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{salesforceUId}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "RegionUniqueIntegrationId__c": "{{som_region_id}}",
+      "Type__c": "KOL",
+      "Name": "{{salesforceUId}}"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "{{territoryAUId}}",
+      "UniqueIntegrationId__c": "{{territoryAUId}}-{{TestUniqueIntegrationId}}",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "{{territoryBUId}}",
+      "UniqueIntegrationId__c": "{{territoryBUId}}-{{TestUniqueIntegrationId}}",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "{{districtUId}}",
+      "UniqueIntegrationId__c": "{{districtUId}}-{{TestUniqueIntegrationId}}",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "DIST"
+    }
+  ],
+
+  "ScenarioTerritoryHierarchy": [
+    {
+      "Action__c": "ADD",
+      "ChildTerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "SOMChildTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UniqueIntegrationId__c": "D-TA-{{territoryPrefix}}-{{TestUniqueIntegrationId}}",
+      "RefChildTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "ParentTerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+      "SOMParentTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "RefParentTerritoryName__c": "{{ScenarioTerritory.Name[2]}}",
+      "RelationType__c": "PRIM"
+    },
+    {
+      "Action__c": "ADD",
+      "ChildTerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "SOMChildTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "UniqueIntegrationId__c": "D-TB-{{territoryPrefix}}-{{TestUniqueIntegrationId}}",
+      "RefChildTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+      "ParentTerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+      "SOMParentTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "RefParentTerritoryName__c": "{{ScenarioTerritory.Name[2]}}",
+      "RelationType__c": "PRIM"
+    }
+  ],
+
+  // Generate SS2 results for Terr A
+  "ScenarioGeographyTerritory": [
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "{{geographyUID}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "UniqueIntegrationId__c": "SGT01-{{TestUniqueIntegrationId}}",
+      "GeographyUniqueIntegrationId__c": "{{geographyUID}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}"
+    }
+  ],
+
+
+  "ScenarioProductSalesForce": [
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{product_in_sf_1}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{product_in_sf_2}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+      "ProductAlignmentType__c": "DETL"
+    }
+  ],
+  "ScenarioProductExplicit": [
+    // Add 5 products to Terr A
+    {
+      "Action__c": "ADD",
+      "SOMProductId__c": "{{Product.SOMProductId__c[0]}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "SOMProductId__c": "{{Product.SOMProductId__c[1]}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[1]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "SOMProductId__c": "{{Product.SOMProductId__c[2]}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[2]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "SOMProductId__c": "{{Product.SOMProductId__c[3]}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[3]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "SOMProductId__c": "{{Product.SOMProductId__c[4]}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[4]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    // Add 3 products to Terr B
+    {
+      "Action__c": "ADD",
+      "SOMProductId__c": "{{Product.SOMProductId__c[0]}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "SOMProductId__c": "{{Product.SOMProductId__c[1]}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[1]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "SOMProductId__c": "{{Product.SOMProductId__c[2]}}",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[2]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "ProductAlignmentType__c": "DETL"
+    }
+  ],
+
+  "Tests": {
+    "MetricResult": [
+      {
+        "testname": "Metric-TerritoryProductCount-Total",
+        "entity": "Territory",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c}}",
+        "entityId": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}},{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "columns": "Metric03,GeographyCount",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Metric03:{{TA_ProductCount_Total}},GeographyCount:1},{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},Metric03:{{TB_ProductCount_Total}},GeographyCount:0}]"
+      },
+      {
+        "testname": "Metric-TerritoryProductCount-InSF",
+        "entity": "Territory",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c}}",
+        "entityId": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}},{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "columns": "Metric03",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Metric03:{{TA_ProductCount_InSF}}},{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},Metric03:{{TB_ProductCount_InSF}}}]"
+      }
+    ],
+    "MetricSummary": [
+      {
+        "testname": "SS2-TerritoryProductCount-Total",
+        "territory": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "columns": "Metric03After,GeographiesTotal",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountType:Total,Metric03After:{{TA_ProductCount_Total}},GeographiesTotal:1}]"
+      },
+      {
+        "testname": "SS2-NotPopulatedForTerrWithoutAlignments",
+        "territory": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "columns": "Metric03After",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "SS2-TerritoryProductCount-InSF",
+        "territory": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "columns": "Metric03After",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountType:Total,Metric03After:{{TA_ProductCount_InSF}}}]"
+      }
+    ]
+  }
+}

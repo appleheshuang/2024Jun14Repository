@@ -1,0 +1,285 @@
+{
+  "Bulkload": {
+    "S3AccessKey": "",
+    "S3SecretKey": "",
+    "S3BucketName": "",
+    "S3Path": "autotestdata/InitialBulkLoad/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "ValidateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMRegion.csv",
+        "table": "OMRegion"
+      },
+      {
+        "file": "OMRegionHierarchy.csv",
+        "table": "OMRegionHierarchy"
+      },
+      {
+        "file": "OMGeography.csv",
+        "table": "OMGeography"
+      },
+      {
+        "file": "OMAccount.csv",
+        "table": "OMAccount"
+      },
+      {
+        "file": "OMAccountAddress.csv",
+        "table": "OMAccountAddress"
+      },
+      {
+        "file": "OMAffiliation.csv",
+        "table": "OMAffiliation"
+      },
+      {
+        "file": "OMProduct.csv",
+        "table": "OMProduct"
+      },
+      {
+        "file": "OMProductHierarchy.csv",
+        "table": "OMProductHierarchy"
+      },
+      {
+        "file": "OMR-17372_OMAccount.csv",
+        "table": "OMAccount"
+      },
+      {
+        "file": "OMR-17372_OMAccountAddress.csv",
+        "table": "OMAccountAddress"
+      },
+      {
+        "file": "OMR-17372_OMAffiliation.csv",
+        "table": "OMAffiliation"
+      },
+      {
+        "file": "OMR-17372_OMGeography.csv",
+        "table": "OMGeography"
+      },
+      {
+        "file": "OMProduct_17565.csv",
+        "table": "OMProduct"
+      },
+      {
+        "file": "AcctMetricDefinition_11-17.csv",
+        "table": "OMMetricDefinition"
+      },
+      {
+        "file": "GeoMetricDefinition_10_18-20.csv",
+        "table": "OMMetricDefinition"
+      },
+      // OMR-15271 Accounts and products for Account Product Territory Explicit, Exclusion
+      {
+        "file": "OMAccountOMR-15271.csv",
+        "table": "OMAccount"
+      },
+      {
+        "file": "OMProductOMR-15271.csv",
+        "table": "OMProduct"
+      },
+      // OMR-15543 Initial region and account creation for RollbackThreshold tests
+      {
+        "file": "OMR-15543-OMRegionReset.csv",
+        "table": "OMRegion"
+      },
+      {
+        "file": "OMR-15543-OMAccount-Test.csv",
+        "table": "OMAccount"
+      },
+      // OMR-19263 Regional defaults, geography, account for Auto counts
+      {
+        "file": "19263Account.csv",
+        "table": "OMAccount"
+      },
+      {
+        "file": "19263AccountAddress.csv",
+        "table": "OMAccountAddress"
+      },
+      {
+        "file": "19263Affiliation.csv",
+        "table": "OMAffiliation"
+      },
+      {
+        "file": "19263Geography.csv",
+        "table": "OMGeography"
+      },
+      {
+        "file": "19263Region.csv",
+        "table": "OMRegion"
+      },
+      // OMR-19603 Geographies for the Geo Rule
+      {
+        "file": "OMR-16903_OMGeography.csv",
+        "table": "OMGeography"
+      },
+      //OMR-18947 Loading OMFieldTitle to check GDPR UserDeletion for OMUserTitle and OMUserTerritoryTitle
+      {
+        "file": "OMR-18947_OMFieldTitle.csv",
+        "table": "OMFieldTitle"
+      }
+
+    ]
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Region-publish",
+        "query": "select creg.\"SOMRegionId\", creg.\"Name\", creg.\"UniqueIntegrationId\", creg.\"EffectiveDate\", creg.\"EndDate\", creg.\"Status\",creg.\"SuppressPublish\",creg.\"Country\", preg.\"SOMRegionId\" \"ParentId\", preg.\"Name\" \"ParentName\"  from STATIC.\"OMRegion\" creg left outer join STATIC.\"OMRegionHierarchy\" h on h.\"SOMChildRegionId\" = creg.\"SOMRegionId\" left outer join STATIC.\"OMRegion\" preg on preg.\"SOMRegionId\" = h.\"SOMParentRegionId\" where creg.\"UniqueIntegrationId\" in ('REG01','REG02') order by creg.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMRegionId:REG01,Name:New Zealand,UniqueIntegrationId:REG01,EffectiveDate:2020-01-01,EndDate:3999-12-31,Status:ACTV,SuppressPublish:false,Country:NZ,ParentId:null,ParentName:null},{SOMRegionId:US,Name:United States,UniqueIntegrationId:REG02,EffectiveDate:2020-01-01,EndDate:3999-12-31,Status:ACTV,SuppressPublish:false,Country:US,ParentId:null,ParentName:null}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "Region-supress",
+        "query": "select \"SOMRegionId\", \"UniqueIntegrationId\", \"SuppressPublish\",\"Country\" from STATIC.\"OMRegion\" where \"UniqueIntegrationId\" in ('REG03','REG04','REG05','REG06','REG07','REG08','REG09','REG10','REG11','REG12','REG13','REG14','REG15','REG16') order by \"UniqueIntegrationId\"",
+        "exp_result": "[{SOMRegionId:PI,UniqueIntegrationId:REG03,SuppressPublish:true,Country:CK},{SOMRegionId:UK,UniqueIntegrationId:REG04,SuppressPublish:true,Country:UK},{SOMRegionId:FX,UniqueIntegrationId:REG05,SuppressPublish:true,Country:FX},{SOMRegionId:TC,UniqueIntegrationId:REG06,SuppressPublish:true,Country:TC},{SOMRegionId:GS,UniqueIntegrationId:REG07,SuppressPublish:true,Country:GS},{SOMRegionId:PN,UniqueIntegrationId:REG08,SuppressPublish:true,Country:PN},{SOMRegionId:MS,UniqueIntegrationId:REG09,SuppressPublish:true,Country:MS},{SOMRegionId:FK,UniqueIntegrationId:REG10,SuppressPublish:true,Country:FK},{SOMRegionId:GB,UniqueIntegrationId:REG11,SuppressPublish:true,Country:GB},{SOMRegionId:IO,UniqueIntegrationId:REG12,SuppressPublish:true,Country:IO},{SOMRegionId:AI,UniqueIntegrationId:REG13,SuppressPublish:true,Country:AI},{SOMRegionId:VG,UniqueIntegrationId:REG14,SuppressPublish:true,Country:VG},{SOMRegionId:IE,UniqueIntegrationId:REG15,SuppressPublish:true,Country:IE},{SOMRegionId:BM,UniqueIntegrationId:REG16,SuppressPublish:true,Country:BM}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "Geography",
+        "query": "select \"SOMGeographyId\", \"UniqueIntegrationId\", \"Type\", \"Code\",\"EffectiveDate\", \"EndDate\", \"Status\",\"SOMRegionId\" from STATIC.\"OMGeography\" where \"UniqueIntegrationId\" in ('NZ-1234','PI-001','US-95129','KILKENNY','DUBLIN', 'CONNACHT', 'LONDONDERRY') order by \"SOMRegionId\",\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMGeographyId:CONNACHT,UniqueIntegrationId:CONNACHT,Type:POST,Code:CONNACHT,EffectiveDate:2023-01-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:IE},{SOMGeographyId:DUBLIN,UniqueIntegrationId:DUBLIN,Type:GEO2,Code:DUBLIN,EffectiveDate:2023-01-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:IE},{SOMGeographyId:KILKENNY,UniqueIntegrationId:KILKENNY,Type:GEO2,Code:KILKENNY,EffectiveDate:2023-01-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:IE},{SOMGeographyId:LONDONDERRY,UniqueIntegrationId:LONDONDERRY,Type:GEO1,Code:LONDONDERRY,EffectiveDate:2023-01-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:IE},{SOMGeographyId:AVARUA,UniqueIntegrationId:PI-001,Type:GEO1,Code:AVARUA,EffectiveDate:2020-01-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:PI},{SOMGeographyId:GEO01,UniqueIntegrationId:NZ-1234,Type:POST,Code:1234,EffectiveDate:2020-01-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:REG01},{SOMGeographyId:US-95129,UniqueIntegrationId:US-95129,Type:POST,Code:95129,EffectiveDate:2020-01-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:US}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "Product",
+        "query": "select creg.\"SOMProductId\", creg.\"Name\", creg.\"UniqueIntegrationId\", creg.\"Type\",creg.\"DetailType\", creg.\"EffectiveDate\", creg.\"EndDate\", creg.\"Status\",creg.\"SOMRegionId\", preg.\"SOMProductId\" \"ParentId\", preg.\"Name\" \"ParentName\"  from STATIC.\"OMProduct\" creg left outer join STATIC.\"OMProductHierarchy\" h on h.\"SOMChildProductId\" = creg.\"SOMProductId\"left outer join STATIC.\"OMProduct\" preg on preg.\"SOMProductId\" = h.\"SOMParentProductId\" where creg.\"UniqueIntegrationId\" in ('PROD1','PROD02','PROD03','PROD04','PROD05') AND creg.\"Status\" = 'ACTV' order by creg.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMProductId:PROD02-PI,Name:PIProd,UniqueIntegrationId:PROD02,Type:Detail,DetailType:Indication,EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:PI,ParentId:null,ParentName:null},{SOMProductId:PROD03-US,Name:Tylenol,UniqueIntegrationId:PROD03,Type:Detail,DetailType:Regimen,EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:US,ParentId:null,ParentName:null},{SOMProductId:PROD04-GLOBAL,Name:Salbutamol,UniqueIntegrationId:PROD04,Type:Bundle,DetailType:null,EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:null,ParentId:null,ParentName:null},{SOMProductId:PROD05-BUNDLE-NZ,Name:Oxycontin,UniqueIntegrationId:PROD05,Type:Bundle,DetailType:null,EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:REG01,ParentId:null,ParentName:null},{SOMProductId:PROD1,Name:Panadol,UniqueIntegrationId:PROD1,Type:Detail,DetailType:Brand,EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:REG01,ParentId:null,ParentName:null}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "ProductHierarchy",
+        "query": "select \"SOMChildProductId\", \"SOMParentProductId\", \"UniqueIntegrationId\", \"EffectiveDate\", \"EndDate\" from STATIC.\"OMProductHierarchy\" where \"UniqueIntegrationId\" in ('PROD-HR-1','PROD-HR-1-1','PROD-HR-2','PROD-HR-2-1','PROD-HR-2-2') order by \"UniqueIntegrationId\"",
+        "exp_result": "[{SOMChildProductId:PROD-CHI-CS,SOMParentProductId:PROD-PAR-CS,UniqueIntegrationId:PROD-HR-1,EffectiveDate:2021-01-01,EndDate:3999-12-31},{SOMChildProductId:PROD-GRCH-CS,SOMParentProductId:PROD-CHI-CS,UniqueIntegrationId:PROD-HR-1-1,EffectiveDate:2021-08-01,EndDate:3999-12-31},{SOMChildProductId:PROD-CH-NCS,SOMParentProductId:PROD-PR-NCS,UniqueIntegrationId:PROD-HR-2,EffectiveDate:2021-01-01,EndDate:3999-12-31},{SOMChildProductId:PROD-GRCH-CS,SOMParentProductId:PROD-CH-NCS,UniqueIntegrationId:PROD-HR-2-1,EffectiveDate:2021-06-01,EndDate:3999-12-31},{SOMChildProductId:PROD-GCH-NCS,SOMParentProductId:PROD-CH-NCS,UniqueIntegrationId:PROD-HR-2-2,EffectiveDate:2021-06-15,EndDate:3999-12-31}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "AccountToAddress",
+        "query": "select distinct a.\"Id\", a.\"Name\", \"AccountType\", a.\"Type\", a.\"Specialty\" \"AccSpecialty\",\"IndividualTypes\", \"OrganizationTypes\", \"AffiliationType\", aff.\"Specialty\" \"AffSpecialty\", add.\"Id\" \"AddressId\",a.\"SOMRegionId\" from static.\"OMAccount\" a left outer join static.\"OMAffiliation\" aff on aff.\"From\" = a.\"Id\" and aff.\"From\" = aff.\"To\" left outer join static.\"OMAccountAddress\" add on add.\"Id\" = aff.\"AddressId\" where a.\"Id\" in ('10ACCTEXC','45ACCTEXP','51ACCTEXPLR','ACCT01','ACCT02','ACCT03','ACCT04','ACCT05','MP01','MP02','INST03') order by a.\"Id\",add.\"Id\"",
+        "exp_result": "[{Id:10ACCTEXC,Name:10ACCTEXC,AccountType:Institution,Type:Other,AccSpecialty:Audiology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Audiology,AddressId:ADDRESS01,SOMRegionId:REG01},{Id:45ACCTEXP,Name:45ACCTEXP,AccountType:Department,Type:Other,AccSpecialty:Audiology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Audiology,AddressId:ADDRESS01,SOMRegionId:REG01},{Id:51ACCTEXPLR,Name:51ACCTEXPLR,AccountType:Institution,Type:Research,AccSpecialty:Audiology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Audiology,AddressId:ADDRESS01,SOMRegionId:REG01},{Id:ACCT01,Name:ACCT01,AccountType:Institution,Type:Hospital,AccSpecialty:Audiology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Audiology,AddressId:ADDRESS01,SOMRegionId:REG01},{Id:ACCT02,Name:ACCT02,AccountType:Institution,Type:Hospital,AccSpecialty:Audiology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:null,AffSpecialty:null,AddressId:null,SOMRegionId:REG01},{Id:ACCT03,Name:ACCT03,AccountType:Pharmacy,Type:Other,AccSpecialty:Audiology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Audiology,AddressId:ADDRESS01,SOMRegionId:REG01},{Id:ACCT04,Name:ACCT04,AccountType:Practices,Type:Other,AccSpecialty:Audiology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Audiology,AddressId:ADDRESS01,SOMRegionId:REG01},{Id:ACCT05,Name:ACCT05,AccountType:MP,Type:Other,AccSpecialty:Audiology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Audiology,AddressId:ADDRESS01,SOMRegionId:REG01},{Id:INST03,Name:Family Medicine Center,AccountType:Institution,Type:Family Medicine,AccSpecialty:Pediatrics,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Pediatrics,AddressId:ADDRESS02,SOMRegionId:US},{Id:MP01,Name:Professional Oncologist,AccountType:MP,Type:Oncology,AccSpecialty:Oncology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Oncology,AddressId:ADDRESS02,SOMRegionId:US},{Id:MP02,Name:Professional Pediatrician,AccountType:MP,Type:Pediatrics,AccSpecialty:Pediatrics,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Pediatrics,AddressId:ADDRESS02,SOMRegionId:US}]"
+      },
+      {
+        "testname": "Address",
+        "query": "select \"Id\",\"AddressLine1\",\"ZipCode\",\"City\",\"State\",\"Country\" from static.\"OMAccountAddress\" where \"Id\" in ('ADDRESS01','ADDRESS02') order by \"Id\"",
+        "exp_result": "[{Id:ADDRESS01,AddressLine1:1 ADDRESS ST,ZipCode:1234,City:CITY01,State:STATE01,Country:NZ},{Id:ADDRESS02,AddressLine1:123 Test St.,ZipCode:95129,City:CITY02,State:STATE02,Country:US}]"
+      },
+      {
+        "testname": "OMR-16560-NewAccounts",
+        "query": "select distinct a.\"Id\", add.\"Id\" \"AddressId\",a.\"SOMRegionId\" from static.\"OMAccount\" a left outer join static.\"OMAffiliation\" aff on aff.\"From\" = a.\"Id\" and aff.\"From\" = aff.\"To\" left outer join static.\"OMAccountAddress\" add on add.\"Id\" = aff.\"AddressId\" where a.\"Id\" like 'ACCT16491-%' order by a.\"Id\",add.\"Id\"",
+        "exp_result": "[{Id:ACCT16491-00,AddressId:null,SOMRegionId:null},{Id:ACCT16491-01,AddressId:ADDRESS01,SOMRegionId:null},{Id:ACCT16491-10,AddressId:null,SOMRegionId:US},{Id:ACCT16491-11,AddressId:ADDRESS01,SOMRegionId:US}]"
+      },
+      {
+        "testname": "Metrics-Products",
+        "query": "select \"SOMProductId\", \"IsCoPromote\", \"SOMRegionId\" from STATIC.\"OMProduct\" where \"UniqueIntegrationId\" in ('UK-COPROMOTE','UK-NOPROMOTE','PN-COPROMOTE','PN-NOPROMOTE','US-COPROMOTE','US-NOPROMOTE','UK-COPRO-COMPETITOR','UK-NOPRO-COMPETITOR','UK-COPRO-EXCLUDE') AND \"Status\" = 'ACTV' order by \"UniqueIntegrationId\"",
+        "exp_result": "[{SOMProductId:PN-COPROMOTE,IsCoPromote:true,SOMRegionId:PN},{SOMProductId:PN-NOPROMOTE,IsCoPromote:false,SOMRegionId:PN},{SOMProductId:UK-COPRO-COMPETITOR,IsCoPromote:true,SOMRegionId:UK},{SOMProductId:UK-COPRO-EXCLUDE,IsCoPromote:true,SOMRegionId:UK},{SOMProductId:UK-COPROMOTE,IsCoPromote:true,SOMRegionId:UK},{SOMProductId:UK-NOPRO-COMPETITOR,IsCoPromote:false,SOMRegionId:UK},{SOMProductId:UK-NOPROMOTE,IsCoPromote:false,SOMRegionId:UK},{SOMProductId:US-COPROMOTE,IsCoPromote:true,SOMRegionId:US},{SOMProductId:US-NOPROMOTE,IsCoPromote:false,SOMRegionId:US}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "AcctMetricDefinitions11-17",
+        "query": "select \"SOMMetricDefinitionId\", \"MetricField\", \"SourceTable\", \"SourceField\", \"MetricOperation\", \"GeographyType\", \"AggregationStrategy\", \"AddressType\" from static.\"OMMetricDefinition\" where \"MetricField\" in ('Metric11','Metric12','Metric13','Metric14','Metric15','Metric16','Metric17') and \"MetricType\" = 'ACCT' order by \"SOMMetricDefinitionId\"",
+        "exp_result": "[{SOMMetricDefinitionId:11,MetricField:Metric11,SourceTable:OMAccountTerritoryFields,SourceField:null,MetricOperation:COUNT,GeographyType:GEO1,AggregationStrategy:APPR,AddressType:Residential},{SOMMetricDefinitionId:12,MetricField:Metric12,SourceTable:OMAccountSales,SourceField:Measure1Bucket12,MetricOperation:SUM,GeographyType:GEO1,AggregationStrategy:PRIM,AddressType:Residential},{SOMMetricDefinitionId:13,MetricField:Metric13,SourceTable:OMAccountSales,SourceField:Measure1Bucket12,MetricOperation:SUM,GeographyType:POST,AggregationStrategy:PRIM,AddressType:Residential},{SOMMetricDefinitionId:14,MetricField:Metric14,SourceTable:OMAccountSales,SourceField:Measure1Bucket12,MetricOperation:SUM,GeographyType:STAT,AggregationStrategy:APPR,AddressType:Billing},{SOMMetricDefinitionId:15,MetricField:Metric15,SourceTable:OMAccountSales,SourceField:Measure1Bucket12,MetricOperation:SUM,GeographyType:GEO1,AggregationStrategy:APPR,AddressType:Residential},{SOMMetricDefinitionId:16,MetricField:Metric16,SourceTable:OMAccountSales,SourceField:Measure1Bucket12,MetricOperation:SUM,GeographyType:POST,AggregationStrategy:APPR,AddressType:null},{SOMMetricDefinitionId:17,MetricField:Metric17,SourceTable:OMAccountSales,SourceField:Measure1Bucket12,MetricOperation:SUM,GeographyType:null,AggregationStrategy:APPR,AddressType:Residential}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "GeoMetricDefinitions",
+        "query": "select \"SOMMetricDefinitionId\", \"MetricField\", \"SourceTable\", \"SourceField\", \"MetricOperation\", \"GeographyType\", \"FilterBySalesForceProducts\", \"IncludeCompetitorProducts\" from static.\"OMMetricDefinition\" where \"MetricField\" in ('Metric10','Metric18','Metric19','Metric14','Metric20') and \"MetricType\" = 'GEO' order by \"SOMMetricDefinitionId\"",
+        "exp_result": "[{SOMMetricDefinitionId:10,MetricField:Metric10,SourceTable:OMGeographyAccount,SourceField:null,MetricOperation:COUNT,GeographyType:STAT,FilterBySalesForceProducts:false,IncludeCompetitorProducts:false},{SOMMetricDefinitionId:18,MetricField:Metric18,SourceTable:OMGeographySales,SourceField:Measure1Bucket12,MetricOperation:SUM,GeographyType:null,FilterBySalesForceProducts:false,IncludeCompetitorProducts:false},{SOMMetricDefinitionId:19,MetricField:Metric19,SourceTable:OMGeographySales,SourceField:Measure1Bucket12,MetricOperation:SUM,GeographyType:GEO1,FilterBySalesForceProducts:true,IncludeCompetitorProducts:false},{SOMMetricDefinitionId:20,MetricField:Metric20,SourceTable:OMGeographySales,SourceField:Measure1Bucket12,MetricOperation:SUM,GeographyType:POST,FilterBySalesForceProducts:true,IncludeCompetitorProducts:true}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "OMR-17372_NewAccounts",
+        "query": "select distinct a.\"Id\", addr.\"Id\" as \"AddressId\", a.\"SOMRegionId\" from static.\"OMAccount\" a left outer join static.\"OMAffiliation\" aff on aff.\"From\" = a.\"Id\" and aff.\"From\" = aff.\"To\" left outer join static.\"OMAccountAddress\" addr on addr.\"Id\" = aff.\"AddressId\" where a.\"Id\" ilike '%OMR-17372%' order by a.\"Id\", addr.\"Id\"",
+        "exp_result": "[{Id:AcctId_OMR-17372-01-STCD2-NC,AddressId:AcctAddrId_OMR-17372-01,SOMRegionId:US},{Id:AcctId_OMR-17372-02-STCD-NC,AddressId:AcctAddrId_OMR-17372-02,SOMRegionId:US},{Id:AcctId_OMR-17372-03-STCD2-SC,AddressId:AcctAddrId_OMR-17372-03,SOMRegionId:US}]"
+      },
+      {
+        "testname": "OMR-17372_NewGeography",
+        "query": "select geo.\"SOMGeographyId\", geo.\"UniqueIntegrationId\", geo.\"Type\", geo.\"Code\", geo.\"Status\", geo.\"SOMRegionId\" from static.\"OMGeography\" geo inner join static.\"OMRegion\" reg on geo.\"SOMRegionId\" = reg.\"SOMRegionId\" where geo.\"UniqueIntegrationId\" ilike '%OMR-17372%' order by geo.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMGeographyId:GeoId_OMR-17372-01-STCD-NC,UniqueIntegrationId:GeoUID_OMR-17372-01-STCD-NC,Type:STCD,Code:NC,Status:ACTV,SOMRegionId:US}]"
+      },
+      {
+        "testname": "MetricAccounts",
+        "query": "select \"Id\", \"SOMRegionId\" from static.\"OMAccount\" where \"Id\" ilike '%MetricAcct-%' order by \"Id\"",
+        "exp_result": "[{Id:MetricAcct-1,SOMRegionId:UK},{Id:MetricAcct-2,SOMRegionId:UK},{Id:MetricAcct-3,SOMRegionId:PN},{Id:MetricAcct-4,SOMRegionId:PN},{Id:MetricAcct-5,SOMRegionId:PN},{Id:MetricAcct-6,SOMRegionId:PN},{Id:MetricAcct-7,SOMRegionId:PN}]"
+      },
+      {
+        "testname": "OMR-15271-Accounts",
+        "query": "select \"Id\",\"Status\",\"SOMRegionId\" from static.\"OMAccount\" where \"Id\" like 'PrAccTerrExplicit%' or \"Id\" like 'PrAccTerrExclusion%' order by \"Id\"",
+        "exp_result": "[{Id:PrAccTerrExclusion,Status:ACTV,SOMRegionId:FK},{Id:PrAccTerrExclusion-2,Status:ACTV,SOMRegionId:FK},{Id:PrAccTerrExclusion-3,Status:ACTV,SOMRegionId:FK},{Id:PrAccTerrExplicit,Status:ACTV,SOMRegionId:FK},{Id:PrAccTerrExplicit-2,Status:ACTV,SOMRegionId:FK},{Id:PrAccTerrExplicit-3,Status:ACTV,SOMRegionId:FK}]"
+      },
+      {
+        "testname": "OMR-15271-Products",
+        "query": "select \"SOMProductId\", \"Status\", \"SOMRegionId\" from STATIC.\"OMProduct\" where \"UniqueIntegrationId\" like 'Product-OMR-15271%' order by \"UniqueIntegrationId\"",
+        "exp_result": "[{SOMProductId:Product-OMR-15271,Status:ACTV,SOMRegionId:FK},{SOMProductId:Product-OMR-15271-2,Status:ACTV,SOMRegionId:FX},{SOMProductId:Product-OMR-15271-3,Status:ACTV,SOMRegionId:FK},{SOMProductId:Product-OMR-15271-4,Status:ACTV,SOMRegionId:FK}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "OMR-15543-RollbackThreshold-Accounts",
+        "query": "select \"Id\",\"Status\",\"SOMRegionId\" from static.\"OMAccount\" where \"Id\" like 'OMR-15543-%' order by \"Id\"",
+        "exp_result": "[{Id:OMR-15543-1,Status:ACTV,SOMRegionId:ZW},{Id:OMR-15543-2,Status:ACTV,SOMRegionId:ZW},{Id:OMR-15543-3,Status:ACTV,SOMRegionId:ZM},{Id:OMR-15543-4,Status:ACTV,SOMRegionId:ZM},{Id:OMR-15543-5,Status:ACTV,SOMRegionId:ZR},{Id:OMR-15543-6,Status:ACTV,SOMRegionId:ZR},{Id:OMR-15543-7,Status:ACTV,SOMRegionId:ZR},{Id:OMR-15543-8,Status:ACTV,SOMRegionId:ZR}]"
+      },
+      {
+        "testname": "OMR-15543-RollbackThreshold-Regions",
+        "query": "select \"SOMRegionId\",\"UniqueIntegrationId\",\"Country\" from STATIC.\"OMRegion\" where \"SOMRegionId\" in ('ZW','ZM','ZR') order by \"SOMRegionId\"",
+        "exp_result": "[{SOMRegionId:ZM,UniqueIntegrationId:OMR15543-ZM,Country:ZM},{SOMRegionId:ZR,UniqueIntegrationId:OMR15543-ZR,Country:ZR},{SOMRegionId:ZW,UniqueIntegrationId:OMR15543-ZW,Country:ZW}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "Region-currency",
+        "query": "select \"SOMRegionId\", \"CurrencyIsoCode\" from STATIC.\"OMRegion\" where \"SOMRegionId\" in ('GS','MS') order by \"SOMRegionId\"",
+        "exp_result": "[{SOMRegionId:GS,CurrencyIsoCode:GBP},{SOMRegionId:MS,CurrencyIsoCode:XCD}]",
+        "sfQuery": null
+      },
+      // OMR-19263 Regional defaults, geography, account for Auto counts
+      {
+        "testname": "Regional-defaults",
+        "query": "select \"SOMRegionId\",\"GeographyType\",\"AddressType\",\"AggregationStrategy\" from STATIC.\"OMRegion\" where \"SOMRegionId\" in ('GS','MS','GB') order by \"SOMRegionId\"",
+        "exp_result": "[{SOMRegionId:GB,GeographyType:STCD,AddressType:Business,AggregationStrategy:null},{SOMRegionId:GS,GeographyType:GEO2,AddressType:null,AggregationStrategy:PRIM},{SOMRegionId:MS,GeographyType:null,AddressType:null,AggregationStrategy:null}]"
+      },
+      // OMR-18946, OMR-18947 Regional settings for GDPR account and user deletion
+      {
+        "testname": "Regional-gdpr-settings",
+        "query": "select \"SOMRegionId\",\"AccountDataProtectionAction\",\"UserDataProtectionAction\" from STATIC.\"OMRegion\" where \"SOMRegionId\" in ('FX','BM','GB') order by \"SOMRegionId\"",
+        "exp_result": "[{SOMRegionId:BM,AccountDataProtectionAction:MASK,UserDataProtectionAction:MASK},{SOMRegionId:FX,AccountDataProtectionAction:DEL,UserDataProtectionAction:DEL},{SOMRegionId:GB,AccountDataProtectionAction:null,UserDataProtectionAction:null}]"
+      },
+      {
+        "testname": "GB-Geographies-19263",
+        "query": "select \"SOMGeographyId\",\"Type\",\"Code\",\"SOMRegionId\" from STATIC.\"OMGeography\" where \"UniqueIntegrationId\" in ('GB_BRICK1','GB_STCD1','GB_STCD2','GB_POST1') order by \"SOMRegionId\",\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMGeographyId:GB_BRICK1,Type:GEO2,Code:GB_BRK,SOMRegionId:GB},{SOMGeographyId:GB_POST1,Type:POST,Code:S5,SOMRegionId:GB},{SOMGeographyId:GB_STCD1,Type:STCD,Code:MAN,SOMRegionId:GB},{SOMGeographyId:GB_STCD2,Type:STCD,Code:SHF,SOMRegionId:GB}]"
+      },
+      {
+        "testname": "GS-Geographies-19263",
+        "query": "select \"SOMGeographyId\",\"Type\",\"Code\",\"SOMRegionId\" from STATIC.\"OMGeography\" where \"UniqueIntegrationId\" in ('GS_BRICK1','GS_STCD1','GS_POST1') order by \"SOMRegionId\",\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMGeographyId:GS_BRICK1,Type:GEO2,Code:GS_BRK,SOMRegionId:GS},{SOMGeographyId:GS_POST1,Type:POST,Code:SIQQ-ZZ,SOMRegionId:GS},{SOMGeographyId:GS_STCD1,Type:STCD,Code:GRYT,SOMRegionId:GS}]"
+      },
+      {
+        "testname": "MS-Geographies-19263",
+        "query": "select \"SOMGeographyId\",\"Type\",\"Code\",\"SOMRegionId\" from STATIC.\"OMGeography\" where \"UniqueIntegrationId\" in ('MS_BRICK1','MS_STCD1','MS_POST1','MS_POST2','MS_POST3') order by \"SOMRegionId\",\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMGeographyId:MS_BRICK1,Type:GEO2,Code:MS_BRK,SOMRegionId:MS},{SOMGeographyId:MS_POST1,Type:POST,Code:MSR1350,SOMRegionId:MS},{SOMGeographyId:MS_POST2,Type:POST,Code:MSR1120,SOMRegionId:MS},{SOMGeographyId:MS_POST3,Type:POST,Code:MSR1210,SOMRegionId:MS},{SOMGeographyId:MS_STCD1,Type:STCD,Code:SAL,SOMRegionId:MS}]"
+      },
+      {
+        "testname": "GB-Accounts-19263",
+        "query": "select distinct a.\"Id\" \"AccountId\", aff.\"AddressType\", aff.\"IsPrimary\", add.\"Id\" \"AddressId\",add.\"StateCode\",add.\"ZipCode\",add.\"Brick2\" from static.\"OMAccount\" a left outer join static.\"OMAffiliation\" aff on aff.\"From\" = a.\"Id\" and aff.\"From\" = aff.\"To\" left outer join static.\"OMAccountAddress\" add on add.\"Id\" = aff.\"AddressId\" where a.\"Id\" like '19263-GB%' order by a.\"Id\",add.\"Id\"",
+        "exp_result": "[{AccountId:19263-GB1,AddressType:Business,IsPrimary:true,AddressId:19263_GB1_MAN,StateCode:MAN,ZipCode:S5,Brick2:GB_BRK},{AccountId:19263-GB1,AddressType:Business,IsPrimary:false,AddressId:19263_GB2_SHF,StateCode:SHF,ZipCode:S36,Brick2:GB_BRK},{AccountId:19263-GB2,AddressType:Residential,IsPrimary:true,AddressId:19263_GB1_MAN,StateCode:MAN,ZipCode:S5,Brick2:GB_BRK},{AccountId:19263-GB3,AddressType:Residential,IsPrimary:true,AddressId:19263_GB2_SHF,StateCode:SHF,ZipCode:S36,Brick2:GB_BRK},{AccountId:19263-GB4,AddressType:Business,IsPrimary:true,AddressId:19263_GB3_MAN,StateCode:XXX,ZipCode:S5,Brick2:GB_BRK},{AccountId:19263-GB5,AddressType:Business,IsPrimary:true,AddressId:19263_GB3_MAN,StateCode:XXX,ZipCode:S5,Brick2:GB_BRK}]"
+      },
+      {
+        "testname": "GS-Accounts-19263",
+        "query": "select distinct a.\"Id\" \"AccountId\", aff.\"AddressType\", aff.\"IsPrimary\", add.\"Id\" \"AddressId\",add.\"StateCode\",add.\"ZipCode\",add.\"Brick2\" from static.\"OMAccount\" a left outer join static.\"OMAffiliation\" aff on aff.\"From\" = a.\"Id\" and aff.\"From\" = aff.\"To\" left outer join static.\"OMAccountAddress\" add on add.\"Id\" = aff.\"AddressId\" where a.\"Id\" like '19263-GS%' order by a.\"Id\",add.\"Id\"",
+        "exp_result": "[{AccountId:19263-GS1,AddressType:Business,IsPrimary:true,AddressId:19263_GS1_BRK,StateCode:GRYT,ZipCode:SIQQ-ZZ,Brick2:GS_BRK},{AccountId:19263-GS2,AddressType:Residential,IsPrimary:true,AddressId:19263_GS1_BRK,StateCode:GRYT,ZipCode:SIQQ-ZZ,Brick2:GS_BRK},{AccountId:19263-GS3,AddressType:Business,IsPrimary:false,AddressId:19263_GS1_BRK,StateCode:GRYT,ZipCode:SIQQ-ZZ,Brick2:GS_BRK},{AccountId:19263-GS4,AddressType:Business,IsPrimary:true,AddressId:19263_GS2_BRX,StateCode:GRYT,ZipCode:SIQQ-ZZ,Brick2:GS_BRX},{AccountId:19263-GS5,AddressType:Business,IsPrimary:true,AddressId:19263_GS2_BRX,StateCode:GRYT,ZipCode:SIQQ-ZZ,Brick2:GS_BRX}]"
+      },
+      {
+        "testname": "MS-Accounts-19263",
+        "query": "select distinct a.\"Id\" \"AccountId\", aff.\"AddressType\", aff.\"IsPrimary\", add.\"Id\" \"AddressId\",add.\"StateCode\",add.\"ZipCode\",add.\"Brick2\" from static.\"OMAccount\" a left outer join static.\"OMAffiliation\" aff on aff.\"From\" = a.\"Id\" and aff.\"From\" = aff.\"To\" left outer join static.\"OMAccountAddress\" add on add.\"Id\" = aff.\"AddressId\" where a.\"Id\" like '19263-MS%' order by a.\"Id\",add.\"Id\"",
+        "exp_result": "[{AccountId:19263-MS1,AddressType:Business,IsPrimary:true,AddressId:19263_MS1_SLM,StateCode:SAL,ZipCode:MSR1350,Brick2:MS_BRK},{AccountId:19263-MS1,AddressType:Residential,IsPrimary:false,AddressId:19263_MS2_LLB,StateCode:null,ZipCode:MSR1120,Brick2:null},{AccountId:19263-MS1,AddressType:Shipping,IsPrimary:false,AddressId:19263_MS3_DVH,StateCode:null,ZipCode:MSR1210,Brick2:null},{AccountId:19263-MS2,AddressType:Residential,IsPrimary:true,AddressId:19263_MS3_DVH,StateCode:null,ZipCode:MSR1210,Brick2:null},{AccountId:19263-MS3,AddressType:Business,IsPrimary:true,AddressId:19263_MS4_SLM,StateCode:SAL,ZipCode:MSR0000,Brick2:MS_BRK},{AccountId:19263-MS4,AddressType:Residential,IsPrimary:true,AddressId:19263_MS4_SLM,StateCode:SAL,ZipCode:MSR0000,Brick2:MS_BRK}]"
+      },
+      //OMR-18947 Region UserDataProtectionAction setting for GDPR User Deletion test and FieldTitle
+      {
+        "testname": "GDPR OMRegion.UserDataProtectionAction setting",
+        "query": "select \"SOMRegionId\",\"EffectiveDate\",\"EndDate\",\"Status\",\"UserDataProtectionAction\" from STATIC.\"OMRegion\" where \"SOMRegionId\" in ('FX','BM','GB') order by \"SOMRegionId\"",
+        "exp_result": "[{SOMRegionId:BM,EffectiveDate:2020-01-01,EndDate:3999-12-31,Status:ACTV,UserDataProtectionAction:MASK},{SOMRegionId:FX,EffectiveDate:2020-01-01,EndDate:3999-12-31,Status:ACTV,UserDataProtectionAction:DEL},{SOMRegionId:GB,EffectiveDate:2020-01-01,EndDate:3999-12-31,Status:ACTV,UserDataProtectionAction:null}]"
+      },
+      {
+        "testname": "OMFieldTitle for GDPR User Deletion test",
+        "query": "select \"SOMFieldTitleId\",\"Status\",\"SOMRegionId\",\"UniqueIntegrationId\" from STATIC.\"OMFieldTitle\" where \"SOMRegionId\" in ('FX','BM','GB') and \"UniqueIntegrationId\" in ('OMR-18947-GB-1-FT', 'OMR-18947-BM-1-FT', 'OMR-18947-FX-1-FT') order by \"SOMRegionId\" asc",
+        "exp_result": "[{SOMFieldTitleId:OMR-18947-BM-1-FT,Status:ACTV,SOMRegionId:BM,UniqueIntegrationId:OMR-18947-BM-1-FT},{SOMFieldTitleId:OMR-18947-FX-1-FT,Status:ACTV,SOMRegionId:FX,UniqueIntegrationId:OMR-18947-FX-1-FT},{SOMFieldTitleId:OMR-18947-GB-1-FT,Status:ACTV,SOMRegionId:GB,UniqueIntegrationId:OMR-18947-GB-1-FT}]"
+      }
+    ] } }

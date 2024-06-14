@@ -1,0 +1,17 @@
+{
+	"tenantCreate": "",
+	"tenantDisable": "",
+	"scenarioCalc": "SCENARIO-SIMULATE",
+	"scenarioCommit": "SCENARIO-COMMIT",
+	"scenarioDelete": "SCENARIO-DELETE",
+	"scenarioSync": "SCENARIO-SYNC",
+	"publishOther": "OCESYNC-PUBLISH_OTHER_OMR_DATA",
+	"publishAlignments": "OCESYNC-PUBLISH_CUSTOMER_ALIGNMENT",
+	"bulkload": "",
+	"sync": "SYNC",
+	"ocesync": "OCE-SYNC",
+	"staticSync": "STATICSYNC",
+	"recalc": "RECALC",
+	"adjudicate": "ADJUDICATION",
+	"dataProtection": "DATA_PROTECTION"
+}

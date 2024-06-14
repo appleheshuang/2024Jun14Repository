@@ -1,0 +1,205 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "GS",
+    "productUId": "PROD1",
+    "salesforceUID": "SF506",
+    "territoryUID": "T506",
+    "territoryUID2": "T606",
+    "territoryUID3": "T706",
+    "EffectiveDate": "2021-01-01",
+    "EndDate": "2022-12-31"
+  },
+
+  "Scenario": {
+    "Description": "Precondition for check actions on entities OMProductExplicit, OMProductExclusion, OMR-922 Merge product explicits and exclusions - resolve as first one wins, EFFE Product Exclusion (Negative), EXPR Product Explicit (Negative)",
+    "name": "Test cases C7644688, C7694300, C7694301, C7707133, C7707140",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "ProdExpExcSetup-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "name": "SF 506"
+    }
+  ],
+
+    "ScenarioTerritory": [
+        {
+            "Action__c": "ADD",
+            "OMScenarioId__c": "{{Scenario.Id}}",
+            "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+            "TerritorySalesForceType__c": "PRIM",
+            "name": "Terr 506",
+            "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+            "SOMRegionId__c": "{{som_region_id}}",
+            "Type__c": "TERR"
+        },
+        {
+            "Action__c": "ADD",
+            "OMScenarioId__c": "{{Scenario.Id}}",
+            "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+            "TerritorySalesForceType__c": "PRIM",
+            "name": "Terr 106",
+            "UniqueIntegrationId__c": "{{territoryUID2}}-{{TestUniqueIntegrationID}}",
+            "SOMRegionId__c": "{{som_region_id}}",
+            "Type__c": "TERR"
+        },
+        {
+            "Action__c": "ADD",
+            "OMScenarioId__c": "{{Scenario.Id}}",
+            "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+            "TerritorySalesForceType__c": "PRIM",
+            "name": "Terr 706",
+            "UniqueIntegrationId__c": "{{territoryUID3}}-{{TestUniqueIntegrationID}}",
+            "SOMRegionId__c": "{{som_region_id}}",
+            "Type__c": "TERR"
+        },
+        // TC C7707133, C7707140
+        {
+            "Action__c": "ADD",
+            "OMScenarioId__c": "{{Scenario.Id}}",
+            "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+            "TerritorySalesForceType__c": "PRIM",
+            "name": "Terr 806",
+            "UniqueIntegrationId__c": "T4-{{TestUniqueIntegrationID}}",
+            "SOMRegionId__c": "{{som_region_id}}",
+            "Type__c": "TERR"
+        },
+        //TC OMR-11877
+        {
+            "Action__c": "ADD",
+            "OMScenarioId__c": "{{Scenario.Id}}",
+            "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+            "TerritorySalesForceType__c": "PRIM",
+            "name": "TerrExpand",
+            "UniqueIntegrationId__c": "TerrExpand-{{TestUniqueIntegrationID}}",
+            "SOMRegionId__c": "{{som_region_id}}",
+            "Type__c": "TERR",
+            "SOMTerritoryId__c": "TerrExpand{{TestUniqueIntegrationID}}"
+        }
+    ],
+
+    "ScenarioProductExplicit": [
+        // precondition fo Actions EDIT, EFFE, EXPR
+        // precondition for check ADD ProductExclusion TC C7694300
+        {
+            "Action__c": "ADD",
+            "OMScenarioId__c": "{{Scenario.Id}}",
+            "ProductUniqueIntegrationId__c": "{{productUId}}",
+            "TerritoryUniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+            "ProductAlignmentType__c": "DETL",
+            "EffectiveDate__c": "2021-01-01",
+            "EndDate__c": "2021-03-01"
+        },
+        // precondition fo Action PEXP
+        // precondition for check ADD ProductExclusion with different alignment type  PROM TC C7694300
+        {
+            "Action__c": "ADD",
+            "OMScenarioId__c": "{{Scenario.Id}}",
+            "ProductUniqueIntegrationId__c": "{{productUId}}",
+            "TerritoryUniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+            "ProductAlignmentType__c": "DETL",
+            "EffectiveDate__c": "2021-07-01",
+            "EndDate__c": "2021-08-01"
+        },
+        // precondition fo Action DEL
+        {
+            "Action__c": "ADD",
+            "OMScenarioId__c": "{{Scenario.Id}}",
+            "ProductUniqueIntegrationId__c": "{{productUId}}",
+            "TerritoryUniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+            "ProductAlignmentType__c": "DETL",
+            "EffectiveDate__c": "2021-10-01",
+            "EndDate__c": "2021-12-01"
+        },
+        // precondition TCs C7707133, C7707140
+        {
+            "Action__c": "ADD",
+            "OMScenarioId__c": "{{Scenario.Id}}",
+            "ProductUniqueIntegrationId__c": "{{productUId}}",
+            "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[3]}}",
+            "ProductAlignmentType__c": "DETL",
+            "EffectiveDate__c": "2021-04-01",
+            "EndDate__c": "2021-04-15"
+        },
+        //Explicit Data for OMR-11877
+        {
+            "Action__c": "ADD",
+            "OMScenarioId__c": "{{Scenario.Id}}",
+            "ProductUniqueIntegrationId__c": "{{productUId}}",
+            "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[4]}}",
+            "ProductAlignmentType__c": "DETL",
+            "EffectiveDate__c": "2021-05-01",
+            "EndDate__c": "2021-06-01"
+        }
+    ],
+
+    "ScenarioProductExclusion": [
+        // precondition fo Actions EDIT, EFFE, EXPR
+        // precondition for check ADD ProductExplicit TC C7694301
+        {
+            "Action__c": "ADD",
+            "OMScenarioId__c": "{{Scenario.Id}}",
+            "ProductUniqueIntegrationId__c": "{{productUId}}",
+            "TerritoryUniqueIntegrationId__c": "{{territoryUID2}}-{{TestUniqueIntegrationID}}",
+            "ProductAlignmentType__c": "DETL",
+            "EffectiveDate__c": "2022-02-10",
+            "EndDate__c": "2022-03-01"
+        },
+        // precondition fo Action PEXP
+        {
+            "Action__c": "ADD",
+            "OMScenarioId__c": "{{Scenario.Id}}",
+            "ProductUniqueIntegrationId__c": "{{productUId}}",
+            "TerritoryUniqueIntegrationId__c": "{{territoryUID2}}-{{TestUniqueIntegrationID}}",
+            "ProductAlignmentType__c": "DETL",
+            "EffectiveDate__c": "2022-07-01",
+            "EndDate__c": "2022-08-01"
+        },
+        // precondition fo Action DEL
+        {
+            "Action__c": "ADD",
+            "OMScenarioId__c": "{{Scenario.Id}}",
+            "ProductUniqueIntegrationId__c": "{{productUId}}",
+            "TerritoryUniqueIntegrationId__c": "{{territoryUID2}}-{{TestUniqueIntegrationID}}",
+            "ProductAlignmentType__c": "DETL",
+            "EffectiveDate__c": "2022-10-01",
+            "EndDate__c": "2022-12-01"
+        },
+        // precondition TCs C7707133, C7707140
+        {
+            "Action__c": "ADD",
+            "OMScenarioId__c": "{{Scenario.Id}}",
+            "ProductUniqueIntegrationId__c": "{{productUId}}",
+            "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[3]}}",
+            "ProductAlignmentType__c": "DETL",
+            "EffectiveDate__c": "2021-05-01",
+            "EndDate__c": "2021-06-01"
+        }
+    ],
+
+  "Tests": {
+    "MergeResults": [
+        {
+            "testname": "NestedExpand",
+            "query": "skip",
+            "exp_result": "[{SOMProductId:{{productUId}},SOMTerritoryId:TerrExpand{{TestUniqueIntegrationID}},OMProduct:{SOMProductId:{{productUId}}},OMTerritory:{SOMTerritoryId:TerrExpand{{TestUniqueIntegrationID}},SOMRegionId:{{som_region_id}},OMRegion:{SOMRegionId:{{som_region_id}}}}}]",
+            "odataQuery": "/OMProductExplicit?$select=SOMProductId,SOMTerritoryId&$filter = SOMProductId eq '{{productUId}}' and  SOMTerritoryId eq 'TerrExpand{{TestUniqueIntegrationID}}' &$expand= OMProduct($select=SOMProductId),OMTerritory($select=SOMTerritoryId%3B$expand=OMRegion($select=SOMRegionId))"
+        }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "Tests": {
+    "OCEResults": [
+      {
+        // Global and products will not be sync'd to OCE-P
+        "testname": "oce-start-end-date",
+        "query": "select \"UniqueIntegrationId\" as \"UniqueIntegrationID\",\"Name\",\"EffectiveDate\" as \"StartDate\", \"EndDate\" from STATIC.\"OMProduct\"  where \"UniqueIntegrationId\" in ('P13250-OPEN-{{TestUniqueIntegrationId}}','P13250-CLOSED-{{TestUniqueIntegrationId}}','P8239-CREATE-{{TestUniqueIntegrationId}}') order by \"UniqueIntegrationId\"",
+        "sfQuery": "select OCE__UniqueIntegrationId__c,Name,OCE__StartDate__c,OCE__EndDate__c from OCE__Product__c where OCE__UniqueIntegrationId__c in ('P13250-OPEN-{{TestUniqueIntegrationId}}','P13250-CLOSED-{{TestUniqueIntegrationId}}','P13250-GLOBAL-{{TestUniqueIntegrationId}}','P8239-CREATE-{{TestUniqueIntegrationId}}') order by OCE__UniqueIntegrationId__c",
+        "exp_result": "[{UniqueIntegrationID:P13250-CLOSED-{{TestUniqueIntegrationId}},Name:P13250-CLOSED,StartDate:2022-08-01,EndDate:3022-07-31},{UniqueIntegrationID:P13250-OPEN-{{TestUniqueIntegrationId}},Name:P13250-OPEN,StartDate:2020-08-01,EndDate:3999-12-31},{UniqueIntegrationID:P8239-CREATE-{{TestUniqueIntegrationId}},Name:P8239-CREATE,StartDate:2020-08-01,EndDate:3999-12-31}]"
+      }
+    ]
+  }
+}

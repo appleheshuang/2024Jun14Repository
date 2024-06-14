@@ -1,0 +1,15 @@
+{
+  "BaseData": {
+    "productId": "PROD1",
+    "productName": "Panadol"
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "WhitelistedCustom",
+        "query": "OMProduct,SOMProductId,Name,SOMProductId:'{{productId}}'",
+        "exp_result": "[{SOMProductId:{{productId}},Name:{{productName}}}]"
+      }
+    ]
+  }
+}

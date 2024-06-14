@@ -1,0 +1,92 @@
+﻿{
+  "BaseData": {
+    "som_region_id": "GS",
+    "added_accountUId": "19263-GB4",
+    "removed_accountUId": "19263-GS1",
+    "added_geoid": "GB_POST1",
+    "removed_geoid": "MS_POST3",
+    "R1_terr_acc_cnt": "3", // Note: excludes out of region account "REPREMOVED", SS2 tot=4
+    "R1_terr_geo_cnt": "1",
+    "R2_terr_acc_cnt": "2",
+    "R2_terr_geo_cnt": "3", // Note: excludes out of region geography "KILKENNY", SS2 tot=4
+    "R3_terr_acc_cnt": "3",
+    "R3_terr_geo_cnt": "2",
+    "R1_terr_acc_cnt_after": "2", // -1 account removed
+    "R1_terr_geo_cnt_after": "1",
+    "R2_terr_acc_cnt_after": "1", // -1 removed by geo remove
+    "R2_terr_geo_cnt_after": "2", // -1 geo removed
+    "R3_terr_acc_cnt_after": "5", // +1 account added, +1 added by geo add
+    "R3_terr_geo_cnt_after": "2"  // +0 geo added is of non-matching type
+  },
+  "AdjudicationChangeRequestAccount": [
+    {
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+      "OMAccountId__c": "{{added_accountUId}}",
+      "AccountUniqueIntegrationId__c": "{{added_accountUId}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[2]}}",
+      "InitialLevel__c": "TERR",
+      "RefTerritoryType__c": "TERR",
+      "SubmitStatus__c": "PEND",
+      "Action__c": "ADD",
+      "RefAccountAccountType__c": "MP",
+      "RefAccountName__c": "{{added_accountUId}}",
+      "RefAccountType__c": "Trauma",
+      "SimulationStatusRep__c": "PEND"
+    },
+    {
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "OMAccountId__c": "{{removed_accountUId}}",
+      "AccountUniqueIntegrationId__c": "{{removed_accountUId}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "InitialLevel__c": "TERR",
+      "RefTerritoryType__c": "TERR",
+      "SubmitStatus__c": "PEND",
+      "Action__c": "DELE",
+      "RefAccountAccountType__c": "MP",
+      "RefAccountName__c": "{{removed_accountUId}}",
+      "RefAccountType__c": "Trauma",
+      "SimulationStatusRep__c": "PEND"
+    }
+  ],
+  "AdjudicationChangeRequestGeography": [
+    {
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+      "SOMGeographyId__c": "{{added_geoid}}",
+      "GeographyUniqueIntegrationId__c": "{{added_geoid}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[2]}}",
+      "InitialLevel__c": "TERR",
+      "RefTerritoryType__c": "TERR",
+      "SubmitStatus__c": "PEND",
+      "Action__c": "ADD",
+      "SimulationStatusRep__c": "PEND"
+    },
+    {
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "SOMGeographyId__c": "{{removed_geoid}}",
+      "GeographyUniqueIntegrationId__c": "{{removed_geoid}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+      "InitialLevel__c": "TERR",
+      "RefTerritoryType__c": "TERR",
+      "SubmitStatus__c": "PEND",
+      "Action__c": "DELE",
+      "SimulationStatusRep__c": "PEND"
+    }
+  ],
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "TerritoryAdjResult_CR_counts",
+        "query": "select a.\"Name\" \"adjuName\",a.\"Type\", t.\"Name\" \"terrName\",ar.\"AccountCountBefore\",ar.\"AccountCountAfter\",ar.\"GeographyCountBefore\",ar.\"GeographyCountAfter\" from static.\"OMAdjudication\" a join static.\"OMTerritoryAdjudicationResult\" ar on ar.\"OMAdjudicationId\" = a.\"Id\" join static.\"OMAdjudicationTerritory\" ad on ad.\"OMAdjudicationId\" = a.\"Id\" join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = ad.\"SOMTerritoryId\" where a.\"Name\" in ('{{Adjudication.Name}}') and ar.\"AccessKey\" = ad.\"AccessKeyRep\" order by t.\"UniqueIntegrationId\"",
+        "exp_result": "[{adjuName:{{Adjudication.Name}},Type:{{Adjudication.Type__c}},terrName:{{ScenarioTerritory.Name[0]}},AccountCountBefore:{{R1_terr_acc_cnt}},AccountCountAfter:{{R1_terr_acc_cnt_after}},GeographyCountBefore:{{R1_terr_geo_cnt}},GeographyCountAfter:{{R1_terr_geo_cnt_after}}},{adjuName:{{Adjudication.Name}},Type:{{Adjudication.Type__c}},terrName:{{ScenarioTerritory.Name[1]}},AccountCountBefore:{{R2_terr_acc_cnt}},AccountCountAfter:{{R2_terr_acc_cnt_after}},GeographyCountBefore:{{R2_terr_geo_cnt}},GeographyCountAfter:{{R2_terr_geo_cnt_after}}},{adjuName:{{Adjudication.Name}},Type:{{Adjudication.Type__c}},terrName:{{ScenarioTerritory.Name[2]}},AccountCountBefore:{{R3_terr_acc_cnt}},AccountCountAfter:{{R3_terr_acc_cnt_after}},GeographyCountBefore:{{R3_terr_geo_cnt}},GeographyCountAfter:{{R3_terr_geo_cnt_after}}}]"
+      }
+    ]
+  }
+}

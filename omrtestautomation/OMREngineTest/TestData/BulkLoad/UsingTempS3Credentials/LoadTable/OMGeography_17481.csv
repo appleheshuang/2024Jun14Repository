@@ -1,0 +1,10 @@
+﻿SOMGeographyId,Type,Code,Country,Status,SOMRegionId,UniqueIntegrationId,EffectiveDate,EndDate
+G1-POST1-17481-{{TestUniqueIntegrationId}},POST,17481-{{TestUniqueIntegrationId}}-01,UK,ACTV,UK,G1-POST1-17481-{{TestUniqueIntegrationId}},2020-01-01,3999-12-31
+G2-POST2-17481-{{TestUniqueIntegrationId}},POST,17481-{{TestUniqueIntegrationId}}-02,US,ACTV,US,G2-POST2-17481-{{TestUniqueIntegrationId}},2020-01-01,3999-12-31
+G3-BRICK3-17481-{{TestUniqueIntegrationId}},GEO1,17481-{{TestUniqueIntegrationId}}-03,UK,ACTV,UK,G3-BRICK3-17481-{{TestUniqueIntegrationId}},2020-01-01,3999-12-31
+G4-BRICK4-17481-{{TestUniqueIntegrationId}},GEO1,17481-{{TestUniqueIntegrationId}}-04,UK,ACTV,UK,G4-BRICK4-17481-{{TestUniqueIntegrationId}},2020-01-01,3999-12-31
+G5-STATE5-17481-{{TestUniqueIntegrationId}},STAT,17481-{{TestUniqueIntegrationId}}-05,UK,ACTV,UK,G5-STATE5-17481-{{TestUniqueIntegrationId}},2020-01-01,3999-12-31
+G6-STATE6-17481-{{TestUniqueIntegrationId}},STAT,17481-{{TestUniqueIntegrationId}}-06,UK,ACTV,UK,G6-STATE6-17481-{{TestUniqueIntegrationId}},2020-01-01,3999-12-31
+G7-POST7-17481-{{TestUniqueIntegrationId}},POST,17481-{{TestUniqueIntegrationId}}-07,UK,ACTV,UK,G7-POST7-17481-{{TestUniqueIntegrationId}},2020-01-01,3999-12-31
+G8-BRICK8-17481-{{TestUniqueIntegrationId}},GEO1,17481-{{TestUniqueIntegrationId}}-08,UK,ACTV,UK,G8-BRICK8-17481-{{TestUniqueIntegrationId}},2020-01-01,3999-12-31
+G9-STATE9-17481-{{TestUniqueIntegrationId}},STAT,17481-{{TestUniqueIntegrationId}}-09,UK,ACTV,UK,G9-STATE9-17481-{{TestUniqueIntegrationId}},2020-01-01,3999-12-31

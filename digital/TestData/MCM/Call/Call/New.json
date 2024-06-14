@@ -1,0 +1,104 @@
+﻿{
+	"DE_Call_Master__IQ": [
+		{
+			"keys": {
+				"Call ID": "CallId{{TestUniqueIntegrationID}}",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Channel Code": "Face To Face",
+				"Call Date Time": "{{dbt_current}}",
+				"Call Duration": "12",
+				"Call Name": "CallName-{{TestUniqueIntegrationID}}_WithValidBusinessUnit_WithValidBusinessUnit_WithValidBusiness",
+				"Call Type Code": "Detail Only",
+				"Contact Key": "NDAccount_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "0051N000005pIXVQA2",
+				"Created Date": "{{dbt_current}}",
+				"End Call Time": "{{dbt_current}}",
+				"Integration ID": "Call{{TestUniqueIntegrationID}}",
+				"Parent Call ID": "2342343",
+				"Planned Date": "{{dbt_current}}",
+				"SalesRep ID": "0051N000005pIXVQA2",
+				"Status Code": "Active",
+				"Territory ID": "TM - SPC - Union City 20B06T14",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUID}}"
+			}
+		},
+		{
+			"keys": {
+				"Call ID": "CallID{{TestUniqueIntegrationID}}OtherBU",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Name": "C-{{TestUniqueIntegrationID}}_OtherBU",
+				"Contact Key": "NDAccount_{{TestUniqueIntegrationID}}_OtherBU",
+				"Created By": "0051N000005pIXVQA2",
+				"Created Date": "{{dbt_current}}",
+				"Status Code": "Inactive",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUIDOther}}"
+			}
+		},
+		{
+			"keys": {
+				"Call ID": "CallID{{TestUniqueIntegrationID}}NOBU",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Name": "C-{{TestUniqueIntegrationID}}_NOBU",
+				"Contact Key": "NDAccount_{{TestUniqueIntegrationID}}_NOBU",
+				"Created By": "0051N000005pIXVQA2",
+				"Created Date": "{{dbt_current}}",
+				"Status Code": "Inactive",
+				"Updated By": "Automation"
+			}
+		},
+		{
+			"keys": {
+				"Call ID": "CallID{{TestUniqueIntegrationID}}MandatoryFieldsOnly",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Name": "C-{{TestUniqueIntegrationID}}_MandatoryFieldsOnly",
+				"Contact Key": "NDAccount_{{TestUniqueIntegrationID}}_MandatoryFieldsOnly",
+				"Created By": "0051N000005pIXVQA2",
+				"Created Date": "{{dbt_current}}",
+				"Status Code": "Inactive",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUID}}"
+			}
+		},
+		{
+			"keys": {
+				"Call ID": "CallID{{TestUniqueIntegrationID}}Past",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Name": "C-{{TestUniqueIntegrationID}}_Past",
+				"Contact Key": "NDAccount_{{TestUniqueIntegrationID}}_Past",
+				"Created By": "0051N000005pIXVQA2",
+				"Created Date": "{{dbt_current}}",
+				"Status Code": "Inactive",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUID}}",
+				"Updated Date": "8/6/2023 9:01:50 PM"
+			}
+		},
+		{
+			"keys": {
+				"Call ID": "CallID{{TestUniqueIntegrationID}}OtherCRM",
+				"Crm ID": "00D8Y000000GWw6UAG"
+			},
+			"values": {
+				"Call Name": "C-{{TestUniqueIntegrationID}}_OtherCRM",
+				"Contact Key": "NDAccount_{{TestUniqueIntegrationID}}_OtherCRM",
+				"Created By": "0051N000005pIXVQA2",
+				"Created Date": "{{dbt_current}}",
+				"Status Code": "Inactive",
+				"Business Unit MIDs": "{{BUID}}",
+				"Updated By": "Automation"
+			}
+		}
+	]
+}

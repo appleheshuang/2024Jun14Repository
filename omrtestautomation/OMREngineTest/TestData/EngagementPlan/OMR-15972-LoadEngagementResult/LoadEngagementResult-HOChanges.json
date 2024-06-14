@@ -1,0 +1,198 @@
+{
+	"BaseData": {
+		"EarlyEffectiveDate": "3025-01-01",
+		"EarlyEndDate": "3025-05-31",
+		"EffectiveDate": "3025-03-01",
+		"EndDate": "3025-10-31",
+		"DayBeforeScEffective": "3025-02-28",
+		"DayAfterScEnd": "3025-11-01",
+		"LateEffectiveDate": "3025-09-01",
+		"LateEndDate": "3025-12-31",
+		"som_region_id": "US",
+		"align_all_accountUId": "NO-RULA-15972",
+		"excl_bothends_accountUId": "EXCB-RULA-15972",
+		"expl_bothends_accountUId": "EXPB-NO-15972",
+		"expl_left_accountUId": "EXPL-NO-15972",
+		"hoedit_affiliated_accountUId": "AFFILIATED-15972",
+		"hoedit_segB_accountUId": "EXCA-RULA-15972",
+		"hoedit_segC_accountUId": "EXPA-NO-15972",
+		"segBtargets": "[{\"Channel\":\"MEET\",\"Frequency\":1},{\"Channel\":\"EMAIL\",\"Frequency\":5}]",
+		"expAtargets": "[{Channel:MEET,Frequency:3},{Channel:EMAIL,Frequency:10}]",
+		"expBtargets": "[{Channel:MEET,Frequency:1},{Channel:EMAIL,Frequency:5}]",
+		"expCtargets": "[{Channel:MEET,Frequency:0},{Channel:EMAIL,Frequency:1}]",
+		"modifiedtargets": "[{\"Channel\":\"MEET\",\"Frequency\":2},{\"Channel\":\"EMAIL\",\"Frequency\":2}]",
+		"expModifiedtargets": "[{Channel:MEET,Frequency:2},{Channel:EMAIL,Frequency:2}]"
+	},
+	"ScenarioChangeRequest": [
+		{
+			"Action__c": "DEL",
+			"OMAccountId__c": "{{expl_bothends_accountUId}}",
+			"AccountUniqueIntegrationId__c": "{{expl_bothends_accountUId}}",
+			"RefAccountName__c": "Explicits overlapping the start and end of the eng plan",
+			"SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+			"OMScenarioEngagementPlanId__c": "{{ScenarioEngagementPlan.Id[0]}}",
+			"SOMEngagementSegmentId__c": "segB-{{TestUniqueIntegrationId}}",
+			"RefSegmentName__c": "SegB",
+			"Targets__c": "{{segBtargets}}",
+			"OMScenarioId__c": "{{Scenario.Id}}"
+		},
+		{
+			"Action__c": "DEL",
+			"OMAccountId__c": "{{excl_bothends_accountUId}}",
+			"AccountUniqueIntegrationId__c": "{{excl_bothends_accountUId}}",
+			"RefAccountName__c": "Exclusions overlapping both the start and end of the eng plan",
+			"SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+			"OMScenarioEngagementPlanId__c": "{{ScenarioEngagementPlan.Id[0]}}",
+			"SOMEngagementSegmentId__c": "segB-{{TestUniqueIntegrationId}}",
+			"RefSegmentName__c": "SegB",
+			"Targets__c": "{{segBtargets}}",
+			"OMScenarioId__c": "{{Scenario.Id}}"
+		},
+		{
+			"Action__c": "DEL",
+			"OMAccountId__c": "{{align_all_accountUId}}",
+			"AccountUniqueIntegrationId__c": "{{align_all_accountUId}}",
+			"RefAccountName__c": "Rule covers entire eng plan interval",
+			"SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+			"OMScenarioEngagementPlanId__c": "{{ScenarioEngagementPlan.Id[0]}}",
+			"SOMEngagementSegmentId__c": "segB-{{TestUniqueIntegrationId}}",
+			"RefSegmentName__c": "SegB",
+			"Targets__c": "{{segBtargets}}",
+			"OMScenarioId__c": "{{Scenario.Id}}"
+		},
+		{
+			"Action__c": "EDIT",
+			"OMAccountId__c": "{{hoedit_affiliated_accountUId}}",
+			"AccountUniqueIntegrationId__c": "{{hoedit_affiliated_accountUId}}",
+			"RefAccountName__c": "Parent of Eng-plan-load-only",
+			"SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+			"OMScenarioEngagementPlanId__c": "{{ScenarioEngagementPlan.Id[0]}}",
+			"SOMEngagementSegmentId__c": "segA-{{TestUniqueIntegrationId}}",
+			"RefSegmentName__c": "SegA",
+			"Targets__c": "{{modifiedtargets}}",
+			"OMScenarioId__c": "{{Scenario.Id}}"
+		},
+		{
+			"Action__c": "EDIT",
+			"OMAccountId__c": "{{hoedit_segB_accountUId}}",
+			"AccountUniqueIntegrationId__c": "{{hoedit_segB_accountUId}}",
+			"RefAccountName__c": "Exclusion covering the entire eng plan interval",
+			"SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+			"OMScenarioEngagementPlanId__c": "{{ScenarioEngagementPlan.Id[0]}}",
+			"SOMEngagementSegmentId__c": "segB-{{TestUniqueIntegrationId}}",
+			"RefSegmentName__c": "SegM",
+			"Targets__c": "{{modifiedtargets}}",
+			"OMScenarioId__c": "{{Scenario.Id}}"
+		},
+		{
+			"Action__c": "EDIT",
+			"OMAccountId__c": "{{hoedit_segC_accountUId}}",
+			"AccountUniqueIntegrationId__c": "{{hoedit_segC_accountUId}}",
+			"RefAccountName__c": "Explicit covering the entire eng plan",
+			"SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+			"OMScenarioEngagementPlanId__c": "{{ScenarioEngagementPlan.Id[0]}}",
+			"SOMEngagementSegmentId__c": "segC-{{TestUniqueIntegrationId}}",
+			"RefSegmentName__c": "SegM",
+			"Targets__c": "{{modifiedtargets}}",
+			"OMScenarioId__c": "{{Scenario.Id}}"
+		}
+	],
+	"Tests": {
+		// Tests prefixed by xxx- are failing due to OMR-xxx
+		"Explicits": [
+			{
+				"testname": "17099-Explicits-TrimmedbyHODelete", // overlapping explicits trimmed
+				"exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{expl_bothends_accountUId}},EffectiveDate:{{EarlyEffectiveDate}},EndDate:{{DayBeforeScEffective}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{expl_bothends_accountUId}},EffectiveDate:{{DayAfterScEnd}},EndDate:{{LateEndDate}}}]",
+				"account_uids": "{{expl_bothends_accountUId}}",
+				"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+			},
+			{
+				"testname": "17099-Explicits-RemovedbyHODelete", // remove account explicit added by eng plan
+				"exp_result": "[]",
+				"account_uids": "{{excl_bothends_accountUId}},{{align_all_accountUId}}",
+				"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+			}
+		],
+		"Exclusions": [
+			{
+				"testname": "17099-Exclusion-CreatedbyHODelete", // exclusions created
+				"exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{expl_bothends_accountUId}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{align_all_accountUId}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}}]",
+				"account_uids": "{{expl_bothends_accountUId}},{{align_all_accountUId}}",
+				"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+			},
+			{
+				"testname": "17099-Exclusion-MergedbyHODelete", // exclusion added for scenario interval, existing excl trimmed 
+				"exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{excl_bothends_accountUId}},EffectiveDate:{{EarlyEffectiveDate}},EndDate:{{DayBeforeScEffective}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{excl_bothends_accountUId}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{excl_bothends_accountUId}},EffectiveDate:{{DayAfterScEnd}},EndDate:{{LateEndDate}}}]",
+				"account_uids": "{{excl_bothends_accountUId}}",
+				"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+			}
+		],
+		"AlignmentResults": [
+			{
+				"testname": "17099-Alignments-withHODelete", // alignment split for account with explicits overlapping the scenario, others are removed
+				"exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{expl_bothends_accountUId}},EffectiveDate:{{EarlyEffectiveDate}},EndDate:{{DayBeforeScEffective}},Source:EXPL,Reason:},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{expl_bothends_accountUId}},EffectiveDate:{{DayAfterScEnd}},EndDate:{{LateEndDate}},Source:EXPL,Reason:}]",
+				"account_uids": "{{excl_bothends_accountUId}},{{expl_bothends_accountUId}},{{align_all_accountUId}}",
+				"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+			}
+		],
+		"EngagementResults": [
+			{
+				"testname": "17099-EngagementTargets-Removed",
+				"type": "Result",
+				"exp_territory_uid": null,
+				"exp_segment_id": "",
+				"exp_target": "",
+				"account_uids": "{{excl_bothends_accountUId}},{{expl_bothends_accountUId}},{{align_all_accountUId}}",
+				"territory_somid": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+				"engplan_somid": "{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}"
+			},
+			{
+				"testname": "EngagementTargetsNone-Added",
+				"type": "Result,Explicit",
+				"exp_territory_uid": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"exp_segment_id": "segA-{{TestUniqueIntegrationId}}",
+				"exp_target": "{{expModifiedtargets}}",
+				"account_uids": "{{hoedit_affiliated_accountUId}}",
+				"territory_somid": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+				"engplan_somid": "{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}"
+			},
+			{
+				"testname": "EngagementTargetsB-Edited",
+				"type": "Result,Explicit",
+				"exp_territory_uid": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"exp_segment_id": "segB-{{TestUniqueIntegrationId}}",
+				"exp_target": "{{expModifiedtargets}}",
+				"account_uids": "{{hoedit_segB_accountUId}}",
+				"territory_somid": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+				"engplan_somid": "{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}"
+			},
+			{
+				"testname": "EngagementTargetsC-Edited",
+				"type": "Result,Explicit",
+				"exp_territory_uid": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"exp_segment_id": "segC-{{TestUniqueIntegrationId}}",
+				"exp_target": "{{expModifiedtargets}}",
+				"account_uids": "{{hoedit_segC_accountUId}}",
+				"territory_somid": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+				"engplan_somid": "{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}"
+			}
+		]
+	}
+}

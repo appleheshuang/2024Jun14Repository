@@ -1,0 +1,57 @@
+{
+  "RootCauseRequest": {
+    "OMAccountId": "{{aligned_accountUId}}",
+    "SOMTerritoryId": "{{ScenarioGeographyTerritory.SOMTerritoryId__c}}",
+    "EffectiveDate": "{{Scenario.EffectiveDate__c}}T00:00:00",
+    "EndDate": "{{Scenario.EndDate__c}}T00:00:00"
+  },
+  "RootCauseResponse": {
+    "omAccountId": "{{aligned_accountUId}}",
+    "somTerritoryId": "{{ScenarioGeographyTerritory.SOMTerritoryId__c}}",
+    "effectiveDate": "{{Scenario.EffectiveDate__c}}T00:00:00",
+    "endDate": "{{Scenario.EndDate__c}}T00:00:00",
+    "rules": [
+      {
+        "ruleName": "{{ScenarioRule.Name}}",
+        "somRuleId": "{{ScenarioRule.SOMRuleId__c}}",
+        "uniqueIntegrationId": "{{ScenarioRule.UniqueIntegrationId__c}}",
+        "effectiveDate": "{{Scenario.EffectiveDate__c}}T00:00:00",
+        "endDate": "{{Scenario.EndDate__c}}T00:00:00",
+        "effectiveCalculationDate": "",
+        "endCalculationDate": "",
+        "data": [
+          {
+            "table": "OMRuleVersion",
+            "id": "{{ScenarioRule.SOMRuleId__c}}",
+            "uniqueIntegrationId": "{{ScenarioRule.UniqueIntegrationId__c}}",
+            "column": "VersionNumber",
+            "beforeEffective": "",
+            "afterEffective": "1",
+            "beforeEnd": "1",
+            "afterEnd": "{*R*}"
+          },
+          {
+            "table": "OMAccountAddress",
+            "id": "ADDRESS01",
+            "uniqueIntegrationId": "ADDRESS01",
+            "column": "CityStateZip",
+            "beforeEffective": "{\"City\":\"CITY01\",\"State\":\"STATE01\",\"ZipCode\":\"1234\"}",
+            "afterEffective": "{\"City\":\"CITY01\",\"State\":\"STATE01\",\"ZipCode\":\"1234\"}",
+            "beforeEnd": "{\"City\":\"CITY01\",\"State\":\"STATE01\",\"ZipCode\":\"1234\"}",
+            "afterEnd": "{\"City\":\"CITY01\",\"State\":\"STATE01\",\"ZipCode\":\"1234\"}"
+          },
+          {
+            "table": "OMGeography",
+            "id": "GEO01",
+            "uniqueIntegrationId": "NZ-1234",
+            "column": "Name",
+            "beforeEffective": "{*Z*}",
+            "afterEffective": "POST-1234",
+            "beforeEnd": "POST-1234",
+            "afterEnd": "{*Z*}"
+          }
+        ]
+      }
+    ]
+  }
+}

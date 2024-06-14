@@ -1,0 +1,37 @@
+{
+  "Bulkload": {
+    "S3AccessKey": "",
+    "S3SecretKey": "",
+    "S3BucketName": "",
+    "S3Path": "autotestdata/OMR-13631/",
+    "FileFormat": "CSV",
+    "Rollback": false,
+    "ValidateOnly": true,
+    "ReplaceExistingData": false,
+    "PicklistValidate": false,
+    "Files": [
+      {
+        "file": "OMR-13631_C10414329_OMProduct.csv",
+        "table": "OMProduct"
+      },
+      {
+        "file": "OMR-13631_C10414329_OMProductHierarchy.csv",
+        "table": "OMProductHierarchy"
+      }
+    ]
+  },
+
+  // Skip checking Snowflake data because for the bulk load used here, we are only validating the data (ValidateOnly = true), not actually loading it.
+  // For this test case (TestRail test case C10414329), we are only validating the data because actually loading it causes errors when syncing it (SyncAll) from Snowflake to Salesforce.
+  // Salesforce generates a validation error if a child record being synced has no corresponding parent record, even if the child record is inactive. The Bulk API behaves differently: it allows a child record to be loaded without a corresponding parent record as long as the child record is inactive.
+  "Tests": {
+    /*"MergeResults": [
+      {
+        "testname": "C10414329 - Child record load – inactive record – parent record does not exist -- OMProductHierarchy",
+        "query": "SELECT creg.\"SOMProductHierarchyId\", creg.\"UniqueIntegrationId\", creg.\"EffectiveDate\", creg.\"EndDate\", creg.\"Status\" FROM STATIC.\"OMProductHierarchy\" creg WHERE creg.\"UniqueIntegrationId\" IN ('UID_OMR-13631_C10414329_01--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414329_02--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414329_03--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414329_04--{{TestUniqueIntegrationId}}') ORDER BY creg.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMProductHierarchyId:ProdHierId_OMR-13631_C10414329_01--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414329_01--{{TestUniqueIntegrationId}},EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:INAC},{SOMProductHierarchyId:ProdHierId_OMR-13631_C10414329_02--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414329_02--{{TestUniqueIntegrationId}},EffectiveDate:2020-08-01,EndDate:2999-12-31,Status:INAC},{SOMProductHierarchyId:ProdHierId_OMR-13631_C10414329_03--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414329_03--{{TestUniqueIntegrationId}},EffectiveDate:2020-08-01,EndDate:2999-12-31,Status:INAC},{SOMProductHierarchyId:ProdHierId_OMR-13631_C10414329_04--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414329_04--{{TestUniqueIntegrationId}},EffectiveDate:2020-08-01,EndDate:2999-12-31,Status:INAC}]",
+        "sfQuery": null
+      }
+    ]*/
+  }
+}

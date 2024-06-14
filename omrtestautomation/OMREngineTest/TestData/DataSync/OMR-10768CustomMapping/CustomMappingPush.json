@@ -1,0 +1,65 @@
+﻿{
+  "DataSyncRequest": {
+    "Target": "SFDC",
+    "Tables": "prod-_-ル(STATIC.OMProduct/{{prefix}}OMProduct__c)",
+    "LastUpdate": false,
+    "API": "Bulk",
+    "Filters": [
+      {
+        "Table": "prod-_-ル",
+        "Filter": "\"Name\"='OMR-10768-{{TestUniqueIntegrationId}}'"
+      }
+    ],
+    "Mapping": [
+      {
+        "Table": "prod-_-ル",
+        "MapByName": true,
+        "Columns": [
+          {
+            "Snowflake": "SOMProductId",
+            "Salesforce": "{{prefix}}SOMProductId__c"
+          },
+          {
+            "Snowflake": "Status",
+            "Salesforce": "{{prefix}}Status__c"
+          },
+          {
+            "Snowflake": "UniqueIntegrationId",
+            "Salesforce": "{{prefix}}UniqueIntegrationId__c"
+          },
+          {
+            "Snowflake": "EffectiveDate",
+            "Salesforce": "{{prefix}}EffectiveDate__c"
+          },
+          {
+            "Snowflake": "EndDate",
+            "Salesforce": "{{prefix}}EndDate__c"
+          },
+          {
+            "Snowflake": "Name",
+            "Salesforce": "Name"
+          },
+          {
+            "Snowflake": "Type",
+            "Salesforce": "{{prefix}}Type__c"
+          },
+          {
+            "Snowflake": "SOMRegionId",
+            "Exclude": true
+          }
+        ]
+      }
+    ],
+    "JobType": "TestPush"
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "datasync-product",
+        "query": "skip",
+        "sfQuery": "select Name,{{prefix}}Type__c,{{prefix}}SOMProductId__c,{{prefix}}Status__c,{{prefix}}UniqueIntegrationId__c,{{prefix}}EffectiveDate__c,{{prefix}}EndDate__c,{{prefix}}OMRegionId__c from {{prefix}}OMProduct__c where {{prefix}}UniqueIntegrationId__c in ('OMR-10768-{{TestUniqueIntegrationId}}','OMR-10768-{{TestUniqueIntegrationId}}-2') order by Name",
+        "exp_result": "[{Name:OMR-10768-{{TestUniqueIntegrationId}},Type:Detail,SOMProductId:OMR-10768-{{TestUniqueIntegrationId}},Status:ACTV,UniqueIntegrationId:OMR-10768-{{TestUniqueIntegrationId}},EffectiveDate:2020-08-01,EndDate:3999-12-31,OMRegionId:},{Name:OMR-10768-{{TestUniqueIntegrationId}}-2,Type:Detail,SOMProductId:OMR-10768-{{TestUniqueIntegrationId}}-2,Status:ACTV,UniqueIntegrationId:OMR-10768-{{TestUniqueIntegrationId}}-2,EffectiveDate:2020-08-01,EndDate:3999-12-31,OMRegionId:REG01}]"
+      }
+    ]
+  }
+}

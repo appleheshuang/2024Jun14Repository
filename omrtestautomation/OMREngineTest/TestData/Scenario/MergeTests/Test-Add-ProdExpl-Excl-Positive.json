@@ -1,0 +1,82 @@
+﻿{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "GS",
+    "productUId": "PROD1",
+    "salesforceUID": "SF506",
+    "territoryUID": "T506",
+    "territoryUID2": "T606",
+    "EffectiveDate": "2020-12-01",
+    "EndDate": "2022-11-29"
+  },
+
+  "Scenario": {
+    "Description": "OMR-922 Merge product explicits and exclusions - resolve as first one wins",
+    "name": "Test cases C7694300, C7694301",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "2{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioProductExplicit": [
+    // Test ADD ProductExplicit Prod1 → T2 2022/03/02 - 2022/03/25 to ProductExclusion Prod1 → T2 2022/02/10 - 2022/03/01 TC C7694301 
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2022-03-02",
+      "EndDate__c": "2022-03-25"
+    }
+  ],
+
+  "ScenarioProductExclusion": [
+    // Action ADD ProductExclusion Prod1 → T1 2021/03/02 - 2021/03/25 to ProductExplicit Prod1 → T1 2021/01/01 - 2021/03/01 TC C7694300
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2021-03-02",
+      "EndDate__c": "2021-03-25"
+    },
+
+    // Test ADD ProductExplicit Prod1 → T1 2021/07/01 - 2021/08/01 to ProductExclusion Prod1 → T1 2021/07/01 - 2021/08/01 with different alignment type → PROM TC C7694300
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c}}",
+      "ProductAlignmentType__c": "PROM",
+      "EffectiveDate__c": "2021-07-01",
+      "EndDate__c": "2021-08-01"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [    
+      // check actions OMProductExplicit Prod1 - T2
+      {
+        "testname": "merge_product_explicit",
+        "query": "select \"SOMProductId\",\"SOMTerritoryId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMProductExplicit\" where \"SOMProductId\"='{{productUId}}' AND \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[1]}}' order by \"EffectiveDate\" asc",
+        "exp_result": "[{SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},Status:ACTV,EffectiveDate:{{ScenarioProductExplicit.EffectiveDate__c[5]}},EndDate:{{ScenarioProductExplicit.EndDate__c[5]}}}]",
+        "odataQuery": "/OMProductExplicit?$select=SOMProductId,SOMTerritoryId,Status,EffectiveDate,EndDate&$filter=SOMProductId eq '{{productUId}}' AND SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[1]}}'&$orderBy=EffectiveDate asc",
+        "sfQuery": null
+      },
+      // check actions OMProductExclusion Prod1 - T1
+      {
+        "testname": "merge_product_exclusion",
+        "query": "select \"SOMProductId\",\"SOMTerritoryId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMProductExclusion\" where \"SOMProductId\"='{{productUId}}' AND \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[0]}}'  order by \"EffectiveDate\" asc",
+        "exp_result": "[{SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},Status:ACTV,EffectiveDate:{{ScenarioProductExclusion.EffectiveDate__c[4]}},EndDate:{{ScenarioProductExclusion.EndDate__c[4]}}},{SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},Status:ACTV,EffectiveDate:{{ScenarioProductExclusion.EffectiveDate__c[5]}},EndDate:{{ScenarioProductExclusion.EndDate__c[5]}}}]",
+        "odataQuery": "/OMProductExclusion?$select=SOMProductId,SOMTerritoryId,Status,EffectiveDate,EndDate&$filter=SOMProductId eq '{{productUId}}' AND SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[0]}}'&$orderBy=EffectiveDate asc",
+        "sfQuery": null
+      }
+    ]
+  }
+}

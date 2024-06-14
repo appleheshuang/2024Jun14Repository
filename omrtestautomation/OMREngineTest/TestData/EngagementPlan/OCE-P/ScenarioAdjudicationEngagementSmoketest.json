@@ -1,0 +1,97 @@
+﻿{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "adjudicate"
+  },
+  "BaseData": {
+    "EffectiveDate": "2025-10-25",
+    "EndDate": "3999-12-31",
+    "som_region_id": "US",
+    "alignedAccount1UID": "CHRISTOPOULOS-GN",
+    "alignedAccount2UID": "EVANS-WB",
+    "alignedAccount3UID": "NO-KJ",
+    "alignedAccount4UID": "RIZVI-ZH"
+  },
+  "Adjudication": {
+    "Id": "",
+    "Name": "",
+    "Type__c": "FUTURE",
+    "ReviewStartDate__c": "{{today}}",
+    "ReviewStartDate1__c": "{{today}}",
+    "ReviewStartDate2__c": "{{today}}",
+    "ReviewEndDate__c": "{{today+20}}",
+    "ReviewEndDate1__c": "{{today+10}}",
+    "ReviewEndDate2__c": "{{today+20}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "AdjudicationStatus__c": "PEND",
+    "UserAssignmentType__c": "SECN",
+    "AdjudicationScope__c": "ALGN",
+    "AdjudicationEffectiveDate__c": "{{EffectiveDate}}",
+    "AdjudicationEndDate__c": "{{EndDate}}",
+    "RefScenarioEffectiveDate__c": "{{EffectiveDate}}",
+    "RefScenarioEndDate__c": "{{EndDate}}",
+    "RefScenarioUniqueIntegrationId__c": "{{Scenario.UniqueIntegrationId__c}}",
+    "AutoApplyOnManagerApproval__c": false,
+    "AutoApproveAccountCRsOnSubmit__c": false,
+    "AutoApproveGeographyCRsOnSubmit__c": false
+  },
+  "AdjudicationLevel": [
+    {
+      "Id": "",
+      "TerritoryType__c": "DIST",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "ResponseDays__c": "10.0",
+      "PermittedActions__c": "ADD;DEL;APPRREJ;VIEW"
+    },
+    {
+      "Id": "",
+      "TerritoryType__c": "TERR",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "ResponseDays__c": "10.0",
+      "AutomaticAction__c": "REJT",
+      "PermittedActions__c": "ADD;DEL;VIEW"
+    }
+  ],
+  "AdjudicationGuardRail": {
+    "Id": "",
+    "OMAdjudicationId__c": "{{Adjudication.Id}}",
+    "TerritoryType__c": "TERR",
+    "MaxAccountPercent__c": "100.0",
+    "MaxGeographyPercent__c": "100.0"
+  },
+  "AdjudicationTerritory": [
+    {
+      "Id": "",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UserAssignmentType__c": "SECN",
+      "Generated__c": false,
+      "RefTerritoryType__c": "DIST"
+    }
+  ],
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "userassignment_results",
+        "query": "select \"SOMTerritoryId\", \"Role\", \"Status\", \"SOMUserId\" from STATIC.\"OMAdjudicationUserAssignment\" where \"OMAdjudicationId\" = '{{Adjudication.Id}}'",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},Role:REQ,Status:ACTV,SOMUserId:{{User.SOMUserId__c[0]}}}]",
+        "odataQuery": "/OMAdjudicationUserAssignment?$select=SOMTerritoryId,Role,Status,SOMUserId&$filter=OMAdjudicationId eq '{{Adjudication.Id}}'"
+      },
+      {
+        "testname": "initial_accounts_results",
+        "query": "select a.\"Name\", a.\"Type\", ar.\"OMAdjudicationId\", ar.\"SOMTerritoryId\", ar.\"Source\", acc.\"UniqueIntegrationId\" \"OMAccountUId\", ar.\"Action\", ar.\"SOMEngagementSegmentId\", ar.\"Targets\", ar.\"CalculatedSegmentId\", ar.\"Reason\", t.\"Name\" \"Terr\" from static.\"OMAdjudication\" a join static.\"OMAccountAdjudicationResult\" ar on ar.\"OMAdjudicationId\" = a.\"Id\" join static.\"OMAdjudicationTerritory\" ad on ad.\"OMAdjudicationId\" = a.\"Id\" join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = ar.\"SOMTerritoryId\" join static.\"OMAccount\" acc on acc.\"Id\" = ar.\"OMAccountId\" where a.\"Name\" in ('{{Adjudication.Name}}') and ar.\"AccessKey\" in (ad.\"AccessKeyRep\", ad.\"AccessKeyApprover\") and ar.\"AccessKey\" = ad.\"AccessKeyApprover\" order by acc.\"UniqueIntegrationId\"",
+        "exp_result": "[{Name:{{Adjudication.Name}},Type:FUTURE,OMAdjudicationId:{{Adjudication.Id}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},Source:DSHR,OMAccountUId:{{alignedAccount1UID}},Action:null,SOMEngagementSegmentId:null,Targets:null,CalculatedSegmentId:null,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}},Terr:{{ScenarioTerritory.Name[0]}}},{Name:{{Adjudication.Name}},Type:FUTURE,OMAdjudicationId:{{Adjudication.Id}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},Source:DSHR,OMAccountUId:{{alignedAccount2UID}},Action:null,SOMEngagementSegmentId:null,Targets:null,CalculatedSegmentId:null,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}},Terr:{{ScenarioTerritory.Name[0]}}},{Name:{{Adjudication.Name}},Type:FUTURE,OMAdjudicationId:{{Adjudication.Id}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},Source:DSHR,OMAccountUId:{{alignedAccount3UID}},Action:null,SOMEngagementSegmentId:null,Targets:null,CalculatedSegmentId:null,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}},Terr:{{ScenarioTerritory.Name[0]}}},{Name:{{Adjudication.Name}},Type:FUTURE,OMAdjudicationId:{{Adjudication.Id}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},Source:DSHR,OMAccountUId:{{alignedAccount4UID}},Action:null,SOMEngagementSegmentId:null,Targets:null,CalculatedSegmentId:null,Reason:{{ScenarioRule.Name[2]}}|{{ScenarioRule.SOMRuleId__c[2]}},Terr:{{ScenarioTerritory.Name[0]}}}]"
+      },
+      {
+        "testname": "initial_geo_results",
+        "query": "select a.\"Name\" \"adjuName\" ,a.\"Type\", g.\"Code\", t.\"Name\" \"terrName\", ar.\"OMAdjudicationId\", ar.\"SOMGeographyId\", ar.\"SOMTerritoryId\", ar.\"Action\" from static.\"OMAdjudication\" a join static.\"OMGeographyAdjudicationResult\" ar on ar.\"OMAdjudicationId\" = a.\"Id\" join static.\"OMAdjudicationTerritory\" ad on ad.\"OMAdjudicationId\" = a.\"Id\" join static.\"OMGeography\" g on g.\"SOMGeographyId\" = ar.\"SOMGeographyId\" join {{schema}}.\"OMTerritory\"t on t.\"SOMTerritoryId\" = ad.\"SOMTerritoryId\" where a.\"Name\" in ('{{Adjudication.Name}}') and ar.\"AccessKey\" in (ad.\"AccessKeyRep\", ad.\"AccessKeyApprover\") and ar.\"AccessKey\" = ad.\"AccessKeyRep\" order by a.\"Name\"",
+        "exp_result": "[{adjuName:{{Adjudication.Name}},Type:FUTURE,Code:{{Geography.Code__c}},terrName:{{ScenarioTerritory.Name[0]}},OMAdjudicationId:{{Adjudication.Id}},SOMGeographyId:{{Geography.SOMGeographyId__c}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},Action:null}]"
+      }
+    ]
+  }
+}

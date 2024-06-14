@@ -1,0 +1,22 @@
+{
+  "Bulkload": {
+    "S3AccessKey": "",
+    "S3SecretKey": "",
+    "S3BucketName": "",
+    "S3Path": "autotestdata/Metrics/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "ValidateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "MetricAccountSales.csv",
+        "table": "OMAccountSales"
+      },
+      {
+        "file": "OMMetricDefinition.csv",
+        "table": "OMMetricDefinition"
+      }
+    ]
+  }
+}

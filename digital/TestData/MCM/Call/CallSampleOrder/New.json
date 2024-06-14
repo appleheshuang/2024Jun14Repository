@@ -1,0 +1,157 @@
+﻿{
+	"DE_Call_Master_Sample_Order__IQ": [
+		{
+			"keys": {
+				"Call Sample Order ID": "CallSampleOrder{{TestUniqueIntegrationID}}AllFields",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Actual Delivery Date": "{{dbt_current}}",
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallId{{TestUniqueIntegrationID}}",
+				"Updated Date": "{{dbt_current}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "Automation",
+				"Date Shipped": "{{dbt_current}}",
+				"Expected Delivery Date": "{{dbt_current}}",
+				"Integration ID": "{{TestUniqueIntegrationID}}AllFields",
+				"Product Delivery Code": "34534",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL Sign",
+				"Quantity": "5",
+				"Quantity Shipped": "5",
+				"Status Code": "Active",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUID}}"
+			}
+		},
+		{
+			"keys": {
+				"Call Sample Order ID": "CallSampleOrder{{TestUniqueIntegrationID}}MandatoryFieldsOnly",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallIdNoBU{{TestUniqueIntegrationID}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "Automation",
+				"Actual Delivery Date": "{{dbt_current}}",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL Sign",
+				"Status Code": "Active",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUID}}"
+			}
+		},
+		{
+			"keys": {
+				"Call Sample Order ID": "CallSampleOrder{{TestUniqueIntegrationID}}NOBU",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallIdNoBU{{TestUniqueIntegrationID}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "Automation",
+				"Actual Delivery Date": "{{dbt_current}}",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL Sign",
+				"Status Code": "Active",
+				"Updated By": "Automation"
+			}
+		},
+		{
+			"keys": {
+				"Call Sample Order ID": "CallSampleOrder{{TestUniqueIntegrationID}}BUOther",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallIdNoBU{{TestUniqueIntegrationID}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "Automation",
+				"Actual Delivery Date": "{{dbt_current}}",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL Sign",
+				"Status Code": "Active",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUIDOther}}"
+			}
+		},
+		{
+			"keys": {
+				"Call Sample Order ID": "CallSampleOrder{{TestUniqueIntegrationID}}LargeQuantity",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallIdNoBU{{TestUniqueIntegrationID}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "Automation",
+				"Actual Delivery Date": "{{dbt_current}}",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL Sign",
+				"Status Code": "Active",
+				"Updated By": "Automation",
+				"Quantity": "2147483647",
+				"Quantity Shipped": "2147483647",
+				"Business Unit MIDs": "{{BUID}}"
+			}
+		},
+		{
+			"keys": {
+				"Call Sample Order ID": "CallSampleOrder{{TestUniqueIntegrationID}}Past",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallIdNoBU{{TestUniqueIntegrationID}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "Automation",
+				"Actual Delivery Date": "{{dbt_current}}",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL Sign",
+				"Status Code": "Active",
+				"Updated By": "Automation",
+				"Updated Date": "8/6/2023 9:01:50 PM",
+				"Business Unit MIDs": "{{BUID}}"
+			}
+		},
+		{
+			"keys": {
+				"Call Sample Order ID": "CallSampleOrder{{TestUniqueIntegrationID}}NoCallId",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Call ID": "",
+				"Created By": "Automation",
+				"Actual Delivery Date": "{{dbt_current}}",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL Sign",
+				"Status Code": "Active",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUID}}"
+			}
+		},
+		{
+			"keys": {
+				"Call Sample Order ID": "CallSampleOrder{{TestUniqueIntegrationID}}OtherCRM",
+				"Crm ID": "00D8Y000000GWw6UAG"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallIdNoBU{{TestUniqueIntegrationID}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "Automation",
+				"Actual Delivery Date": "{{dbt_current}}",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL Sign",
+				"Status Code": "Active",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUID}}"
+			}
+		}
+	]
+}

@@ -1,0 +1,34 @@
+﻿{
+	"CustomerAlignmentRule": [
+		{
+			"Account__c": "{{Account.Id[0]}}",
+			"UniqueIntegrationId__c": "X0-{{TestUniqueIntegrationId}}",
+			"Territories__c": "{{ScenarioTerritory.Name[0]}}",
+			"ApprovalStatus__c": "Approved"
+		},
+		{
+			"Account__c": "{{Account.Id[1]}}",
+			"UniqueIntegrationId__c": "X1-{{TestUniqueIntegrationId}}",
+			"Territories__c": "{{ScenarioTerritory.Name[0]}}",
+			"ApprovalStatus__c": "Pending"
+		},
+		{
+			"Account__c": "{{Account.Id[2]}}",
+			"UniqueIntegrationId__c": "X2-{{TestUniqueIntegrationId}}",
+			"Territories__c": "{{ScenarioTerritory.Name[0]}}",
+			"ApprovalStatus__c": "Rejected"
+		},
+		{
+			"Account__c": "{{Account.Id[3]}}",
+			"UniqueIntegrationId__c": "X3-{{TestUniqueIntegrationId}}",
+			"Territories__c": "{{ScenarioTerritory.Name[0]}}",
+			"ApprovalStatus__c": "Pending"
+		},
+		{
+			"Account__c": "{{Account.Id[4]}}",
+			"UniqueIntegrationId__c": "X4-{{TestUniqueIntegrationId}}",
+			"Territories__c": "{{ScenarioTerritory.Name[0]}}",
+			"ApprovalStatus__c": "Approved"
+		}
+	]
+}

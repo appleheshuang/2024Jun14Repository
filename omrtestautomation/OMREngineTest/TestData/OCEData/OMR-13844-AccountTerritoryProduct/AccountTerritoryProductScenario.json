@@ -1,0 +1,57 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\LoadData\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate",
+    "rca": "true"
+  },
+
+  "BaseData": {
+    "som_region_id": "REG01",
+    "aligned_accountUId": "ACCT01",
+    "explicit_accountUId": "45ACCTEXP",
+    "exclude_accountUId": "10ACCTEXC",
+    "explrule_accountUId": "51ACCTEXPLR",
+    "salesforceUID": "SF405",
+    "territoryUID": "T505",
+    "ruleUID": "R201",
+    "regionUID": "REG01",
+    "geographyUID": "1234"
+  },
+
+  "Scenario": {
+    "Description": "",
+    "Name": "",
+    "EffectiveDate__c": "2020-01-01",
+    "EndDate__c": "2032-10-21",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "",
+    "Type__c": "USER"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "RegionUniqueIntegrationId__c": "{{som_region_id}}",
+      "Type__c": "KOL",
+      "Name": "SF 405"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "Terr 505",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationId}}",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "TERR"
+    }
+  ]
+}

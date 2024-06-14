@@ -1,0 +1,43 @@
+{
+	"Configs": {
+		"jobtype": "calculate"
+	},
+	"BaseData": {
+		//"som_region_id": "REG01",
+		"salesforceUID": "SF-ERROR",
+		"territoryUID": "T-ERROR"
+	},
+	"Scenario": {
+		"Description": "",
+		"Name": "",
+		"EffectiveDate__c": "2020-01-01",
+		"EndDate__c": "2022-10-21",
+		"OMRegionId__c": "",
+		"ScenarioStatus__c": "PENDG",
+		"UniqueIntegrationId__c": ""
+	},
+	"ScenarioSalesForce": [
+		{
+			"Action__c": "ADD",
+			"SOMRegionId__c": "{{som_region_id}}",
+			"UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"Type__c": "KOL",
+			"Name": "SF 405"
+		}
+	],
+	"ScenarioTerritory": [
+		{
+			"Action__c": "ADD",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+			"EffectiveDate__c": "2022-01-01",
+			"EndDate__c": "2022-12-31",
+			"TerritorySalesForceType__c": "PRIM",
+			"Name": "Terr Error",
+			"UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationId}}",
+			"SOMRegionId__c": "{{som_region_id}}",
+			"Type__c": "TERR"
+		}
+	]
+}

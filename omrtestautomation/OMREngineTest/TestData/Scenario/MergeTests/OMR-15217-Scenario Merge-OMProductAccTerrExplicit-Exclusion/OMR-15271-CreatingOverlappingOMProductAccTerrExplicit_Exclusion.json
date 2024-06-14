@@ -1,0 +1,71 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "commit"
+  },
+
+  "BaseData": {
+    "som_region_id": "FK",
+    "productUId": "Product-OMR-15271-3",
+    "accountexplicitUId": "PrAccTerrExplicit-3",
+    "accountexclusionUId": "PrAccTerrExclusion-3",
+    "salesforceUID": "SF-OMR-15271-3",
+    "territoryExplUID": "TExpl1-OMR-15271-3",
+    "territoryExclUID": "TExcl1-OMR-15271-3"
+  },
+
+  "Scenario": {
+    //Scenario dates are set so that this scenario overlapps original committed scenario that created OMPorductAccTerrExplicit/Exclusion to which the overlapping is being attempted to be created
+    "Description": "OMProdAccTerrExplicitExclusionsCustomValidationsSetup-{{TestUniqueIntegrationID}}",
+    "Name": "OMR-15271_OMProdAccTerrExplicitExclusionsCustomValidationsSetup-{{TestUniqueIntegrationID}}",
+    "EffectiveDate__c": "{{today+73158}}",
+    "EndDate__c": "{{today+73200}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "{{TestUniqueIntegrationID}}-3"
+  },
+
+  "ScenarioProductAccTerrExplicit": [
+    // Attempt to create an overlapping OMProductAccTerrExplicit
+    {
+      //ADD OMProductAccTerrExplicit
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "OMPrAccTerrExpl-{{TestUniqueIntegrationID}}-CV4",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountexplicitUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryExplUID}}-{{TestUniqueIntegrationID}}"
+    }
+  ],
+
+  "ScenarioProductAccTerrExclusion": [
+    // Attempt to create an overlapping OMProductAccTerrExclusion
+    {
+      //ADD OMProductAccTerrExclusion
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "OMPrAccTerrExcl-{{TestUniqueIntegrationID}}-CV4",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountexclusionUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryExclUID}}-{{TestUniqueIntegrationID}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      // check scenario Error for failure to create OMProductAccTerrExplicit with non-existent Account
+      {
+        "testname": "fail_to_create_overlapping_OMProductAccTerrExplicit",
+        "query": "select \"TableName\", \"ErrorCode\" from {{schema}}.\"OMScenarioError\" where \"OMScenarioId\" = '{{Scenario.Id[1]}}' AND \"TableName\"='OMProductAccTerrExplicit'",
+        "exp_result": "[{TableName:OMProductAccTerrExplicit,ErrorCode:OverlapExists}]"
+      },
+      // check scenario Error for failure to create OMProductAccTerrExclusion with non-existent Account
+      {
+        "testname": "fail_to_create_overlapping_OMProductAccTerrExclusion",
+        "query": "select \"TableName\",\"ErrorCode\" from {{schema}}.\"OMScenarioError\" where \"OMScenarioId\" = '{{Scenario.Id[1]}}' AND \"TableName\"='OMProductAccTerrExclusion'",
+        "exp_result": "[{TableName:OMProductAccTerrExclusion,ErrorCode:OverlapExists}]"
+      }
+    ]
+  }
+}

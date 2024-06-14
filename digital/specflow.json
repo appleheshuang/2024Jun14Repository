@@ -1,0 +1,10 @@
+{
+  "generator": {
+    "allowRowTests": false
+  },
+  "stepAssemblies": [
+    {
+      "assembly": "Optimizer"
+    }
+  ]
+}

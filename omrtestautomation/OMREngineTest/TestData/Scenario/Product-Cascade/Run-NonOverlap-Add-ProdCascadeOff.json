@@ -1,0 +1,67 @@
+﻿{
+  "Configs": {
+    "loadData": "Smoketest\\LoadData\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "EffectiveDate": "2023-03-01",
+    "EndDate": "2023-03-31",
+    "som_region_id": "REG01",
+    "productUId": "PROD-PAR-CS", // Parent cascade A
+    "productUId2": "PROD-CHI-CS", // Child cascade  B
+    "productUId3": "PROD-GRCH-CS", // GChild cascade C
+    "productUId4": "PROD-PR-NCS", // Parent no cascade D
+    "productUId5": "PROD-CH-NCS", // Child no cascade  E
+    "productUId6": "PROD-GCH-NCS", // GChild no cascade F
+    "salesforceUID": "SF505", // SF A
+    "salesforceUID2": "SF605", // SF B
+    "territoryUID": "T1_SFA",
+    "territoryUID2": "T1_SFB",
+    "territoryUID3": "T2_SFA"
+  },
+
+  "Scenario": {
+    "Description": "Prod Alignment Cascade without overlap, Add with existing alignment; Add multi-level hierarchy - Cascade is off",
+    "Name": "TCs 8620673,8620677",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "1-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioProductExplicit": [
+    // Add Parent prod to T1_SFA with no overlap
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+      "ProductAlignmentType__c": "DETL",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+    },
+    // TC 8620673 Prod D ==> T1_SFA NO cascade
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{productUId4}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+      "ProductAlignmentType__c": "DETL",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+
+      // check alignment product D,E,F to T1_SFA uder SF A. Cascade OFF TC 8620673
+      {
+        "testname": "merge_prodAlig_casc_off",
+        "query": "select \"SOMProductId\",\"SOMTerritoryId\",\"Source\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMProductTerritory\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c}}' AND  \"SOMProductId\" in ('PROD-PR-NCS','PROD-CH-NCS','PROD-GCH-NCS','PROD-PAR-CS','PROD-CHI-CS','PROD-GRCH-CS') order by \"SOMProductId\",\"EffectiveDate\"",
+        "exp_result": "[{SOMProductId:{{productUId2}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Source:EXPL,Status:ACTV,EffectiveDate:{{ScenarioProductExplicit.EffectiveDate__c}},EndDate:{{ScenarioProductExplicit.EndDate__c}}},{SOMProductId:{{productUId2}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Source:CASC,Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}}},{SOMProductId:{{productUId3}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Source:CASC;EXPL,Status:ACTV,EffectiveDate:{{ScenarioProductExplicit.EffectiveDate__c[0]}},EndDate:{{ScenarioProductExplicit.EndDate__c[1]}}},{SOMProductId:{{productUId3}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Source:CASC;EXPL,Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}}},{SOMProductId:{{productUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Source:EXPL,Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}}},{SOMProductId:{{productUId4}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Source:EXPL,Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}}}]",
+        "odataQuery": "/OMProductTerritory?$select=SOMProductId,SOMTerritoryId,Source,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c}}'&SOMProductId in ('PROD-PR-NCS','PROD-CH-NCS','PROD-GCH-NCS','PROD-PAR-CS','PROD-CHI-CS','PROD-GRCH-CS')&$orderBy=SOMProductId,EffectiveDate",
+        "sfQuery": null
+      }
+    ]
+  }
+}

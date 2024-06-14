@@ -1,0 +1,119 @@
+{
+  "Bulkload": {
+    "S3Path": "autotestdata/Metrics/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "ValidateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "AcctToGeo/OMAccountChange_17481.csv",
+        "table": "OMAccount"
+      },
+      {
+        "file": "AcctToGeo/OMAffiliationChange_17481.csv",
+        "table": "OMAffiliation"
+      },
+      {
+        "file": "AcctToGeo/OMAccountSalesAdditional_17481.csv",
+        "table": "OMAccountSales"
+      },
+      {
+        "file": "AcctToGeo/OMATFieldsAdditional_17481.csv",
+        "table": "OMAccountTerritoryFields"
+      },
+      {
+        "file": "GeoMetrics/OMGeographySalesAdd_17565.csv",
+        "table": "OMGeographySales"
+      }
+    ]
+  },
+  "BaseData": {
+    "A1_UK_UId": "A1-17481-{{TestUniqueIntegrationId}}",
+    "A2_UK_UId": "A2-17481-{{TestUniqueIntegrationId}}",
+    "A3_UK_UId": "A3-17481-{{TestUniqueIntegrationId}}",
+    "A4_US_UId": "A4-17481-{{TestUniqueIntegrationId}}",
+    "A5_PN_UId": "A5-17481-{{TestUniqueIntegrationId}}",
+    "A2_Copromote_Sales": "36.363",
+    "G1_Post_UId": "G1_POST1_17481_{{TestUniqueIntegrationId}}",
+    "G2_Post_UId": "G2_POST2_17481_{{TestUniqueIntegrationId}}",
+    "G3_Brick_UId": "G3_BRICK3_17481_{{TestUniqueIntegrationId}}",
+    "G4_Brick_UId": "G4_BRICK4_17481_{{TestUniqueIntegrationId}}",
+    "G5_State_UId": "G5_STATE5_17481_{{TestUniqueIntegrationId}}",
+    "G6_State_UId": "G6_STATE6_17481_{{TestUniqueIntegrationId}}",
+    "G7_Post_UId": "G7_POST7_17481_{{TestUniqueIntegrationId}}",
+    "G8_Brick_UId": "G8_BRICK8_17481_{{TestUniqueIntegrationId}}",
+    "G9_State_UId": "G9_STATE9_17481_{{TestUniqueIntegrationId}}"
+  },
+  "Tests": {
+    "MetricResult": [
+      // Account & Rollup results
+      {
+        "testname": "AccountMetricChanges_Precheck",
+        "entity": "Account",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{A2_UK_UId}}",
+        "columns": "Metric11,Metric12",
+        "exp_result": "[{Account:{{A2_UK_UId}},Metric11:6.000,Metric12:{{A2_Copromote_Sales}}}]"
+      },
+      {
+        "testname": "PostGeoRollupResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G1_Post_UId}},{{G2_Post_UId}},{{G7_Post_UId}}",
+        "columns": "Metric13,Metric16",
+        "exp_result": "[{Geography:{{G1_Post_UId}},Metric13:30.000,Metric16:15.000},{Geography:{{G2_Post_UId}},Metric13:0.000,Metric16:15.000},{Geography:{{G7_Post_UId}},Metric13:76.363,Metric16:76.363}]"
+      },
+      {
+        "testname": "BrickGeoRollupResult_Primary",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G3_Brick_UId}},{{G4_Brick_UId}},{{G8_Brick_UId}}",
+        "columns": "Metric12",
+        "exp_result": "[{Geography:{{G3_Brick_UId}},Metric12:66.363},{Geography:{{G4_Brick_UId}},Metric12:40.000},{Geography:{{G8_Brick_UId}},Metric12:0.000}]"
+      },
+      {
+        "testname": "BrickGeoRollupResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G3_Brick_UId}},{{G4_Brick_UId}},{{G8_Brick_UId}}",
+        "columns": "Metric11,Metric15",
+        "exp_result": "[{Geography:{{G3_Brick_UId}},Metric11:5.000,Metric15:42.121},{Geography:{{G4_Brick_UId}},Metric11:5.000,Metric15:52.121},{Geography:{{G8_Brick_UId}},Metric11:2.000,Metric15:12.121}]"
+      },
+      {
+        "testname": "StateGeoRollupResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G5_State_UId}},{{G6_State_UId}},{{G9_State_UId}}",
+        "columns": "Metric14",
+        "exp_result": "[{Geography:{{G5_State_UId}},Metric14:0.000},{Geography:{{G9_State_UId}},Metric14:0.000}]"
+      },
+
+      // Geo Metric Results
+      {
+        "testname": "GeoPostMetricResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G1_Post_UId}},{{G2_Post_UId}},{{G7_Post_UId}}",
+        "columns": "Metric20",
+        "exp_result": "[{Geography:{{G1_Post_UId}},Metric20:11.100},{Geography:{{G2_Post_UId}},Metric20:22.200},{Geography:{{G7_Post_UId}},Metric20:70.700}]"
+      },
+      {
+        "testname": "GeoBrickMetricResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G3_Brick_UId}},{{G4_Brick_UId}},{{G8_Brick_UId}}",
+        "columns": "Metric19",
+        "exp_result": "[{Geography:{{G3_Brick_UId}},Metric19:33.300},{Geography:{{G4_Brick_UId}},Metric19:0.000},{Geography:{{G8_Brick_UId}},Metric19:0.000}]"
+      },
+      {
+        "testname": "GeoStateMetricResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G5_State_UId}},{{G6_State_UId}},{{G9_State_UId}}",
+        "columns": "Metric10",
+        "exp_result": "[{Geography:{{G5_State_UId}},Metric10:2.000},{Geography:{{G9_State_UId}},Metric10:6.000}]"
+      }
+    ]
+  }
+}

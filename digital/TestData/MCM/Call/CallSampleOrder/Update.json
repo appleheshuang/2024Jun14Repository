@@ -1,0 +1,67 @@
+﻿{
+	"DE_Call_Master_Sample_Order__IQ": [
+		{
+			"keys": {
+				"Call Sample Order ID": "CallSampleOrder{{TestUniqueIntegrationID}}AllFields",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Actual Delivery Date": "{{dbt_current}}",
+				"Call Date Time": "{{dbt_current}}",
+				"Updated Date": "{{dbt_current}}",
+				"Call ID": "CallId{{TestUniqueIntegrationID}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "Automation",
+				"Date Shipped": "{{dbt_current}}",
+				"Expected Delivery Date": "{{dbt_current}}",
+				"Integration ID": "{{TestUniqueIntegrationID}}AllFields",
+				"Product Delivery Code": "34534",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL Sign",
+				"Quantity": "10",
+				"Quantity Shipped": "10",
+				"Status Code": "Inactive",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUID}}"
+			}
+		},
+		{
+			"keys": {
+				"Call Sample Order ID": "CallSampleOrder{{TestUniqueIntegrationID}}NOBU",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallIdNoBU{{TestUniqueIntegrationID}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "Automation",
+				"Actual Delivery Date": "{{dbt_current}}",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL Sign",
+				"Status Code": "Active",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUID}}",
+				"Updated Date": "{{dbt_current}}"
+			}
+		},
+		{
+			"keys": {
+				"Call Sample Order ID": "CallSampleOrder{{TestUniqueIntegrationID}}BUOther",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallIdNoBU{{TestUniqueIntegrationID}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "Automation",
+				"Actual Delivery Date": "{{dbt_current}}",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL Sign",
+				"Status Code": "Active",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUID}}",
+				"Updated Date": "{{dbt_current}}"
+			}
+		}
+	]
+}

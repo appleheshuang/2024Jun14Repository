@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "OMREngineTest": {
+      "commandName": "Project",
+      "commandLineArgs": "master",
+      "environmentVariables": {
+        "BRANCH": "master"
+      }
+    }
+  }
+}

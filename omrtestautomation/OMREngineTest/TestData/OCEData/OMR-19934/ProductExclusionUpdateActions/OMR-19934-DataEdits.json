@@ -1,0 +1,57 @@
+{
+  
+  "BaseData": {
+    "som_region_id": "REG01",
+    "regionUID": "REG01",
+    "salesforceUID": "19934-SF",
+    "territoryUID": "19934-TERR"
+  },
+  "ScenarioProductExclusion": [
+    {
+      "Action__c": "EXPR",
+      "SOMProductId__c": "{{Product.SOMProductId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "SOMProductExclusionId__c": "{{ScenarioProductExclusion.SOMProductExclusionId__c[0]}}",
+      "ProductAlignmentType__c": "DETL",
+      "EndDate__c": "{{dbt_today}}"
+    },
+    {
+      "Action__c": "DEL",
+      "SOMProductId__c": "{{Product.SOMProductId__c[1]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "SOMProductExclusionId__c": "{{ScenarioProductExclusion.SOMProductExclusionId__c[1]}}",
+      "ProductAlignmentType__c": "MIRF"
+    },
+    {
+      "Action__c": "EFFE",
+      "SOMProductId__c": "{{Product.SOMProductId__c[2]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "SOMProductExclusionId__c": "{{ScenarioProductExclusion.SOMProductExclusionId__c[2]}}",
+      "ProductAlignmentType__c": "SMPL",
+      "EffectiveDate__c": "{{dbt_today}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Product Exclusion record after updating end date to current date",
+        "query": "skip",
+        "sfQuery": "select OCE__Territory__c,OCE__Product__r.Name,OCE__UniqueIntegrationID__c from OCE__TerritoryProductExclusion__c where OCE__Territory__c='{{ScenarioTerritory.Name[0]}}' and OCE__Product__r.Name='{{Product.Name[0]}}'",
+        "exp_result": "[{OCE__Territory:{{ScenarioTerritory.Name[0]}},Name:{{Product.Name[0]}},OCE__UniqueIntegrationID:{{Product.SOMProductId__c[0]}}-{{ScenarioTerritory.SOMTerritoryId__c[0]}}}]"
+      },
+      {
+        "testname": "Product Exclusion Current",
+        "query": "skip",
+        "sfQuery": "select OCE__Territory__c,OCE__Product__r.Name,OCE__UniqueIntegrationID__c from OCE__TerritoryProductExclusion__c where OCE__Territory__c='{{ScenarioTerritory.Name[0]}}' and OCE__Product__r.Name='{{Product.Name[1]}}'",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "Product Exclusion record after updating effective date to current date",
+        "query": "skip",
+        "sfQuery": "select OCE__Territory__c,OCE__Product__r.Name,OCE__UniqueIntegrationID__c from OCE__TerritoryProductExclusion__c where OCE__Territory__c='{{ScenarioTerritory.Name[0]}}' and OCE__Product__r.Name='{{Product.Name[2]}}'",
+        "exp_result": "[{OCE__Territory:{{ScenarioTerritory.Name[0]}},Name:{{Product.Name[2]}},OCE__UniqueIntegrationID:{{Product.SOMProductId__c[2]}}-{{ScenarioTerritory.SOMTerritoryId__c[0]}}}]"
+      }
+    ]
+  }
+}

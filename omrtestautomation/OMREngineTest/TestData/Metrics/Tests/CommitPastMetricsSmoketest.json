@@ -1,0 +1,136 @@
+{
+  "BaseData": {
+    "som_region_id": "PN",
+    "metric_acc1": "MetricAcct-1", //SOMRegionId=UK
+    "metric_acc2": "MetricAcct-2", //SOMRegionId=UKUK
+    "metric_acc3": "MetricAcct-3", //SOMRegionId=PN (Child of UK)
+    "metric_acc4": "MetricAcct-4", //SOMRegionId=PN (Child of UK)
+    "metric_acc5": "MetricAcct-5", //SOMRegionId=PN (Child of UK)
+    "metric_acc6": "MetricAcct-6", //SOMRegionId=PN (Child of UK)
+    "metric_acc7": "MetricAcct-7", //SOMRegionId=PN, INAC (Child of UK)
+    "salesforceUID": "SF405",
+    "territoryUID": "T505"
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "AccountMetricDefinition",
+        "query": "static.OMMetricDefinition,MetricLabel,MetricField,Name,MetricType,GeographyType,AddressType,AggregationStrategy,MetricOperation,SourceTable,SourceField,SOMSalesForceIds,MetricField:'Metric01'",
+        "exp_result": "[{MetricLabel:null,MetricField:Metric01,Name:Count of OMAccount,MetricType:ACCT,GeographyType:null,AddressType:null,AggregationStrategy:null,MetricOperation:COUNT,SourceTable:OMAccount,SourceField:null,SOMSalesForceIds:null}]",
+        "odataQuery": "/OMMetricDefinition?$select=MetricLabel,MetricField,Name,MetricType,GeographyType,AddressType,AggregationStrategy,MetricOperation,SourceTable,SourceField,SOMSalesForceIds&$filter=MetricField eq 'Metric01'"
+      }
+    ],
+    "MetricResult": [
+      {
+        "testname": "AccountMetricsPastPNAccounts",
+        "entity": "Account",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{metric_acc1}},{{metric_acc2}},{{metric_acc3}},{{metric_acc4}},{{metric_acc5}},{{metric_acc6}},{{metric_acc7}}",
+        "columns": "Metric01",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "AccountMetricsPastUKAccounts",
+        "entity": "Account",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[5]}}",
+        "entityId": "{{metric_acc1}},{{metric_acc2}},{{metric_acc3}},{{metric_acc4}},{{metric_acc5}},{{metric_acc6}},{{metric_acc7}}",
+        "columns": "Metric01",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "AccountMetricsCurrentPNAccounts",
+        "entity": "Account",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{metric_acc1}},{{metric_acc2}},{{metric_acc3}},{{metric_acc4}},{{metric_acc5}},{{metric_acc6}},{{metric_acc7}}",
+        "columns": "Metric01",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "AccountMetricsCurrentUKAccounts",
+        "entity": "Account",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[2]}}",
+        "entityId": "{{metric_acc1}},{{metric_acc2}},{{metric_acc3}},{{metric_acc4}},{{metric_acc5}},{{metric_acc6}},{{metric_acc7}}",
+        "columns": "Metric01",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "AccountMetricsCurrentMSAccounts",
+        "entity": "Account",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[3]}}",
+        "entityId": "{{metric_acc1}},{{metric_acc2}},{{metric_acc3}},{{metric_acc4}},{{metric_acc5}},{{metric_acc6}},{{metric_acc7}}",
+        "columns": "Metric01",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "AccountMetricsFuturePNAccounts",
+        "entity": "Account",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[4]}}",
+        "entityId": "{{metric_acc1}},{{metric_acc2}},{{metric_acc3}},{{metric_acc4}},{{metric_acc5}},{{metric_acc6}},{{metric_acc7}}",
+        "columns": "Metric01",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "AccountToTerritoryRollup1",
+        "entity": "Territory",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "columns": "Metric01,Metric03,Metric04,Metric05,Metric06,Metric07,Metric08,Metric09",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "AccountToTerritoryRollup2",
+        "entity": "Territory",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[5]}}",
+        "entityId": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "columns": "Metric01,Metric03,Metric04,Metric05,Metric06,Metric07,Metric08,Metric09",
+        "exp_result": "[]"
+      }
+    ],
+    "MetricSummary": [
+      {
+        "testname": "BrickSalesSummary1",
+        "territory": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "columns": "Metric01Before,Metric01After,Metric03Before,Metric03After,Metric04Before,Metric04After,Metric05Before,Metric05After,Metric06Before,Metric06After,Metric07Before,Metric07After,Metric08Before,Metric08After,Metric09Before,Metric09After",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountType:Total,Metric01Before:null,Metric01After:1.000,Metric03Before:null,Metric03After:186.000,Metric04Before:null,Metric04After:160.000,Metric05Before:null,Metric05After:null,Metric06Before:null,Metric06After:null,Metric07Before:null,Metric07After:28.000,Metric08Before:null,Metric08After:28.000,Metric09Before:null,Metric09After:0.000}]"
+      },
+      {
+        "testname": "BrickSalesSummary2",
+        "territory": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "columns": "Metric01Before,Metric01After,Metric03Before,Metric03After,Metric04Before,Metric04After,Metric05Before,Metric05After,Metric06Before,Metric06After,Metric07Before,Metric07After,Metric08Before,Metric08After,Metric09Before,Metric09After",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountType:Total,Metric01Before:null,Metric01After:3.000,Metric03Before:null,Metric03After:558.000,Metric04Before:null,Metric04After:480.000,Metric05Before:null,Metric05After:null,Metric06Before:null,Metric06After:null,Metric07Before:null,Metric07After:0.000,Metric08Before:null,Metric08After:0.000,Metric09Before:null,Metric09After:0.000}]"
+      },
+      {
+        "testname": "BCGainLossChildTerritory-ScenarioSummary2",
+        "method": "new",
+        "accounttype": "BC",
+        "territory": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "columns": "AccountsGained,AccountsLost,GeographiesGained,GeographiesLost,AccountsTotal,GeographiesTotal",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c}},AccountType:BC,AccountsGained:1,AccountsLost:0,GeographiesGained:0,GeographiesLost:0,AccountsTotal:1,GeographiesTotal:0}]"
+      },
+      {
+        "testname": "TotalGainLossChildTerritory-ScenarioSummary",
+        "method": "old",
+        "accounttype": "Total",
+        "territory": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "columns": "AccountsGained,AccountsLost,GeographiesGained,GeographiesLost,AccountsTotal,GeographiesTotal",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c}},AccountType:Total,AccountsGained:1,AccountsLost:0,GeographiesGained:0,GeographiesLost:0,AccountsTotal:1,GeographiesTotal:0}]"
+      },
+      {
+        "testname": "BCGainLossParentTerritory-ScenarioSummary2",
+        "method": "new",
+        "accounttype": "BC",
+        "territory": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "columns": "AccountsGained,AccountsLost,GeographiesGained,GeographiesLost,AccountsTotal,GeographiesTotal",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountType:BC,AccountsGained:3,AccountsLost:0,GeographiesGained:0,GeographiesLost:0,AccountsTotal:3,GeographiesTotal:0}]"
+      },
+      {
+        "testname": "TotalGainLossParentTerritory-ScenarioSummary",
+        "method": "old",
+        "accounttype": "Total",
+        "territory": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "columns": "AccountsGained,AccountsLost,GeographiesGained,GeographiesLost,AccountsTotal,GeographiesTotal",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountType:Total,AccountsGained:3,AccountsLost:0,GeographiesGained:0,GeographiesLost:0,AccountsTotal:3,GeographiesTotal:0}]"
+      }
+    ]
+  }
+}

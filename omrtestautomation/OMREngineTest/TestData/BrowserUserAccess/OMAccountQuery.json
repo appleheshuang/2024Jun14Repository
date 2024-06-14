@@ -1,0 +1,15 @@
+{
+  "BaseData": {
+    "accountId": "ACCT01",
+    "accountName": "ACCT01"
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "WhitelistedTable",
+        "query": "OMAccount,Id,Name,Id:'{{accountId}}'",
+        "exp_result": "[{Id:{{accountId}},Name:{{accountName}}}]"
+      }
+    ]
+  }
+}

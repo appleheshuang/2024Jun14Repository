@@ -1,0 +1,181 @@
+﻿{
+	"DE_Call_Master_Promotional_Item__IQ": [
+		{
+			"keys": {
+				"Call Item ID": "ND{{TestUniqueIntegrationID}}CallItemBU",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallId{{TestUniqueIntegrationID}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "0051N000005pIXVQA2",
+				"Integration ID": "{{TestUniqueIntegrationID}}CallItemBU",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL",
+				"Promotional Product ID": "a4v3t0000003mavAAA",
+				"Promotional Product Name": "ADRAVIL-DETAIL",
+				"Status Code": "Active",
+				"Territory ID": "TM - SPC - Union City 20B06T14",
+				"Quantity": "3",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUID}}"
+			}
+		},
+		{
+			"keys": {
+				"Call Item ID": "ND{{TestUniqueIntegrationID}}CallItemBU001",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallId{{TestUniqueIntegrationID}}",
+				"Contact Key": "",
+				"Created By": "",
+				"Integration ID": "{{TestUniqueIntegrationID}}CallItemBU001",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL",
+				"Promotional Product ID": "a4v3t0000003mavAAA",
+				"Promotional Product Name": "ADRAVIL-DETAIL",
+				"Status Code": "Active",
+				"Territory ID": "TM - SPC - Union City 20B06T14",
+				"Quantity": "3",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUID}}"
+			}
+		},
+		{
+			"keys": {
+				"Call Item ID": "ND{{TestUniqueIntegrationID}}CallItemNoBU",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallIdNoBU{{TestUniqueIntegrationID}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithoutBU",
+				"Created By": "0051N000005pIXVQA2",
+				"Integration ID": "{{TestUniqueIntegrationID}}CallItemNoBU",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL",
+				"Promotional Product ID": "a4v3t0000003mavAAA",
+				"Promotional Product Name": "ADRAVIL-DETAIL",
+				"Status Code": "Active",
+				"Territory ID": "TM - SPC - Union City 20B06T14",
+				"Quantity": "3",
+				"Updated By": "Automation"
+			}
+		},
+		{
+			"keys": {
+				"Call Item ID": "ND{{TestUniqueIntegrationID}}CallItemOtherBU",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallIdOtherBU{{TestUniqueIntegrationID}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithoutBU",
+				"Created By": "0051N000005pIXVQA2",
+				"Integration ID": "{{TestUniqueIntegrationID}}CallItemOtherBU",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL",
+				"Promotional Product ID": "a4v3t0000003mavAAA",
+				"Promotional Product Name": "ADRAVIL-DETAIL",
+				"Status Code": "Active",
+				"Territory ID": "TM - SPC - Union City 20B06T14",
+				"Quantity": "3",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUIDOther}}"
+			}
+		},
+		{
+			"keys": {
+				"Call Item ID": "ND{{TestUniqueIntegrationID}}CallItemPast",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallId{{TestUniqueIntegrationID}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "0051N000005pIXVQA2",
+				"Integration ID": "{{TestUniqueIntegrationID}}CallItemPast",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL",
+				"Promotional Product ID": "a4v3t0000003mavAAA",
+				"Promotional Product Name": "ADRAVIL-DETAIL",
+				"Status Code": "Active",
+				"Territory ID": "TM - SPC - Union City 20B06T14",
+				"Quantity": "3",
+				"Updated By": "Automation",
+				"Updated Date": "8/6/2023 9:01:50 PM",
+				"Business Unit MIDs": "{{BUID}}"
+			}
+		},
+		{
+			"keys": {
+				"Call Item ID": "ND{{TestUniqueIntegrationID}}CallItemMandatory",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallId{{TestUniqueIntegrationID}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "0051N000005pIXVQA2",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL",
+				"Status Code": "Active",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUID}}"
+			}
+		},
+		{
+			"keys": {
+				"Call Item ID": "ND{{TestUniqueIntegrationID}}CallItemLargeQuantity",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallId{{TestUniqueIntegrationID}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "0051N000005pIXVQA2",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL",
+				"Status Code": "Active",
+				"Updated By": "Automation",
+				"Quantity": "2147483647",
+				"Business Unit MIDs": "{{BUID}}"
+			}
+		},
+		{
+			"keys": {
+				"Call Item ID": "ND{{TestUniqueIntegrationID}}NoCallId",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "0051N000005pIXVQA2",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL",
+				"Status Code": "Active",
+				"Updated By": "Automation"
+			}
+		},
+		{
+			"keys": {
+				"Call Item ID": "ND{{TestUniqueIntegrationID}}OtherCRM",
+				"Crm ID": "00D8Y000000GWw6UAG"
+			},
+			"values": {
+				"Call Date Time": "{{dbt_current}}",
+				"Call ID": "CallId{{TestUniqueIntegrationID}}",
+				"Contact Key": "Account_{{TestUniqueIntegrationID}}_OtherCRM",
+				"Created By": "0051N000005pIXVQA2",
+				"Product ID": "a4v3t0000003mavAAA",
+				"Product Name": "ADRAVIL-DETAIL",
+				"Status Code": "Active",
+				"Updated By": "Automation"
+			}
+		}
+	]
+}

@@ -1,0 +1,61 @@
+﻿{
+  "Configs": {
+    "loadData": "Smoketest\\LoadData\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate",
+    "rca": "true"
+  },
+
+  "BaseData": {
+    "som_region_id": "IE",
+    "salesforceUID": "SF405",
+    "territoryUID": "T505",
+    "regionUID": "REG15"
+  },
+
+  "Scenario": {
+    "Description": "\"!@#$%^&*()_+-=[]\\;',./{}|:\"<>?ル\",",
+    "Name": "\"!@#$%^&*()_+-=[]\\;',./{}|:\"<>?ル\",",
+    "EffectiveDate__c": "2020-01-01",
+    "EndDate__c": "2022-10-21",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": ""
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "RegionUniqueIntegrationId__c": "{{som_region_id}}",
+      "Type__c": "KOL",
+      "Name": "\"!@#$%^&*()_+-=[]\\;',./{}|:\"<>?ル\""
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "\"!@#$%^&*()_+-=[]\\;',./{}|:\"<>?ル\",",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationId}}",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "TERR"
+    }
+  ],
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "merge_territory",
+        "query": "OMTerritory,Name,Status,EffectiveDate,EndDate,UniqueIntegrationId:'{{ScenarioTerritory.UniqueIntegrationId__c}}'",
+        "exp_result": "[{Name:{{ScenarioTerritory.Name}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}}}]",
+        "odataQuery": "/OMTerritory?$select=Name,Status,EffectiveDate,EndDate&$filter=UniqueIntegrationId eq '{{ScenarioTerritory.UniqueIntegrationId__c}}'",
+        "sfQuery": null
+      }
+    ]
+  }
+}

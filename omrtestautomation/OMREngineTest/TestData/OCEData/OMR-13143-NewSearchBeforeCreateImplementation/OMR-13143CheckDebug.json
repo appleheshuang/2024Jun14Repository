@@ -1,0 +1,35 @@
+﻿{
+  "Tests": {
+		"MergeResults": [
+			{
+				"testname": "NoExplicitCreatedWithActiveAccountExclusion",
+				"query": "select count(*) \"count\" from OUTPUT.\"OMAccountExplicit\" where \"SOMTerritoryId\" = 'W5F8873M92JOPUVL0P' and \"OMAccountId\" = '0015J00000Zk3faQAB' and \"Status\" = 'ACTV'",
+				"exp_result": "[{count:0}]"
+			},
+			{
+				"testname": "AccountExplicitCreatedWithFutureAccountExclusion",
+				"query": "select \"Purpose\", \"FromOCEPersonal\", \"SourceId\", \"SOMCreatedById\", \"Status\", \"EffectiveDate\", \"EndDate\" from OUTPUT.\"OMAccountExplicit\" where \"SOMTerritoryId\" = 'W5F8873M92JOPUVL0P' and \"OMAccountId\" = '0015J00000Zk3ffQAB'",
+				"exp_result": "[{Purpose:ALGN,FromOCEPersonal:true,SourceId:0015J00000Zk3ffQAB,SOMCreatedById:{{SFUSER_ID}},Status:ACTV,EffectiveDate:{{dbt_today}},EndDate:2050-10-20]",
+				"odataQuery": "/OMAccountExplicit?$select=Purpose,FromOCEPersonal,SourceId,SOMCreatedById,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq 'W5F8873M92JOPUVL0P' and OMAccountId eq '0015J00000Zk3ffQAB'"
+			},
+			{
+				"testname": "OMRAccountExplicitNotEndDated",
+				"query": "select \"Purpose\", \"FromOCEPersonal\", \"SourceId\", \"SOMCreatedById\", \"Status\", \"EffectiveDate\", \"EndDate\" from OUTPUT.\"OMAccountExplicit\" where \"SOMTerritoryId\" = 'W5F8873M92JOPUVL0P' and \"OMAccountId\" = '0015J00000Zk3fkQAB'",
+				"exp_result": "[{Purpose:COMP,FromOCEPersonal:true,SourceId:0015J00000Zk3fkQAB,SOMCreatedById:{{SFUSER_ID}}},Status:ACTV,EffectiveDate:2020-01-01,EndDate:2030-10-21]",
+				"odataQuery": "/OMAccountExplicit?$select=Purpose,FromOCEPersonal,SourceId,SOMCreatedById,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq 'W5F8873M92JOPUVL0P' and OMAccountId eq '0015J00000Zk3fkQAB'"
+			},
+			{
+				"testname": "NoChangeForExistingActiveAccountExplicit",
+				"query": "select \"Purpose\", \"FromOCEPersonal\", \"SourceId\", \"SOMCreatedById\", \"Status\", \"EffectiveDate\", \"EndDate\" from OUTPUT.\"OMAccountExplicit\" where \"SOMTerritoryId\" = 'W5F8873M92JOPUVL0P' and \"OMAccountId\" = '0015J00000Zk3fpQAB'",
+				"exp_result": "[{Purpose:COMP,FromOCEPersonal:true,SourceId:0015J00000Zk3fpQAB,SOMCreatedById:{{SFUSER_ID}}},Status:ACTV,EffectiveDate:2020-01-01,EndDate:2030-10-21]",
+				"odataQuery": "/OMAccountExplicit?$select=Purpose,FromOCEPersonal,SourceId,SOMCreatedById,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq 'W5F8873M92JOPUVL0P' and OMAccountId eq '0015J00000Zk3fpQAB'"
+			},
+			{
+				"testname": "AccountExplicitRestartedWithFutureAccountExplicit",
+				"query": "select \"Purpose\", \"FromOCEPersonal\", \"SourceId\", \"SOMCreatedById\", \"Status\", \"EffectiveDate\", \"EndDate\" from OUTPUT.\"OMAccountExplicit\" where \"SOMTerritoryId\" = 'W5F8873M92JOPUVL0P' and \"OMAccountId\" = '0015J00000Zk3fuQAB'",
+				"exp_result": "[{Purpose:COMP,FromOCEPersonal:true,SourceId:0015J00000Zk3fuQAB,SOMCreatedById:{{SFUSER_ID}}},Status:ACTV,EffectiveDate:{{dbt_today}},EndDate:2030-10-21]",
+				"odataQuery": "/OMAccountExplicit?$select=Purpose,FromOCEPersonal,SourceId,SOMCreatedById,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq 'W5F8873M92JOPUVL0P' and OMAccountId eq '0015J00000Zk3fuQAB'"
+			}
+		]
+  }
+}

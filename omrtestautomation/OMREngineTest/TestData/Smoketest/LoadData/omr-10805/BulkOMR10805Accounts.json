@@ -1,0 +1,23 @@
+{
+  "Bulkload": {
+    "S3Path": "autotestdata/OMR-10805/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMAccountsOMR10805.csv",
+        "table": "OMAccount"
+      },
+      {
+        "file": "OMAffiliationOMR10805.csv",
+        "table": "OMAffiliation"
+      },
+      {
+        "file": "OMAccountAddressOMR10805.csv",
+        "table": "OMAccountAddress"
+      }
+    ]
+  }
+}

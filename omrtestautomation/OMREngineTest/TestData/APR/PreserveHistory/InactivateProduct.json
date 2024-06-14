@@ -1,0 +1,20 @@
+﻿{
+	"Product": [
+		{
+			"Name": "DeleteEXPL{{TestUniqueIntegrationId}}",
+			"Type__c": "Detail",
+			"UniqueIntegrationId__c": "DeleteEXPL{{TestUniqueIntegrationId}}",
+			"Status__c": "INAC",
+			"OMRegionId__c": "REG01"
+		}
+	],
+	"Tests": {
+		"MergeResults": [
+			{
+				"testname": "INAC Product",
+				"query": "select \"Name\",\"Status\" from static.\"OMProduct\" where \"UniqueIntegrationId\" = 'DeleteEXPL{{TestUniqueIntegrationId}}'",
+				"exp_result": "[{Name:DeleteEXPL{{TestUniqueIntegrationId}},Status:INAC}]"
+			}
+		]
+	}
+}

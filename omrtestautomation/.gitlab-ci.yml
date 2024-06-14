@@ -1,0 +1,302 @@
+variables:
+  #OData
+  OdataProjNm: ODataTest
+  OdataProjPth: $OdataProjNm/ODataTest.csproj
+  OdataResPath: TestResults/ResultLogs
+  OdataTestFl: OData_testResult_${CI_COMMIT_REF_NAME}_${CI_PIPELINE_ID}
+  SchemaResultsFl: Schema_testResult_${CI_COMMIT_REF_NAME}_${CI_PIPELINE_ID}
+  #OCESync
+  OCESyncProjNm: OCESyncTest
+  OCESyncProjPth: $OCESyncProjNm/OCESyncTest.csproj
+  OCESyncResPath: TestResults
+  OCESyncTestFl: OCESync_testResult_${CI_COMMIT_REF_NAME}_${CI_PIPELINE_ID}
+  #Engine
+  EngineProjPth: OMREngineTest/OMREngineTest.csproj
+  TARGET_ENV: ${CI_COMMIT_REF_NAME}
+  TARGET_ORG: default
+  TARGET_VERSION: none
+
+workflow:
+    rules:
+    - if: '$CI_COMMIT_REF_NAME == "prod"' 
+    - if: '$CI_COMMIT_REF_NAME == "preprod"'
+    - if: '$CI_COMMIT_REF_NAME == "staging"'
+    - if: '$CI_COMMIT_REF_NAME == "demo"'
+    - if: '$CI_COMMIT_REF_NAME == "master"'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - when: never
+
+.workflow-rules: &workflow-rules
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_REF_NAME == "master"'
+      when: manual
+      allow_failure: true
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_REF_NAME == "staging"'
+      when: always
+      allow_failure: true
+    - if: '$CI_COMMIT_REF_NAME == "prod"' 
+      when: manual
+      allow_failure: true
+    - if: '$CI_COMMIT_REF_NAME == "preprod"'
+      when: manual
+      allow_failure: true
+    - when: manual
+
+image: mcr.microsoft.com/dotnet/sdk:3.1
+
+stages:
+  - build
+  - dataload
+  - test
+  - upload
+  - testbyfeature
+
+Build:
+  stage: build
+  tags: [omr-automation]
+  script:
+    - dotnet clean
+    - dotnet restore
+    - dotnet build
+
+Schema_Tests(odata):
+  stage: testbyfeature
+  tags: [omr-automation]
+  when: manual
+  needs:
+    - Setup
+  before_script:
+    - export curDate=$(date +"%Y-%m-%d-%H-%M-%S")
+  script:
+    - echo $curDate
+    - echo $OdataTestFl
+    #- dotnet test ./$OdataProjPth --test-adapter-path:. --logger:"xunit;LogFilePath=${OdataResPath}/${OdataTestFl}_${curDate}.xml"
+    #- echo $OdataProjNm/$OdataResPath/*
+    - echo $TARGET_ENV $TARGET_ORG $TARGET_VERSION
+    - dotnet test ./$EngineProjPth --test-adapter-path:. --filter "Category=Schema" --logger:"xunit;LogFilePath=${OdataResPath}/${SchemaResultsFl}_${curDate}.xml"
+
+  artifacts:
+    when: always
+    paths:
+      - $OdataProjNm/$OdataResPath
+      
+OCESync_Tests(old):
+  stage: testbyfeature
+  tags: [omr-automation]
+  when: manual  
+  needs:
+    - Setup
+  before_script:
+    - export curDate=$(date +"%Y-%m-%d-%H-%M-%S")
+  script:
+    - echo $curDate
+    - echo $OCESyncTestFl
+    - echo $OCESyncProjPth/*
+    - dotnet test ./$OCESyncProjPth --test-adInteroperabilityapter-path:. --filter "TestType=Interoperability" --logger:"xunit;LogFilePath=${OCESyncResPath}/${OCESyncTestFl}_${curDate}.xml"
+  artifacts:
+    when: always
+    paths:
+      - $OCESyncProjNm/$OCESyncResPath
+ 
+OCESync-Tests:
+    stage: testbyfeature
+    tags: [omr-automation]
+    when: manual
+    needs:
+      - Setup
+    before_script:
+      - 'dotnet restore'
+    script:
+      - echo $TARGET_ENV $TARGET_ORG $TARGET_VERSION
+      - cd OMREngineTest
+      - 'dotnet test --test-adapter-path:. --filter "Category=OCESync" --logger:"xunit;LogFilePath=EngineTestResults/test_result_oce_sync.xml"'
+    artifacts:
+      when: always
+      paths:
+        - OMREngineTest/EngineTestResults/
+
+DataSync-Tests:
+    stage: testbyfeature
+    tags: [omr-automation]
+    when: manual
+    needs:
+      - Setup
+    before_script:
+      - 'dotnet restore'
+    script:
+      - echo $TARGET_ENV $TARGET_ORG $TARGET_VERSION
+      - cd OMREngineTest
+      - 'dotnet test --test-adapter-path:. --filter "Category=Datasync" --logger:"xunit;LogFilePath=EngineTestResults/test_result_datasync.xml"'
+    artifacts:
+      when: always
+      paths:
+        - OMREngineTest/EngineTestResults/
+Engine-Tests:
+    stage: testbyfeature
+    tags: [omr-automation]
+    when: manual
+    needs:
+      - Setup
+    before_script:
+      - 'dotnet restore'
+    script:
+      - echo $TARGET_ENV $TARGET_ORG $TARGET_VERSION
+      - cd OMREngineTest
+      - 'dotnet test --test-adapter-path:. --filter "Category=Engine" --logger:"xunit;LogFilePath=EngineTestResults/test_result_engine.xml"'
+    artifacts:
+      when: always
+      paths:
+        - OMREngineTest/EngineTestResults/
+
+Setup:
+    stage: dataload
+    tags: [omr-automation]
+    before_script:
+      - 'dotnet restore'
+    script:
+      - echo $TARGET_ENV $TARGET_ORG $TARGET_VERSION
+      - cd OMREngineTest
+      - 'dotnet test --test-adapter-path:. --filter "Category=Setup" --logger:"xunit;LogFilePath=EngineTestResults/SetupTests.xml"'
+
+          
+Smoketests:
+    stage: test
+    tags: [omr-automation]
+    needs:
+      - Setup
+    before_script:
+      - 'dotnet restore'
+    script:
+      - echo $TARGET_ENV $TARGET_ORG $TARGET_VERSION
+      - cd OMREngineTest
+      - 'dotnet test --test-adapter-path:. --filter "Category=Smoketest|TestType=Auto-Regression" --logger:"xunit;LogFilePath=EngineTestResults/Smoketests.xml"'
+    artifacts:
+      when: always
+      paths:
+        - OMREngineTest/EngineTestResults/
+
+CORE:
+    <<: *workflow-rules
+    stage: test
+    tags: [omr-automation]
+    before_script:
+      - 'dotnet restore'
+    script:
+      - echo $TARGET_ENV $TARGET_ORG $TARGET_VERSION
+      - cd OMREngineTest
+      - 'dotnet test --test-adapter-path:. --filter "Category=CORE|TestType=Auto-Core" --logger:"xunit;LogFilePath=EngineTestResults/CORE.xml"'
+    artifacts:
+      when: always
+      paths:
+        - OMREngineTest/EngineTestResults/
+
+MAT:
+    <<: *workflow-rules
+    stage: test
+    tags: [omr-automation]
+    before_script:
+      - 'dotnet restore'
+    script:
+      - echo $TARGET_ENV $TARGET_ORG $TARGET_VERSION
+      - cd OMREngineTest
+      - 'dotnet test --test-adapter-path:. --filter "Category=MAT|TestType=Auto-MAT" --logger:"xunit;LogFilePath=EngineTestResults/MAT.xml"'
+    artifacts:
+      when: always
+      paths:
+        - OMREngineTest/EngineTestResults/
+
+Latest:
+    stage: test
+    tags: [omr-automation]
+    needs:
+      - Setup
+    except:
+      refs:
+        - prod
+        - preprod
+    before_script:
+      - 'dotnet restore'
+    script:
+      - echo $TARGET_ENV $TARGET_ORG $TARGET_VERSION
+      - cd OMREngineTest
+      - 'dotnet test --test-adapter-path:. --filter "Category=latest|Category=InDevelopment|TestType=Auto-TDD" --logger:"xunit;LogFilePath=EngineTestResults/Latest.xml"'
+    allow_failure: true
+    artifacts:
+      when: always
+      paths:
+        - OMREngineTest/EngineTestResults/
+
+InTest:
+    stage: test
+    tags: [omr-automation]
+    when: manual
+    except:
+      refs:
+        - prod
+        - preprod
+        - staging
+    before_script:
+      - 'dotnet restore'
+    script:
+      - echo $TARGET_ENV $TARGET_ORG $TARGET_VERSION
+      - cd OMREngineTest
+      - 'dotnet test --test-adapter-path:. --filter "Category=InTest" --logger:"xunit;LogFilePath=EngineTestResults/test_result_intest.xml"'
+    allow_failure: true
+    artifacts:
+      when: always
+      paths:
+        - OMREngineTest/EngineTestResults/
+
+AUX:
+    stage: test
+    tags: [omr-automation]
+    when: manual
+    needs:
+      - Setup
+    before_script:
+      - 'dotnet restore'
+    script:
+      - echo $TARGET_ENV $TARGET_ORG $TARGET_VERSION
+      - cd OMREngineTest
+      - 'dotnet test --test-adapter-path:. --filter "Category=AUX" --logger:"xunit;LogFilePath=EngineTestResults/AUX.xml"'
+    artifacts:
+      when: always
+      paths:
+        - OMREngineTest/EngineTestResults/
+
+Performance:
+    stage: testbyfeature
+    tags: [omr-automation]
+    when: manual
+    needs:
+      - Setup
+    before_script:
+      - 'dotnet restore'
+    script:
+      - echo $TARGET_ENV $TARGET_ORG $TARGET_VERSION
+      - cd OMREngineTest
+      - 'dotnet test --test-adapter-path:. --filter "Category=Performance" --logger:"xunit;LogFilePath=EngineTestResults/Performance.xml"'
+    artifacts:
+      when: always
+      paths:
+        - OMREngineTest/EngineTestResults/
+
+TestRail:
+  stage: upload
+  tags: [shared] #Continue to use shared runner for less intensive jobs
+  image: python:3.7
+  when: manual
+  only:
+    refs:
+      - master
+      - staging
+      - preprod
+  script:
+    - curl -O https://bootstrap.pypa.io/get-pip.py
+    - python get-pip.py --user
+    - export PATH=~/.local/bin:$PATH
+    - source ~/.profile
+    - pip install awscli --upgrade --user
+    - aws s3 cp ./OMREngineTest/EngineTestResults s3://guardians-testresults-us-east-1/test-report/xunit/$(date +"%Y-%m-%d-%H-%M-%S")/OMREngineTest --recursive --exclude "*" --include "*.xml" --include "*.txt"
+    - aws s3 cp ./$OdataProjNm/$OdataResPath s3://guardians-testresults-us-east-1/test-report/xunit/$(date +"%Y-%m-%d-%H-%M-%S")/ --recursive --exclude "*" --include "*.xml" --include "*.txt" 
+    - aws s3 cp ./$OCESyncProjNm/$OCESyncResPath s3://guardians-testresults-us-east-1/test-report/xunit/$(date +"%Y-%m-%d-%H-%M-%S")/ --recursive --exclude "*" --include "*.xml" --include "*.txt" 

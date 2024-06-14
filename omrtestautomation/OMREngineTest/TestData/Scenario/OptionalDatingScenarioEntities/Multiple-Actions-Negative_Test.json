@@ -1,0 +1,50 @@
+{
+  "Configs": {},
+
+  "BaseData": {
+    "regionUId": "IO"
+  },
+
+  "Scenario": {
+    "Name": "Multiple Actions on Scenario Entity Test Negative",
+    "Description": "C7848137, C7847212 Different Dates Error",
+    "EffectiveDate__c": "2021-05-01",
+    "EndDate__c": "2021-07-01",
+    "OMRegionId__c": "{{regionUId}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "Test-{{TestUniqueIntegrationID}}"
+  },
+
+  // C7848137 EDIT+EFFE SalesForce Error
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "EDIT",
+      "SOMRegionId__c": "{{regionUId}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "UniqueIntegrationId__c": "SF-EDIT-{{TestUniqueIntegrationId}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+      "Type__c": "KOL", // Some changes for EDIT
+      "Name": "{{ScenarioSalesForce.Name[0]}}",
+      "EffectiveDate__c": "2021-04-01", // Some new Effective Date for EFFE
+      "EndDate__c": "2021-09-01"
+    },
+    {
+      "Action__c": "EFFE",
+      "SOMRegionId__c": "{{regionUId}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "UniqueIntegrationId__c": "SF-EFFE-{{TestUniqueIntegrationId}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+      "Name": "{{ScenarioSalesForce.Name[0]}}",
+      "EffectiveDate__c": "2021-05-01", // EFFE Effective Date different from EDIT triggers an Error
+      "EndDate__c": "2021-09-01"
+    }
+  ],
+
+  // Testing results here is not required, as the scenario intendedly fails.
+  // The error is asserted upon scenario status check in the feature file.
+  "Tests": {
+    "MergeResults": [],
+    "AlignmentResults": [],
+    "ScenarioSummary": []
+  }
+}

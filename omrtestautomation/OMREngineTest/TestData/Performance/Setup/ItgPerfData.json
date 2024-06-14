@@ -1,0 +1,115 @@
+{
+	"Bulkload": {
+		"S3Path": "autotestdata/PerfData",
+		"FileFormat": "CSV",
+		"RollBack": false,
+		"VaildateOnly": false,
+		"ReplaceExistingData": false,
+		"SnowflakeFileFormat": "{}",
+		"Files": [
+			{
+				"file": "region.csv",
+				"table": "OMRegion"
+			},
+			{
+				"file": "regionhierarchy.csv",
+				"table": "OMRegionHierarchy"
+			},
+			{
+				"file": "geography.csv",
+				"table": "OMGeography"
+			},
+			{
+				"file": "team.csv",
+				"table": "OMSalesForce"
+			},
+			{
+				"file": "product.csv",
+				"table": "OMProduct"
+			},
+			{
+				"file": "producthierarchy.csv",
+				"table": "OMProductHierarchy"
+			},
+			{
+				"file": "ProdSalesforce-updatedcolumns.csv",
+				"table": "OMProductSalesForce"
+			},
+			{
+				"file": "Territory.csv",
+				"table": "OMTerritory"
+			},
+			{
+				"file": "territoryhierarchy.csv",
+				"table": "OMTerritoryHierarchy"
+			},
+			{
+				"file": "TerrSF.csv",
+				"table": "OMTerritorySalesForce"
+			},
+			{
+				"file": "GeographyAlignment-3.csv",
+				"table": "OMGeographyTerritory"
+			},
+			{
+				"file": "users1.csv",
+				"table": "OMUser"
+			},
+			{
+				"file": "useraddress.csv",
+				"table": "OMUserAddress"
+			},
+			{
+				"file": "userassignment.csv",
+				"table": "OMUserAssignment"
+			},
+			{
+				"file": "account2.csv",
+				"table": "OMAccount"
+			},
+			{
+				"file": "accountaddress.csv",
+				"table": "OMAccountAddress"
+			},
+			{
+				"file": "affiliation.csv",
+				"table": "OMAffiliation"
+			}
+		]
+	},
+	"Tests": {
+		"VolumeCheck": [
+			{
+				"testname": "RegionCount",
+				"table": "static.\"OMRegion\"",
+				"min_record_count": 3
+			},
+			{
+				"testname": "GeographyCount",
+				"table": "static.\"OMGeography\"",
+				"min_record_count": 30000
+			},
+			{
+				"testname": "ProductCount",
+				"table": "static.\"OMProduct\"",
+				"min_record_count": 70
+			},
+			{
+				"testname": "SalesForceCount",
+				"table": "output.\"OMSalesForce\"",
+				"min_record_count": 20
+			},
+			{
+				"testname": "TerritoryCount",
+				"table": "output.\"OMTerritory\"",
+				"min_record_count": 700
+			},
+			{
+				"testname": "UserCount",
+				"table": "static.\"OMUser\"",
+				"min_record_count": 90
+			}
+		]
+	}
+
+}

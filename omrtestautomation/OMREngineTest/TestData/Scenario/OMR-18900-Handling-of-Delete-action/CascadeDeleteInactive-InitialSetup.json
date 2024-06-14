@@ -1,0 +1,139 @@
+{
+  "BaseData": {
+    "som_region_id": "GS",
+    "salesforceUID": "SF-18900",
+    "territoryUID": "T-18900",
+    "EffeDatePast": "2021-01-01",
+    "EndDatePast": "2022-12-31",
+    "EffeDateCurr": "2023-01-01",
+    "EndDateCurr": "{{today+14}}",
+    "EffeDateFuture": "3025-01-01",
+    "EndDateFuture": "3999-12-31"
+  },
+
+  "Scenario": {
+    "Description": "Precondition for deletes on inac UserAssignment, GeographyTerritory",
+    "name": "Setup for OMR-19796",
+    "EffectiveDate__c": "{{EffeDatePast}}",
+    "EndDate__c": "{{EndDateFuture}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "SETUP-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "name": "{{salesforceUID}}"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "Terr for deactivate inac UserAssign, GeoTerr",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    }
+  ],
+
+  "ScenarioUserAssignment": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "UniqueIntegrationId__c": "PAST-U{{TestUniqueIntegrationId}}",
+      "AssignmentType__c": "SECN",
+      "SOMUserId__c": "{{User.SOMUserId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "RefUserType__c": "{{User.Type__c[0]}}",
+      "EffectiveDate__c": "{{EffeDatePast}}",
+      "EndDate__c": "{{EndDatePast}}"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "UniqueIntegrationId__c": "CURR-U{{TestUniqueIntegrationId}}",
+      "AssignmentType__c": "SECN",
+      "SOMUserId__c": "{{User.SOMUserId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "RefUserType__c": "{{User.Type__c[0]}}",
+      "EffectiveDate__c": "{{EffeDateCurr}}",
+      "EndDate__c": "{{EndDateCurr}}"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "UniqueIntegrationId__c": "FUTURE-U{{TestUniqueIntegrationId}}",
+      "AssignmentType__c": "SECN",
+      "SOMUserId__c": "{{User.SOMUserId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "RefUserType__c": "{{User.Type__c[0]}}",
+      "EffectiveDate__c": "{{EffeDateFuture}}",
+      "EndDate__c": "{{EndDateFuture}}"
+    }
+  ],
+  "ScenarioGeographyTerritory": [
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "GEO01",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "UniqueIntegrationId__c": "PAST-G{{TestUniqueIntegrationID}}",
+      "EffectiveDate__c": "{{EffeDatePast}}",
+      "EndDate__c": "{{EndDatePast}}"
+    },
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "GEO01",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "UniqueIntegrationId__c": "CURR-G{{TestUniqueIntegrationID}}",
+      "EffectiveDate__c": "{{EffeDateCurr}}",
+      "EndDate__c": "{{EndDateCurr}}"
+    },
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "GEO01",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "UniqueIntegrationId__c": "FUTURE-G{{TestUniqueIntegrationID}}",
+      "EffectiveDate__c": "{{EffeDateFuture}}",
+      "EndDate__c": "{{EndDateFuture}}"
+    }
+  ],
+
+    "Tests" :
+    {
+      "MergeResults": [
+        {
+          "testname": "setup_userAssignment",
+          "query": "select \"SOMUserId\",\"SOMTerritoryId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMUserAssignment\" where \"SOMUserId\"='{{ScenarioUserAssignment.SOMUserId__c}}' AND \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}' order by \"EffectiveDate\",\"EndDate\"",
+          "exp_result": "[{SOMUserId:{{ScenarioUserAssignment.SOMUserId__c}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Status:ACTV,EffectiveDate:{{EffeDatePast}},EndDate:{{EndDatePast}}},{SOMUserId:{{ScenarioUserAssignment.SOMUserId__c}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Status:ACTV,EffectiveDate:{{EffeDateCurr}},EndDate:{{EndDateCurr}}},{SOMUserId:{{ScenarioUserAssignment.SOMUserId__c}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},Status:ACTV,EffectiveDate:{{EffeDateFuture}},EndDate:{{EndDateFuture}}}]"
+        },
+        {
+          "testname": "setup_geoterr",
+          "query": "select gt.\"SOMGeographyId\", t.\"UniqueIntegrationId\", gt.\"Status\", gt.\"EffectiveDate\", gt.\"EndDate\" from {{schema}}.\"OMGeographyTerritory\" gt join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = gt.\"SOMTerritoryId\" where gt.\"SOMGeographyTerritoryId\" in ('{{ScenarioGeographyTerritory.SOMGeographyTerritoryId__c[0]}}','{{ScenarioGeographyTerritory.SOMGeographyTerritoryId__c[1]}}','{{ScenarioGeographyTerritory.SOMGeographyTerritoryId__c[2]}}') order by \"EffectiveDate\",\"EndDate\"",
+          "exp_result": "[{SOMGeographyId:{{ScenarioGeographyTerritory.SOMGeographyId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c}},Status:ACTV,EffectiveDate:{{EffeDatePast}},EndDate:{{EndDatePast}}},{SOMGeographyId:{{ScenarioGeographyTerritory.SOMGeographyId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c}},Status:ACTV,EffectiveDate:{{EffeDateCurr}},EndDate:{{EndDateCurr}}},{SOMGeographyId:{{ScenarioGeographyTerritory.SOMGeographyId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c}},Status:ACTV,EffectiveDate:{{EffeDateFuture}},EndDate:{{EndDateFuture}}}]"
+        }
+      ]
+    }
+}

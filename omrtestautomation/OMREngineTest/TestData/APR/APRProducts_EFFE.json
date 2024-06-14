@@ -1,0 +1,40 @@
+﻿{
+	"Product": [
+		{
+			"Name": "Past - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "EFFEPAST-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV",
+			"SOMProductId__c": "EFFEPAST-{{TestUniqueIntegrationID}}"
+		},
+		{
+			"Name": "Current - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "EFFECUR-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV",
+			"SOMProductId__c": "EFFECUR-{{TestUniqueIntegrationID}}"
+		},
+		{
+			"Name": "Future - {{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "EFFEFUT-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV",
+			"SOMProductId__c": "EFFEFUT-{{TestUniqueIntegrationID}}"
+		}
+	],
+	"Tests": {
+		"MergeResults": [
+			{
+				"testname": "APRProducts_EFFE",
+				"query": "select \"UniqueIntegrationId\",\"Status\" from static.\"OMProduct\" where \"UniqueIntegrationId\" in ('EFFECUR-{{TestUniqueIntegrationId}}','EFFEFUT-{{TestUniqueIntegrationId}}','EFFEPAST-{{TestUniqueIntegrationId}}') order by \"UniqueIntegrationId\"",
+				"exp_result": "[{UniqueIntegrationId:EFFECUR-{{TestUniqueIntegrationId}},Status:ACTV},{UniqueIntegrationId:EFFEFUT-{{TestUniqueIntegrationId}},Status:ACTV},{UniqueIntegrationId:EFFEPAST-{{TestUniqueIntegrationId}},Status:ACTV}]"
+			}
+		]
+	}
+}

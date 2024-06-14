@@ -1,0 +1,81 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "REG01",
+    "EffectiveDate": "{{today-30}}",
+    "EndDate": "{{today+30}}"
+  },
+
+  "Scenario": {
+    "Description": "Precondition for RECALC Account Product Explicit Test",
+    "name": "RECALC Account Product Explicit Test",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "RECALCAPEXPL-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioAccountProductExplicit": [
+    // precondition for RECALC
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "Add{{TestUniqueIntegrationID}}",
+      "ProductUniqueIntegrationId__c": "AddEXPL{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}",
+      "UniqueIntegrationId__c": "RECALCEXPLADD-{{TestUniqueIntegrationID}}"
+    },
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "Delete{{TestUniqueIntegrationID}}",
+      "ProductUniqueIntegrationId__c": "DeleteEXPL{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}",
+      "UniqueIntegrationId__c": "RECALCEXPLDELETE-{{TestUniqueIntegrationID}}"
+    }
+  ],
+
+  "ScenarioAccountProductRule": [
+    {
+      "Action__c": "ADD",
+      "Name": "RECALCAPR{{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "RECALCAPR{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"MP\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Acupuncturist\"}]},\"ProductRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"},{\"type\":\"Equals\",\"table\":\"OMProduct\",\"column\":\"SOMProductId\",\"value\":\"{{Product.SOMProductId__c[0]}}\"}]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Account Product Explicit",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductExplicit\" where \"UniqueIntegrationId\" like '%{{TestUniqueIntegrationID}}%' order by \"OMAccountId\" asc",
+        "exp_result": "[{OMAccountId:Add{{TestUniqueIntegrationID}},SOMProductId:{{Product.SOMProductId__c[0]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV},{OMAccountId:Delete{{TestUniqueIntegrationID}},SOMProductId:{{Product.SOMProductId__c[1]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV}]",
+        "odataQuery": "/OMAccountProductExplicit?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate,Status&$filter=contains(UniqueIntegrationId,'{{TestUniqueIntegrationID}}')&$orderBy=OMAccountId asc"
+      },
+      {
+        "testname": "Account Product Restriction EXPL",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Source\" from \"{{schema}}\".\"OMAccountProductRestriction\"  where \"SOMProductId\" in ('{{Product.SOMProductId__c[0]}}','{{Product.SOMProductId__c[1]}}') and \"OMAccountId\" like '%{{TestUniqueIntegrationId}}' order by \"OMAccountId\" asc",
+        "exp_result": "[{OMAccountId:Add{{TestUniqueIntegrationID}},SOMProductId:{{Product.SOMProductId__c[0]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Source:EXPL},{OMAccountId:Delete{{TestUniqueIntegrationID}},SOMProductId:{{Product.SOMProductId__c[1]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Source:EXPL}]"
+      },
+      {
+        "testname": "Account Product Rule",
+        "query": "select \"Name\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductRule\" where \"UniqueIntegrationId\" in ('{{ScenarioAccountProductRule.UniqueIntegrationId__c[0]}}') order by \"Name\" asc ",
+        "exp_result": "[{Name:{{ScenarioAccountProductRule.Name[0]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV}]",
+        "odataQuery": "/OMAccountProductRule?$select=Name,EffectiveDate,EndDate,Status&$filter=(UniqueIntegrationId eq '{{ScenarioAccountProductRule.UniqueIntegrationId__c[0]}}') &$orderBy=Name asc"
+      }
+    ]
+  }
+}

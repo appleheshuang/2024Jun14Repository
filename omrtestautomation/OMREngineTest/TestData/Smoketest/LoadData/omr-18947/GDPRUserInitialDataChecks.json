@@ -1,0 +1,157 @@
+﻿{
+  "Configs": {},
+
+  "BaseData": {
+    "som_region_id": "FX", //This region has AccountDataProtectionAction = DEL
+    "som_region_id2": "BM", //This region has AccountDataProtectionAction = MASK
+    "som_region_id3": "GB", //This region has AccountDataProtectionAction = NONE
+    "User1_ActiveAndInFX": "OMR-18947-FX-1-{{TestUniqueIntegrationId}}",
+    "User2_ActiveAndGlobal": "OMR-18947-Global-1-{{TestUniqueIntegrationId}}",
+    "User3_ActiveAndInBM": "OMR-18947-BM-1-{{TestUniqueIntegrationId}}",
+    "User4_ActiveAndInGB": "OMR-18947-GB-1-{{TestUniqueIntegrationId}}",
+    "User5_InacAndInFX": "OMR-18947-FX-2-{{TestUniqueIntegrationId}}",
+    "User6_InacAndGlobal": "OMR-18947-Global-2-{{TestUniqueIntegrationId}}",
+    "User7_InacAndInBM": "OMR-18947-BM-2-{{TestUniqueIntegrationId}}",
+    "User8_InacAndInGB": "OMR-18947-GB-2-{{TestUniqueIntegrationId}}",
+    "FX-1-UserAddress": "Paris",
+    "FX-2-UserAddress": "Nice",
+    "BM-1-UserAddress": "Hamilton",
+    "BM-2-UserAddress": "Tucker's Town",
+    "GB-1-UserAddress": "London",
+    "GB-2-UserAddress": "Plymouth",
+    "Global-1-UserAddress": "Arles",
+    "Global-2-UserAddress": "Bordeaux",
+    "FX-1-CommunicationDetail": "Communication detail FX-ACTV-{{TestUniqueIntegrationId}}",
+    "FX-2-CommunicationDetail": "Communication detail FX-INAC-{{TestUniqueIntegrationId}}",
+    "BM-1-CommunicationDetail": "Communication detail BM-ACTV-{{TestUniqueIntegrationId}}",
+    "BM-2-CommunicationDetail": "Communication detail BM-INAC-{{TestUniqueIntegrationId}}",
+    "GB-1-CommunicationDetail": "Communication detail GB-ACTV-{{TestUniqueIntegrationId}}",
+    "GB-2-CommunicationDetail": "Communication detail GB-INAC-{{TestUniqueIntegrationId}}",
+    "Global-1-CommunicationDetail": "Communication detail Global-ACTV-{{TestUniqueIntegrationId}}",
+    "Global-2-CommunicationDetail": "Communication detail Global-INAC-{{TestUniqueIntegrationId}}"
+
+  },
+
+  "Tests": {
+    "MergeResults": [
+      //Checking UDPA (UserDataProtectionAction) setup for OMRegion
+      {
+        "testname": "GDPROMRegionsetup",
+        "query": "select \"SOMRegionId\", \"Status\", \"UserDataProtectionAction\" from static.\"OMRegion\" where \"SOMRegionId\" in ('FX', 'BM', 'GB') order by \"SOMRegionId\" asc",
+        "exp_result": "[{SOMRegionId:BM,Status:ACTV,UserDataProtectionAction:MASK},{SOMRegionId:FX,Status:ACTV,UserDataProtectionAction:DEL},{SOMRegionId:GB,Status:ACTV,UserDataProtectionAction:null}]"
+      },
+
+      //Checking data before recalc for OMUser
+      {
+        "testname": "GDPRCheckInitialdataforOMUserDP",
+        "query": "select \"SOMUserId\", \"SOMRegionId\", \"Status\", \"DataProtected\" from static.\"OMUser\" where \"SOMUserId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},SOMRegionId:BM,Status:ACTV,DataProtected:true},{SOMUserId:{{User7_InacAndInBM}},SOMRegionId:BM,Status:INAC,DataProtected:true},{SOMUserId:{{User1_ActiveAndInFX}},SOMRegionId:FX,Status:ACTV,DataProtected:true},{SOMUserId:{{User5_InacAndInFX}},SOMRegionId:FX,Status:INAC,DataProtected:true},{SOMUserId:{{User4_ActiveAndInGB}},SOMRegionId:GB,Status:ACTV,DataProtected:true},{SOMUserId:{{User8_InacAndInGB}},SOMRegionId:GB,Status:INAC,DataProtected:true},{SOMUserId:{{User2_ActiveAndGlobal}},SOMRegionId:null,Status:ACTV,DataProtected:true},{SOMUserId:{{User6_InacAndGlobal}},SOMRegionId:null,Status:INAC,DataProtected:true}]"
+      },
+      {
+        "testname": "GDPRCheckInitialOMAuditforOMUser",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUser' and \"NewValue\" ilike '%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUser,ColumnName:Name,Operation:Add,NewValue:{{User3_ActiveAndInBM}}},{TableName:OMUser,ColumnName:Name,Operation:Add,NewValue:{{User1_ActiveAndInFX}}},{TableName:OMUser,ColumnName:Name,Operation:Add,NewValue:{{User4_ActiveAndInGB}}},{TableName:OMUser,ColumnName:Name,Operation:Add,NewValue:{{User2_ActiveAndGlobal}}}]"
+      },
+      //Checking data before recalc for OMUserAddress
+      {
+        "testname": "GDPRCheckInitialDataforOMUserAddress",
+        "query": "select \"SOMUserId\", \"City\", \"Status\" from static.\"OMUserAddress\" where \"SOMUserId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},City:{{BM-1-UserAddress}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},City:{{BM-2-UserAddress}},Status:INAC},{SOMUserId:{{User1_ActiveAndInFX}},City:{{FX-1-UserAddress}},Status:ACTV},{SOMUserId:{{User5_InacAndInFX}},City:{{FX-2-UserAddress}},Status:INAC},{SOMUserId:{{User4_ActiveAndInGB}},City:{{GB-1-UserAddress}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},City:{{GB-2-UserAddress}},Status:INAC},{SOMUserId:{{User2_ActiveAndGlobal}},City:{{Global-1-UserAddress}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},City:{{Global-2-UserAddress}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckInitialOMAuditforOMUserAddress",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserAddress' and \"ColumnName\" = 'City' and \"Parent\" ilike '%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserAddress,ColumnName:City,Operation:Add,NewValue:{{Global-1-UserAddress}}},{TableName:OMUserAddress,ColumnName:City,Operation:Add,NewValue:{{Global-2-UserAddress}}},{TableName:OMUserAddress,ColumnName:City,Operation:Add,NewValue:{{BM-1-UserAddress}}},{TableName:OMUserAddress,ColumnName:City,Operation:Add,NewValue:{{GB-1-UserAddress}}},{TableName:OMUserAddress,ColumnName:City,Operation:Add,NewValue:{{FX-2-UserAddress}}},{TableName:OMUserAddress,ColumnName:City,Operation:Add,NewValue:{{FX-1-UserAddress}}},{TableName:OMUserAddress,ColumnName:City,Operation:Add,NewValue:{{GB-2-UserAddress}}},{TableName:OMUserAddress,ColumnName:City,Operation:Add,NewValue:{{BM-2-UserAddress}}}]"
+      },
+      //Checking data before recalc for OMUserCommunication
+      {
+        "testname": "GDPRCheckInitialDataforOMUserCommunicaion",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserCommunication\" where \"SOMUserId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},Status:INAC},{SOMUserId:{{User1_ActiveAndInFX}},Status:ACTV},{SOMUserId:{{User5_InacAndInFX}},Status:INAC},{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},Status:INAC},{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckInitialOMAuditforOMUserCommunication",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserCommunication' and \"ColumnName\" = 'CommunicationDetail' and \"NewValue\" ilike '%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserCommunication,ColumnName:CommunicationDetail,Operation:Add,NewValue:{{BM-1-CommunicationDetail}}},{TableName:OMUserCommunication,ColumnName:CommunicationDetail,Operation:Add,NewValue:{{BM-2-CommunicationDetail}}},{TableName:OMUserCommunication,ColumnName:CommunicationDetail,Operation:Add,NewValue:{{FX-1-CommunicationDetail}}},{TableName:OMUserCommunication,ColumnName:CommunicationDetail,Operation:Add,NewValue:{{FX-2-CommunicationDetail}}},{TableName:OMUserCommunication,ColumnName:CommunicationDetail,Operation:Add,NewValue:{{GB-1-CommunicationDetail}}},{TableName:OMUserCommunication,ColumnName:CommunicationDetail,Operation:Add,NewValue:{{GB-2-CommunicationDetail}}},{TableName:OMUserCommunication,ColumnName:CommunicationDetail,Operation:Add,NewValue:{{Global-1-CommunicationDetail}}},{TableName:OMUserCommunication,ColumnName:CommunicationDetail,Operation:Add,NewValue:{{Global-2-CommunicationDetail}}}]"
+      },
+      //Checking data before recalc for OMUserTitle
+      {
+        "testname": "GDPRCheckInitialDataforOMUserTitle",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserTitle\" where \"SOMUserId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},Status:INAC},{SOMUserId:{{User1_ActiveAndInFX}},Status:ACTV},{SOMUserId:{{User5_InacAndInFX}},Status:INAC},{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},Status:INAC},{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckInitialOMAuditforOMUserTitle",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserTitle' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserTitle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User3_ActiveAndInBM}}},{TableName:OMUserTitle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User7_InacAndInBM}}},{TableName:OMUserTitle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User1_ActiveAndInFX}}},{TableName:OMUserTitle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User5_InacAndInFX}}},{TableName:OMUserTitle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User4_ActiveAndInGB}}},{TableName:OMUserTitle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User8_InacAndInGB}}},{TableName:OMUserTitle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User2_ActiveAndGlobal}}},{TableName:OMUserTitle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User6_InacAndGlobal}}}]"
+      },
+      //Checking data before recalc for OMUserContact
+      {
+        "testname": "GDPRCheckInitialDataforOMUserContact",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserContact\" where \"SOMUserId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},Status:INAC},{SOMUserId:{{User1_ActiveAndInFX}},Status:ACTV},{SOMUserId:{{User5_InacAndInFX}},Status:INAC},{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},Status:INAC},{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckInitialOMAuditforOMUserContact",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserContact' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserContact,ColumnName:SOMUserId,Operation:Add,NewValue:{{User3_ActiveAndInBM}}},{TableName:OMUserContact,ColumnName:SOMUserId,Operation:Add,NewValue:{{User7_InacAndInBM}}},{TableName:OMUserContact,ColumnName:SOMUserId,Operation:Add,NewValue:{{User1_ActiveAndInFX}}},{TableName:OMUserContact,ColumnName:SOMUserId,Operation:Add,NewValue:{{User5_InacAndInFX}}},{TableName:OMUserContact,ColumnName:SOMUserId,Operation:Add,NewValue:{{User4_ActiveAndInGB}}},{TableName:OMUserContact,ColumnName:SOMUserId,Operation:Add,NewValue:{{User8_InacAndInGB}}},{TableName:OMUserContact,ColumnName:SOMUserId,Operation:Add,NewValue:{{User2_ActiveAndGlobal}}},{TableName:OMUserContact,ColumnName:SOMUserId,Operation:Add,NewValue:{{User6_InacAndGlobal}}}]"
+      },
+      //Checking data before recalc for OMUserDependent
+      {
+        "testname": "GDPRCheckInitialDataforOMUserDependent",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserDependent\" where \"SOMUserId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},Status:INAC},{SOMUserId:{{User1_ActiveAndInFX}},Status:ACTV},{SOMUserId:{{User5_InacAndInFX}},Status:INAC},{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},Status:INAC},{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckInitialOMAuditforOMUserDependent",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserDependent' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserDependent,ColumnName:SOMUserId,Operation:Add,NewValue:{{User3_ActiveAndInBM}}},{TableName:OMUserDependent,ColumnName:SOMUserId,Operation:Add,NewValue:{{User7_InacAndInBM}}},{TableName:OMUserDependent,ColumnName:SOMUserId,Operation:Add,NewValue:{{User1_ActiveAndInFX}}},{TableName:OMUserDependent,ColumnName:SOMUserId,Operation:Add,NewValue:{{User5_InacAndInFX}}},{TableName:OMUserDependent,ColumnName:SOMUserId,Operation:Add,NewValue:{{User4_ActiveAndInGB}}},{TableName:OMUserDependent,ColumnName:SOMUserId,Operation:Add,NewValue:{{User8_InacAndInGB}}},{TableName:OMUserDependent,ColumnName:SOMUserId,Operation:Add,NewValue:{{User2_ActiveAndGlobal}}},{TableName:OMUserDependent,ColumnName:SOMUserId,Operation:Add,NewValue:{{User6_InacAndGlobal}}}]"
+      },
+      //Checking data before recalc for OMUserDriver
+      {
+        "testname": "GDPRCheckInitialDataforOMUserDriver",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserDriver\" where \"SOMUserId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},Status:INAC},{SOMUserId:{{User1_ActiveAndInFX}},Status:ACTV},{SOMUserId:{{User5_InacAndInFX}},Status:INAC},{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},Status:INAC},{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckInitialOMAuditforOMUserDriver",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserDriver' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserDriver,ColumnName:SOMUserId,Operation:Add,NewValue:{{User3_ActiveAndInBM}}},{TableName:OMUserDriver,ColumnName:SOMUserId,Operation:Add,NewValue:{{User7_InacAndInBM}}},{TableName:OMUserDriver,ColumnName:SOMUserId,Operation:Add,NewValue:{{User1_ActiveAndInFX}}},{TableName:OMUserDriver,ColumnName:SOMUserId,Operation:Add,NewValue:{{User5_InacAndInFX}}},{TableName:OMUserDriver,ColumnName:SOMUserId,Operation:Add,NewValue:{{User4_ActiveAndInGB}}},{TableName:OMUserDriver,ColumnName:SOMUserId,Operation:Add,NewValue:{{User8_InacAndInGB}}},{TableName:OMUserDriver,ColumnName:SOMUserId,Operation:Add,NewValue:{{User2_ActiveAndGlobal}}},{TableName:OMUserDriver,ColumnName:SOMUserId,Operation:Add,NewValue:{{User6_InacAndGlobal}}}]"
+      },
+      //Checking data before recalc for OMUserDriverIncident
+      {
+        "testname": "GDPRCheckInitialDataforOMUserDriverIncident",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserDriverIncident\" where \"SOMUserId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},Status:INAC},{SOMUserId:{{User1_ActiveAndInFX}},Status:ACTV},{SOMUserId:{{User5_InacAndInFX}},Status:INAC},{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},Status:INAC},{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckInitialOMAuditforOMUserDriverIncident",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserDriverIncident' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserDriverIncident,ColumnName:SOMUserId,Operation:Add,NewValue:{{User3_ActiveAndInBM}}},{TableName:OMUserDriverIncident,ColumnName:SOMUserId,Operation:Add,NewValue:{{User7_InacAndInBM}}},{TableName:OMUserDriverIncident,ColumnName:SOMUserId,Operation:Add,NewValue:{{User1_ActiveAndInFX}}},{TableName:OMUserDriverIncident,ColumnName:SOMUserId,Operation:Add,NewValue:{{User5_InacAndInFX}}},{TableName:OMUserDriverIncident,ColumnName:SOMUserId,Operation:Add,NewValue:{{User4_ActiveAndInGB}}},{TableName:OMUserDriverIncident,ColumnName:SOMUserId,Operation:Add,NewValue:{{User8_InacAndInGB}}},{TableName:OMUserDriverIncident,ColumnName:SOMUserId,Operation:Add,NewValue:{{User2_ActiveAndGlobal}}},{TableName:OMUserDriverIncident,ColumnName:SOMUserId,Operation:Add,NewValue:{{User6_InacAndGlobal}}}]"
+      },
+      //Checking data before recalc for OMUserEducation
+      {
+        "testname": "GDPRCheckInitialDataforOMUserEducation",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserEducation\" where \"SOMUserId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},Status:INAC},{SOMUserId:{{User1_ActiveAndInFX}},Status:ACTV},{SOMUserId:{{User5_InacAndInFX}},Status:INAC},{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},Status:INAC},{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckInitialOMAuditforOMUserEducation",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserEducation' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserEducation,ColumnName:SOMUserId,Operation:Add,NewValue:{{User3_ActiveAndInBM}}},{TableName:OMUserEducation,ColumnName:SOMUserId,Operation:Add,NewValue:{{User7_InacAndInBM}}},{TableName:OMUserEducation,ColumnName:SOMUserId,Operation:Add,NewValue:{{User1_ActiveAndInFX}}},{TableName:OMUserEducation,ColumnName:SOMUserId,Operation:Add,NewValue:{{User5_InacAndInFX}}},{TableName:OMUserEducation,ColumnName:SOMUserId,Operation:Add,NewValue:{{User4_ActiveAndInGB}}},{TableName:OMUserEducation,ColumnName:SOMUserId,Operation:Add,NewValue:{{User8_InacAndInGB}}},{TableName:OMUserEducation,ColumnName:SOMUserId,Operation:Add,NewValue:{{User2_ActiveAndGlobal}}},{TableName:OMUserEducation,ColumnName:SOMUserId,Operation:Add,NewValue:{{User6_InacAndGlobal}}}]"
+      },
+      //Checking data before recalc for OMUserVehicle
+      {
+        "testname": "GDPRCheckInitialDataforOMUserVehicle",
+        "query": "select \"SOMUserId\", \"Status\" from static.\"OMUserEducation\" where \"SOMUserId\" ilike '%{{TestUniqueIntegrationId}}%' order by \"SOMUserId\" asc",
+        "exp_result": "[{SOMUserId:{{User3_ActiveAndInBM}},Status:ACTV},{SOMUserId:{{User7_InacAndInBM}},Status:INAC},{SOMUserId:{{User1_ActiveAndInFX}},Status:ACTV},{SOMUserId:{{User5_InacAndInFX}},Status:INAC},{SOMUserId:{{User4_ActiveAndInGB}},Status:ACTV},{SOMUserId:{{User8_InacAndInGB}},Status:INAC},{SOMUserId:{{User2_ActiveAndGlobal}},Status:ACTV},{SOMUserId:{{User6_InacAndGlobal}},Status:INAC}]"
+      },
+      {
+        "testname": "GDPRCheckInitialOMAuditforOMUserVehicle",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"NewValue\" from static.\"OMAudit\" where \"TableName\" = 'OMUserVehicle' and \"ColumnName\" = 'SOMUserId' and \"NewValue\" ilike '%{{TestUniqueIntegrationId}}%' order by \"NewValue\" asc",
+        "exp_result": "[{TableName:OMUserVehicle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User3_ActiveAndInBM}}},{TableName:OMUserVehicle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User7_InacAndInBM}}},{TableName:OMUserVehicle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User1_ActiveAndInFX}}},{TableName:OMUserVehicle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User5_InacAndInFX}}},{TableName:OMUserVehicle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User4_ActiveAndInGB}}},{TableName:OMUserVehicle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User8_InacAndInGB}}},{TableName:OMUserVehicle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User2_ActiveAndGlobal}}},{TableName:OMUserVehicle,ColumnName:SOMUserId,Operation:Add,NewValue:{{User6_InacAndGlobal}}}]"
+      }
+    ]
+
+  }
+}

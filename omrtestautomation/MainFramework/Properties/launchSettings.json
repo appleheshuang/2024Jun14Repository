@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MainFramework": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "BRANCH": "master"
+      }
+    }
+  }
+}

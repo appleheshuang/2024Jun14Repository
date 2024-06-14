@@ -1,0 +1,15 @@
+{
+  "Bulkload": {
+    "S3Path": "autotestdata/OMR-13032/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMAuditConfig.csv",
+        "table": "OMAuditConfig"
+      }
+    ]
+  }
+}

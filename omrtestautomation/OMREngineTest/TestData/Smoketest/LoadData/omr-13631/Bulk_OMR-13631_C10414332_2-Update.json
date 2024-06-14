@@ -1,0 +1,45 @@
+{
+  "Bulkload": {
+    "S3AccessKey": "",
+    "S3SecretKey": "",
+    "S3BucketName": "",
+    "S3Path": "autotestdata/OMR-13631/",
+    "FileFormat": "CSV",
+    "Rollback": false,
+    "ValidateOnly": false,
+    "ReplaceExistingData": false,
+    "PicklistValidate": false,
+    "Files": [
+      {
+        "file": "OMR-13631_C10414332_OMProductHierarchy_2-Update.csv",
+        "table": "OMProductHierarchy"
+      }
+    ]
+  },
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "C10414332 - Child record update – inactive to active – parent record is inactive -- OMProductHierarchy - Update",
+        "query": "SELECT creg.\"SOMProductHierarchyId\", creg.\"UniqueIntegrationId\", creg.\"EffectiveDate\", creg.\"EndDate\", creg.\"Status\" FROM STATIC.\"OMProductHierarchy\" creg WHERE creg.\"UniqueIntegrationId\" IN ('UID_OMR-13631_C10414332_01--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414332_02--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414332_03--{{TestUniqueIntegrationId}}') ORDER BY creg.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMProductHierarchyId:ProdHierId_OMR-13631_C10414332_01--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414332_01--{{TestUniqueIntegrationId}},EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV},{SOMProductHierarchyId:ProdHierId_OMR-13631_C10414332_02--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414332_02--{{TestUniqueIntegrationId}},EffectiveDate:2020-08-01,EndDate:2999-12-31,Status:INAC},{SOMProductHierarchyId:ProdHierId_OMR-13631_C10414332_03--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414332_03--{{TestUniqueIntegrationId}},EffectiveDate:2020-08-01,EndDate:2999-12-31,Status:INAC}]",
+        "sfQuery": null
+      }
+    ]
+  },
+
+  "Errors": [
+    {
+      "table": "OMProductHierarchy",
+      "file": "autotestdata/OMR-13631/{{TestUniqueIntegrationId}}/OMR-13631_C10414332_OMProductHierarchy_2-Update.csv",
+      "error": "(ProdHierId_OMR-13631_C10414332_02--{{TestUniqueIntegrationId}}) in table OMProductHierarchy has an invalid parent key relation in column SOMChildProductId: ProdId_OMR-13631_C10414332_04-Rec02Chi-INAC--{{TestUniqueIntegrationId}}",
+      "lineNumber": 3
+    },
+    {
+      "table": "OMProductHierarchy",
+      "file": "autotestdata/OMR-13631/{{TestUniqueIntegrationId}}/OMR-13631_C10414332_OMProductHierarchy_2-Update.csv",
+      "error": "(ProdHierId_OMR-13631_C10414332_03--{{TestUniqueIntegrationId}}) in table OMProductHierarchy has an invalid parent key relation in column SOMParentProductId: ProdId_OMR-13631_C10414332_05-Rec03Par-INAC--{{TestUniqueIntegrationId}}",
+      "lineNumber": 4
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+﻿{
+	"Product": [
+		{
+			"Name": "PADD{{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "PADD{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV",
+			"SOMProductId__c": "PADD{{TestUniqueIntegrationID}}"
+		},
+		{
+			"Name": "PDELETE{{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2020-01-01",
+			"Type__c": "Detail",
+			"OMRegionId__c": "REG01",
+			"UniqueIntegrationId__c": "PDELETE{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV",
+			"SOMProductId__c": "PDELETE{{TestUniqueIntegrationID}}"
+		}
+	]
+}

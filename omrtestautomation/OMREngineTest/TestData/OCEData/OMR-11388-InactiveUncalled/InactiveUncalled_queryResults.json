@@ -1,0 +1,46 @@
+{
+  "BaseData": {
+    "NOCALL": "SALLY-NOCALL",
+    "1CALLTODAY": "SALLY1-1CALLTODAY",
+    "ACCEXPLICITFROMSCENARIO": "SALLY2-ACCEXPLICITFROMSCENARIO"
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "CheckAccountExplicitAfterPullAccount",
+        "query": "select t.\"UniqueIntegrationId\" as \"TerrUID\", count(*) as \"ExplicitsCreated\" from output.\"OMAccountExplicit\" e inner join output.\"OMTerritory\" t on t.\"SOMTerritoryId\" = e.\"SOMTerritoryId\" where e.\"SOMTerritoryId\" in ('{{ScenarioTerritory.SOMTerritoryId__c[0]}}','{{ScenarioTerritory.SOMTerritoryId__c[1]}}') group by t.\"UniqueIntegrationId\" order by t.\"UniqueIntegrationId\"",
+        "exp_result": "[{TerrUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},ExplicitsCreated:3},{TerrUID:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},ExplicitsCreated:1}]"
+      },
+      {
+        "testname": "InactivateWhenNoCallsWithinXDays-Open",
+        // Counts explicits from OCE-P with no calls that where created earlier than yesterday, are open-ended, and have not been end-dated
+        "query": "select count(*) as \"OpenEnded\" from output.\"OMAccountExplicit\" where \"FromOCEPersonal\"='true' and \"Status\"='ACTV' and \"EndDate\" = '{{Scenario.EndDate__c}}' and \"EffectiveDate\" < CURRENT_DATE-1 and \"OMAccountId\" in (select \"Id\" from static.\"OMAccount\" where \"UniqueIntegrationId\" = '{{NOCALL}}' )",
+        "exp_result": "[{OpenEnded:0}]"
+      },
+      {
+        "testname": "InactivateWhenNoCallsWithinXDays-16378",
+        // Counts explicits from OCE-P with no calls that where created earlier than yesterday, have an end date, and have not been end-dated
+        "query": "select count(*) as \"NotEnded\" from output.\"OMAccountExplicit\" where \"FromOCEPersonal\"='true' and \"Status\"='ACTV' and \"EndDate\" = '{{ScenarioTerritory.EndDate__c[1]}}' and \"EffectiveDate\" < CURRENT_DATE-1 and \"OMAccountId\" in (select \"Id\" from static.\"OMAccount\" where \"UniqueIntegrationId\" = '{{NOCALL}}' )",
+        "exp_result": "[{NotEnded:0}]"
+      },
+      {
+        "testname": "NoInactivateWhenAccountExplicitCreatedYesterday",
+        // Counts explicits from OCE-P that were created yesterday and have been end-dated -> Expect none
+        "query": "select count(*) as \"Ended\" from output.\"OMAccountExplicit\" where \"FromOCEPersonal\"='true' and \"Status\"='ACTV' and \"EffectiveDate\" = CURRENT_DATE-1 and \"EndDate\" <= CURRENT_DATE",
+        "exp_result": "[{Ended:0}]"
+      },
+      {
+        "testname": "NoInactivateWhenAccountExplicitCreatedToday",
+        // Checks end date of explicit from OCE-P created today -> not end-dated
+        "query": "select a.\"UniqueIntegrationId\" as \"AccountUID\", \"EndDate\" from output.\"OMAccountExplicit\" e inner join static.\"OMAccount\" a on a.\"Id\" = e.\"OMAccountId\" where a.\"UniqueIntegrationId\" in ('{{NOCALL}}','{{1CALLTODAY}}') and e.\"Status\" = 'ACTV' and \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}' order by a.\"UniqueIntegrationId\",e.\"EffectiveDate\"",
+        "exp_result": "[{AccountUID:{{NOCALL}},EndDate:{{Scenario.EndDate__c}}},{AccountUID:{{1CALLTODAY}},EndDate:{{Scenario.EndDate__c}}}]"
+      },
+      {
+        "testname": "AccountExplicitFromScenario",
+        // Checks end date of explicit not from OCE-P -> not end-dated
+        "query": "select a.\"UniqueIntegrationId\" as \"AccountUID\", \"EndDate\" from output.\"OMAccountExplicit\" e inner join static.\"OMAccount\" a on a.\"Id\" = e.\"OMAccountId\" where a.\"UniqueIntegrationId\" in ('{{ACCEXPLICITFROMSCENARIO}}') and e.\"Status\" = 'ACTV' and \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}' order by a.\"UniqueIntegrationId\",e.\"EffectiveDate\"",
+        "exp_result": "[{AccountUID:{{ACCEXPLICITFROMSCENARIO}},EndDate:{{Scenario.EndDate__c}}}]"
+      }
+    ]
+  }
+}

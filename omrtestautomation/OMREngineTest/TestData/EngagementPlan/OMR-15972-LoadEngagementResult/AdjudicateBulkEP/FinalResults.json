@@ -1,0 +1,117 @@
+﻿{
+  "BaseData": {
+    "EffectiveDate": "3025-03-01",
+    "EndDate": "3025-10-31",
+    "add_accountUId": "REPADDED-15972", // bulkloaded
+    "del_loaded_accountUId": "REPREMOVED-15972", // bulkloaded
+    "loaded_accountUId": "LOADED-15972", // bulkloaded
+    "edit_loaded_accountUId": "LOAD2-15972", // bulkloaded
+    "edit_hoedited_accountUId": "HOEDITED-15972", // bulkloaded + HO changes
+    "edit_affiliated_accountUId": "AFFIL2-15972", // rule + HO changes
+    "affiliated_accountUId": "AFFILIATED-15972", // rule + HO changes
+    "repModifiedtargets": "[{\"Channel\":\"MEET\",\"Frequency\":6},{\"Channel\":\"EMAIL\",\"Frequency\":8}]",
+    "expRepModifiedtargets": "[{Channel:MEET,Frequency:6},{Channel:EMAIL,Frequency:8}]",
+    "expHoModifiedtargets": "[{Channel:MEET,Frequency:2},{Channel:EMAIL,Frequency:2}]",
+    "expLoadedtargets": "[{Channel:MEET,Frequency:3},{Channel:EMAIL,Frequency:10}]"
+  },
+  "AdjudicationChangeRequestAccount": [
+    {
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "OMAccountId__c": "{{add_accountUId}}",
+      "AccountUniqueIntegrationId__c": "{{add_accountUId}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "InitialLevel__c": "TERR",
+      "RefTerritoryType__c": "TERR",
+      "SubmitStatus__c": "SUBM",
+      "ApprovalStatus__c": "APPR",
+      "Action__c": "ADD",
+      "SimulationStatusRep__c": "DONE",
+      "SOMEngagementSegmentId__c": "segC-{{TestUniqueIntegrationId}}",
+      "RefEngagementSegment__c": "SegC",
+      "Targets__c": "{{repModifiedtargets}}",
+      "Comment__c": "Auto-Rep adds account + target"
+    },
+    {
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "OMAccountId__c": "{{del_loaded_accountUId}}",
+      "AccountUniqueIntegrationId__c": "{{del_loaded_accountUId}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "InitialLevel__c": "TERR",
+      "RefTerritoryType__c": "TERR",
+      "SubmitStatus__c": "SUBM",
+      "ApprovalStatus__c": "APPR",
+      "Action__c": "DELE",
+      "SimulationStatusRep__c": "DONE",
+      "SOMEngagementSegmentId__c": "segA-{{TestUniqueIntegrationId}}",
+      "RefEngagementSegment__c": "SegA",
+      "Comment__c": "Auto-Rep removes account bulkloaded by EP"
+    },
+    {
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "OMAccountId__c": "{{edit_loaded_accountUId}}",
+      "AccountUniqueIntegrationId__c": "{{edit_loaded_accountUId}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "InitialLevel__c": "TERR",
+      "RefTerritoryType__c": "TERR",
+      "SubmitStatus__c": "SUBM",
+      "ApprovalStatus__c": "APPR",
+      "Action__c": "EDIT",
+      "SimulationStatusRep__c": "DONE",
+      "SOMEngagementSegmentId__c": "segC-{{TestUniqueIntegrationId}}",
+      "RefEngagementSegment__c": "SegC",
+      "Targets__c": "{{repModifiedtargets}}",
+      "Comment__c": "Auto-Rep updates bulkload targets"
+    },
+    {
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "OMAccountId__c": "{{edit_hoedited_accountUId}}",
+      "AccountUniqueIntegrationId__c": "{{edit_hoedited_accountUId}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "InitialLevel__c": "TERR",
+      "RefTerritoryType__c": "TERR",
+      "SubmitStatus__c": "SUBM",
+      "ApprovalStatus__c": "APPR",
+      "Action__c": "EDIT",
+      "SimulationStatusRep__c": "DONE",
+      "SOMEngagementSegmentId__c": "segC-{{TestUniqueIntegrationId}}",
+      "RefEngagementSegment__c": "SegC",
+      "Targets__c": "{{repModifiedtargets}}",
+      "Comment__c": "Auto-Rep updates HO set targets"
+    },
+    {
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "OMAccountId__c": "{{edit_affiliated_accountUId}}",
+      "AccountUniqueIntegrationId__c": "{{edit_affiliated_accountUId}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "InitialLevel__c": "TERR",
+      "RefTerritoryType__c": "TERR",
+      "SubmitStatus__c": "SUBM",
+      "ApprovalStatus__c": "APPR",
+      "Action__c": "EDIT",
+      "SimulationStatusRep__c": "DONE",
+      "SOMEngagementSegmentId__c": "segC-{{TestUniqueIntegrationId}}",
+      "RefEngagementSegment__c": "SegC",
+      "Targets__c": "{{repModifiedtargets}}",
+      "Comment__c": "Auto-Rep updates HO set targets for affiliated account"
+    }
+  ],
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "simulateCr",
+        "query": "select a.\"Name\", t.\"Name\" \"Terr\", ar.\"Source\", acc.\"UniqueIntegrationId\" \"OMAccountUId\", ar.\"Action\", ar.\"Targets\" from static.\"OMAdjudication\" a join static.\"OMAccountAdjudicationResult\" ar on ar.\"OMAdjudicationId\" = a.\"Id\" join static.\"OMAdjudicationTerritory\" ad on ad.\"OMAdjudicationId\" = a.\"Id\" join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = ar.\"SOMTerritoryId\" join static.\"OMAccount\" acc on acc.\"Id\" = ar.\"OMAccountId\" where a.\"Id\" = '{{Adjudication.Id}}' and acc.\"UniqueIntegrationId\" in ('{{add_accountUId}}','{{del_loaded_accountUId}}','{{loaded_accountUId}}','{{edit_loaded_accountUId}}','{{edit_affiliated_accountUId}}','{{affiliated_accountUId}}','{{edit_hoedited_accountUId}}') and ar.\"AccessKey\" = ad.\"AccessKeyRep\" order by acc.\"UniqueIntegrationId\"",
+        "exp_result": "[{Name:{{Adjudication.Name}},Terr:{{ScenarioTerritory.Name[0]}},Source:DSHR,OMAccountUId:{{edit_affiliated_accountUId}},Action:null,Targets:{{expRepModifiedtargets}}},{Name:{{Adjudication.Name}},Terr:{{ScenarioTerritory.Name[0]}},Source:DSHR,OMAccountUId:{{affiliated_accountUId}},Action:null,Targets:{{expHoModifiedtargets}}},{Name:{{Adjudication.Name}},Terr:{{ScenarioTerritory.Name[0]}},Source:EXPL,OMAccountUId:{{edit_hoedited_accountUId}},Action:null,Targets:{{expRepModifiedtargets}}},{Name:{{Adjudication.Name}},Terr:{{ScenarioTerritory.Name[0]}},Source:EXPL,OMAccountUId:{{edit_loaded_accountUId}},Action:null,Targets:{{expRepModifiedtargets}}},{Name:{{Adjudication.Name}},Terr:{{ScenarioTerritory.Name[0]}},Source:EXPL,OMAccountUId:{{loaded_accountUId}},Action:null,Targets:{{expLoadedtargets}}},{Name:{{Adjudication.Name}},Terr:{{ScenarioTerritory.Name[0]}},Source:EXPL,OMAccountUId:{{add_accountUId}},Action:ADD,Targets:{{expRepModifiedtargets}}},{Name:{{Adjudication.Name}},Terr:{{ScenarioTerritory.Name[0]}},Source:EXPL,OMAccountUId:{{del_loaded_accountUId}},Action:DELE,Targets:null}]"
+      }
+    ]
+  }
+}

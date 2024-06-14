@@ -1,0 +1,22 @@
+{
+  "BaseData": {
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "CallItemValidBU_Update",
+        "query": "select \"Id\",\"OMCallId\",\"OMAccountId\",\"SOMProductId\",\"Item\",\"Quantity\",\"UniqueIntegrationId\",\"Status\",\"CreatedById\",to_date(\"CreatedDate\") as \"CreatedDate\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\",\"LastModifiedById\" from STATIC.\"OMCallItem\" where \"Id\"='ND{{TestUniqueIntegrationID}}CallItemBU'",
+        "exp_result": "[{Id:ND{{TestUniqueIntegrationID}}CallItemBU,OMCallId:CallId{{TestUniqueIntegrationID}},OMAccountId:null,SOMProductId:a4v3t0000003mavAAA,Item:a4v3t0000003mavAAA,Quantity:13,UniqueIntegrationId:{{TestUniqueIntegrationID}}CallItemBU,Status:INAC,CreatedById:0051N000005pIXVQA2,CreatedDate:{{dbt_today}},LastModifiedDate:{{dbt_today}},LastModifiedById:Automation}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "CallItemValid_Update",
+        "query": "select count(*) from STATIC.\"OMCallItem\" where \"Id\" like ('%{{TestUniqueIntegrationID}}%')",
+        "exp_result": "[{COUNT(*):6}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      }
+    ]
+  }
+}

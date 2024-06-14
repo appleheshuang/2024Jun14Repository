@@ -1,0 +1,25 @@
+{
+  "Tests": {
+    "MergeResults": [
+      // Covers C15522295, C15533370 for OMR-17533
+      {
+        "testname": "Account Data after INAC'",
+        "query": "SELECT  \"UniqueIntegrationId\",\"Status\" FROM \"STATIC\".\"OMAccount\" at(timestamp => '{{dbt_current}}'::timestamp_ltz) where \"UniqueIntegrationId\"='{{recalc_accountUId}}';",
+        "exp_result": "[{UniqueIntegrationId:{{recalc_accountUId}},Status:INAC}]",
+        "odataQuery": "/OMAccount?$select=UniqueIntegrationId,Status&$filter=UniqueIntegrationId eq '{{recalc_accountUId}}' &showquery=true&as-of-date={{dbt_current}}"
+      },
+      {
+        "testname": "Account Data before INAC'",
+        "query": "skip",
+        "exp_result": "[{UniqueIntegrationId:{{recalc_accountUId}},Status:INAC}]",
+        "odataQuery": "/OMAccount?$select=UniqueIntegrationId,Status&$filter=UniqueIntegrationId eq '{{recalc_accountUId}}' &showquery=true&as-of-date={{AccountActiveTime}}"
+      },
+      {
+        "testname": "Account Data with Yesterday's Date'",
+        "query": "skip",
+        "exp_result": "[{UniqueIntegrationId:{{recalc_accountUId}},Status:INAC}]",
+        "odataQuery": "/OMAccount?$select=UniqueIntegrationId,Status&$filter=UniqueIntegrationId eq '{{recalc_accountUId}}' &showquery=true&as-of-date={{dbt_1dayago}}"
+      }
+    ]
+  }
+}

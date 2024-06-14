@@ -1,0 +1,61 @@
+{
+  "BaseData": {
+    "som_region_id": "GS",
+    "EffeDateToday": "{{dbt_today}}",
+    "GeoUId": "NZ-1234"
+  },
+
+  "Scenario": {
+    "Description": "Test Case C16188949 Delete past on entities OMUserAssignment, OMGeographyTerritory",
+    "EffectiveDate__c": "{{EffeDateToday}}",
+    "EndDate__c": "{{EffeDateToday}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "DELPAST-{{TestUniqueIntegrationID}}"
+  },
+
+  //Delete past UserAssignment, GeographyTerritory
+  "ScenarioUserAssignment": [
+    {
+      "Action__c": "DEL",
+      "AssignmentType__c": "SECN",
+      "SOMUserId__c": "{{User.SOMUserId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "RefUserType__c": "{{User.Type__c[0]}}",
+      "SOMUserAssignmentId__c": "{{ScenarioUserAssignment.SOMUserAssignmentId__c[0]}}"
+    }
+  ],
+  "ScenarioGeographyTerritory": [
+    {
+      "Action__c": "DEL",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "GEO01",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "SOMGeographyTerritoryId__c": "{{ScenarioGeographyTerritory.SOMGeographyTerritoryId__c[0]}}"
+    }
+  ],
+
+  "Tests": {
+    "ValidationErrors": [
+      {
+        "testname": "Error - Delete past OMUserAssignment",
+        "table": "OMUserAssignment",
+        "ErrorCode": "InvalidAction",
+        "ErrorMessage": "Record can only be deleted if it has a current or future effective date",
+        "Item1": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "Item2": "{{User.UniqueIntegrationId__c[0]}}",
+        "PKey": "{{ScenarioUserAssignment.UniqueIntegrationId__c[0]}}"
+      },
+      {
+        "testname": "Error - Delete past OMGeographyTerritory",
+        "table": "OMGeographyTerritory",
+        "ErrorCode": "InvalidAction",
+        "ErrorMessage": "Record can only be deleted if it has a current or future effective date",
+        "Item1": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "Item2": "{{GeoUId}}",
+        "PKey": "{{ScenarioGeographyTerritory.UniqueIntegrationId__c[0]}}"
+      }
+    ]
+  }
+}

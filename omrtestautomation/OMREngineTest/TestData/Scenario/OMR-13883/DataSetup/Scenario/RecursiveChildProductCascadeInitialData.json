@@ -1,0 +1,170 @@
+{
+  "BaseData": {
+    "som_region_id": "US",
+    "regionUID": "REG02",
+    "salesforceUID": "13883-SF",
+    "territoryUID": "13883",
+    "explicit_accountUId": "45ACCTEXP"
+  },
+
+  "Scenario": {
+    "Description": "Pre-commit for RecursiveChildProductCascade",
+    "Name": "RecursiveChildProductCascade-precommit",
+    "EffectiveDate__c": "2022-12-01",
+    "EndDate__c": "3999-12-31",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "{{TestUniqueIntegrationId}}-13883"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "KOL",
+      "Name": "13883"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "13845-T0",
+      "UniqueIntegrationId__c": "{{territoryUID}}-T0-{{TestUniqueIntegrationId}}",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "TERR"
+    }
+  ],
+  "ScenarioAccountProductExplicit": [
+    {
+      "Action__c": "ADD",
+      "AccountUniqueIntegrationId__c": "{{explicit_accountUId}}",
+      "ProductUniqueIntegrationId__c": "Market-{{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "APE-01-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "2500-01-01",
+      "EndDate__c": "3000-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "AccountUniqueIntegrationId__c": "{{explicit_accountUId}}",
+      "ProductUniqueIntegrationId__c": "Brand-{{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "APE-02-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "2500-01-01",
+      "EndDate__c": "3000-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "AccountUniqueIntegrationId__c": "{{explicit_accountUId}}",
+      "ProductUniqueIntegrationId__c": "Detail-{{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "APE-03-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "2500-01-01",
+      "EndDate__c": "3000-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "AccountUniqueIntegrationId__c": "{{explicit_accountUId}}",
+      "ProductUniqueIntegrationId__c": "Bundle-{{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "APE-04-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "2500-01-01",
+      "EndDate__c": "3000-12-31"
+    }
+  ],
+  "ScenarioAccountExplicit": [
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "COMP",
+      "AccountUniqueIntegrationId__c": "{{explicit_accountUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "OMScenarioId__c": "{{Scenario.Id}}"
+    }
+  ],
+  "ScenarioAccountProductTerrExplicit": [
+    {
+      "Action__c": "ADD",
+      "AccountUniqueIntegrationId__c": "{{explicit_accountUId}}",
+      "ProductUniqueIntegrationId__c": "Market-{{TestUniqueIntegrationId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "APTE-01-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "2500-01-01",
+      "EndDate__c": "3000-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "AccountUniqueIntegrationId__c": "{{explicit_accountUId}}",
+      "ProductUniqueIntegrationId__c": "Brand-{{TestUniqueIntegrationId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "APTE-02-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "2500-01-01",
+      "EndDate__c": "3000-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "AccountUniqueIntegrationId__c": "{{explicit_accountUId}}",
+      "ProductUniqueIntegrationId__c": "Detail-{{TestUniqueIntegrationId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "APTE-03-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "2500-01-01",
+      "EndDate__c": "3000-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "AccountUniqueIntegrationId__c": "{{explicit_accountUId}}",
+      "ProductUniqueIntegrationId__c": "Bundle-{{TestUniqueIntegrationId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "APTE-04-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "2500-01-01",
+      "EndDate__c": "3000-12-31"
+    }
+  ],
+  "ScenarioProductSalesForce": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "Market-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2500-01-01",
+      "EndDate__c": "3000-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "Brand-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2500-01-01",
+      "EndDate__c": "3000-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "Detail-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2500-01-01",
+      "EndDate__c": "3000-12-31"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "Bundle-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2500-01-01",
+      "EndDate__c": "3000-12-31"
+    }
+  ]
+  //"ScenarioAccountProductRule": [
+  //  {
+  //    "Action__c": "ADD",
+  //    "Name": "OMR-13883-APRule-{{TestUniqueIntegrationID}}",
+  //    "UniqueIntegrationId__c": "OMR-13883-APRule-{{TestUniqueIntegrationID}}",
+  //    "RuleData__c": "{\"AccountRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC\"},{\"type\":\"LessThan\",\"table\":\"OMAccountTerritoryProduct\",\"column\":\"Decile\",\"value\":\"8\"}]},\"ProductRule\":{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Brand,Detail\"}}"
+  //  }
+  //]
+}

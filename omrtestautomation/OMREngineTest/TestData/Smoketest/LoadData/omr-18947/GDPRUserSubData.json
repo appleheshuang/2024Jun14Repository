@@ -1,0 +1,56 @@
+{
+  "Bulkload": {
+    "S3Path": "InTestJane/OMR-18947/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMR-18947_OMFieldTitle.csv",
+        "table": "OMFieldTitle"
+      },
+      {
+        "file": "OMR-18947_OMUser.csv",
+        "table": "OMUser"
+      },
+
+      {
+        "file": "OMR-18947_OMUserAddress.csv",
+        "table": "OMUserAddress"
+      },
+      {
+        "file": "OMR-18947_OMUserCommunication.csv",
+        "table": "OMUserCommunication"
+      },
+      {
+        "file": "OMR-18947_OMUserContact.csv",
+        "table": "OMUserContact"
+      },
+      {
+        "file": "OMR-18947_OMUserDependent.csv",
+        "table": "OMUserDependent"
+      },
+      {
+        "file": "OMR-18947_OMUserDriver.csv",
+        "table": "OMUserDriver"
+      },
+      {
+        "file": "OMR-18947_OMUserDriverIncident.csv",
+        "table": "OMUserDriverIncident"
+      },
+      {
+        "file": "OMR-18947_OMUserEducation.csv",
+        "table": "OMUserEducation"
+      },
+      {
+        "file": "OMR-18947_OMUserTitle.csv",
+        "table": "OMUserTitle"
+      },
+      {
+        "file": "OMR-18947_OMUserVehicle.csv",
+        "table": "OMUserVehicle"
+      }
+    ]
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "REG01",
+    "accountAdd": "ACCT04",
+    "EffectiveDate": "{{today-30}}",
+    "EndDate": "{{today+30}}"
+  },
+
+  "Scenario": {
+    "Description": "Precondition for Account Product Territory Rule Test",
+    "name": "Account Product Territory Rule Test",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "APTRSetup-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "SFADD-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "name": "SFADDAPTR"
+    },
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "SFDELE-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "name": "SFDELEAPTR"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "SFADD-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "TerrADDAPTR",
+      "UniqueIntegrationId__c": "ADDTERR-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR",
+      "SOMTerritoryId__c": "ADDTERR_{{TestUniqueIntegrationID}}"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "SFDELE-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "TerrDELEAPTR",
+      "UniqueIntegrationId__c": "DELETERR-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR",
+      "SOMTerritoryId__c": "DELETERR_{{TestUniqueIntegrationID}}"
+    }
+  ],
+
+  "ScenarioRule": [
+    {
+      "Name": "AddRule",
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "AddRule-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "RuleData__c": "{\"geography\":false,\"explicit\":false,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Practices,MP\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Audiology\"}]},\"hierarchy\":\"TERR\"}",
+      "RuleScope": "ALGN",
+      "FilterRegions__c": "{{som_region_id}}",
+      "AlignmentLimitedToRegion": false
+    },
+    {
+      "Name": "DeleteRule",
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "DeleteRule-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[1]}}",
+      "RuleData__c": "{\"geography\":false,\"explicit\":false,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Practices\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Audiology\"}]},\"hierarchy\":\"TERR\"}",
+      "RuleScope": "ALGN",
+      "FilterRegions__c": "{{som_region_id}}",
+      "AlignmentLimitedToRegion": false
+    }
+  ],
+
+
+  "ScenarioAccountProductRule": [
+    // precondition for Add
+    {
+      "Action__c": "ADD",
+      "Name": "AddRule-{{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "ADDRule-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Practices\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Audiology\"}]},\"ProductRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"},{\"type\":\"Equals\",\"table\":\"OMProduct\",\"column\":\"SOMProductId\",\"value\":\"PADD{{TestUniqueIntegrationID}}\"}]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}"
+    },
+    // precondition for Delete
+    {
+      "Action__c": "ADD",
+      "Name": "DeleteRule-{{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "DeleteRule-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[1]}}",
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Practices\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Audiology\"}]},\"ProductRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"},{\"type\":\"Equals\",\"table\":\"OMProduct\",\"column\":\"SOMProductId\",\"value\":\"PDELETE{{TestUniqueIntegrationID}}\"}]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}"
+    }
+  ],
+
+    "Tests":
+    {
+      "MergeResults": [
+        {
+          "testname": "Account Product Rule",
+          "query": "select \"Name\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductRule\" where \"UniqueIntegrationId\" in ('{{ScenarioAccountProductRule.UniqueIntegrationId__c[0]}}','{{ScenarioAccountProductRule.UniqueIntegrationId__c[1]}}') order by \"Name\" asc ",
+          "exp_result": "[{Name:{{ScenarioAccountProductRule.Name[0]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV},{Name:{{ScenarioAccountProductRule.Name[1]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV}]",
+          "odataQuery": "/OMAccountProductRule?$select=Name,EffectiveDate,EndDate,Status&$filter=(UniqueIntegrationId eq '{{ScenarioAccountProductRule.UniqueIntegrationId__c[0]}}' or UniqueIntegrationId eq '{{ScenarioAccountProductRule.UniqueIntegrationId__c[1]}}') &$orderBy=Name asc"
+        },
+        {
+          "testname": "Account Product Rule Version",
+          "query": "select \"Name\",\"EffectiveDate\",\"EndDate\",\"Status\",\"VersionNumber\" from \"{{schema}}\".\"OMAccountProductRuleVersion\" where \"Name\"  in ('{{ScenarioAccountProductRule.Name[0]}}','{{ScenarioAccountProductRule.Name[1]}}') order by \"Name\" asc ",
+          "exp_result": "[{Name:{{ScenarioAccountProductRule.Name[0]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV,VersionNumber:1},{Name:{{ScenarioAccountProductRule.Name[1]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV,VersionNumber:1}]",
+          "odataQuery": "/OMAccountProductRuleVersion?$select=Name,EffectiveDate,EndDate,Status,VersionNumber&$filter=(Name eq '{{ScenarioAccountProductRule.Name[0]}}' or Name eq '{{ScenarioAccountProductRule.Name[1]}}') &$orderBy=Name asc"
+        },
+        {
+          "testname": "Account Product Territory Restricition",
+          "query": "select \"OMAccountId\",\"SOMProductId\",\"SOMTerritoryId\",\"EffectiveDate\",\"EndDate\", \"Source\" from \"{{schema}}\".\"OMAccountProductTerritoryRestriction\"  where \"Reason\" like '%{{TestUniqueIntegrationID}}%' and  \"OMAccountId\" ='{{accountAdd}}'  order by \"Reason\" asc",
+          "exp_result": "[{OMAccountId:ACCT04,SOMProductId:PADD{{TestUniqueIntegrationID}},SOMTerritoryId:ADDTERR_{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Source:DSHR},{OMAccountId:ACCT04,SOMProductId:PDELETE{{TestUniqueIntegrationID}},SOMTerritoryId:DELETERR_{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Source:DSHR}]",
+          "odataQuery": "/OMAccountProductTerritoryRestriction?$select=OMAccountId,SOMProductId,SOMTerritoryId,EffectiveDate,EndDate,Source&$filter=contains(Reason,'{{TestUniqueIntegrationID}}') and OMAccountId eq '{{accountAdd}}' &$orderBy=Reason asc"
+        }
+      ]
+    }
+}

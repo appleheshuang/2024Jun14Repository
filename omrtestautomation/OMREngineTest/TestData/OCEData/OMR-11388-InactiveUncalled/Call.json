@@ -1,0 +1,12 @@
+﻿{
+
+	"Call": [
+		{
+			"CallDateTime__c": "{{today}}",
+			"CallType__c": "Detail Only",
+			"Territory__c": "{{ScenarioTerritory.Name[0]}}",
+			"UniqueIntegrationId__c": "Call1-{{TestUniqueIntegrationId}}",
+			"Account__c": "{{Account.Id[1]}}"
+		}
+	]
+}

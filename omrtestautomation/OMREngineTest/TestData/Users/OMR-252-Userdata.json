@@ -1,0 +1,23 @@
+﻿{
+  "User": [
+    {
+        "Name": "repUsererrAuto",
+        "EffectiveDate__c": "2020-01-01",
+        "EndDate__c": "3999-12-31",
+        "UniqueIntegrationId__c": "ERR1",
+        "FirstName__c": "reperr",
+        "LastName__c": "AutoTest",
+        "NewHire__c": "false",
+        "Status__c": "ACTV",
+        "Type__c": "FELD",
+        "UserName__c": "repUsererrAuto@iqvia.com",
+        "Email__c": "anup.venkatesha@iqvia.com",
+        "Country__c": "US",
+        "OMRegionId__c": "REG01",
+        "LocaleSidKey__c": "en_US",
+        "TimeZoneSidKey__c": "America/New_York",
+        "EmailEncodingKey__c": "ISO-8859-1",
+        "LanguageLocaleKey__c": "en_US"
+    }
+  ]
+}

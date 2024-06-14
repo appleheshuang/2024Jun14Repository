@@ -1,0 +1,105 @@
+{
+  "Tests": {
+    "Explicits": [
+      {
+        "testname": "WinnerExplicits-370Overlapping",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{370WinnerId}},EffectiveDate:{{OverlappingExplicitStart_1}},EndDate:{{DayBeforeExplicitStart_2_Overlapping}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{370WinnerId}},EffectiveDate:{{OverlappingExplicitStart_2}},EndDate:{{OverlappingExplicitEnd_2}}}]",
+        "account_uids": "{{370WinnerId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+      },
+      {
+        "testname": "LoserExplicits-370",
+        "exp_result": "[]",
+        "account_uids": "{{370LoserId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+      }
+    ],
+    "Exclusions": [
+      {
+        "testname": "WinnerExclusions-370Overlapping",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountUID:{{370WinnerId}},EffectiveDate:{{OverlappingExcludeStart_1}},EndDate:{{DayBeforeExcludeStart_2_Overlapping}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountUID:{{370WinnerId}},EffectiveDate:{{OverlappingExcludeStart_2}},EndDate:{{OverlappingExcludeEnd_2}}}]",
+        "account_uids": "{{370WinnerId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}"
+      },
+      {
+        "testname": "LoserExclusions-370",
+        "exp_result": "[]",
+        "account_uids": "{{370LoserId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}"
+      }
+    ],
+    "AlignmentResults": [
+      // T0: Rule + Explicit
+      {
+        "testname": "WinnerAlignmentsT0-370Overlapping",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{370WinnerId}},EffectiveDate:{{OverlappingExplicitStart_1}},EndDate:{{OverlappingExplicitEnd_2}},Source:EXPL,Reason:},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{370WinnerId}},EffectiveDate:{{RuleStart}},EndDate:{{RuleEnd}},Source:DSHR,Reason:{{ScenarioRule.Name[0]}}|{{ScenarioRule.SOMRuleId__c[0]}}}]",
+        "account_uids": "{{370WinnerId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+      },
+      // T1: Rule + exclusions
+      {
+        "testname": "WinnerAlignmentsT1-370Overlapping",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountUID:{{370WinnerId}},EffectiveDate:{{DayAfterExcludeEnd_2}},EndDate:{{RuleEnd}},Source:DSHR,Reason:{{ScenarioRule.Name[0]}}|{{ScenarioRule.SOMRuleId__c[0]}}}]",
+        "account_uids": "{{370WinnerId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}"
+      },
+      // Loser Alignments
+      {
+        "testname": "LoserAlignments-370",
+        "exp_result": "[]",
+        "account_uids": "{{370LoserId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}},{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}},{{ScenarioTerritory.SOMTerritoryId__c[1]}}"
+      }
+    ]
+    /***   Commented due to OMR-20499
+    "MergeResults": [
+      {
+        "testname": "WinnerAPExplicits-Overlapping",
+        "query": "select \"OMAccountId\", \"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"LastScenario\" from {{schema}}.\"OMAccountProductExplicit\" where \"OMAccountId\" = '{{370WinnerId}}' and \"SOMProductId\" = '{{ProductId}}' and \"Status\" = 'ACTV' order by \"OMAccountId\",\"EffectiveDate\"",
+        "exp_result": "[{OMAccountId:{{370WinnerId}},SOMProductId:{{ProductId}},EffectiveDate:{{OverlappingExplicitStart_1}},EndDate:{{OverlappingExplicitEnd_1}},LastScenario:{{Scenario.Id}}},{OMAccountId:{{370WinnerId}},SOMProductId:{{ProductId}},EffectiveDate:{{OverlappingExplicitStart_2}},EndDate:{{OverlappingExplicitEnd_2}},LastScenario:{{Scenario.Id}}}]"
+      },
+      {
+        "testname": "LoserAPExplicits",
+        "query": "select \"OMAccountId\", \"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"LastScenario\" from {{schema}}.\"OMAccountProductExplicit\" where \"OMAccountId\" = '{{370LoserId}}' and \"SOMProductId\" = '{{ProductId}}' and \"Status\" = 'ACTV' order by \"OMAccountId\",\"EffectiveDate\"",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "WinnerAPRestrictions-Overlapping",
+        "query": "select \"OMAccountId\", \"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Source\" from {{schema}}.\"OMAccountProductRestriction\" where \"OMAccountId\" = '{{370WinnerId}}' and \"SOMProductId\" = '{{ProductId}}' order by \"OMAccountId\",\"EffectiveDate\"",
+        "exp_result": "[{OMAccountId:{{370WinnerId}},SOMProductId:{{ProductId}},EffectiveDate:{{OverlappingExplicitStart_1}},EndDate:{{OverlappingExplicitEnd_1}},Source:EXPL},{OMAccountId:{{370WinnerId}},SOMProductId:{{ProductId}},EffectiveDate:{{OverlappingExplicitStart_2}},EndDate:{{OverlappingExplicitEnd_2}},Source:EXPL}]"
+      },
+      {
+        "testname": "LoserAPRestrictions",
+        "query": "select \"OMAccountId\", \"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Source\" from {{schema}}.\"OMAccountProductRestriction\" where \"OMAccountId\" = '{{370LoserId}}' and \"SOMProductId\" = '{{ProductId}}' order by \"OMAccountId\",\"EffectiveDate\"",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "WinnerAPTExplicits-Overlapping",
+        "query": "select \"OMAccountId\", \"SOMProductId\",\"SOMTerritoryId\",\"EffectiveDate\",\"EndDate\",\"LastScenario\" from {{schema}}.\"OMAccountProductTerritoryExplicit\" where \"OMAccountId\" = '{{370WinnerId}}' and \"SOMProductId\" = '{{ProductId}}' and \"Status\" = 'ACTV' order by \"OMAccountId\",\"SOMTerritoryId\",\"EffectiveDate\"",
+        "exp_result": "[{OMAccountId:{{370WinnerId}},SOMProductId:{{ProductId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},EffectiveDate:{{OverlappingExplicitStart_1}},EndDate:{{OverlappingExplicitEnd_1}},LastScenario:{{Scenario.Id}}},{OMAccountId:{{370WinnerId}},SOMProductId:{{ProductId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},EffectiveDate:{{OverlappingExplicitStart_2}},EndDate:{{OverlappingExplicitEnd_2}},LastScenario:{{Scenario.Id}}}]"
+      },
+      {
+        "testname": "LoserAPTExplicits",
+        "query": "select \"OMAccountId\", \"SOMProductId\",\"SOMTerritoryId\",\"EffectiveDate\",\"EndDate\",\"LastScenario\" from {{schema}}.\"OMAccountProductTerritoryExplicit\" where \"OMAccountId\" = '{{370LoserId}}' and \"SOMProductId\" = '{{ProductId}}' and \"Status\" = 'ACTV' order by \"OMAccountId\",\"SOMTerritoryId\",\"EffectiveDate\"",
+        "exp_result": "[]"
+      },
+      {
+        "testname": "WinnerAPTRestrictions-Overlapping",
+        "query": "select \"OMAccountId\", \"SOMProductId\",\"SOMTerritoryId\",\"EffectiveDate\",\"EndDate\",\"Source\" from {{schema}}.\"OMAccountProductTerritoryRestriction\" where \"OMAccountId\" = '{{370WinnerId}}' and \"SOMProductId\" = '{{ProductId}}' order by \"OMAccountId\",\"SOMTerritoryId\",\"EffectiveDate\"",
+        "exp_result": "[{OMAccountId:{{370WinnerId}},SOMProductId:{{ProductId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},EffectiveDate:{{OverlappingExplicitStart_1}},EndDate:{{OverlappingExplicitEnd_1}},Source:EXPL},{OMAccountId:{{370WinnerId}},SOMProductId:{{ProductId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},EffectiveDate:{{OverlappingExplicitStart_2}},EndDate:{{OverlappingExplicitEnd_2}},Source:EXPL}]"
+      },
+      {
+        "testname": "LoserAPTRestrictions",
+        "query": "select \"OMAccountId\", \"SOMProductId\",\"SOMTerritoryId\",\"EffectiveDate\",\"EndDate\",\"Source\" from {{schema}}.\"OMAccountProductTerritoryRestriction\" where \"OMAccountId\" = '{{370LoserId}}' and \"SOMProductId\" = '{{ProductId}}' order by \"OMAccountId\",\"SOMTerritoryId\",\"EffectiveDate\"",
+        "exp_result": "[]"
+      }
+    ] */
+  }
+}

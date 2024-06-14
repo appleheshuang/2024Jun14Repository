@@ -1,0 +1,19 @@
+{
+  "Bulkload": {
+    "S3Path": "autotestdata/RecalcAccount/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "RecalcAccount.csv",
+        "table": "OMAccount"
+      },
+      {
+        "file": "RecalcAffiliation.csv",
+        "table": "OMAffiliation"
+      }
+    ]
+  }
+}

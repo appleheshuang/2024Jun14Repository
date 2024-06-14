@@ -1,0 +1,43 @@
+{
+  "BaseData": {
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "CallItemValidBU-New",
+        "query": "select \"Id\",\"OMCallId\",\"OMAccountId\",\"SOMProductId\",\"Item\",\"Quantity\",\"UniqueIntegrationId\",\"Status\",\"CreatedById\",to_date(\"CreatedDate\") as \"CreatedDate\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\",\"LastModifiedById\" from STATIC.\"OMCallItem\" where \"Id\"='ND{{TestUniqueIntegrationID}}CallItemBU'",
+        "exp_result": "[{Id:ND{{TestUniqueIntegrationID}}CallItemBU,OMCallId:CallId{{TestUniqueIntegrationID}},OMAccountId:null,SOMProductId:a4v3t0000003mavAAA,Item:a4v3t0000003mavAAA,Quantity:3,UniqueIntegrationId:{{TestUniqueIntegrationID}}CallItemBU,Status:ACTV,CreatedById:0051N000005pIXVQA2,CreatedDate:{{dbt_today}},LastModifiedDate:{{dbt_today}},LastModifiedById:Automation}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "CallItemInvalid-New",
+        "query": "select count(*) from STATIC.\"OMCallItem\" where \"Id\" in ('ND{{TestUniqueIntegrationID}}CallItemPast','ND{{TestUniqueIntegrationID}}OtherCRM','ND{{TestUniqueIntegrationID}}CallItemNoBU','ND{{TestUniqueIntegrationID}}CallItemOtherBU','ND{{TestUniqueIntegrationID}}NoCallId')",
+        "exp_result": "[{COUNT(*):0}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "CallItemMandatory-New",
+        "query": "select \"Id\",\"OMCallId\",\"OMAccountId\",\"SOMProductId\",\"Item\",\"Quantity\",\"UniqueIntegrationId\",\"Status\",\"CreatedById\",to_date(\"CreatedDate\") as \"CreatedDate\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\",\"LastModifiedById\" from STATIC.\"OMCallItem\" where \"Id\"='ND{{TestUniqueIntegrationID}}CallItemMandatory'",
+        "exp_result": "[{Id:ND{{TestUniqueIntegrationID}}CallItemMandatory,OMCallId:CallId{{TestUniqueIntegrationID}},OMAccountId:null,SOMProductId:a4v3t0000003mavAAA,Item:null,Quantity:null,UniqueIntegrationId:null,Status:ACTV,CreatedById:0051N000005pIXVQA2,CreatedDate:{{dbt_today}},LastModifiedDate:{{dbt_today}},LastModifiedById:Automation}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "CallItemLargeQuantity-New",
+        "query": "select \"Id\",\"OMCallId\",\"OMAccountId\",\"SOMProductId\",\"Item\",\"Quantity\",\"UniqueIntegrationId\",\"Status\",\"CreatedById\",to_date(\"CreatedDate\") as \"CreatedDate\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\",\"LastModifiedById\" from STATIC.\"OMCallItem\" where \"Id\"='ND{{TestUniqueIntegrationID}}CallItemLargeQuantity'",
+        "exp_result": "[{Id:ND{{TestUniqueIntegrationID}}CallItemLargeQuantity,OMCallId:CallId{{TestUniqueIntegrationID}},OMAccountId:null,SOMProductId:a4v3t0000003mavAAA,Item:null,Quantity:2147483647,UniqueIntegrationId:null,Status:ACTV,CreatedById:0051N000005pIXVQA2,CreatedDate:{{dbt_today}},LastModifiedDate:{{dbt_today}},LastModifiedById:Automation}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "CallItemNoCallID-Valid",
+        "query": "select count(*) from STATIC.\"OMCallItem\" where \"Id\" like ('%{{TestUniqueIntegrationID}}%')",
+        "exp_result": "[{COUNT(*):4}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      }
+    ]
+  }
+}

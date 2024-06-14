@@ -1,0 +1,96 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+	"BaseData": {
+		"EffectiveDate": "2022-01-01",
+		"EndDate": "2022-01-31",
+		"regUID": "TC",
+		"geographyUID": "1234",
+		"accountUId": "ACCT05" /*Medical Professional*/
+	},
+  "Scenario": {
+    "Description": "Run test Scenario",
+    "name": "TCs:C7848141,C7848142,C7848145",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{regUID}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "RUN{{TestUniqueIntegrationID}}"
+  },
+	"ScenarioGeographyTerritory": [
+		// Move FORWARD in PAST Territory#1 C7848142
+		{
+			"Action__c": "EFFE",
+			"Source__c": "EXPL",
+			"OMScenarioId__c": "{{Scenario.Id[1]}}",
+			"EffectiveDate__c": "{{EffectiveDate}}", // 2021-12-01 -> 2022-01-01
+			"EndDate__c": "2022-02-15",
+			"SOMGeographyTerritoryId__c": "{{ScenarioGeographyTerritory.SOMGeographyTerritoryId__c[0]}}",
+			"UniqueIntegrationId__c": "GEO1-{{TestUniqueIntegrationID}}"
+		},
+		{
+			"Action__c": "EXPR",
+			"Source__c": "EXPL",
+			"OMScenarioId__c": "{{Scenario.Id[1]}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "2022-02-15", // 2022-02-10 -> 2022-02-15
+			"SOMGeographyTerritoryId__c": "{{ScenarioGeographyTerritory.SOMGeographyTerritoryId__c[0]}}",
+			"UniqueIntegrationId__c": "GEO2-{{TestUniqueIntegrationID}}"
+		},
+		//Move BACK in the PAST Territory#2 C7848141
+		{
+			"Action__c": "EFFE",
+			"Source__c": "EXPL",
+			"OMScenarioId__c": "{{Scenario.Id[1]}}",
+			"EffectiveDate__c": "{{EffectiveDate}}", // 2022-02-01 -> 2022-01-01
+			"EndDate__c": "{{EndDate}}",
+			"SOMGeographyTerritoryId__c": "{{ScenarioGeographyTerritory.SOMGeographyTerritoryId__c[1]}}",
+			"UniqueIntegrationId__c": "GEO3-{{TestUniqueIntegrationID}}"
+		},
+		{
+			"Action__c": "EXPR",
+			"Source__c": "EXPL",
+			"OMScenarioId__c": "{{Scenario.Id[1]}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}", // 2022-02-28 -> 2021-01-31
+			"SOMGeographyTerritoryId__c": "{{ScenarioGeographyTerritory.SOMGeographyTerritoryId__c[1]}}",
+			"UniqueIntegrationId__c": "GEO4-{{TestUniqueIntegrationID}}"
+		}
+		/* DELETE in PAST Territory#3 C7848145, Removed due to OMR-18900
+		{
+			"Action__c": "DEL",
+			"Source__c": "EXPL",
+			"OMScenarioId__c": "{{Scenario.Id[1]}}",
+			"SOMGeographyTerritoryId__c": "{{ScenarioGeographyTerritory.SOMGeographyTerritoryId__c[2]}}",
+			"UniqueIntegrationId__c": "GEO5-{{TestUniqueIntegrationID}}"
+		}*/
+	],
+  "Tests": {
+		"MergeResults": [
+			// Check edited allignment on Territory#1 (Move Forward in Past)
+			{
+				"testname": "merge_terr1Alig",
+				"query": "select \"OMAccountId\",\"SOMTerritoryId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountTerritory\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[0]}}' AND \"OMAccountId\"='{{accountUId}}'",
+				"exp_result": "[{OMAccountId:{{accountUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},EffectiveDate:2021-12-01,EndDate:2022-02-15}]",
+				"odataQuery": "/OMAccountTerritory?$select=OMAccountId,SOMTerritoryId,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[0]}}' AND OMAccountId eq '{{accountUId}}'"
+			},
+			// Check edited allignment on Territory#2 (Move Back in Past)
+			{
+				"testname": "merge_terr2Alig",
+				"query": "select \"OMAccountId\",\"SOMTerritoryId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountTerritory\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[1]}}' AND \"OMAccountId\"='{{accountUId}}'",
+				"exp_result": "[{OMAccountId:{{accountUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}}]",
+				"odataQuery": "/OMAccountTerritory?$select=OMAccountId,SOMTerritoryId,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[1]}}' AND OMAccountId eq '{{accountUId}}'"
+			}
+			/* Check edited allignment on Territory#3 (Delete in the past)
+			{
+				"testname": "merge_terr3Alig",
+				"query": "select \"OMAccountId\",\"SOMTerritoryId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountTerritory\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[2]}}' AND \"OMAccountId\"='{{accountUId}}'",
+				"exp_result": "[{OMAccountId:{{accountUId}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[2]}},EffectiveDate:2021-12-01,EndDate:2021-12-31}]",
+				"odataQuery": "/OMAccountTerritory?$select=OMAccountId,SOMTerritoryId,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[2]}}' AND OMAccountId eq '{{accountUId}}'"
+			}*/
+		]
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "Bulkload": {
+    "S3Path": "autotestdata/OMR-13032/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMRegion1.csv",
+        "table": "OMRegion"
+      },
+      {
+        "file": "OMAccount_Add1.csv",
+        "table": "OMAccount"
+      },
+      {
+        "file": "OMProduct_Add1.csv",
+        "table": "OMProduct"
+      },
+      {
+        "file": "OMUser_Add1.csv",
+        "table": "OMUser"
+      },
+      {
+        "file": "OMAccountAddress_Add1.csv",
+        "table": "OMAccountAddress"
+      },
+      {
+        "file": "OMGeography_Add1.csv",
+        "table": "OMGeography"
+      }
+    ]
+  }
+}

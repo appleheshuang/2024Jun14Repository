@@ -1,0 +1,28 @@
+﻿{
+	"Region": [
+		{
+			"SOMRegionId__c": "ZW",
+			"UniqueIntegrationId__c": "OMR15543-ZW",
+			"ThresholdAction__c": ""
+		},
+		{
+			"SOMRegionId__c": "ZM",
+			"UniqueIntegrationId__c": "OMR15543-ZM",
+			"ThresholdAction__c": ""
+		},
+		{
+			"SOMRegionId__c": "ZR",
+			"UniqueIntegrationId__c": "OMR15543-ZR",
+			"ThresholdAction__c": ""
+		}
+	],
+	"Tests": {
+		"MergeResults": [
+			{
+				"testname": "RegionalThresholds",
+				"query": "select \"UniqueIntegrationId\",\"ThresholdAction\" from static.\"OMRegion\" where \"SOMRegionId\" in ('ZR','ZM','ZW') order by \"UniqueIntegrationId\"",
+				"exp_result": "[{UniqueIntegrationId:OMR15543-ZM,ThresholdAction:null},{UniqueIntegrationId:OMR15543-ZR,ThresholdAction:null},{UniqueIntegrationId:OMR15543-ZW,ThresholdAction:null}]"
+			}
+		]
+	}
+}

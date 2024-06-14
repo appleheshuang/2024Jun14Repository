@@ -1,0 +1,41 @@
+{
+  "Bulkload": {
+    "S3AccessKey": "",
+    "S3SecretKey": "",
+    "S3BucketName": "",
+    "S3Path": "autotestdata/OMR-13631/",
+    "FileFormat": "CSV",
+    "Rollback": false,
+    "ValidateOnly": false,
+    "ReplaceExistingData": false,
+    "PicklistValidate": false,
+    "Files": [
+      {
+        "file": "OMR-13631_C10414323_OMProduct.csv",
+        "table": "OMProduct"
+      }
+    ]
+  },
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "C10414323 - Child record load – active records – parent record doesn’t exist -- OMProduct",
+        // [From Bulkload.json] "query": "select creg.\"SOMProductId\", creg.\"Name\", creg.\"UniqueIntegrationId\", creg.\"Type\",creg.\"DetailType\", creg.\"EffectiveDate\", creg.\"EndDate\", creg.\"Status\",creg.\"SOMRegionId\", preg.\"SOMProductId\" \"ParentId\", preg.\"Name\" \"ParentName\"  from STATIC.\"OMProduct\" creg left outer join STATIC.\"OMProductHierarchy\" h on h.\"SOMChildProductId\" = creg.\"SOMProductId\"left outer join STATIC.\"OMProduct\" preg on preg.\"SOMProductId\" = h.\"SOMParentProductId\" where creg.\"UniqueIntegrationId\" in ('PROD1','PROD02','PROD03','PROD04','PROD05') AND creg.\"Status\" = 'ACTV' order by creg.\"UniqueIntegrationId\"",
+        //"query": "SELECT creg.\"SOMProductId\", creg.\"Name\", creg.\"UniqueIntegrationId\", creg.\"EffectiveDate\", creg.\"EndDate\", creg.\"Status\", creg.\"SOMRegionId\" FROM STATIC.\"OMProduct\" creg WHERE creg.\"UniqueIntegrationId\" ILIKE '%OMR-13631%' ORDER BY creg.\"UniqueIntegrationId\"",
+        "query": "SELECT creg.\"SOMProductId\", creg.\"Name\", creg.\"UniqueIntegrationId\", creg.\"EffectiveDate\", creg.\"EndDate\", creg.\"Status\", creg.\"SOMRegionId\" FROM STATIC.\"OMProduct\" creg WHERE creg.\"UniqueIntegrationId\" IN ('UID_OMR-13631_C10414323_01-HasParent--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414323_02-NoParent--{{TestUniqueIntegrationId}}') ORDER BY creg.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMProductId:ProdId_OMR-13631_C10414323_01-HasParent--{{TestUniqueIntegrationId}},Name:ProdName_OMR-13631_C10414323_01-HasParent--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414323_01-HasParent--{{TestUniqueIntegrationId}},EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:FX}]",
+        "sfQuery": null
+      }
+    ]
+  },
+
+  "Errors": [
+    {
+      "table": "OMProduct",
+      "file": "autotestdata/OMR-13631/{{TestUniqueIntegrationId}}/OMR-13631_C10414323_OMProduct.csv",
+      "error": "(ProdId_OMR-13631_C10414323_02-NoParent--{{TestUniqueIntegrationId}}) in table OMProduct has an invalid parent key relation in column SOMRegionId: RegionId_NotExist",
+      "lineNumber": 3
+    }
+  ]
+}

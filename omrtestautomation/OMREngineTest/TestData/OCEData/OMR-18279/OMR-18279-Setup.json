@@ -1,0 +1,194 @@
+{
+  "Configs": {
+    "name": "OMR-18279",
+    "jobtype": "commit",
+    "jobparams": "CalculateMaps=false;RuleEngineEnabled=true",
+    "preload": { "Product": "Products/Product.json" }
+  },
+
+  "BaseData": {
+    "som_region_id": "REG01",
+    "regionUID": "REG01",
+    "salesforceUID": "18279-SF",
+    "territoryUID": "18279-TERR",
+    "explicit_accountUId": "45ACCTEXP"
+  },
+
+  "Scenario": {
+    "Description": "OMR-18279PublishSetup",
+    "Name": "OMR-18279PublishSetup",
+    "EffectiveDate__c": "2023-01-01",
+    "EndDate__c": "2100-12-31",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": ""
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "KOL",
+      "Name": "{{salesforceUID}}"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "{{territoryUID}}-00",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationId}}-00",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "{{territoryUID}}-01",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationId}}-01",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "{{territoryUID}}-02",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationId}}-02",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "{{territoryUID}}-DUPLESETUP",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationId}}-03",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "TERR"
+    }
+  ],
+  "ScenarioProductExplicit": [
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[0]}}",
+      "RefProductName__c": "{{Product.Name[0]}}",
+      "RefProductType__c": "{{Product.Type__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "PE-0-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "{{dbt_today-2}}",
+      "EndDate__c": "{{dbt_today-1}}"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[0]}}",
+      "RefProductName__c": "{{Product.Name[0]}}",
+      "RefProductType__c": "{{Product.Type__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "PE-1-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "MIRF",
+      "EffectiveDate__c": "{{dbt_today}}",
+      "EndDate__c": "{{dbt_today}}"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[0]}}",
+      "RefProductName__c": "{{Product.Name[0]}}",
+      "RefProductType__c": "{{Product.Type__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "PE-2-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "SMPL",
+      "EffectiveDate__c": "{{dbt_today}}",
+      "EndDate__c": "{{dbt_today}}"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[0]}}",
+      "RefProductName__c": "{{Product.Name[0]}}",
+      "RefProductType__c": "{{Product.Type__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "PE-3-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "PROM",
+      "EffectiveDate__c": "{{dbt_today+1}}",
+      "EndDate__c": "{{dbt_today+2}}"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[0]}}",
+      "RefProductName__c": "{{Product.Name[0]}}",
+      "RefProductType__c": "{{Product.Type__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[1]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "UniqueIntegrationId__c": "PE-4-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "{{dbt_today-2}}",
+      "EndDate__c": "{{dbt_today-1}}"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[0]}}",
+      "RefProductName__c": "{{Product.Name[0]}}",
+      "RefProductType__c": "{{Product.Type__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[1]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "UniqueIntegrationId__c": "PE-5-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "MIRF",
+      "EffectiveDate__c": "{{dbt_today+1}}",
+      "EndDate__c": "{{dbt_today+2}}"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[0]}}",
+      "RefProductName__c": "{{Product.Name[0]}}",
+      "RefProductType__c": "{{Product.Type__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[2]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[2]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+      "UniqueIntegrationId__c": "PE-6-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "{{dbt_today-2}}",
+      "EndDate__c": "{{dbt_today+2}}"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[0]}}",
+      "RefProductName__c": "{{Product.Name[0]}}",
+      "RefProductType__c": "{{Product.Type__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[3]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[3]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[3]}}",
+      "UniqueIntegrationId__c": "PE-7-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "{{dbt_today-2}}",
+      "EndDate__c": "{{dbt_today+2}}"
+    }
+  ]
+}

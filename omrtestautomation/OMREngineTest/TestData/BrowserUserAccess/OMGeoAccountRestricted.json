@@ -1,0 +1,19 @@
+{
+  "BaseData": {
+    "accountId": "ACCT01",
+    "accountName": "ACCT01",
+    "geographyName": "POST-1234",
+    "EffectiveDate": "2020-01-01"
+
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "WhitelistedJoinRestricted",
+        "query": "select a.\"Name\" \"Account\", g.\"Name\" \"Geography\", ga.\"EffectiveDate\" from static.\"OMAccount\" a join static.\"OMGeographyAccount\" ga on ga.\"OMAccountId\" = a.\"Id\" join static.\"OMGeography\" g on g.\"SOMGeographyId\" = ga.\"SOMGeographyId\" where a.\"Id\" = '{{accountId}}'",
+        "exp_result": "Error"
+//        "exp_result": "[{Account:{{accountName}},Geography:{{geographyName}},EffectiveDate:{{EffectiveDate}}}]"
+      }
+    ]
+  }
+}

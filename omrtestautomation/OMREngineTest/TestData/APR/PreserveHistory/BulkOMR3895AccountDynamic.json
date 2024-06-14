@@ -1,0 +1,34 @@
+{
+  "Bulkload": {
+    "S3AccessKey": "",
+    "S3SecretKey": "",
+    "S3BucketName": "",
+    "S3Path": "autotestdata/OMR-3893",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMAccount_RECALC_OMR-3893.csv",
+        "table": "OMAccount"
+      }
+    ]
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Recalc Account",
+        "query": "select \"Name\",\"Status\" from \"STATIC\".\"OMAccount\" where \"UniqueIntegrationId\" like '3893RECALC{{TestUniqueIntegrationId}}' order by \"Name\" asc ",
+        "exp_result": "[{Name:3893RECALC{{TestUniqueIntegrationId}},Status:ACTV}]",
+        "odataQuery": "/OMAccount?$select=Name,Status&$filter=contains(UniqueIntegrationId,'3893RECALC{{TestUniqueIntegrationId}}')&$orderBy=Name asc"
+      },
+      {
+        "testname": "INAC Account",
+        "query": "select \"Name\",\"Status\" from \"STATIC\".\"OMAccount\" where \"UniqueIntegrationId\" = 'Add{{TestUniqueIntegrationId}}' order by \"Name\" asc ",
+        "exp_result": "[{Name:AddEXPL,Status:INAC}]",
+        "odataQuery": "/OMAccount?$select=Name,Status&$filter=contains(UniqueIntegrationId,'Add{{TestUniqueIntegrationId}}')&$orderBy=Name asc"
+      }
+    ]
+  }
+}

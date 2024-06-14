@@ -1,0 +1,62 @@
+{
+  "Bulkload": {
+    "S3AccessKey": "",
+    "S3SecretKey": "",
+    "S3BucketName": "",
+    "S3Path": "autotestdata/OMR-13250/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMProduct13250.csv",
+        "table": "OMProduct"
+      },
+      {
+        "file": "OMProduct8239-withcreatelastmod.csv",
+        "table": "OMProduct"
+      },
+      {
+        "file": "OMProduct8239-withcreate.csv",
+        "table": "OMProduct"
+      },
+      {
+        "file": "OMProduct8239-withlastmod.csv",
+        "table": "OMProduct"
+      }
+    ]
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Product-unique",
+        "query": "select \"UniqueIntegrationId\", \"Type\",\"EffectiveDate\", \"EndDate\", \"Status\",\"SOMRegionId\" from STATIC.\"OMProduct\"  where \"UniqueIntegrationId\" in ('P13250-OPEN-{{TestUniqueIntegrationId}}','P13250-CLOSED-{{TestUniqueIntegrationId}}','P13250-GLOBAL-{{TestUniqueIntegrationId}}','P8239-CREATELASTMOD-{{TestUniqueIntegrationId}}','P8239-CREATE-{{TestUniqueIntegrationId}}','P8239-LASTMOD-{{TestUniqueIntegrationId}}') AND \"Status\" = 'ACTV' order by \"UniqueIntegrationId\"",
+        "exp_result": "[{UniqueIntegrationId:P13250-CLOSED-{{TestUniqueIntegrationId}},Type:Brand,EffectiveDate:2022-08-01,EndDate:3022-07-31,Status:ACTV,SOMRegionId:REG01},{UniqueIntegrationId:P13250-GLOBAL-{{TestUniqueIntegrationId}},Type:Brand,EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:null},{UniqueIntegrationId:P13250-OPEN-{{TestUniqueIntegrationId}},Type:Bundle,EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:REG01},{UniqueIntegrationId:P8239-CREATE-{{TestUniqueIntegrationId}},Type:Bundle,EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:REG01},{UniqueIntegrationId:P8239-CREATELASTMOD-{{TestUniqueIntegrationId}},Type:Bundle,EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:REG01},{UniqueIntegrationId:P8239-LASTMOD-{{TestUniqueIntegrationId}},Type:Bundle,EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:REG01}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "Product-create-provided",
+        "query": "select \"SOMProductId\",convert_timezone('Antarctica/McMurdo',\"CreatedDate\") as \"CreatedDate\" from STATIC.\"OMProduct\"  where \"UniqueIntegrationId\" in ('P8239-CREATELASTMOD-{{TestUniqueIntegrationId}}','P8239-CREATE-{{TestUniqueIntegrationId}}') AND \"Status\" = 'ACTV' order by \"UniqueIntegrationId\"",
+        "exp_result": "[{SOMProductId:P8239-CREATE-{{TestUniqueIntegrationId}},CreatedDate:2022-08-23T09:02:45+12:00},{SOMProductId:P8239-CREATELASTMOD-{{TestUniqueIntegrationId}},CreatedDate:2022-08-23T09:02:45+12:00}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "Product-lastmod-provided",
+        "query": "select \"SOMProductId\",convert_timezone('Antarctica/McMurdo',\"LastModifiedDate\") as \"LastModifiedDate\" from STATIC.\"OMProduct\"  where \"UniqueIntegrationId\" in ('P8239-CREATELASTMOD-{{TestUniqueIntegrationId}}','P8239-LASTMOD-{{TestUniqueIntegrationId}}') AND \"Status\" = 'ACTV' order by \"UniqueIntegrationId\"",
+        "exp_result": "[{SOMProductId:P8239-CREATELASTMOD-{{TestUniqueIntegrationId}},LastModifiedDate:2022-08-23T09:03:45+12:00},{SOMProductId:P8239-LASTMOD-{{TestUniqueIntegrationId}},LastModifiedDate:2022-08-23T09:03:45+12:00}]",
+        "sfQuery": null
+      }
+    ],
+  "TimestampResults": [
+    {
+      "testname": "Product-create-timestamp",
+      "query": "select \"SOMProductId\",\"CreatedDate\" as \"act\" from STATIC.\"OMProduct\" where \"UniqueIntegrationId\" in ('P13250-OPEN-{{TestUniqueIntegrationId}}','P13250-GLOBAL-{{TestUniqueIntegrationId}}','P8239-LASTMOD-{{TestUniqueIntegrationId}}')"
+    },
+    {
+      "testname": "Product-lastmod-timestamp",
+      "query": "select \"SOMProductId\", \"LastModifiedDate\" as \"act\" from STATIC.\"OMProduct\" where \"UniqueIntegrationId\" in ('P13250-OPEN-{{TestUniqueIntegrationId}}','P13250-GLOBAL-{{TestUniqueIntegrationId}}','P8239-CREATE-{{TestUniqueIntegrationId}}')"
+    }
+    ]
+  }
+}

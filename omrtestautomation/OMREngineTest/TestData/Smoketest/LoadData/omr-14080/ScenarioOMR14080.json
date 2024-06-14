@@ -1,0 +1,125 @@
+{
+    "Bulkload": {
+        "S3Path": "autotestdata/OMR-14080/",
+        "FileFormat": "CSV",
+        "Rollback": true,
+        "VaildateOnly": false,
+        "ReplaceExistingData": false,
+        "Files": [
+            {
+                "file": "OMAccountProductFields_14080.csv",
+                "table": "OMAccountProductFields"
+            }
+            ,
+            {
+                "file": "OMAccountSalesForceFields_14080.csv",
+                "table": "OMAccountSalesForceFields"
+            },
+            {
+                "file": "OMAccountTerritoryFields_14080.csv",
+                "table": "OMAccountTerritoryFields"
+            },
+            {
+                "file": "OMAccountTerritoryProduct_14080.csv",
+                "table": "OMAccountTerritoryProduct"
+            }
+        ]
+    },
+
+    "Configs": {
+        "loadData": "Smoketest\\LoadData\\Bulkload.json",
+        "resetData": "false",
+        "jobtype": "calculate",
+        "rca": "true"
+    },
+
+    "BaseData": {
+        "som_region_id": "MS",
+        "salesforceUID": "SFKOL",
+        "territoryUID": "SFTERR"
+    },
+
+    "Scenario": {
+        "Description": "",
+        "Name": "",
+        "EffectiveDate__c": "2020-01-01",
+        "EndDate__c": "2022-10-21",
+        "OMRegionId__c": "{{som_region_id}}",
+        "ScenarioStatus__c": "PENDG",
+        "UniqueIntegrationId__c": ""
+    },
+
+    "ScenarioSalesForce": [
+        {
+            "Action__c": "ADD",
+            "SOMSalesForceId__c": "SF-{{TestUniqueIntegrationId}}",
+            "UniqueIntegrationId__c": "SF-{{TestUniqueIntegrationId}}",
+            "SOMRegionId__c": "{{som_region_id}}",
+            "RegionUniqueIntegrationId__c": "{{som_region_id}}",
+            "Type__c": "KOL",
+            "Name": "SF__NAME_{{TestUniqueIntegrationId}}"
+        }
+    ],
+
+    "ScenarioTerritory": [
+      {
+        "Action__c": "ADD",
+        "OMScenarioId__c": "{{Scenario.Id}}",
+        "SOMTerritoryId__c": "TERR{{TestUniqueIntegrationId}}",
+        "SalesForceUniqueIntegrationId__c": "SF-{{TestUniqueIntegrationId}}",
+        "TerritorySalesForceType__c": "PRIM",
+        "SOMRegionId__c": "{{som_region_id}}",
+        "Name": "TERR_NAME_{{TestUniqueIntegrationId}}",
+        "UniqueIntegrationId__c": "TERR-{{TestUniqueIntegrationId}}",
+        "RegionUniqueIntegrationId__c": "{{regionUID}}",
+        "Type__c": "TERR"
+      }
+    ],
+
+    "Tests": {
+        "MergeResults": [
+            {
+                "testname": "CreatedByAndLastModifiedBy_OMAccount",
+                "query": "OMAccount,Id,Name,Status,CreatedBy,LastModifiedBy,UniqueIntegrationId:'ACCT01'",
+                "exp_result": "[{Id:ACCT01,Name:ACCT01,Status:ACTV,CreatedBy:System,LastModifiedBy:System}]",
+                "sfQuery": null
+            },
+            {
+                "testname": "CreatedByAndLastModifiedBy_OMAffiliation",
+                "query": "OMAffiliation,From,To,Status,CreatedBy,LastModifiedBy,UniqueIntegrationId:'ACCT01-1234'",
+                "exp_result": "[{From:ACCT01,To:ACCT01,Status:ACTV,CreatedBy:System,LastModifiedBy:System}]",
+                "sfQuery": null
+            },
+            {
+                "testname": "CreatedByAndLastModifiedBy_OMAccountAddress",
+                "query": "OMAccountAddress,Id,Country,Status,CreatedBy,LastModifiedBy,UniqueIntegrationId:'ADDRESS01'",
+                "exp_result": "[{Id:ADDRESS01,Country:NZ,Status:ACTV,CreatedBy:System,LastModifiedBy:System}]",
+                "sfQuery": null
+            },
+            {
+                "testname": "CreatedByAndLastModifiedBy_OMAccountProductFields",
+                "query": "OMAccountProductFields,SOMProductId,OMAccountId,CreatedBy,LastModifiedBy,UniqueIntegrationId:'AP-{{TestUniqueIntegrationId}}'",
+                "exp_result": "[{SOMProductId:PROD1,OMAccountId:ACCT05,CreatedBy:System,LastModifiedBy:System}]",
+                "sfQuery": null
+            },
+            {
+                "testname": "CreatedByAndLastModifiedBy_OMAccountSalesForceFields",
+                "query": "OMAccountSalesForceFields,SOMSalesForceId,OMAccountId,CreatedBy,LastModifiedBy,UniqueIntegrationId:'ASF-{{TestUniqueIntegrationId}}'",
+                "exp_result": "[{SOMSalesForceId:SF-{{TestUniqueIntegrationId}},OMAccountId:ACCT05,CreatedBy:System,LastModifiedBy:System}]",
+                "sfQuery": null
+            },
+            {
+                "testname": "CreatedByAndLastModifiedBy_OMAccountTerritoryFields",
+                "query": "OMAccountTerritoryFields,SOMTerritoryId,OMAccountId,CreatedBy,LastModifiedBy,UniqueIntegrationId:'ATF-{{TestUniqueIntegrationId}}'",
+                "exp_result": "[{SOMTerritoryId:TERR{{TestUniqueIntegrationId}},OMAccountId:ACCT05,CreatedBy:System,LastModifiedBy:System}]",
+                "sfQuery": null
+            },
+            {
+                "testname": "CreatedByAndLastModifiedBy_OMAccountTerritoryProduct",
+                "query": "OMAccountTerritoryProduct,SOMTerritoryId,OMAccountId,SOMProductId,CreatedBy,LastModifiedBy,UniqueIntegrationId:'ATP-{{TestUniqueIntegrationId}}'",
+                "exp_result": "[{SOMTerritoryId:TERR{{TestUniqueIntegrationId}},OMAccountId:ACCT05,SOMProductId:PROD1,CreatedBy:System,LastModifiedBy:System}]",
+                "sfQuery": null
+            }
+        ]
+    }
+}

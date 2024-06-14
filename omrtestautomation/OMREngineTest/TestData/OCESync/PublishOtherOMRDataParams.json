@@ -1,0 +1,14 @@
+﻿{
+  "OCESyncParams": {
+    "Type": "OCESync",
+    "Subtype": "PUBLISH_OTHER_OMR_DATA",
+    "Mode": "OCE",
+    "Parameters": {
+      "EtmTerritoryModelName": "OCE",
+      "EtmTerritoryTypeName": "TerrTypeDataSetup1",
+      "RuleEngineEnabled": "true",
+      "PopulateUserManager": "true",
+      "OCEPersonalGeographyTypeMapping": "POST/ZipToTerritory,GEO1/BrickToTerritory,GEO2/Geo2,GEO3/Geo3"
+    }
+  }
+}

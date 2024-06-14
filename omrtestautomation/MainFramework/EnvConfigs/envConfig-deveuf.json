@@ -1,0 +1,8 @@
+{
+	"Url": "https://dev-euf.dev.optimizer.iqvia.io/",
+	"EnvRoot": "dev",
+	"TestDataBucket": "guardians-testdata-east2",
+	"tenantcreator": "master-tenantcreator",
+    "creator_pswd": "8xsTbcsCvHwa2bwvGQ5D1pYytwmURm@!",
+    "creator_apikey": "OAGkekRgrF51pPX2goBSb3dJ28NWOmhy1B61Pl6N1"
+}

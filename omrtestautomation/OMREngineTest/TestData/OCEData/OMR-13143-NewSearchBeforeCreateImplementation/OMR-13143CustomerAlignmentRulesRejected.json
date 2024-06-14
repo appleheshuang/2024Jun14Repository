@@ -1,0 +1,10 @@
+﻿{
+	"CustomerAlignmentRule": [
+		{
+			"Account__c": "{{Account.Id[0]}}",
+			"UniqueIntegrationId__c": "Auto2-{{TestUniqueIntegrationId}}",
+			"Territories__c": "{{ScenarioTerritory.Name[0]}}",
+			"ApprovalStatus__c": "Rejected"
+		}
+	]
+}

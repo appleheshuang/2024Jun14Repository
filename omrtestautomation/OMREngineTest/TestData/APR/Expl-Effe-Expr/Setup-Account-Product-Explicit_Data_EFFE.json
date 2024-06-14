@@ -1,0 +1,118 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "REG01",
+    "accountUId": "ACCT01",
+    "accountUIdEXPR": "ACCT02",
+    "EffectiveDate": "{{today-30}}",
+    "EndDate": "{{today+30}}"
+  },
+
+  "Scenario": {
+    "Description": "Precondition for Account Product Explicit EFFE TEST",
+    "name": "Account Product Explicit EFFE",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "APREFFESetup-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioAccountProductExplicit": [
+    // precondition for EFFE Past
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "ProductUniqueIntegrationId__c": "EFFEPAST-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}",
+      "UniqueIntegrationId__c": "AEFFEPAST{{TestUniqueIntegrationID}}"
+    },
+    //precondition for EFFE Current
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "ProductUniqueIntegrationId__c": "EFFECUR-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}",
+      "UniqueIntegrationId__c": "AEFFECUR{{TestUniqueIntegrationID}}"
+    },
+    //precondition for EFFE Future
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "ProductUniqueIntegrationId__c": "EFFEFUT-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}",
+      "UniqueIntegrationId__c": "AEFFEFUT{{TestUniqueIntegrationID}}"
+    }, // precondition for EXPR Past
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUIdEXPR}}",
+      "ProductUniqueIntegrationId__c": "EFFEPAST-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}",
+      "UniqueIntegrationId__c": "AEXPRPAST{{TestUniqueIntegrationID}}"
+    },
+    //precondition for EXPR Current
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUIdEXPR}}",
+      "ProductUniqueIntegrationId__c": "EFFECUR-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}",
+      "UniqueIntegrationId__c": "AEXPRCUR{{TestUniqueIntegrationID}}"
+    },
+    //precondition for EXPR Future
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUIdEXPR}}",
+      "ProductUniqueIntegrationId__c": "EFFEFUT-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}",
+      "UniqueIntegrationId__c": "AEXPRFUT{{TestUniqueIntegrationID}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Account Product Explicit EFFE",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductExplicit\" where \"OMAccountId\"='{{accountUId}}' and \"SOMProductId\" in ('EFFEPAST-{{TestUniqueIntegrationID}}','EFFECUR-{{TestUniqueIntegrationID}}','EFFEFUT-{{TestUniqueIntegrationID}}')  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUId}},SOMProductId:EFFECUR-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV},{OMAccountId:{{accountUId}},SOMProductId:EFFEFUT-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV},{OMAccountId:{{accountUId}},SOMProductId:EFFEPAST-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV}]"
+      },
+      {
+        "testname": "Account Product Restricition EFFE",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountProductRestriction\"  where \"OMAccountId\"='{{accountUId}}' and \"SOMProductId\" in ('EFFEPAST-{{TestUniqueIntegrationID}}','EFFECUR-{{TestUniqueIntegrationID}}','EFFEFUT-{{TestUniqueIntegrationID}}')  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUId}},SOMProductId:EFFECUR-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}},{OMAccountId:{{accountUId}},SOMProductId:EFFEFUT-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}},{OMAccountId:{{accountUId}},SOMProductId:EFFEPAST-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}}]"
+      },
+      {
+        "testname": "Account Product Explicit EXPR",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductExplicit\" where \"OMAccountId\"='{{accountUIdEXPR}}' and \"SOMProductId\" in ('EFFEPAST-{{TestUniqueIntegrationID}}','EFFECUR-{{TestUniqueIntegrationID}}','EFFEFUT-{{TestUniqueIntegrationID}}')  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUIdEXPR}},SOMProductId:EFFECUR-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV},{OMAccountId:{{accountUIdEXPR}},SOMProductId:EFFEFUT-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV},{OMAccountId:{{accountUIdEXPR}},SOMProductId:EFFEPAST-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV}]"
+      },
+      {
+        "testname": "Account Product Restricition EXPR",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountProductRestriction\"  where \"OMAccountId\"='{{accountUIdEXPR}}' and \"SOMProductId\" in ('EFFEPAST-{{TestUniqueIntegrationID}}','EFFECUR-{{TestUniqueIntegrationID}}','EFFEFUT-{{TestUniqueIntegrationID}}')  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUIdEXPR}},SOMProductId:EFFECUR-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}},{OMAccountId:{{accountUIdEXPR}},SOMProductId:EFFEFUT-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}},{OMAccountId:{{accountUIdEXPR}},SOMProductId:EFFEPAST-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}}]"
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "Bulkload": {
+    "S3AccessKey": "",
+    "S3SecretKey": "",
+    "S3BucketName": "",
+    "S3Path": "autotestdata/OMR-13631/",
+    "FileFormat": "CSV",
+    "Rollback": false,
+    "ValidateOnly": false,
+    "ReplaceExistingData": false,
+    "PicklistValidate": false,
+    "Files": [
+      {
+        "file": "OMR-13631_C10414332_OMProduct.csv",
+        "table": "OMProduct"
+      },
+      {
+        "file": "OMR-13631_C10414332_OMProductHierarchy_1-Load.csv",
+        "table": "OMProductHierarchy"
+      }
+    ]
+  },
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "C10414332 - Child record update – inactive to active – parent record is inactive -- OMProductHierarchy - Load",
+        "query": "SELECT creg.\"SOMProductHierarchyId\", creg.\"UniqueIntegrationId\", creg.\"EffectiveDate\", creg.\"EndDate\", creg.\"Status\" FROM STATIC.\"OMProductHierarchy\" creg WHERE creg.\"UniqueIntegrationId\" IN ('UID_OMR-13631_C10414332_01--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414332_02--{{TestUniqueIntegrationId}}','UID_OMR-13631_C10414332_03--{{TestUniqueIntegrationId}}') ORDER BY creg.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMProductHierarchyId:ProdHierId_OMR-13631_C10414332_01--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414332_01--{{TestUniqueIntegrationId}},EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:INAC},{SOMProductHierarchyId:ProdHierId_OMR-13631_C10414332_02--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414332_02--{{TestUniqueIntegrationId}},EffectiveDate:2020-08-01,EndDate:2999-12-31,Status:INAC},{SOMProductHierarchyId:ProdHierId_OMR-13631_C10414332_03--{{TestUniqueIntegrationId}},UniqueIntegrationId:UID_OMR-13631_C10414332_03--{{TestUniqueIntegrationId}},EffectiveDate:2020-08-01,EndDate:2999-12-31,Status:INAC}]",
+        "sfQuery": null
+      }
+    ]
+  }
+}

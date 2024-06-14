@@ -1,0 +1,108 @@
+{
+  "BaseData": {
+    "som_region_id": "UK",
+    "salesforceUID": "SF17481",
+    "territoryUID": "T17481",
+    "ruleUID": "R17481",
+    "product_in_sf_1": "PN-COPROMOTE",
+    "product_in_sf_2": "PN-NOPROMOTE",
+    "product_in_sf_3": "UK-COPRO-COMPETITOR",
+    "product_in_sf_4": "UK-COPROMOTE",
+    "product_in_sf_5": "UK-NOPRO-COMPETITOR",
+    "product_in_sf_6": "UK-NOPROMOTE",
+    "product_not_in_sf": "UK-COPRO-EXCLUDE"
+  },
+
+  "Scenario": {
+    "Description": "",
+    "Name": "",
+    "EffectiveDate__c": "2023-08-01",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": ""
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "RegionUniqueIntegrationId__c": "{{som_region_id}}",
+      "Type__c": "KOL",
+      "Name": "SF-17481-INIT"
+    }
+  ],
+
+  "ScenarioRule": [
+    {
+      "Name": "R-17481-INGEO",
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{ruleUID}}-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+      "RuleData__c": "{\"geography\":true,\"explicit\":false,\"filter\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"MP\"}}"
+    }
+  ],
+
+  "ScenarioProductSalesForce": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{product_in_sf_1}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{product_in_sf_2}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{product_in_sf_3}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{product_in_sf_4}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{product_in_sf_5}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "ProductUniqueIntegrationId__c": "{{product_in_sf_6}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesforce.UniqueIntegrationId__c}}",
+      "ProductAlignmentType__c": "DETL"
+    }
+  ],
+
+    "Tests" :
+    {
+      "MergeResults": [
+        {
+          "testname": "InitialUKSalesforce",
+          "query": "OMSalesForce,SOMRegionId,UniqueIntegrationId,Status,EffectiveDate,EndDate,SOMSalesForceId:'{{ScenarioSalesForce.SOMSalesForceId__c[0]}}'",
+          "exp_result": "[{SOMRegionId:{{som_region_id}},UniqueIntegrationId:{{salesforceUID}}-{{TestUniqueIntegrationId}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{open}}}]",
+          "odataQuery": "/OMSalesForce?$select=SOMRegionId,UniqueIntegrationId,Status,EffectiveDate,EndDate&$filter=SOMSalesForceId eq '{{ScenarioSalesForce.SOMSalesForceId__c[0]}}'"
+        },
+        {
+          "testname": "InitialProductSalesforce",
+          "query": "select \"SOMProductId\" from {{schema}}.\"OMProductSalesForce\" where \"SOMSalesForceId\" = '{{ScenarioSalesForce.SOMSalesForceId__c[0]}}' and \"SOMProductId\" in ('{{product_in_sf_1}}','{{product_in_sf_2}}','{{product_in_sf_3}}','{{product_in_sf_4}}','{{product_in_sf_5}}','{{product_in_sf_6}}','{{product_not_in_sf}}') and \"Status\" = 'ACTV' order by \"SOMProductId\"",
+          "exp_result": "[{SOMProductId:{{product_in_sf_1}}},{SOMProductId:{{product_in_sf_2}}},{SOMProductId:{{product_in_sf_3}}},{SOMProductId:{{product_in_sf_4}}},{SOMProductId:{{product_in_sf_5}}},{SOMProductId:{{product_in_sf_6}}}]",
+          "odataQuery": "/OMProductSalesForce?$select=SOMProductId&$filter=SOMSalesForceId eq '{{ScenarioSalesForce.SOMSalesForceId__c[0]}}' and SOMProductId in ('{{product_in_sf_1}}','{{product_in_sf_2}}','{{product_in_sf_3}}','{{product_in_sf_4}}','{{product_in_sf_5}}','{{product_in_sf_6}}','{{product_not_in_sf}}') and Status eq 'ACTV'&$orderby=SOMProductId"
+        }
+      ]
+    }
+}

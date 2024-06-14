@@ -1,0 +1,66 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "REG01",
+    "accountUId": "ACCT01",
+    "EffectiveDate": "{{today-30}}",
+    "EndDate": "{{today+30}}"
+  },
+
+  "Scenario": {
+    "Description": "Precondition for Account Product Explicit Test",
+    "name": "Account Product Explicit Test",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "APRSetup-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioAccountProductExplicit": [
+    // precondition for Actions Add
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "ProductUniqueIntegrationId__c": "Add-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}",
+      "UniqueIntegrationId__c": "AddEXPL-{{TestUniqueIntegrationID}}"
+    },
+    // precondition for Action Delete
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "ProductUniqueIntegrationId__c": "Delete-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}",
+      "UniqueIntegrationId__c": "DeleteEXPL-{{TestUniqueIntegrationID}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Account Product Explicit",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductExplicit\" where \"OMAccountId\"='{{accountUId}}' and \"SOMProductId\" in ('Add-{{TestUniqueIntegrationID}}','Delete-{{TestUniqueIntegrationID}}')  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUId}},SOMProductId:Add-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV},{OMAccountId:{{accountUId}},SOMProductId:Delete-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV}]",
+        "odataQuery": "/OMAccountProductExplicit?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate,Status&$filter=OMAccountId eq '{{accountUId}}' and (SOMProductId eq 'Add-{{TestUniqueIntegrationID}}' or SOMProductId eq 'Delete-{{TestUniqueIntegrationID}}')&$orderBy=SOMProductId asc"
+      },
+      {
+        "testname": "Account Product Restricition",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountProductRestriction\"  where \"OMAccountId\"='{{accountUId}}' and \"SOMProductId\" in ('Add-{{TestUniqueIntegrationID}}','Delete-{{TestUniqueIntegrationID}}')  order by \"SOMProductId\" asc",
+        "exp_result": "[{OMAccountId:{{accountUId}},SOMProductId:Add-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}},{OMAccountId:{{accountUId}},SOMProductId:Delete-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}}}]",
+        "odataQuery": "/OMAccountProductRestriction?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate&$filter=OMAccountId eq '{{accountUId}}' and (SOMProductId eq 'Add-{{TestUniqueIntegrationID}}' or SOMProductId eq 'Delete-{{TestUniqueIntegrationID}}')&$orderBy=SOMProductId asc"
+      }
+    ]
+  }
+}

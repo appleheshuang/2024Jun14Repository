@@ -1,0 +1,117 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "GS",
+    "accountUId": "ACCT01",
+    "accountUId2": "ACCT02",
+    "accountUId3": "ACCT03",
+    "salesforceUID": "SF506",
+    "territoryUID": "T506",
+    "territoryUID2": "T606",
+    "EffectiveDate": "{{today+7}}", // future date to avoid OMR-18899
+    "EndDate": "3999-12-31"
+  },
+
+  "Scenario": {
+    "Description": "Precondition for check actions on entities OMUserAssignment",
+    "name": "Test case C7644688",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "name": "SF 506"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "Terr 506",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "Terr 606",
+      "UniqueIntegrationId__c": "{{territoryUID2}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    }
+  ],
+
+  "ScenarioUserAssignment": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "UniqueIntegrationId__c": "1-{{TestUniqueIntegrationId}}",
+      "AssignmentType__c": "SECN",
+      "SOMUserId__c": "{{User.SOMUserId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "RefUserType__c": "{{User.Type__c[0]}}",
+      "EffectiveDate__c": "{{today+7}}",
+      "EndDate__c": "{{today+13}}"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "UniqueIntegrationId__c": "2-{{TestUniqueIntegrationId}}",
+      "AssignmentType__c": "SECN",
+      "SOMUserId__c": "{{User.SOMUserId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "RefUserType__c": "{{User.Type__c[0]}}",
+      "EffectiveDate__c": "{{today+15}}",
+      "EndDate__c": "{{today+21}}"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "UniqueIntegrationId__c": "3-{{TestUniqueIntegrationId}}",
+      "AssignmentType__c": "SECN",
+      "SOMUserId__c": "{{User.SOMUserId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UserUniqueIntegrationId__c": "{{User.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "RefUserType__c": "{{User.Type__c[0]}}",
+      "EffectiveDate__c": "{{today+22}}",
+      "EndDate__c": "{{today+28}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "merge_userAssignment",
+        "query": "select \"SOMUserId\",\"SOMTerritoryId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMUserAssignment\" where \"SOMUserId\"='{{ScenarioUserAssignment.SOMUserId__c}}' AND \"SOMTerritoryId\"='{{ScenarioUserAssignment.SOMTerritoryId__c}}' order by \"EffectiveDate\" desc",
+        "exp_result": "[{SOMUserId:{{ScenarioUserAssignment.SOMUserId__c}},SOMTerritoryId:{{ScenarioUserAssignment.SOMTerritoryId__c}},EffectiveDate:{{ScenarioUserAssignment.EffectiveDate__c[2]}},EndDate:{{ScenarioUserAssignment.EndDate__c[2]}}},{SOMUserId:{{ScenarioUserAssignment.SOMUserId__c}},SOMTerritoryId:{{ScenarioUserAssignment.SOMTerritoryId__c}},EffectiveDate:{{ScenarioUserAssignment.EffectiveDate__c[1]}},EndDate:{{ScenarioUserAssignment.EndDate__c[1]}}},{SOMUserId:{{ScenarioUserAssignment.SOMUserId__c}},SOMTerritoryId:{{ScenarioUserAssignment.SOMTerritoryId__c}},EffectiveDate:{{ScenarioUserAssignment.EffectiveDate__c}},EndDate:{{ScenarioUserAssignment.EndDate__c}}}]",
+        "odataQuery": "/OMUserAssignment?$select=SOMUserId,SOMTerritoryId,EffectiveDate,EndDate&$filter=SOMUserId eq '{{ScenarioUserAssignment.SOMUserId__c}}' AND SOMTerritoryId eq '{{ScenarioUserAssignment.SOMTerritoryId__c}}'&$orderBy=EffectiveDate desc",
+        "sfQuery": null
+      }
+    ]
+  }
+}

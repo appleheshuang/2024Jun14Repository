@@ -1,0 +1,119 @@
+﻿{
+  "BaseData": {
+    "EffectiveDate": "3025-10-01",
+    "EndDate": "3025-12-31",
+    "som_region_id": "IE",
+    "rep_added_accountUId": "REPADDED",
+    "rep_removed_accountUId": "REPREMOVED",
+    "affiliated_accountUId": "AFFILIATED",
+    "accountUId_removed_by_dm_geo_delete_CR": "DELETEDWITHGEODMCR",
+    "accountUId_added_by_dm_geo_add_CR": "ADDEDBYGEOADDDMCR",
+    "dm_added_geoid": "DUBLIN",
+    "dm_removed_geoid": "KILKENNY",
+    "dm_added_geoid_2": "LONDONDERRY",
+    "dm_removed_geoid_2": "CONNACHT",
+    "adj_type": "FUTURE"
+  },
+  "Adjudication": {
+    "Id": "",
+    "Name": "",
+    "Type__c": "{{adj_type}}",
+    "ReviewStartDate__c": "{{today}}",
+    "ReviewStartDate1__c": "{{today}}",
+    "ReviewStartDate2__c": "{{today}}",
+    "ReviewEndDate__c": "{{today+20}}",
+    "ReviewEndDate1__c": "{{today+10}}",
+    "ReviewEndDate2__c": "{{today+20}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "AdjudicationStatus__c": "PEND",
+    "UserAssignmentType__c": "SECN",
+    "AdjudicationScope__c": "ALGN",
+    "AdjudicationEffectiveDate__c": "{{EffectiveDate}}",
+    "AdjudicationEndDate__c": "{{EndDate}}",
+    "RefScenarioEffectiveDate__c": "{{EffectiveDate}}",
+    "RefScenarioEndDate__c": "{{EndDate}}",
+    "RefScenarioUniqueIntegrationId__c": "{{Scenario.UniqueIntegrationId__c}}",
+    "AutoApplyOnManagerApproval__c": false,
+    "AutoApproveAccountCRsOnSubmit__c": false,
+    "AutoApproveGeographyCRsOnSubmit__c": false
+  },
+  "AdjudicationLevel": [
+    {
+      "Id": "",
+      "TerritoryType__c": "DIST",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "ResponseDays__c": "10.0",
+      "PermittedActions__c": "ADD;DEL;APPRREJ;VIEW",
+      "Role__c": "APPR"
+    },
+    {
+      "Id": "",
+      "TerritoryType__c": "TERR",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "ResponseDays__c": "10.0",
+      "AutomaticAction__c": "REJT",
+      "PermittedActions__c": "ADD;DEL;VIEW",
+      "Role__c": "REQ"
+    }
+  ],
+  "AdjudicationGuardRail": {
+    "Id": "",
+    "OMAdjudicationId__c": "{{Adjudication.Id}}",
+    "TerritoryType__c": "TERR",
+    "MaxAccountPercent__c": "100.0",
+    "MaxGeographyPercent__c": "100.0"
+  },
+  "AdjudicationTerritory": [
+    {
+      "Id": "",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UserAssignmentType__c": "SECN",
+      "Generated__c": false,
+      "RefTerritoryType__c": "TERR"
+    },
+    {
+      "Id": "",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "UserAssignmentType__c": "SECN",
+      "Generated__c": false,
+      "RefTerritoryType__c": "DIST"
+    }
+  ],
+  "Tests": {
+    "AdjUserAssignment": [
+      {
+        "testname": "userassignment_results",
+        "adjudicationId": "{{Adjudication.Id}}",
+        "exp_result": "[{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},Role:REQ,Status:ACTV,SOMUserId:{{User.SOMUserId__c[1]}}},{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Role:APPR,Status:ACTV,SOMUserId:{{User.SOMUserId__c[1]}}},{Territory:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Role:REQ,Status:ACTV,SOMUserId:{{User.SOMUserId__c[0]}}}]"
+      }
+    ],
+    "AdjudicationResult": [
+      {
+        "testname": "initial_accounts_results",
+        "entity": "Account",
+        "adjudicationId": "{{Adjudication.Id}}",
+        "role": "rep",
+        "columns": "Source,Action,t.UniqueIntegrationId",
+        "exp_result": "[{Account:{{affiliated_accountUId}},Source:DSHR,Action:null,UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[0]}}},{Account:{{accountUId_removed_by_dm_geo_delete_CR}},Source:DSHR,Action:null,UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[1]}}},{Account:{{rep_removed_accountUId}},Source:EXPL,Action:null,UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[0]}}}]"
+      },
+      {
+        "testname": "initial_geo_results",
+        "entity": "Geography",
+        "adjudicationId": "{{Adjudication.Id}}",
+        "role": "rep",
+        "columns": "Action,t.UniqueIntegrationId",
+        "exp_result": "[{Geography:{{dm_removed_geoid_2}},Action:null,UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[1]}}},{Geography:{{dm_removed_geoid}},Action:null,UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[0]}}}]"
+      }
+    ]
+  }
+}

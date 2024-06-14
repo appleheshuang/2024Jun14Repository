@@ -1,0 +1,72 @@
+﻿{
+  "BaseData": {
+    "region": "IE",
+    "country": "IE",
+    "locale": "en_GB",
+    "timezone": "Europe/Dublin",
+    "emailencoding": "ISO-8859-1",
+    "language": "en_US"
+  },
+    "User": [
+      {
+        "Name": "rep",
+        "EffectiveDate__c": "2020-01-01",
+        "EndDate__c": "3999-12-31",
+        "UniqueIntegrationId__c": "adj_rep",
+        "FirstName__c": "rep",
+        "LastName__c": "adj",
+        "NewHire__c": "false",
+        "Status__c": "ACTV",
+        "Type__c": "FELD",
+        "UserName__c": "rep@{{domain}}.com",
+        "Email__c": "rep@{{domain}}.com",
+        "Country__c": "{{country}}",
+        "OMRegionId__c": "{{region}}",
+        "LocaleSidKey__c": "{{locale}}",
+        "TimeZoneSidKey__c": "{{timezone}}",
+        "EmailEncodingKey__c": "{{emailencoding}}",
+        "LanguageLocaleKey__c": "{{language}}",
+        "SalesforceUserId__c": "{{rep_userid}}"
+      },
+      {
+        "Name": "dm",
+        "EffectiveDate__c": "2020-01-01",
+        "EndDate__c": "3999-12-31",
+        "UniqueIntegrationId__c": "adj_dm",
+        "FirstName__c": "dm",
+        "LastName__c": "adj",
+        "NewHire__c": "false",
+        "Status__c": "ACTV",
+        "Type__c": "ADMN",
+        "UserName__c": "dm@{{domain}}.com",
+        "Email__c": "dm@{{domain}}.com",
+        "Country__c": "{{country}}",
+        "OMRegionId__c": "{{region}}",
+        "LocaleSidKey__c": "{{locale}}",
+        "TimeZoneSidKey__c": "{{timezone}}",
+        "EmailEncodingKey__c": "{{emailencoding}}",
+        "LanguageLocaleKey__c": "{{language}}",
+        "SalesforceUserId__c": "{{dm_userid}}"
+      },
+      {
+        "Name": "ho",
+        "EffectiveDate__c": "2020-01-01",
+        "EndDate__c": "3999-12-31",
+        "UniqueIntegrationId__c": "adj_ho",
+        "FirstName__c": "ho",
+        "LastName__c": "adj",
+        "NewHire__c": "false",
+        "Status__c": "ACTV",
+        "Type__c": "INHS",
+        "UserName__c": "ho@{{domain}}.com",
+        "Email__c": "ho@{{domain}}.com",
+        "Country__c": "{{country}}",
+        "OMRegionId__c": "{{region}}",
+        "LocaleSidKey__c": "{{locale}}",
+        "TimeZoneSidKey__c": "{{timezone}}",
+        "EmailEncodingKey__c": "{{emailencoding}}",
+        "LanguageLocaleKey__c": "{{language}}",
+        "SalesforceUserId__c": "{{ho_userid}}"
+      }
+    ]
+  }

@@ -1,0 +1,22 @@
+﻿{
+	"Product": [
+		{
+			"Name": "Ramiton-{{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2023-01-01",
+			"Type__c": "Detail",
+			"DetailType__c": "Brand",
+			"UniqueIntegrationId__c": "RAMI-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "PN"
+		},
+		{
+			"Name": "Aspirin-{{TestUniqueIntegrationID}}",
+			"EffectiveDate__c": "2023-01-01",
+			"Type__c": "Detail",
+			"DetailType__c": "Brand",
+			"UniqueIntegrationId__c": "ASPI-{{TestUniqueIntegrationID}}",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "PN"
+		}
+	]
+}

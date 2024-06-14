@@ -1,0 +1,61 @@
+﻿{
+  "Configs": {
+    "loadData": "Smoketest\\LoadData\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "adjudicate"
+  },
+  "BaseData": {
+    "EffectiveDate": "2025-10-25",
+    "EndDate": "3999-12-31",
+    "som_region_id": "IE",
+    "explicit_accountUId": "45ACCTEXP",
+    "explrule_accountUId": "51ACCTEXPLR"
+  },
+  "AdjudicationRequest": {
+    "OMAdjudicationId": "{{Adjudication.Id}}",
+    "OMScenarioId": "{{Scenario.Id}}",
+    "Territories": [],
+    "EffectiveDate": "{{EffectiveDate}}",
+    "SimulationFor": "ALL",
+    "AdjudicationLevel": [
+      {
+        "Id": "",
+        "TerritoryType__c": "DIST",
+        "OMAdjudicationId__c": "{{Adjudication.Id}}",
+        "ResponseDays__c": "10.0",
+        "PermittedActions__c": "ADD;DEL;APPRREJ;VIEW"
+      },
+      {
+        "Id": "",
+        "TerritoryType__c": "TERR",
+        "OMAdjudicationId__c": "{{Adjudication.Id}}",
+        "ResponseDays__c": "10.0",
+        "AutomaticAction__c": "REJT",
+        "PermittedActions__c": "ADD;DEL;VIEW"
+      }
+    ]
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "userassignment_results",
+        "query": "select \"SOMTerritoryId\", \"Role\", \"Status\", \"SOMUserId\" from STATIC.\"OMAdjudicationUserAssignment\" where \"OMAdjudicationId\" = '{{Adjudication.Id}}' order by \"Role\"",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},Role:REQ,Status:ACTV,SOMUserId:{{User.SOMUserId__c[0]}}}]",
+        "odataQuery": "/OMAdjudicationUserAssignment?$select=SOMTerritoryId,Role,Status,SOMUserId&$filter=OMAdjudicationId eq '{{Adjudication.Id}}'&$orderby=Role",
+        "sfQuery": null
+      },
+      {
+        "testname": "initial_accounts_results",
+        "query": "select a.\"Name\",a.\"Type\", ar.\"OMAdjudicationId\", ar.\"SOMTerritoryId\", ar.\"Source\", ar.\"OMAccountId\", ar.\"Action\", ar.\"SOMEngagementSegmentId\", ar.\"Targets\", ar.\"CalculatedSegmentId\", ar.\"Reason\",t.\"Name\" \"Terr\" from static.\"OMAdjudication\" a join static.\"OMAccountAdjudicationResult\" ar on ar.\"OMAdjudicationId\" = a.\"Id\" join static.\"OMAdjudicationTerritory\" ad on ad.\"OMAdjudicationId\" = a.\"Id\" join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = ar.\"SOMTerritoryId\" where a.\"Name\" in ('{{Adjudication.Name}}') and ar.\"AccessKey\" in (ad.\"AccessKeyRep\", ad.\"AccessKeyApprover\") and ar.\"AccessKey\" = ad.\"AccessKeyRep\" order by ar.\"OMAccountId\"",
+        "exp_result": "[{Name:{{Adjudication.Name}},Type:FUTURE,OMAdjudicationId:{{Adjudication.Id}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},Source:EXPL,OMAccountId:{{explicit_accountUId}},Action:null,SOMEngagementSegmentId:null,Targets:null,CalculatedSegmentId:null,Reason:,Terr:{{ScenarioTerritory.Name[0]}}},{Name:{{Adjudication.Name}},Type:FUTURE,OMAdjudicationId:{{Adjudication.Id}},SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},Source:EXPL,OMAccountId:{{explrule_accountUId}},Action:null,SOMEngagementSegmentId:null,Targets:null,CalculatedSegmentId:null,Reason:,Terr:{{ScenarioTerritory.Name[0]}}}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "initial_geo_results",
+        "query": "select a.\"Name\" \"adjuName\" ,a.\"Type\", g.\"Code\", t.\"Name\" \"terrName\", ar.\"OMAdjudicationId\", ar.\"SOMGeographyId\", ar.\"SOMTerritoryId\", ar.\"Action\" from static.\"OMAdjudication\" a join static.\"OMGeographyAdjudicationResult\" ar on ar.\"OMAdjudicationId\" = a.\"Id\" join static.\"OMAdjudicationTerritory\" ad on ad.\"OMAdjudicationId\" = a.\"Id\" join static.\"OMGeography\" g on g.\"SOMGeographyId\" = ar.\"SOMGeographyId\" join {{schema}}.\"OMTerritory\"t on t.\"SOMTerritoryId\" = ad.\"SOMTerritoryId\" where a.\"Name\" in ('{{Adjudication.Name}}') and ar.\"AccessKey\" in (ad.\"AccessKeyRep\", ad.\"AccessKeyApprover\") and ar.\"AccessKey\" = ad.\"AccessKeyRep\" order by a.\"Name\"",
+        "exp_result": "[{adjuName:{{Adjudication.Name}},Type:FUTURE,Code:1234,terrName:{{ScenarioTerritory.Name[0]}},OMAdjudicationId:{{Adjudication.Id}},SOMGeographyId:GEO01,SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},Action:null}]",
+        "sfQuery": null
+      }
+    ]
+  }
+}

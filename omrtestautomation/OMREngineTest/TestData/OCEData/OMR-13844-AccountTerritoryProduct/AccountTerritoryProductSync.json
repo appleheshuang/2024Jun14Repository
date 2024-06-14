@@ -1,0 +1,41 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\LoadData\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate",
+    "rca": "true"
+  },
+  "BaseData": {
+    "som_region_id": "REG01",
+    "aligned_accountUId": "ACCT01",
+    "explicit_accountUId": "45ACCTEXP",
+    "exclude_accountUId": "10ACCTEXC",
+    "explrule_accountUId": "51ACCTEXPLR",
+    "salesforceUID": "SF405",
+    "territoryUID": "T505",
+    "ruleUID": "R201",
+    "regionUID": "REG01",
+    "geographyUID": "1234"
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "AccountTerritoryProductOCE",
+        "query": "select \"Id\", \"OMAccountId\", \"SOMTerritoryId\", \"Decile\" from STATIC.\"OMAccountTerritoryProduct\" where \"Id\" = '{{AccountTerritoryProduct.Id}}'",
+        "exp_result": "[{Id:{{AccountTerritoryProduct.Id}},OMAccountId:{{Account.Id}},SOMTerritoryId:null,Decile:8}]",
+        "odataQuery": "/OMAccountTerritoryProduct?$select=Id,OMAccountId,SOMTerritoryId,Decile&$filter=Id eq '{{AccountTerritoryProduct.Id}}'"
+      },
+      {
+        "testname": "AccountTerritoryProductOCELexi",
+        "query": "select \"Id\", \"OMAccountId\", \"SOMTerritoryId\", \"Decile\" from STATIC.\"OMAccountTerritoryProduct\" where \"Id\" = '{{AccountTerritoryProduct.Id}}'",
+        "exp_result": "[{Id:{{AccountTerritoryProduct.Id}},OMAccountId:{{Account.OCE__UniqueIntegrationID__c}},SOMTerritoryId:null,Decile:8}]",
+        "odataQuery": "/OMAccountTerritoryProduct?$select=Id,OMAccountId,SOMTerritoryId,Decile&$filter=Id eq '{{AccountTerritoryProduct.Id}}'"
+      },
+      {
+        "testname": "InvalidSOMProductId",
+        "query": "select \"Id\", \"OMAccountId\", \"SOMTerritoryId\", \"Decile\" from STATIC.\"OMAccountTerritoryProduct\" where \"Id\" = '{{AccountTerritoryProduct__c.Id}}'",
+        "exp_result": "[]"
+      }
+    ]
+  }
+}

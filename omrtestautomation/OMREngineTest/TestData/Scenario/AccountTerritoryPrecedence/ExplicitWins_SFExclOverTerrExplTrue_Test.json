@@ -1,0 +1,55 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "regionUId": "AI",
+    "accountUId": "ACCT01"
+  },
+
+  "Scenario": {
+    "Name": "OMR-131_test_",
+    "Description": "",
+    "EffectiveDate__c": "2021-09-01",
+    "EndDate__c": "2021-09-30",
+    "ScenarioStatus__c": "PENDG",
+    "OMRegionId__c": "{{regionUId}}",
+    "UniqueIntegrationId__c": "T-{{TestUniqueIntegrationId}}"
+  },
+
+  "ScenarioAccountExplicit": [
+    { // OMR-131 C7958238 Explicit wins, Terri Exclusion first, Terri Explicit within Terri Exclusion, SF excl over Terri Explicit checked
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "EffectiveDate__c": "2021-09-02",
+      "EndDate__c": "2021-09-04"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "AccountExclusion Merge",
+        "query": "select \"OMAccountId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountExclusion\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[0]}}' and \"OMAccountId\"='{{accountUId}}' order by \"EffectiveDate\"",
+        "exp_result": "[{OMAccountId:{{accountUId}},Status:ACTV,EffectiveDate:2021-09-01,EndDate:2021-09-01},{OMAccountId:{{accountUId}},Status:ACTV,EffectiveDate:2021-09-05,EndDate:2021-09-05}]",
+        "odataQuery": "/OMAccountExclusion?$select=OMAccountId,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[0]}}' and OMAccountId eq '{{accountUId}}'&$orderby=EffectiveDate"
+      }
+    ],
+
+    "AlignmentResults": [
+      {
+        "testname": "ExplicitWins",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{accountUId}},EffectiveDate:2021-09-02,EndDate:2021-09-04,Source:EXPL,Reason:}]",
+        "account_uids": "{{accountUId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+      }
+    ]
+  }
+}

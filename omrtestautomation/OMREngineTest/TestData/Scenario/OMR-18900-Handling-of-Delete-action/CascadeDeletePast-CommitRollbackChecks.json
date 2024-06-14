@@ -1,0 +1,21 @@
+{
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Rollback Cascade Delete Future UserAssignments",
+        "query": "select gt.\"SOMUserId\",t.\"UniqueIntegrationId\", gt.\"Status\", gt.\"EffectiveDate\", gt.\"EndDate\" from \"{{schema}}\".\"OMUserAssignment\" gt join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = gt.\"SOMTerritoryId\" where gt.\"SOMTerritoryId\" in ('{{ScenarioTerritory.SOMTerritoryId__c[2]}}','{{ScenarioTerritory.SOMTerritoryId__c[3]}}') order by gt.\"EffectiveDate\", gt.\"EndDate\"",
+        "exp_result": "[{SOMUserId:{{ScenarioUserAssignment.SOMUserId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[2]}},Status:ACTV,EffectiveDate:{{ScenarioUserAssignment.EffectiveDate__c[2]}},EndDate:{{ScenarioUserAssignment.EndDate__c[2]}}},{SOMUserId:{{ScenarioUserAssignment.SOMUserId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[3]}},Status:ACTV,EffectiveDate:{{ScenarioUserAssignment.EffectiveDate__c[3]}},EndDate:{{ScenarioUserAssignment.EndDate__c[3]}}}]"
+      },
+      {
+        "testname": "Rollback Cascade Delete Future GeoTerrs",
+        "query": "select gt.\"SOMGeographyId\", t.\"UniqueIntegrationId\", gt.\"Status\", gt.\"EffectiveDate\", gt.\"EndDate\" from {{schema}}.\"OMGeographyTerritory\" gt join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = gt.\"SOMTerritoryId\" where gt.\"SOMTerritoryId\" in ('{{ScenarioTerritory.SOMTerritoryId__c[2]}}','{{ScenarioTerritory.SOMTerritoryId__c[3]}}') order by gt.\"EffectiveDate\", gt.\"EndDate\"",
+        "exp_result": "[{SOMGeographyId:{{ScenarioGeographyTerritory.SOMGeographyId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[2]}},Status:ACTV,EffectiveDate:{{ScenarioGeographyTerritory.EffectiveDate__c[2]}},EndDate:{{ScenarioGeographyTerritory.EndDate__c[2]}}},{SOMGeographyId:{{ScenarioGeographyTerritory.SOMGeographyId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[3]}},Status:ACTV,EffectiveDate:{{ScenarioGeographyTerritory.EffectiveDate__c[3]}},EndDate:{{ScenarioGeographyTerritory.EndDate__c[3]}}}]"
+      },
+      {
+        "testname": "Rollback Cascade Delete territory",
+        "query": "select \"UniqueIntegrationId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMTerritory\" where \"SOMTerritoryId\" in ('{{ScenarioUserAssignment.SOMTerritoryId__c[2]}}','{{ScenarioUserAssignment.SOMTerritoryId__c[3]}}') order by \"UniqueIntegrationId\"",
+        "exp_result": "[{UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[3]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{Scenario.EndDate__c[0]}}},{UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[2]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{Scenario.EndDate__c[0]}}}]"
+      }
+    ]
+  }
+}

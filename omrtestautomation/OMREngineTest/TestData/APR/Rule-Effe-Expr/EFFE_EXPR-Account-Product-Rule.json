@@ -1,0 +1,123 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "REG01",
+    "accountEFFE": "ACCT04", //Practices
+    "accountEXPR": "ACCT05", //MP
+    "EffectiveDate": "{{today}}",
+    "EndDate": "{{today+10}}"
+  },
+
+  "Scenario": {
+    "Description": "EFFE EXPL Account Product Rule Test",
+    "name": "EFFE EXPL Account Product Rule Test",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "APREXPREFFE-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioAccountProductRule": [
+    // EFFE Past
+    {
+      "Action__c": "EFFE",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMAccountProductRuleId__c": "{{ScenarioAccountProductRule.SOMAccountProductRuleId__c[0]}}",
+      "EffectiveDate__c": "{{today-5}}",
+      "EndDate__c": "{{today+10}}",
+      "UniqueIntegrationId__c": "EFRulePast-{{TestUniqueIntegrationID}}"
+    },
+    // EFFE Current
+    {
+      "Action__c": "EFFE",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMAccountProductRuleId__c": "{{ScenarioAccountProductRule.SOMAccountProductRuleId__c[1]}}",
+      "EffectiveDate__c": "{{dbt_today}}",
+      "EndDate__c": "{{today+10}}",
+      "UniqueIntegrationId__c": "EFRuleCur-{{TestUniqueIntegrationID}}"
+    },
+    // EFFE Future
+    {
+      "Action__c": "EFFE",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMAccountProductRuleId__c": "{{ScenarioAccountProductRule.SOMAccountProductRuleId__c[2]}}",
+      "EffectiveDate__c": "{{today+5}}",
+      "EndDate__c": "{{today+10}}",
+      "UniqueIntegrationId__c": "EFRuleFut-{{TestUniqueIntegrationID}}"
+    },
+    //EXPR Past
+    {
+      "Action__c": "EXPR",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMAccountProductRuleId__c": "{{ScenarioAccountProductRule.SOMAccountProductRuleId__c[3]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{today-5}}",
+      "UniqueIntegrationId__c": "EXRulePast-{{TestUniqueIntegrationID}}"
+    },
+    // EXPR Current
+    {
+      "Action__c": "EXPR",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMAccountProductRuleId__c": "{{ScenarioAccountProductRule.SOMAccountProductRuleId__c[4]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{today}}",
+      "UniqueIntegrationId__c": "EXRuleCur-{{TestUniqueIntegrationID}}"
+    },
+    // EXPR Future
+    {
+      "Action__c": "EXPR",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SOMAccountProductRuleId__c": "{{ScenarioAccountProductRule.SOMAccountProductRuleId__c[5]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{today+5}}",
+      "UniqueIntegrationId__c": "EXRuleFut-{{TestUniqueIntegrationID}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Account Product Rule EFFE",
+        "query": "select \"Name\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductRule\" where \"UniqueIntegrationId\" like '%{{TestUniqueIntegrationID}}%' and \"Name\" like '%EFFE%' order by \"Name\" asc ",
+        "exp_result": "[{Name:{{ScenarioAccountProductRule.Name[0]}},EffectiveDate:{{ScenarioAccountProductRule.EffectiveDate__c[6]}},EndDate:{{Scenario.EndDate__c[0]}},Status:ACTV},{Name:{{ScenarioAccountProductRule.Name[1]}},EffectiveDate:{{ScenarioAccountProductRule.EffectiveDate__c[7]}},EndDate:{{Scenario.EndDate__c[0]}},Status:ACTV},{Name:{{ScenarioAccountProductRule.Name[2]}},EffectiveDate:{{ScenarioAccountProductRule.EffectiveDate__c[8]}},EndDate:{{Scenario.EndDate__c[0]}},Status:ACTV}]",
+        "odataQuery": "/OMAccountProductRule?$select=Name,EffectiveDate,EndDate,Status&$filter=contains(UniqueIntegrationId,'{{TestUniqueIntegrationID}}') and contains(Name,'EFFE') &$orderBy=Name asc"
+      },
+      {
+        "testname": "Account Product Rule EXPR",
+        "query": "select \"Name\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductRule\" where \"UniqueIntegrationId\" like '%{{TestUniqueIntegrationID}}%' and \"Name\" like '%EXPR%' order by \"Name\" asc ",
+        "exp_result": "[{Name:{{ScenarioAccountProductRule.Name[3]}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{ScenarioAccountProductRule.EndDate__c[9]}},Status:ACTV},{Name:{{ScenarioAccountProductRule.Name[4]}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{today}},Status:ACTV},{Name:{{ScenarioAccountProductRule.Name[5]}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{ScenarioAccountProductRule.EndDate__c[11]}},Status:ACTV}]",
+        "odataQuery": "/OMAccountProductRule?$select=Name,EffectiveDate,EndDate,Status&$filter=contains(UniqueIntegrationId,'{{TestUniqueIntegrationID}}') and contains(Name,'EXPR') &$orderBy=Name asc"
+      },
+      {
+        "testname": "Account Product Rule Version EFFE",
+        "query": "select \"Name\",\"EffectiveDate\",\"EndDate\",\"Status\",\"VersionNumber\" from \"{{schema}}\".\"OMAccountProductRuleVersion\" where \"Name\" like '%{{TestUniqueIntegrationID}}%' and \"Name\" like '%EFFE%' order by \"Name\" asc ",
+        "exp_result": "[{Name:{{ScenarioAccountProductRule.Name[0]}},EffectiveDate:{{ScenarioAccountProductRule.EffectiveDate__c[6]}},EndDate:{{Scenario.EndDate__c[0]}},Status:ACTV,VersionNumber:1},{Name:{{ScenarioAccountProductRule.Name[1]}},EffectiveDate:{{ScenarioAccountProductRule.EffectiveDate__c[7]}},EndDate:{{Scenario.EndDate__c[0]}},Status:ACTV,VersionNumber:1},{Name:{{ScenarioAccountProductRule.Name[2]}},EffectiveDate:{{ScenarioAccountProductRule.EffectiveDate__c[8]}},EndDate:{{Scenario.EndDate__c[0]}},Status:ACTV,VersionNumber:1}]",
+        "odataQuery": "/OMAccountProductRuleVersion?$select=Name,EffectiveDate,EndDate,Status,VersionNumber&$filter=contains(Name,'{{TestUniqueIntegrationID}}') and contains(Name,'EFFE') &$orderBy=Name asc"
+      },
+      {
+        "testname": "Account Product Rule Version EXPR",
+        "query": "select \"Name\",\"EffectiveDate\",\"EndDate\",\"Status\",\"VersionNumber\"  from \"{{schema}}\".\"OMAccountProductRuleVersion\" where \"Name\" like '%{{TestUniqueIntegrationID}}%' and \"Name\" like '%EXPR%' order by \"Name\" asc ",
+        "exp_result": "[{Name:{{ScenarioAccountProductRule.Name[3]}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{ScenarioAccountProductRule.EndDate__c[9]}},Status:ACTV,VersionNumber:1},{Name:{{ScenarioAccountProductRule.Name[4]}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{today}},Status:ACTV,VersionNumber:1},{Name:{{ScenarioAccountProductRule.Name[5]}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{ScenarioAccountProductRule.EndDate__c[11]}},Status:ACTV,VersionNumber:1}]",
+        "odataQuery": "/OMAccountProductRuleVersion?$select=Name,EffectiveDate,EndDate,Status,VersionNumber&$filter=contains(Name,'{{TestUniqueIntegrationID}}') and contains(Name,'EXPR') &$orderBy=Name asc"
+      },
+      {
+        "testname": "Account Product Restricition EFFE",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\", \"Source\" from \"{{schema}}\".\"OMAccountProductRestriction\"  where \"Reason\" like '%{{TestUniqueIntegrationID}}%' and \"Reason\" like '%EFFE%' and \"OMAccountId\"='{{accountEFFE}}' order by \"Reason\" asc",
+        "exp_result": "[{OMAccountId:ACCT04,SOMProductId:EFFEPAST-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{Scenario.EndDate__c[0]}},Source:DSHR},{OMAccountId:ACCT04,SOMProductId:EFFECUR-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{Scenario.EndDate__c[0]}},Source:DSHR},{OMAccountId:ACCT04,SOMProductId:EFFEFUT-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{dbt_yesterday}},Source:DSHR},{OMAccountId:ACCT04,SOMProductId:EFFEFUT-{{TestUniqueIntegrationID}},EffectiveDate:{{ScenarioAccountProductRule.EffectiveDate__c[8]}},EndDate:{{Scenario.EndDate__c[0]}},Source:DSHR}]",
+        "odataQuery": "/OMAccountProductRestriction?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate,Source&$filter=contains(Reason,'{{TestUniqueIntegrationID}}') and contains(Reason,'EFFE') and OMAccountId eq '{{accountEFFE}}' &$orderBy=Reason asc"
+      },
+      {
+        "testname": "Account Product Restricition EXPR",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\", \"Source\" from \"{{schema}}\".\"OMAccountProductRestriction\"  where \"Reason\" like '%{{TestUniqueIntegrationID}}%' and \"Reason\" like '%EXPR%' and \"OMAccountId\"='{{accountEXPR}}' order by \"Reason\" asc",
+        "exp_result": "[{OMAccountId:ACCT05,SOMProductId:EFFEPAST-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{dbt_yesterday}},Source:DSHR},{OMAccountId:ACCT05,SOMProductId:EFFECUR-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{today}},Source:DSHR},{OMAccountId:ACCT05,SOMProductId:EFFEFUT-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{ScenarioAccountProductRule.EndDate__c[11]}},Source:DSHR}]",
+        "odataQuery": "/OMAccountProductRestriction?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate,Source&$filter=contains(Reason,'{{TestUniqueIntegrationID}}') and contains(Reason,'EXPR') and OMAccountId eq '{{accountEXPR}}' &$orderBy=Reason asc"
+      }
+    ]
+  }
+}

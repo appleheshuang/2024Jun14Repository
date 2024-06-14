@@ -1,0 +1,27 @@
+﻿{
+  "DataSyncRequest": {
+    "Target": "SFDC",
+    "Tables": "OMRegion,OMProduct",
+    "Batch": 5,
+    "API": "Composite",
+    "JobType": "TestPush",
+    "LastUpdate": false,
+    "Order": "(OMRegion),(OMProduct)"
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "datasync-product",
+        "query": "select \"Name\" from STATIC.\"OMProduct\" where \"SOMProductId\" = 'OMR-10769Success-{{TestUniqueIntegrationId}}'",
+        "sfQuery": "select Name from {{prefix}}OMProduct__c where {{prefix}}SOMProductId__c = 'OMR-10769Success-{{TestUniqueIntegrationId}}'",
+        "exp_result": "[{Name:Warfarin-{{TestUniqueIntegrationId}}}]"
+      },
+      {
+        "testname": "datasync-region",
+        "query": "select \"Name\" from STATIC.\"OMRegion\" where \"SOMRegionId\" = 'OMR-10769Success-{{TestUniqueIntegrationId}}'",
+        "sfQuery": "select Name from {{prefix}}OMRegion__c where {{prefix}}SOMRegionId__c = 'OMR-10769Success-{{TestUniqueIntegrationId}}'",
+        "exp_result": "[{Name:OMR-10769Success-{{TestUniqueIntegrationId}}}]"
+      }
+    ]
+  }
+}

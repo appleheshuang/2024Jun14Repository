@@ -1,0 +1,22 @@
+{
+  "BaseData": {
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "CallProductDetail-Update",
+        "query": "select \"Id\",\"OMCallId\",\"DetailPriority\",\"SOMProductId\",\"PDE\",\"UniqueIntegrationId\",\"Status\",to_date(\"CreatedDate\") as \"CreatedDate\",\"CreatedById\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\",\"LastModifiedById\" from static.\"OMCallDetail\" where \"Id\"='CPD{{TestUniqueIntegrationID}}CallProDeBU'",
+        "exp_result": "[{Id:CPD{{TestUniqueIntegrationID}}CallProDeBU,OMCallId:CallId{{TestUniqueIntegrationID}},DetailPriority:15,SOMProductId:a5C4x000000kHiJEAU,PDE:12,UniqueIntegrationId:{{TestUniqueIntegrationID}}CallProDe_Update,Status:ACTV,CreatedDate:{{dbt_today}},CreatedById:Automation,LastModifiedDate:{{dbt_today}},LastModifiedById:Automation}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "CallProductDetailValid-Update",
+        "query": "select count(*) from STATIC.\"OMCallDetail\" where \"Id\" like ('%{{TestUniqueIntegrationID}}%')",
+        "exp_result": "[{COUNT(*):5}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      }
+    ]
+  }
+}

@@ -1,0 +1,95 @@
+﻿{
+	"BaseData": {
+		"EffectiveDate": "2500-01-01",
+		"EndDate": "3000-12-31",
+		"OMRegionId": "US"
+	},
+	"Product": [
+		{
+			"SOMProductId__c": "Market-{{TestUniqueIntegrationId}}",
+			"Name": "Market-{{TestUniqueIntegrationId}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}",
+			"Type__c": "Market",
+			"UniqueIntegrationId__c": "Market-{{TestUniqueIntegrationId}}",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "{{OMRegionId}}"
+		},
+		{
+			"SOMProductId__c": "Brand-{{TestUniqueIntegrationId}}",
+			"Name": "Brand-{{TestUniqueIntegrationId}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}",
+			"Type__c": "Brand",
+			"UniqueIntegrationId__c": "Brand-{{TestUniqueIntegrationId}}",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "{{OMRegionId}}"
+		},
+		{
+			"SOMProductId__c": "Detail-{{TestUniqueIntegrationId}}",
+			"Name": "Detail-{{TestUniqueIntegrationId}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}",
+			"Type__c": "Detail",
+			"UniqueIntegrationId__c": "Detail-{{TestUniqueIntegrationId}}",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "{{OMRegionId}}"
+		},
+		{
+			"SOMProductId__c": "Bundle-{{TestUniqueIntegrationId}}",
+			"Name": "Bundle-{{TestUniqueIntegrationId}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}",
+			"Type__c": "Bundle",
+			"UniqueIntegrationId__c": "Bundle-{{TestUniqueIntegrationId}}",
+			"Status__c": "ACTV",
+			"OMRegionId__c": "{{OMRegionId}}"
+		}
+	],
+	"ProductHierarchy": [
+		{
+			"OMParentProductId__c": "{{Product.Id[0]}}",
+			"OMChildProductId__c": "{{Product.Id[1]}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}",
+			"RelationType__c": "BRAND",
+			"UniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[1]}}",
+			"SOMProductHierarchyId__c": "Market-Brand-{{TestUniqueIntegrationId}}",
+			"Status__c": "ACTV"
+		},
+		{
+			"OMParentProductId__c": "{{Product.Id[1]}}",
+			"OMChildProductId__c": "{{Product.Id[2]}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}",
+			"RelationType__c": "BRAND",
+			"UniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[2]}}",
+			"SOMProductHierarchyId__c": "Brand-Detail-{{TestUniqueIntegrationId}}",
+			"Status__c": "ACTV"
+		},
+		{
+			"OMParentProductId__c": "{{Product.Id[2]}}",
+			"OMChildProductId__c": "{{Product.Id[3]}}",
+			"EffectiveDate__c": "{{EffectiveDate}}",
+			"EndDate__c": "{{EndDate}}",
+			"RelationType__c": "BRAND",
+			"UniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[3]}}",
+			"SOMProductHierarchyId__c": "Detail-Bundle-{{TestUniqueIntegrationId}}",
+			"Status__c": "ACTV"
+		}
+	],
+	"Tests": {
+		"MergeResults": [
+			{
+				"testname": "Setup-Product-Sync",
+				"query": "select \"UniqueIntegrationId\",\"Status\" from static.\"OMProduct\" where \"UniqueIntegrationId\" in ('Brand-{{TestUniqueIntegrationId}}','Bundle-{{TestUniqueIntegrationId}}','Detail-{{TestUniqueIntegrationId}}','Market-{{TestUniqueIntegrationId}}') order by \"UniqueIntegrationId\"",
+				"exp_result": "[{UniqueIntegrationId:Brand-{{TestUniqueIntegrationId}},Status:ACTV},{UniqueIntegrationId:Bundle-{{TestUniqueIntegrationId}},Status:ACTV},{UniqueIntegrationId:Detail-{{TestUniqueIntegrationId}},Status:ACTV},{UniqueIntegrationId:Market-{{TestUniqueIntegrationId}},Status:ACTV}]"
+			},
+			{
+				"testname": "Setup-ProductHierarchy-Sync",
+				"query": "select \"UniqueIntegrationId\",\"Status\" from static.\"OMProductHierarchy\" where \"UniqueIntegrationId\" in ('{{ProductHierarchy.UniqueIntegrationId__c[0]}}','{{ProductHierarchy.UniqueIntegrationId__c[1]}}','{{ProductHierarchy.UniqueIntegrationId__c[2]}}') order by \"UniqueIntegrationId\"",
+				"exp_result": "[{UniqueIntegrationId:Brand-{{TestUniqueIntegrationId}},Status:ACTV},{UniqueIntegrationId:Bundle-{{TestUniqueIntegrationId}},Status:ACTV},{UniqueIntegrationId:Detail-{{TestUniqueIntegrationId}},Status:ACTV}]"
+			}
+		]
+	}
+}

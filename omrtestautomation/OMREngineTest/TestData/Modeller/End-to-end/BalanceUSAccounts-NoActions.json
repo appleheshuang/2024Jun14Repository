@@ -1,0 +1,70 @@
+{
+  "BaseData": {
+    "som_region_id": "US",
+    "salesforcePrefix": "NYC-ONC",
+    "territoryPrefix": "NYC-ONC",
+    "ruleUID": "G-ONCOL"
+  },
+
+  "Scenario": {
+    "Description": "Balance Accounts",
+    "Name": "Balance Accounts",
+    "EffectiveDate__c": "{{today+30}}",
+    "EndDate__c": "{{today+395}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": ""
+  },
+  "ScenarioModel": [
+    {
+      "Name": "Accounts-based modeller",
+      "MetricField__c": "AccountCount",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c}}",
+      "MetricMinimum__c": 5,
+      "MetricMaximum__c": 8,
+      "DrivingTimeMaximum__c": 0.5,
+      "DrivingDistanceMaximum__c": 15,
+      "DrivingUnit__c": "KM",
+      "DistanceContext__c": "TERR",
+      "RestrictToHierarchy__c": true
+    },
+    {
+      "Name": "GeographySales modeller",
+      "MetricField__c": "Metric20",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c}}",
+      "MetricMinimum__c": 2005,
+      "MetricMaximum__c": 2008,
+      "DrivingTimeMaximum__c": 4,
+      "DrivingDistanceMaximum__c": 200,
+      "DrivingUnit__c": "KM",
+      "DistanceContext__c": "TERR",
+      "RestrictToHierarchy__c": true
+    }
+  ],
+  "ScenarioModelTerritory": [
+    {
+      "OMScenarioModelId__c": "{{ScenarioModel.Id}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[1]}}"
+    },
+    {
+      "OMScenarioModelId__c": "{{ScenarioModel.Id}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}"
+    },
+    {
+      "OMScenarioModelId__c": "{{ScenarioModel.Id}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[3]}}"
+    }
+  ],
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "ModelOnly-NoSummaryCalculation",
+        "query": "OMScenarioSummary2,AccountsTotal,GeographiesTotal,SOMTerritoryId,OMScenarioId:'{{Scenario.Id}}'",
+        "exp_result": "[]"
+      }
+    ]
+  }
+}

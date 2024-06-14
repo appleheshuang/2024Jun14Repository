@@ -1,0 +1,75 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "REG01",
+    "accountAdd": "ACCT04",
+    "accountEdit": "ACCT05",
+    "EffectiveDate": "{{today+1}}",
+    "EndDate": "{{today+10}}"
+  },
+
+  "Scenario": {
+    "Description": "Delete Edit Account Product Rule",
+    "name": "Delete Edit Account Product Rule Test",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "APR-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioAccountProductRule": [
+    // Delete Action
+    {
+      "Action__c": "DEL",
+      "Name": "{{ScenarioAccountProductRule.Name[1]}}",
+      "UniqueIntegrationId__c": "{{ScenarioAccountProductRule.UniqueIntegrationId__c[1]}}",
+      "SOMAccountProductRuleId__c": "{{ScenarioAccountProductRule.SOMAccountProductRuleId__c[1]}}",
+      "RuleData__c": "{{ScenarioAccountProductRule.RuleData__c[1]}}"
+    },
+    // Edit Action
+    {
+      "Action__c": "EDIT",
+      "Name": "{{ScenarioAccountProductRule.Name[2]}}",
+      "UniqueIntegrationId__c": "{{ScenarioAccountProductRule.UniqueIntegrationId__c[2]}}",
+      "SOMAccountProductRuleId__c": "{{ScenarioAccountProductRule.SOMAccountProductRuleId__c[2]}}",
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"MP\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Audiology\"}]},\"ProductRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"},{\"type\":\"Equals\",\"table\":\"OMProduct\",\"column\":\"SOMProductId\",\"value\":\"Move-{{TestUniqueIntegrationID}}\"}]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Account Product Rule",
+        "query": "select \"Name\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductRule\" where \"UniqueIntegrationId\" in ('{{ScenarioAccountProductRule.UniqueIntegrationId__c[1]}}','{{ScenarioAccountProductRule.UniqueIntegrationId__c[2]}}') order by \"Name\" asc ",
+        "exp_result": "[{Name:{{ScenarioAccountProductRule.Name[1]}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{Scenario.EndDate__c[0]}},Status:INAC},{Name:{{ScenarioAccountProductRule.Name[2]}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{Scenario.EndDate__c[0]}},Status:ACTV}]",
+        "odataQuery": "/OMAccountProductRule?$select=Name,EffectiveDate,EndDate,Status&$filter=(UniqueIntegrationId eq '{{ScenarioAccountProductRule.UniqueIntegrationId__c[1]}}' or UniqueIntegrationId eq '{{ScenarioAccountProductRule.UniqueIntegrationId__c[1]}}' or UniqueIntegrationId eq '{{ScenarioAccountProductRule.UniqueIntegrationId__c[2]}}') &$orderBy=Name asc"
+      },
+      {
+        "testname": "Account Product Rule Version Edit",
+        "query": "select \"Name\",\"EffectiveDate\",\"EndDate\",\"Status\",\"VersionNumber\",\"RuleData\" from \"{{schema}}\".\"OMAccountProductRuleVersion\" where \"Name\"  in ('{{ScenarioAccountProductRule.Name[2]}}') order by \"EffectiveDate\" desc ",
+        "exp_result": "[{Name:{{ScenarioAccountProductRule.Name[2]}},EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[0]}},Status:ACTV,VersionNumber:2,RuleData:{\"AccountRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"MP\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Audiology\"}]},\"ProductRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"},{\"type\":\"Equals\",\"table\":\"OMProduct\",\"column\":\"SOMProductId\",\"value\":\"Move-{{TestUniqueIntegrationID}}\"}]}}},{Name:{{ScenarioAccountProductRule.Name[2]}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{today}},Status:ACTV,VersionNumber:1,RuleData:{\"AccountRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Practices\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Audiology\"}]},\"ProductRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"},{\"type\":\"Equals\",\"table\":\"OMProduct\",\"column\":\"SOMProductId\",\"value\":\"Move-{{TestUniqueIntegrationID}}\"}]}}}]",
+        "odataQuery": "/OMAccountProductRuleVersion?$select=Name,EffectiveDate,EndDate,Status,VersionNumber,RuleData&$filter= Name eq '{{ScenarioAccountProductRule.Name[2]}}' &$orderBy=EffectiveDate desc"
+      },
+      {
+        "testname": "Account Product Rule Version Delete",
+        "query": "select \"Name\",\"EffectiveDate\",\"EndDate\",\"Status\",\"VersionNumber\" from \"{{schema}}\".\"OMAccountProductRuleVersion\" where \"Name\"  in ('{{ScenarioAccountProductRule.Name[1]}}') order by \"Name\" asc ",
+        "exp_result": "[{Name:{{ScenarioAccountProductRule.Name[1]}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{Scenario.EndDate__c[0]}},Status:INAC,VersionNumber:1}]",
+        "odataQuery": "/OMAccountProductRuleVersion?$select=Name,EffectiveDate,EndDate,Status,VersionNumber&$filter=Name eq '{{ScenarioAccountProductRule.Name[1]}}'&$orderBy=Name asc"
+      },
+      {
+        "testname": "Account Product Restricition",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\", \"Source\" from \"{{schema}}\".\"OMAccountProductRestriction\"  where \"Reason\" like '%{{TestUniqueIntegrationID}}%' and \"Reason\" not like '%Add%' and \"OMAccountId\" in ('{{accountAdd}}','{{accountEdit}}') order by \"Reason\",\"EffectiveDate\" asc",
+        "exp_result": "[{OMAccountId:ACCT04,SOMProductId:Delete-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{dbt_yesterday}},Source:DSHR},{OMAccountId:ACCT04,SOMProductId:Move-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{today}},Source:DSHR},{OMAccountId:ACCT05,SOMProductId:Move-{{TestUniqueIntegrationID}},EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[0]}},Source:DSHR}]",
+        "odataQuery": "/OMAccountProductRestriction?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate,Source&$filter=contains(Reason,'{{TestUniqueIntegrationID}}') and not contains(Reason,'Add') and (contains(OMAccountId,'{{accountAdd}}') or contains(OMAccountId,'{{accountEdit}}')) &$orderBy=Reason,EffectiveDate asc"
+      }
+    ]
+  }
+}

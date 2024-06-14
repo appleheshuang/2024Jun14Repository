@@ -1,0 +1,152 @@
+﻿{
+  "Configs": {
+    "loadData": "Smoketest\\LoadData\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "EffectiveDate": "2021-03-01",
+    "EndDate": "2022-12-31",
+    "som_region_id": "REG01",
+    "aligned_accountUId": "ACCT05",
+    "aligned_accountUId2": "45ACCTEXP",
+    "aligned_accountUId3": "ACCT03"
+  },
+
+  "Scenario": {
+    "Description": "Merge OMRule, Action - EDIT, EFFE, EXPR, PEXP,  EDIT + END, EDIT+EFFE+EXPR overlap, Restart+End Overlap Rule",
+    "Name": "C7651931,C7670350, C7877761, C7877760",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "2{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioRule": [
+    // Action EDIT Rule 2021-03-01 ==> 2022-12-31
+    {
+      "Name": "Edited Name",
+      "Action__c": "EDIT",
+      "UniqueIntegrationId__c": "{{ScenarioRule.UniqueIntegrationId__c[0]}}",
+      "SOMRuleId__c": "{{ScenarioRule.SOMRuleId__c[0]}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "RuleData__c": "{\"geography\":true,\"explicit\":false,\"filter\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"MP\"}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}"
+    },
+    // Action EFFE Rule 2021-03-01 ==> 2022-12-31
+    {
+      "Name": "{{ScenarioRule.Name}}",
+      "Action__c": "EFFE",
+      "UniqueIntegrationId__c": "{{ScenarioRule.UniqueIntegrationId__c}}",
+      "SOMRuleId__c": "{{ScenarioRule.SOMRuleId__c[0]}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}"
+    },
+    // Action EXPR Rule 2021-03-01 ==> 2022-12-31
+    {
+      "Name": "{{ScenarioRule.Name}}",
+      "Action__c": "EXPR",
+      "UniqueIntegrationId__c": "{{ScenarioRule.UniqueIntegrationId__c}}",
+      "SOMRuleId__c": "{{ScenarioRule.SOMRuleId__c[0]}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}"
+    },
+    // Action DEL
+    {
+      "Name": "{{ScenarioRule.Name[1]}}",
+      "Action__c": "DEL",
+      "UniqueIntegrationId__c": "{{ScenarioRule.UniqueIntegrationId__c[1]}}",
+      "SOMRuleId__c": "{{ScenarioRule.SOMRuleId__c[1]}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[1]}}"
+    },
+    // Action PEXP
+    {
+      "Name": "{{ScenarioRule.Name[2]}}",
+      "Action__c": "PEXP",
+      "UniqueIntegrationId__c": "{{ScenarioRule.UniqueIntegrationId__c[2]}}",
+      "SOMRuleId__c": "{{ScenarioRule.SOMRuleId__c[2]}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[2]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}"
+    },
+    // TC C7877760 Action EFFE Rule 2021-06-15 ==> 2021-07-15
+    {
+      "Name": "{{ScenarioRule.Name[3]}}",
+      "Action__c": "EFFE",
+      "UniqueIntegrationId__c": "{{ScenarioRule.UniqueIntegrationId__c[3]}}",
+      "SOMRuleId__c": "{{ScenarioRule.SOMRuleId__c[3]}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[3]}}",
+      "EffectiveDate__c": "2021-06-15",
+      "EndDate__c": "2021-07-15"
+    },
+    // TC C7877760 Action EXPR Rule 2021-06-15 ==> 2021-07-15
+    {
+      "Name": "{{ScenarioRule.Name[3]}}",
+      "Action__c": "EXPR",
+      "UniqueIntegrationId__c": "{{ScenarioRule.UniqueIntegrationId__c[3]}}",
+      "SOMRuleId__c": "{{ScenarioRule.SOMRuleId__c[3]}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[3]}}",
+      "EffectiveDate__c": "2021-06-15",
+      "EndDate__c": "2021-07-15"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      //check EDIT, EFFE, EXPR actions
+      {
+        "testname": "merge_RuleVesion",
+        "query": "select \"Name\",\"Status\",\"VersionNumber\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMRuleVersion\" where \"SOMRuleId\"='{{ScenarioRule.SOMRuleId__c}}'order by \"Name\" desc",
+        "exp_result": "[{Name:{{ScenarioRule.Name}},Status:INAC,VersionNumber:1,EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:2021-02-28},{Name:{{ScenarioRule.Name[4]}},Status:ACTV,VersionNumber:1,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}}}]",
+        "odataQuery": "/OMRuleVersion?$select=Name,Status,VersionNumber,EffectiveDate,EndDate&$filter=SOMRuleId eq '{{ScenarioRule.SOMRuleId__c}}'&$orderBy=Name desc",
+        "sfQuery": null
+      },
+      {
+        "testname": "merge_Rule1",
+        "query": "OMRule,Name,Status,EffectiveDate,EndDate,SOMRuleId:'{{ScenarioRule.SOMRuleId__c}}'",
+        "exp_result": "[{Name:{{ScenarioRule.Name[4]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}}}]",
+        "odataQuery": "/OMRule?$select=Name,Status,EffectiveDate,EndDate&$filter=SOMRuleId eq '{{ScenarioRule.SOMRuleId__c}}'",
+        "sfQuery": null
+      },
+      //check DEL action
+      {
+        "testname": "merge_Rule2",
+        "query": "OMRule,Name,Status,EffectiveDate,EndDate,SOMRuleId:'{{ScenarioRule.SOMRuleId__c[1]}}'",
+        "exp_result": "[{Name:{{ScenarioRule.Name[1]}},Status:INAC,EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{Scenario.EndDate__c[0]}}}]",
+        "odataQuery": "/OMRule?$select=Name,Status,EffectiveDate,EndDate&$filter=SOMRuleId eq '{{ScenarioRule.SOMRuleId__c[1]}}'",
+        "sfQuery": null
+      },
+      //check PEXP action
+      {
+        "testname": "merge_Rule3",
+        "query": "OMRule,Name,Status,EffectiveDate,EndDate,SOMRuleId:'{{ScenarioRule.SOMRuleId__c[2]}}'",
+        "exp_result": "[{Name:{{ScenarioRule.Name[2]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:2021-02-28}]",
+        "odataQuery": "/OMRule?$select=Name,Status,EffectiveDate,EndDate&$filter=SOMRuleId eq '{{ScenarioRule.SOMRuleId__c[2]}}'",
+        "sfQuery": null
+      },
+      // check TC C7877760 Action EFFE, EXPR Rule 2021-06-15 ==> 2021-07-15
+      {
+        "testname": "merge_Rule4",
+        "query": "OMRule,Name,Status,EffectiveDate,EndDate,SOMRuleId:'{{ScenarioRule.SOMRuleId__c[3]}}'",
+        "exp_result": "[{Name:{{ScenarioRule.Name[3]}},Status:ACTV,EffectiveDate:2021-06-15,EndDate:2021-07-15}]",
+        "odataQuery": "/OMRule?$select=Name,Status,EffectiveDate,EndDate&$filter=SOMRuleId eq '{{ScenarioRule.SOMRuleId__c[3]}}'",
+        "sfQuery": null
+      }
+    ],
+    "AlignmentResults": [
+      {
+        "testname": "alignments",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c}},AccountUID:{{aligned_accountUId}},EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:{{Scenario.EndDate__c}},Source:DSHR,Reason:{{ScenarioRule.Name[4]}}|{{ScenarioRule.SOMRuleId__c}}}]",
+        "account_uids": "{{aligned_accountUId}},{{aligned_accountUId2}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c}}"
+      }
+    ]
+  }
+}

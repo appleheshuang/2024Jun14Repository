@@ -1,0 +1,73 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "commit"
+  },
+
+  "BaseData": {
+    "som_region_id": "FK",
+    "productUId": "Product-OMR-15271-3",
+    "accountUId_dummy": "NonExistentAccount",
+    "salesforceUID": "SF-OMR-15271-3",
+    "territoryExplUID": "TExpl1-OMR-15271-3",
+    "territoryExclUID": "TExcl1-OMR-15271-3"
+  },
+
+  "Scenario": {
+    "Description": "OMProdAccTerrExplicitExclusionsValidations_NonExistentAccount-{{TestUniqueIntegrationID}}",
+    "Name": "OMR-15271_OMProdAccTerrExplicitExclusionsValidations_NonExistentAccount-{{TestUniqueIntegrationID}}",
+    "EffectiveDate__c": "{{today+73048}}",
+    "EndDate__c": "{{today+73413}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "{{TestUniqueIntegrationID}}-2"
+  },
+
+  "ScenarioProductAccTerrExplicit": [
+    // precondition for ValidationScenarios
+    {
+      //ADD OMProductAccTerrExplicit
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "OMPrAccTerrExpl-{{TestUniqueIntegrationID}}-CV2",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountUId_dummy}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryExplUID}}-{{TestUniqueIntegrationID}}",
+      "EffectiveDate__c": "{{today+73108}}",
+      "EndDate__c": "{{today+73168}}"
+    }
+  ],
+
+  "ScenarioProductAccTerrExclusion": [
+    // precondition for ValidationScenarios
+    {
+      //ADD OMProductAccTerrExclusion
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "OMPrAccTerrExcl-{{TestUniqueIntegrationID}}-CV2",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "AccountUniqueIntegrationId__c": "{{accountUId_dummy}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryExclUID}}-{{TestUniqueIntegrationID}}",
+      "EffectiveDate__c": "{{today+73123}}",
+      "EndDate__c": "{{today+73183}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      // check scenario Error for failure to create OMProductAccTerrExplicit with non-existent Account
+      {
+        "testname": "fail_to_create_OMProductAccTerrExplicit_with_non-existent_Account",
+        "query": "select \"TableName\", \"ErrorCode\", \"ErrorMessage\" from {{schema}}.\"OMScenarioError\" where \"OMScenarioId\" = '{{Scenario.Id[1]}}' AND \"TableName\"='OMProductAccTerrExplicit'",
+        "exp_result": "[{TableName:OMProductAccTerrExplicit,ErrorCode:ParentNotFound,ErrorMessage:Foreign key validation failed for non-existent record and non-existent record and non-existent record}]"
+      },
+      // check scenario Error for failure to create OMProductAccTerrExclusion with non-existent Account
+      {
+        "testname": "fail_to_create_OMProductAccTerrExclusion_with_non-existent_Account",
+        "query": "select \"TableName\", \"ErrorCode\", \"ErrorMessage\" from {{schema}}.\"OMScenarioError\" where \"OMScenarioId\" = '{{Scenario.Id[1]}}' AND \"TableName\"='OMProductAccTerrExclusion'",
+        "exp_result": "[{TableName:OMProductAccTerrExclusion,ErrorCode:ParentNotFound,ErrorMessage:Foreign key validation failed for non-existent record and non-existent record and non-existent record}]"
+      }
+    ]
+  }
+}

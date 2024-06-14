@@ -1,0 +1,156 @@
+{
+  "Tests": {
+    "MergeResults": [
+      //case 0: OMAuditConfig is set as expected
+      {
+        "testname": "OMAuditConfig is set as expected",
+        "query": "select \"TableName\", \"ListOfColumns\" from STATIC.\"OMAuditConfig\" where STATIC.\"OMAuditConfig\".\"TableName\" = 'OMAccount'",
+        "exp_result": "[{TableName:OMAccount,ListOfColumns:Name,AccountType}]"
+      },
+      {
+        "testname": "OMAuditConfig is set as expected",
+        "query": "select \"TableName\", \"ListOfColumns\" from STATIC.\"OMAuditConfig\" where STATIC.\"OMAuditConfig\".\"TableName\" = 'OMUser'",
+        "exp_result": "[{TableName:OMUser,ListOfColumns:Name,Role,BirthMonth}]"
+      },
+      {
+        "testname": "OMAuditConfig is set as expected",
+        "query": "select \"TableName\", \"ListOfColumns\" from STATIC.\"OMAuditConfig\" where STATIC.\"OMAuditConfig\".\"TableName\" = 'OMProduct'",
+        "exp_result": "[{TableName:OMProduct,ListOfColumns:null}]"
+      },
+
+        //case #1: Test case to cover that OMRegion subsequent bulkload did get data updated 
+      {
+        "testname": "Default audit OMRegion (data updated after bulkload)",
+        "query": "select \"SOMRegionId\", \"Name\", \"Status\", \"Country\"  from STATIC.\"OMRegion\" where \"SOMRegionId\" = 'OMR13032REG01'",
+        "exp_result": "[{SOMRegionId:OMR13032REG01,Name:OMR13032REG01Renamed,Status:INAC,Country:GR}]"
+      },
+      //case #2: Testing audit for a new table added to OMAuditConfig (OMAccount.Name and OMAccount.Type) are tracked on UPDATE and Inactivate
+      //case #2.1: checking that a record with Operation = UPDATE for the column audited as per OMAuditConfig (OMAccount.Name) appears in OMAudit table
+      {
+        "testname": "Audit as per OMAuditConfig OMAudit UPDATE OMAccount.Name record",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"Parent\", \"OldValue\", \"NewValue\", \"SOMChangedById\", \"ScenarioName\", \"OMScenarioId\"  from STATIC.\"OMAudit\" where STATIC.\"OMAudit\".\"TableName\"= 'OMAccount' and STATIC.\"OMAudit\".\"Parent\" = 'OMR13032ACCT01-{{TestUniqueIntegrationId}}' and STATIC.\"OMAudit\".\"NewValue\" = 'OMR13032ACCT01Renamed-{{TestUniqueIntegrationId}}'",
+        "exp_result": "[{TableName:OMAccount,ColumnName:Name,Operation:Update,Parent:OMR13032ACCT01-{{TestUniqueIntegrationId}},OldValue:OMR13032ACCT01-{{TestUniqueIntegrationId}},NewValue:OMR13032ACCT01Renamed-{{TestUniqueIntegrationId}},SOMChangedById:null,ScenarioName:null,OMScenarioId:null}]"
+      },
+      //case #2.2: checking that a record with Operation = Update for the column audited as per OMAuditConfig (OMAccount.AccountType) appears in OMAudit table
+      {
+        "testname": "Audit as per OMAuditConfig OMAudit UPDATE OMAccount.AccountType record",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"Parent\", \"OldValue\", \"NewValue\", \"SOMChangedById\", \"ScenarioName\", \"OMScenarioId\"  from STATIC.\"OMAudit\" where STATIC.\"OMAudit\".\"TableName\"= 'OMAccount' and STATIC.\"OMAudit\".\"Parent\" = 'OMR13032ACCT01-{{TestUniqueIntegrationId}}' and STATIC.\"OMAudit\".\"NewValue\" = 'Institution'",
+        "exp_result": "[{TableName:OMAccount,ColumnName:AccountType,Operation:Update,Parent:OMR13032ACCT01-{{TestUniqueIntegrationId}},OldValue:Pharmacy,NewValue:Institution,SOMChangedById:null,ScenarioName:null,OMScenarioId:null}]"
+      },
+      //case #2.3: checking that a record with Operation = Delete for the column audited as per OMAuditConfig (OMAccount.Status) appears in OMAudit table
+
+      {
+        "testname": "Audit as per OMAuditConfig OMAudit INAC OMAccount.Status record",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"Parent\", \"OldValue\", \"NewValue\", \"SOMChangedById\", \"ScenarioName\", \"OMScenarioId\"  from STATIC.\"OMAudit\" where STATIC.\"OMAudit\".\"TableName\"= 'OMAccount' and STATIC.\"OMAudit\".\"Parent\" = 'OMR13032ACCT01-{{TestUniqueIntegrationId}}' and STATIC.\"OMAudit\".\"ColumnName\" = 'Status'",
+        "exp_result": "[{TableName:OMAccount,ColumnName:Status,Operation:Delete,Parent:OMR13032ACCT01-{{TestUniqueIntegrationId}},OldValue:ACTV,NewValue:INAC,SOMChangedById:null,ScenarioName:null,OMScenarioId:null}]"
+      },
+      //case #2.4: checking that actual subsequent bulk load for OMAccount table was successful  (record loaded earlier got updated & inactivated)
+      {
+        "testname": "Audit as per OMAuditConfig ADD OMAccount (data modified)",
+        "query": "select \"Id\", \"Name\", \"AccountType\", \"Status\"  from STATIC.\"OMAccount\" where STATIC.\"OMAccount\".\"Id\" = 'OMR13032ACCT01-{{TestUniqueIntegrationId}}'",
+        "exp_result": "[{Id:OMR13032ACCT01-{{TestUniqueIntegrationId}},Name:OMR13032ACCT01Renamed-{{TestUniqueIntegrationId}},AccountType:Institution,Status:INAC}]"
+      },
+      //case #2.5: checking that only expected count of records appear in OMAudit for OMAccount Update & Inactivate (audit for OMAccount.Name, OMAccount.AccountType & OMAccount.Status  => 3 all together
+      {
+        "testname": "Check of OMAudit table count of records for table audited as newly set as per OMAuditConfig (OMAccount) - 3 records expected on ADD",
+        "query": "select count (*) as \"Count\" from STATIC.\"OMAudit\" where STATIC.\"OMAudit\".\"TableName\"= 'OMAccount' and STATIC.\"OMAudit\".\"Parent\" = 'OMR13032ACCT01-{{TestUniqueIntegrationId}}' and STATIC.\"OMAudit\".\"Operation\"<>'Add'",
+        "exp_result": "[{Count:3}]"
+      },
+      //case #2.6: checking that only expected count of records appear in OMAudit for OMAccount on Update & Inactivate (audit for OMAccount.Name, OMAccount.AccountType & OMAccount.Status = 3 all together
+      {
+        "testname": "Check of OMAudit table count of records for table audited as newly set as per OMAuditConfig (OMAccount) - 3 records expected on Update & Inactivate",
+        "query": "select count (*) as \"Count\" from STATIC.\"OMAudit\" where STATIC.\"OMAudit\".\"TableName\"= 'OMAccount' and STATIC.\"OMAudit\".\"Parent\" = 'OMR13032ACCT01-{{TestUniqueIntegrationId}}' and STATIC.\"OMAudit\".\"Operation\"<>'Add'",
+        "exp_result": "[{Count:3}]"
+      },
+      //case #3: Testing that no audit is happening when "ListOfColumns" is blank in OMAuditConfig for the table (OMProduct)
+      //case #3.1: checking that no audit is happening when "ListOfColumns" is blank in OMAuditConfig for the table (OMProduct)
+      {
+        "testname": "OMAuditConfig ListOfColumns Blank OMAudit no UPDATed or Deleted data record (OMProduct)",
+        "query": "select \"TableName\" from STATIC.\"OMAudit\" where STATIC.\"OMAudit\".\"TableName\" = 'OMProduct' and STATIC.\"OMAudit\".\"Parent\" = 'OMR13032Prod1-{{TestUniqueIntegrationId}}'",
+        "exp_result": "[]"
+      },
+      //case #3.2: checking that actual subsequent bulk load for OMProduct table was successful (record loaded earlier got updated & inactivated)	  
+      {
+        "testname": "Bulk load for OMProduct OK (data modified)",
+        "query": "select \"SOMProductId\", \"Name\", \"Status\" from STATIC.\"OMProduct\" where \"SOMProductId\" = 'OMR13032Prod1-{{TestUniqueIntegrationId}}'",
+        "exp_result": "[{SOMProductId:OMR13032Prod1-{{TestUniqueIntegrationId}},Name:OMR13032Prod1Renamed-{{TestUniqueIntegrationId}},Status:INAC}]"
+      },
+      //case #4: Record in OMAuditConfig overrides default audit for a table (OMUser is now tracked for OMUser.Name, OMUser.Role, OMUser.BirthMonth) and the columns are tracked on update and inactivate according to OMAuditConfig.ListOfColumns set for the table
+      //case #4.1: checking that a record Operation = Update for the column audited as per OMAuditConfig overriding defailt audit (OMUser.Name) is still added
+      {
+        "testname": "Override default OMAudit UPDATE Name record (OMUser)",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"Parent\", \"OldValue\", \"NewValue\", \"SOMChangedById\", \"ScenarioName\", \"OMScenarioId\"  from STATIC.\"OMAudit\" where STATIC.\"OMAudit\".\"TableName\"= 'OMUser' and STATIC.\"OMAudit\".\"Parent\" = 'OMR13032User1-{{TestUniqueIntegrationId}}' and STATIC.\"OMAudit\".\"ColumnName\" = 'Name' and STATIC.\"OMAudit\".\"Operation\" = 'Update'",
+        "exp_result": "[{TableName:OMUser,ColumnName:Name,Operation:Update,Parent:OMR13032User1-{{TestUniqueIntegrationId}},OldValue:OMR-13032,NewValue:OMR-13032Renamed,SOMChangedById:null,ScenarioName:null,OMScenarioId:null}]"
+      },
+      //case #4.2: checking that a record with Operation = Update for the column audited as per OMAuditConfig overriding defailt audit (OMUser.Role) is added
+      {
+        "testname": "Override default OMAudit UPDATE Role record (OMUser)",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"Parent\", \"OldValue\", \"NewValue\", \"SOMChangedById\", \"ScenarioName\", \"OMScenarioId\"  from STATIC.\"OMAudit\" where STATIC.\"OMAudit\".\"TableName\"= 'OMUser' and STATIC.\"OMAudit\".\"Parent\" = 'OMR13032User1-{{TestUniqueIntegrationId}}' and STATIC.\"OMAudit\".\"ColumnName\" = 'Role' and STATIC.\"OMAudit\".\"Operation\" = 'Update'",
+        "exp_result": "[{TableName:OMUser,ColumnName:Role,Operation:Update,Parent:OMR13032User1-{{TestUniqueIntegrationId}},OldValue:AM,NewValue:BUH,SOMChangedById:null,ScenarioName:null,OMScenarioId:null}]"
+      },
+      //case #4.3: checking that a record with Operation = Update for the column audited as per OMAuditConfig overriding defailt audit (OMUser.BirthMonth) is added
+      {
+        "testname": "Override default OMAudit UPDATE BirthMonth record (OMUser)",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"Parent\", \"OldValue\", \"NewValue\", \"SOMChangedById\", \"ScenarioName\", \"OMScenarioId\"  from STATIC.\"OMAudit\" where STATIC.\"OMAudit\".\"TableName\"= 'OMUser' and STATIC.\"OMAudit\".\"Parent\" = 'OMR13032User1-{{TestUniqueIntegrationId}}' and STATIC.\"OMAudit\".\"ColumnName\" = 'BirthMonth' and STATIC.\"OMAudit\".\"Operation\" = 'Update'",
+        "exp_result": "[{TableName:OMUser,ColumnName:BirthMonth,Operation:Update,Parent:OMR13032User1-{{TestUniqueIntegrationId}},OldValue:01,NewValue:10,SOMChangedById:null,ScenarioName:null,OMScenarioId:null}]"
+      },
+      //case #4.4: checking that a record with Operation = Delete for the column audited as per OMAuditConfig overriding defailt audit (OMUser.Status) is added
+      {
+        "testname": "Override default OMAudit INAC Status record (OMUser)",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"Parent\", \"OldValue\", \"NewValue\", \"SOMChangedById\", \"ScenarioName\", \"OMScenarioId\"  from STATIC.\"OMAudit\" where STATIC.\"OMAudit\".\"TableName\"= 'OMUser' and STATIC.\"OMAudit\".\"Parent\" = 'OMR13032User1-{{TestUniqueIntegrationId}}' and STATIC.\"OMAudit\".\"ColumnName\" = 'Status'",
+        "exp_result": "[{TableName:OMUser,ColumnName:Status,Operation:Delete,Parent:OMR13032User1-{{TestUniqueIntegrationId}},OldValue:ACTV,NewValue:INAC,SOMChangedById:null,ScenarioName:null,OMScenarioId:null}]"
+      },
+      //case #4.5: checking that actual subsequent bulk load for OMUser table was successful	  
+      {
+        "testname": "Override default OMUser(data loaded)",
+        "query": "select \"SOMUserId\", \"Name\", \"Status\", \"Role\", \"BirthMonth\" , \"Country\" from STATIC.\"OMUser\" where \"SOMUserId\" = 'OMR13032User1-{{TestUniqueIntegrationId}}'",
+        "exp_result": "[{SOMUserId:OMR13032User1-{{TestUniqueIntegrationId}},Name:OMR-13032Renamed,Status:INAC,Role:BUH,BirthMonth:10,Country:GR}]"
+      },
+      //case #4.6: checking that only expected count of records appear in OMAudit for OMUser Update & Inactivate (audit for OMUser.Name, OMUser.Role, OMUser.BirthMonth and OMUser.Status = 4 all together (and SamplingStatus is not tracked (as overiden))
+      {
+        "testname": "Check of OMAudit table count of records for table audited as overriding default as per OMAuditConfig (OMUser) - 4 records expected on Update & Inactivate",
+        "query": "select count (*) as \"Count\" from STATIC.\"OMAudit\" where STATIC.\"OMAudit\".\"TableName\"= 'OMUser' and STATIC.\"OMAudit\".\"Parent\" = 'OMR13032User1-{{TestUniqueIntegrationId}}' and STATIC.\"OMAudit\".\"Operation\"<>'Add'",
+        "exp_result": "[{Count:4}]"
+      },
+      //case #5: No audit is happenning if the table is not part of default and OMAuditConfig lists (OMAccountAddress) on updates & inactivations	
+      //case #5.1: checking that no audit is happenning if the table is not part of default and OMAuditConfig lists (OMAccountAddress) on updates & inactivations
+      {
+        "testname": "No audit - OMAudit no Update data record (for OMAccountAddress)",
+        "query": "select \"TableName\" from STATIC.\"OMAudit\" where STATIC.\"OMAudit\".\"TableName\"= 'OMAccountAddress' and STATIC.\"OMAudit\".\"TableName\" = 'OMAccountAddress'",
+        "exp_result": "[]"
+      },
+      //case #5.2: checking that actual subsequent  bulk load for OMAccountAddress table was successful
+      {
+        "testname": "Bulk load for Update & INAC OMAccountAddress OK (data loaded)",
+        "query": "select \"Id\", \"Country\", \"Status\", \"Brick1\", \"Brick2\" from STATIC.\"OMAccountAddress\" where STATIC.\"OMAccountAddress\".\"Id\" = 'OMR13032AccAddress-{{TestUniqueIntegrationId}}'",
+        "exp_result": "[{Id:OMR13032AccAddress-{{TestUniqueIntegrationId}},Country:GR,Status:INAC,Brick1:null,Brick2:Brick2}]"
+      },     
+      {
+        //case #6: Testing audit according to default list for OMGeography (only OMGeography.Name and OMGeography.Status are tracked on UPDATE and Inactivate) 
+        //case #1.1: checking that a record with Operation = UPDATE for the column audited by default (OMGeography.Name) appears in OMAudit table
+        "testname": "Default OMAudit UPDATE data record",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"Parent\", \"OldValue\", \"NewValue\", \"SOMChangedById\", \"ScenarioName\", \"OMScenarioId\"  from STATIC.\"OMAudit\" where STATIC.\"OMAudit\".\"TableName\"= 'OMGeography'and STATIC.\"OMAudit\".\"Parent\" = 'OMR-13032GEO1-{{TestUniqueIntegrationId}}' and STATIC.\"OMAudit\".\"Operation\" = 'Update'",
+        "exp_result": "[{TableName:OMGeography,ColumnName:Name,Operation:Update,Parent:OMR-13032GEO1-{{TestUniqueIntegrationId}},OldValue:OMR-13032GEO1-{{TestUniqueIntegrationId}},NewValue:OMR-13032GEO1Renamed-{{TestUniqueIntegrationId}},SOMChangedById:null,ScenarioName:null,OMScenarioId:null}]"
+      },
+	  //case #1.2: checking that actual subsequent bulk load for OMGeography table was successful  (record loaded earlier got updated)
+      {
+        "testname": "Default audit OMGeography (data updated)",
+        "query": "select \"SOMGeographyId\", \"Name\", \"Status\", \"Country\"  from STATIC.\"OMGeography\" where \"SOMGeographyId\" = 'OMR-13032GEO1-{{TestUniqueIntegrationId}}'",
+        "exp_result": "[{SOMGeographyId:OMR-13032GEO1-{{TestUniqueIntegrationId}},Name:OMR-13032GEO1Renamed-{{TestUniqueIntegrationId}},Status:INAC,Country:GR}]"
+      },
+	  //case #1.3: checking that a record with Operation = DELETE for the column audited by default (OMGeography.Status) appears in OMAudit table
+      {
+        "testname": "Default OMAudit INAC data record",
+        "query": "select \"TableName\", \"ColumnName\", \"Operation\", \"Parent\", \"OldValue\", \"NewValue\", \"SOMChangedById\", \"ScenarioName\", \"OMScenarioId\"  from STATIC.\"OMAudit\" where STATIC.\"OMAudit\".\"TableName\"= 'OMGeography'and STATIC.\"OMAudit\".\"Parent\" = 'OMR-13032GEO1-{{TestUniqueIntegrationId}}' and STATIC.\"OMAudit\".\"Operation\" = 'Delete'",
+        "exp_result": "[{TableName:OMGeography,ColumnName:Status,Operation:Delete,Parent:OMR-13032GEO1-{{TestUniqueIntegrationId}},OldValue:ACTV,NewValue:INAC,SOMChangedById:null,ScenarioName:null,OMScenarioId:null}]"
+      },
+	  //case #1.4: checking that only expected count of records appear in OMAudit for OMGeography Update & Inactivate (audit for OMGeography.Name and OMGeography.Status and not OMGeography.Country (not part of the default audit, but is canged during the test) ) = 2 all together
+      {
+        "testname": "Check of OMAudit table count of records for table audited by default (OMGeography) - 2 records expected on Update and Inactivate",
+        "query": "select count (*) as \"Count\" from STATIC.\"OMAudit\" where STATIC.\"OMAudit\".\"TableName\"= 'OMGeography' and STATIC.\"OMAudit\".\"Parent\" = 'OMR-13032GEO1-{{TestUniqueIntegrationId}}' and  STATIC.\"OMAudit\".\"Operation\"<>'Add'",
+        "exp_result": "[{Count:2}]"
+      }
+      
+    ]
+  }
+}

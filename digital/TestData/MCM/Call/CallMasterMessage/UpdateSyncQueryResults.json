@@ -1,0 +1,22 @@
+{
+  "BaseData": {
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "CallMsgUpdate",
+        "query": "select \"Id\",\"OMCallId\",\"OMAccountId\",\"OMCallDetailId\",\"SOMProductId\",\"OMProductMessageId\",\"Reaction\",\"UniqueIntegrationId\",\"Status\",to_date(\"CreatedDate\") as \"CreatedDate\",\"CreatedById\",to_date(\"LastModifiedDate\") as \"LastModifiedDate\",\"LastModifiedById\" from static.\"OMCallMessage\" where \"Id\" like 'CallMsg{{TestUniqueIntegrationID}}AllFields%'",
+        "exp_result": "[{Id:CallMsg{{TestUniqueIntegrationID}}AllFields,OMCallId:CallId{{TestUniqueIntegrationID}},OMAccountId:Account_{{TestUniqueIntegrationID}}_WithValidBU,OMCallDetailId:a2J3t000002GHGDEA4,SOMProductId:a4v3t0000003mavAAA,OMProductMessageId:{{TestUniqueIntegrationID}}AllFields,Reaction:Negative,UniqueIntegrationId:{{TestUniqueIntegrationID}}AllFields,Status:ACTV,CreatedDate:{{dbt_today}},CreatedById:0051N000005pIXVQA2,LastModifiedDate:{{dbt_today}},LastModifiedById:Automation}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      },
+      {
+        "testname": "CallMsgValid-Update",
+        "query": "select count(*)  from static.\"OMCallMessage\" where \"Id\" like ('%{{TestUniqueIntegrationID}}%')",
+        "exp_result": "[{COUNT(*):4}]",
+        "odataQuery": null,
+        "sfQuery": "skip"
+      }
+    ]
+  }
+}

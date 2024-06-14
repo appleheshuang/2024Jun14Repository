@@ -1,0 +1,35 @@
+{
+	"Tests": {
+		"MergeResults": [
+			{
+				"testname": "check_recalc_notification",
+				"query": "select \"SOMRegionId\", \"PercentageChange\", \"ErrorMessage\" from static.\"OMRecalcNotification\" where \"SOMRegionId\" in ('ZW','ZM','ZR') order by \"LastModifiedDate\" desc, \"SOMRegionId\" asc limit 3",
+				"exp_result": "[{SOMRegionId:ZM,PercentageChange:0.00,ErrorMessage:null},{SOMRegionId:ZR,PercentageChange:0.00,ErrorMessage:null},{SOMRegionId:ZW,PercentageChange:0.00,ErrorMessage:null}]"
+			},
+			{
+				//Accounts OMR-15543-2, OMR-15543-4, OMR-15543-4 changed specialty into valid rule, but OMR-15543-2 is rolled back
+				"testname": "check_rollback_OMAccountTerritory",
+				"query": "select \"OMAccountId\" from output.\"OMAccountTerritory\" where \"OMAccountId\" in ('OMR-15543-1','OMR-15543-2','OMR-15543-3','OMR-15543-4','OMR-15543-5','OMR-15543-6','OMR-15543-7','OMR-15543-8') and \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}' and \"Reason\" ilike '%{{ScenarioRule.Name[1]}}|{{ScenarioRule.SOMRuleId__c[1]}}%' order by \"OMAccountId\"",
+				"exp_result": "[{OMAccountId:OMR-15543-2},{OMAccountId:OMR-15543-4},{OMAccountId:OMR-15543-8}]"
+			},
+			{
+				//Accounts OMR-15543-2, OMR-15543-4, OMR-15543-4 changed specialty into valid rule, but OMR-15543-2 is rolled back
+				"testname": "check_rollback_OMPublish",
+				"query": "select \"OMAccountId\" from output.\"OMPublish\" where \"OMAccountId\" in ('OMR-15543-1','OMR-15543-2','OMR-15543-3','OMR-15543-4','OMR-15543-5','OMR-15543-6','OMR-15543-7','OMR-15543-8') and \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}' and \"Reason\" ilike '%{{ScenarioRule.Name[1]}}|{{ScenarioRule.SOMRuleId__c[1]}}%' order by \"OMAccountId\"",
+				"exp_result": "[{OMAccountId:OMR-15543-2},{OMAccountId:OMR-15543-4},{OMAccountId:OMR-15543-8}]"
+			},
+			{
+				//5 Accounts unchanged by recalc, 1 rolled back from the ZW rollback (5+1)
+				"testname": "check_unchanged_OMAccountTerritory",
+				"query": "select count(*) \"count\" from output.\"OMAccountTerritory\" where \"OMAccountId\" in ('OMR-15543-1','OMR-15543-2','OMR-15543-3','OMR-15543-4','OMR-15543-5','OMR-15543-6','OMR-15543-7','OMR-15543-8') and \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}' and \"Reason\" = '{{ScenarioRule.Name[0]}}|{{ScenarioRule.SOMRuleId__c[0]}}'",
+				"exp_result": "[{count:5}]"
+			},
+			{
+				//5 Accounts unchanged by recalc, 1 rolled back from the ZW rollback (5+1)
+				"testname": "check_unchanged_OMPublish",
+				"query": "select count(*) \"count\" from output.\"OMPublish\" where \"OMAccountId\" in ('OMR-15543-1','OMR-15543-2','OMR-15543-3','OMR-15543-4','OMR-15543-5','OMR-15543-6','OMR-15543-7','OMR-15543-8') and \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c}}' and \"Reason\" = '{{ScenarioRule.Name[0]}}|{{ScenarioRule.SOMRuleId__c[0]}}'",
+				"exp_result": "[{count:5}]"
+			}
+		]
+	}
+}

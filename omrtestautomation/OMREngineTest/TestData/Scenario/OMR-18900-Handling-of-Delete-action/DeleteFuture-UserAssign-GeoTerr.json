@@ -1,0 +1,68 @@
+{
+  "BaseData": {
+    "som_region_id": "GS",
+    "EffeDateToday": "{{dbt_today}}"
+  },
+
+  "Scenario": {
+    "Description": "Test case C16188950,C17319267: Delete today+future on entities OMUserAssignment, OMGeographyTerritory",
+    "EffectiveDate__c": "{{EffeDateToday}}",
+    "EndDate__c": "{{EffeDateToday}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "DELFUT-{{TestUniqueIntegrationID}}"
+  },
+
+  //Delete past UserAssignment, GeographyTerritory
+  "ScenarioUserAssignment": [
+    {
+      "Action__c": "DEL",
+      "AssignmentType__c": "SECN",
+      "SOMUserId__c": "{{User.SOMUserId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "RefUserType__c": "{{User.Type__c[0]}}",
+      "SOMUserAssignmentId__c": "{{ScenarioUserAssignment.SOMUserAssignmentId__c[2]}}"
+    },
+    {
+      "Action__c": "DEL",
+      "AssignmentType__c": "SECN",
+      "SOMUserId__c": "{{User.SOMUserId__c[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[3]}}",
+      "RefUserType__c": "{{User.Type__c[0]}}",
+      "SOMUserAssignmentId__c": "{{ScenarioUserAssignment.SOMUserAssignmentId__c[3]}}"
+    }
+  ],
+  "ScenarioGeographyTerritory": [
+    {
+      "Action__c": "DEL",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "GEO01",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "SOMGeographyTerritoryId__c": "{{ScenarioGeographyTerritory.SOMGeographyTerritoryId__c[2]}}"
+    },
+    {
+      "Action__c": "DEL",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "GEO01",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[3]}}",
+      "SOMGeographyTerritoryId__c": "{{ScenarioGeographyTerritory.SOMGeographyTerritoryId__c[3]}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Delete Future UserAssignments",
+        "query": "select gt.\"SOMUserId\",t.\"UniqueIntegrationId\", gt.\"Status\", gt.\"EffectiveDate\", gt.\"EndDate\" from \"{{schema}}\".\"OMUserAssignment\" gt join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = gt.\"SOMTerritoryId\" where gt.\"SOMTerritoryId\" in ('{{ScenarioTerritory.SOMTerritoryId__c[2]}}','{{ScenarioTerritory.SOMTerritoryId__c[3]}}') order by gt.\"EffectiveDate\", gt.\"EndDate\"",
+        "exp_result": "[{SOMUserId:{{ScenarioUserAssignment.SOMUserId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[2]}},Status:INAC,EffectiveDate:{{ScenarioUserAssignment.EffectiveDate__c[2]}},EndDate:{{ScenarioUserAssignment.EndDate__c[2]}}},{SOMUserId:{{ScenarioUserAssignment.SOMUserId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[3]}},Status:INAC,EffectiveDate:{{ScenarioUserAssignment.EffectiveDate__c[3]}},EndDate:{{ScenarioUserAssignment.EndDate__c[3]}}}]"
+      },
+      {
+        "testname": "Delete Future GeoTerrs",
+        "query": "select gt.\"SOMGeographyId\", t.\"UniqueIntegrationId\", gt.\"Status\", gt.\"EffectiveDate\", gt.\"EndDate\" from {{schema}}.\"OMGeographyTerritory\" gt join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = gt.\"SOMTerritoryId\" where gt.\"SOMTerritoryId\" in ('{{ScenarioTerritory.SOMTerritoryId__c[2]}}','{{ScenarioTerritory.SOMTerritoryId__c[3]}}') order by gt.\"EffectiveDate\", gt.\"EndDate\"",
+        "exp_result": "[{SOMGeographyId:{{ScenarioGeographyTerritory.SOMGeographyId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[2]}},Status:INAC,EffectiveDate:{{ScenarioGeographyTerritory.EffectiveDate__c[2]}},EndDate:{{ScenarioGeographyTerritory.EndDate__c[2]}}},{SOMGeographyId:{{ScenarioGeographyTerritory.SOMGeographyId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[3]}},Status:INAC,EffectiveDate:{{ScenarioGeographyTerritory.EffectiveDate__c[3]}},EndDate:{{ScenarioGeographyTerritory.EndDate__c[3]}}}]"
+      }
+    ]
+  }
+}

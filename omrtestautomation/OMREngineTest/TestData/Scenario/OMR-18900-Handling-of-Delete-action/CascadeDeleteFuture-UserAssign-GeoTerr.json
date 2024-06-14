@@ -1,0 +1,65 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "GS",
+    "DateToday": "{{dbt_today}}"
+  },
+
+  "Scenario": {
+    "Description": "Test case C17319270,C17319269: Delete cascade territory to future entities OMUserAssignment, OMGeographyTerritory",
+    "EffectiveDate__c": "{{DateToday}}",
+    "EndDate__c": "{{DateToday}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "DELFUT-CASCADE-{{TestUniqueIntegrationID}}"
+  },
+
+  //Delete future UserAssignment, GeographyTerritory via territory cascade
+  "ScenarioTerritory": [
+    {
+      "Action__c": "DEL",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[1]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[2]}}",
+      "UniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR",
+      "Cascade__c": true
+    },
+    {
+      "Action__c": "DEL",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[1]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[3]}}",
+      "UniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[3]}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR",
+      "Cascade__c": true
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Cascade Delete Future UserAssignments",
+        "query": "select gt.\"SOMUserId\",t.\"UniqueIntegrationId\", gt.\"Status\", gt.\"EffectiveDate\", gt.\"EndDate\" from \"{{schema}}\".\"OMUserAssignment\" gt join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = gt.\"SOMTerritoryId\" where gt.\"SOMTerritoryId\" in ('{{ScenarioTerritory.SOMTerritoryId__c[2]}}','{{ScenarioTerritory.SOMTerritoryId__c[3]}}') order by gt.\"EffectiveDate\", gt.\"EndDate\"",
+        "exp_result": "[{SOMUserId:{{ScenarioUserAssignment.SOMUserId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[2]}},Status:INAC,EffectiveDate:{{ScenarioUserAssignment.EffectiveDate__c[2]}},EndDate:{{ScenarioUserAssignment.EndDate__c[2]}}},{SOMUserId:{{ScenarioUserAssignment.SOMUserId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[3]}},Status:INAC,EffectiveDate:{{ScenarioUserAssignment.EffectiveDate__c[3]}},EndDate:{{ScenarioUserAssignment.EndDate__c[3]}}}]"
+      },
+      {
+        "testname": "Cascade Delete Future GeoTerrs",
+        "query": "select gt.\"SOMGeographyId\", t.\"UniqueIntegrationId\", gt.\"Status\", gt.\"EffectiveDate\", gt.\"EndDate\" from {{schema}}.\"OMGeographyTerritory\" gt join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = gt.\"SOMTerritoryId\" where gt.\"SOMTerritoryId\" in ('{{ScenarioTerritory.SOMTerritoryId__c[2]}}','{{ScenarioTerritory.SOMTerritoryId__c[3]}}') order by gt.\"EffectiveDate\", gt.\"EndDate\"",
+        "exp_result": "[{SOMGeographyId:{{ScenarioGeographyTerritory.SOMGeographyId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[2]}},Status:INAC,EffectiveDate:{{ScenarioGeographyTerritory.EffectiveDate__c[2]}},EndDate:{{ScenarioGeographyTerritory.EndDate__c[2]}}},{SOMGeographyId:{{ScenarioGeographyTerritory.SOMGeographyId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[3]}},Status:INAC,EffectiveDate:{{ScenarioGeographyTerritory.EffectiveDate__c[3]}},EndDate:{{ScenarioGeographyTerritory.EndDate__c[3]}}}]"
+      },
+      {
+        "testname": "Cascade Delete territory",
+        "query": "select \"UniqueIntegrationId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMTerritory\" where \"SOMTerritoryId\" in ('{{ScenarioUserAssignment.SOMTerritoryId__c[2]}}','{{ScenarioUserAssignment.SOMTerritoryId__c[3]}}') order by \"UniqueIntegrationId\"",
+        "exp_result": "[{UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[3]}},Status:INAC,EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{Scenario.EndDate__c[0]}}},{UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[2]}},Status:INAC,EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{Scenario.EndDate__c[0]}}}]"
+      }
+    ]
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "REG01",
+    "accountEFFE": "ACCT04", //Practices
+    "accountEXPR": "ACCT05",//MP
+    "EffectiveDate": "{{today-30}}",
+    "EndDate": "{{today+30}}"
+  },
+
+  "Scenario": {
+    "Description": "Precondition for Account Product Rule EFFE EXPR",
+    "name": "Account Product Explicit EFFE EXPR",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "APREFFEEXPR-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioAccountProductRule": [
+    // precondition for EFFE Past
+    {
+      "Action__c": "ADD",
+      "Name": "AEFFEPAST-{{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "EFRulePast-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Practices\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Audiology\"}]},\"ProductRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"},{\"type\":\"Equals\",\"table\":\"OMProduct\",\"column\":\"SOMProductId\",\"value\":\"EFFEPAST-{{TestUniqueIntegrationID}}\"}]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}"
+    },
+    //precondition for EFFE Current
+    {
+      "Action__c": "ADD",
+      "Name": "BEFFECUR-{{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "EFRuleCur-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Practices\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Audiology\"}]},\"ProductRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"},{\"type\":\"Equals\",\"table\":\"OMProduct\",\"column\":\"SOMProductId\",\"value\":\"EFFECUR-{{TestUniqueIntegrationID}}\"}]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}"
+    },
+    //precondition for EFFE Future
+    {
+      "Action__c": "ADD",
+      "Name": "CEFFEFUT-{{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "EfRuleFut-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Practices\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Audiology\"}]},\"ProductRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"},{\"type\":\"Equals\",\"table\":\"OMProduct\",\"column\":\"SOMProductId\",\"value\":\"EFFEFUT-{{TestUniqueIntegrationID}}\"}]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}"
+
+    }, // precondition for EXPR Past
+    {
+      "Action__c": "ADD",
+      "Name": "AEXPRPAST-{{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "EXRulePast-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"MP\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Audiology\"}]},\"ProductRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"},{\"type\":\"Equals\",\"table\":\"OMProduct\",\"column\":\"SOMProductId\",\"value\":\"EFFEPAST-{{TestUniqueIntegrationID}}\"}]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}"
+    },
+    //precondition for EFFE Current
+    {
+      "Action__c": "ADD",
+      "Name": "BEXPRCUR-{{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "EXRuleCur-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"MP\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Audiology\"}]},\"ProductRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"},{\"type\":\"Equals\",\"table\":\"OMProduct\",\"column\":\"SOMProductId\",\"value\":\"EFFECUR-{{TestUniqueIntegrationID}}\"}]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}"
+    },
+    //precondition for EFFE Future
+    {
+      "Action__c": "ADD",
+      "Name": "CEXPRFUT-{{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "EXRuleFut-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"MP\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Audiology\"}]},\"ProductRule\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"},{\"type\":\"Equals\",\"table\":\"OMProduct\",\"column\":\"SOMProductId\",\"value\":\"EFFEFUT-{{TestUniqueIntegrationID}}\"}]}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Account Product Rule EFFE",
+        "query": "select \"Name\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductRule\" where \"UniqueIntegrationId\" in ('{{ScenarioAccountProductRule.UniqueIntegrationId__c[0]}}','{{ScenarioAccountProductRule.UniqueIntegrationId__c[1]}}','{{ScenarioAccountProductRule.UniqueIntegrationId__c[2]}}') order by \"Name\" asc ",
+        "exp_result": "[{Name:{{ScenarioAccountProductRule.Name[0]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV},{Name:{{ScenarioAccountProductRule.Name[1]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV},{Name:{{ScenarioAccountProductRule.Name[2]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV}]",
+        "odataQuery": "/OMAccountProductRule?$select=Name,EffectiveDate,EndDate,Status&$filter=(UniqueIntegrationId eq '{{ScenarioAccountProductRule.UniqueIntegrationId__c[0]}}' or UniqueIntegrationId eq '{{ScenarioAccountProductRule.UniqueIntegrationId__c[1]}}' or UniqueIntegrationId eq '{{ScenarioAccountProductRule.UniqueIntegrationId__c[2]}}') &$orderBy=Name asc"
+      },
+      {
+        "testname": "Account Product Rule EXPR",
+        "query": "select \"Name\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductRule\" where \"UniqueIntegrationId\" in ('{{ScenarioAccountProductRule.UniqueIntegrationId__c[3]}}','{{ScenarioAccountProductRule.UniqueIntegrationId__c[4]}}','{{ScenarioAccountProductRule.UniqueIntegrationId__c[5]}}') order by \"Name\" asc ",
+        "exp_result": "[{Name:{{ScenarioAccountProductRule.Name[3]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV},{Name:{{ScenarioAccountProductRule.Name[4]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV},{Name:{{ScenarioAccountProductRule.Name[5]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV}]",
+        "odataQuery": "/OMAccountProductRule?$select=Name,EffectiveDate,EndDate,Status&$filter=(UniqueIntegrationId eq '{{ScenarioAccountProductRule.UniqueIntegrationId__c[3]}}' or UniqueIntegrationId eq '{{ScenarioAccountProductRule.UniqueIntegrationId__c[4]}}' or UniqueIntegrationId eq '{{ScenarioAccountProductRule.UniqueIntegrationId__c[5]}}') &$orderBy=Name asc"
+      },
+      {
+        "testname": "Account Product Restricition EFFE",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\", \"Source\" from \"{{schema}}\".\"OMAccountProductRestriction\"  where \"Reason\" like '%{{TestUniqueIntegrationID}}%' and  \"Reason\" like '%EFFE%' and \"OMAccountId\"='{{accountEFFE}}' order by \"Reason\" asc",
+        "exp_result": "[{OMAccountId:ACCT04,SOMProductId:EFFEPAST-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Source:DSHR},{OMAccountId:ACCT04,SOMProductId:EFFECUR-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Source:DSHR},{OMAccountId:ACCT04,SOMProductId:EFFEFUT-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Source:DSHR}]",
+        "odataQuery": "/OMAccountProductRestriction?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate,Source&$filter=contains(Reason,'{{TestUniqueIntegrationID}}') and contains(Reason,'EFFE') and OMAccountId eq '{{accountEFFE}}' &$orderBy=Reason asc"
+      },
+      {
+        "testname": "Account Product Restricition EXPR",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\", \"Source\" from \"{{schema}}\".\"OMAccountProductRestriction\"  where \"Reason\" like '%{{TestUniqueIntegrationID}}%' and \"Reason\" like '%EXPR%' and \"OMAccountId\"='{{accountEXPR}}' order by \"Reason\" asc",
+        "exp_result": "[{OMAccountId:ACCT05,SOMProductId:EFFEPAST-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Source:DSHR},{OMAccountId:ACCT05,SOMProductId:EFFECUR-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Source:DSHR},{OMAccountId:ACCT05,SOMProductId:EFFEFUT-{{TestUniqueIntegrationID}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Source:DSHR}]",
+        "odataQuery": "/OMAccountProductRestriction?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate,Source&$filter=contains(Reason,'{{TestUniqueIntegrationID}}') and contains(Reason,'EXPR') and OMAccountId eq '{{accountEXPR}}' &$orderBy=Reason asc"
+      }
+    ]
+  }
+}

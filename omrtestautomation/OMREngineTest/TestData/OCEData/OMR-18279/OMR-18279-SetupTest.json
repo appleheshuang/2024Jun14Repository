@@ -1,0 +1,55 @@
+{
+  "Tests": {
+    "MergeResults": [
+      {
+        //Next two tests check that the alignments exist in Snowflake and in OCE-P. 
+        //One alignment in the past, one in the future and two intersecting with TODAY but only one gets published as per OMR-18279
+        "testname": "CheckContinuousDatesSnowflake",
+        "query": "select count(*) \"Total\" from OUTPUT.\"OMProductTerritory\" where \"SOMProductId\" = '{{Product.SOMProductId__c[0]}}' and \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c[0]}}' and \"Status\" = 'ACTV'",
+        "exp_result": "[{Total:4}]"
+      },
+      {
+        "testname": "CheckNumberOfAlignmentsPublishedIsExactlyOne",
+        "query": "skip",
+        "sfQuery": "select count(Id) Total from OCE__TerritoryProductAlignmentRule__c where OCE__UniqueIntegrationID__c = '{{Product.SOMProductId__c[0]}}-{{ScenarioTerritory.SOMTerritoryId__c[0]}}'",
+        "exp_result": "[{Total:1}]"
+      },
+      {
+        //Next two tests check that the alignments exist in Snowflake only. None of the dates of these alignments intersect with TODAY so they are not published
+        "testname": "CheckNoOverlapOCESnowflake",
+        "query": "select count(*) \"Total\" from OUTPUT.\"OMProductTerritory\" where \"SOMProductId\" = '{{Product.SOMProductId__c[0]}}' and \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c[1]}}'",
+        "exp_result": "[{Total:2}]"
+      },
+      {
+        "testname": "CheckNumberOfOCEAlignmentsWithNoOverlapIsZero",
+        "query": "skip",
+        "sfQuery": "select count(Id) Total from OCE__TerritoryProductAlignmentRule__c where OCE__UniqueIntegrationID__c = '{{Product.SOMProductId__c[0]}}-{{ScenarioTerritory.SOMTerritoryId__c[1]}}'",
+        "exp_result": "[{Total:0}]"
+      },
+      {
+        //Next two tests are a data check in Snowflake and OCE-P. This OMProductExplicit will be end dated in the following scenario
+        "testname": "CheckDataExistsForProductExpToBeINACed",
+        "query": "select count(*) \"Total\" from OUTPUT.\"OMProductTerritory\" where \"SOMProductId\" = '{{Product.SOMProductId__c[0]}}' and \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c[2]}}'",
+        "exp_result": "[{Total:1}]"
+      },
+      {
+        "testname": "CheckOCEDataExistsForProductExpToBeINACed",
+        "query": "skip",
+        "sfQuery": "select count(Id) Total from OCE__TerritoryProductAlignmentRule__c where OCE__UniqueIntegrationID__c = '{{Product.SOMProductId__c[0]}}-{{ScenarioTerritory.SOMTerritoryId__c[3]}}'",
+        "exp_result": "[{Total:1}]"
+      },
+      {
+        //Next two tests are a data check in Snowflake and OCE-P. Another OMProductExplicit will be added with the same territory + product, but different alignment type in the following scenario
+        "testname": "CheckNoOverlapOCESnowflake",
+        "query": "select count(*) \"Total\" from OUTPUT.\"OMProductTerritory\" where \"SOMProductId\" = '{{Product.SOMProductId__c[0]}}' and \"SOMTerritoryId\" = '{{ScenarioTerritory.SOMTerritoryId__c[3]}}'",
+        "exp_result": "[{Total:1}]"
+      },
+      {
+        "testname": "CheckNumberOfOCEAlignmentsWithNoOverlapIsZero",
+        "query": "skip",
+        "sfQuery": "select count(Id) Total from OCE__TerritoryProductAlignmentRule__c where OCE__UniqueIntegrationID__c = '{{Product.SOMProductId__c[0]}}-{{ScenarioTerritory.SOMTerritoryId__c[2]}}'",
+        "exp_result": "[{Total:1}]"
+      }
+    ]
+  }
+}

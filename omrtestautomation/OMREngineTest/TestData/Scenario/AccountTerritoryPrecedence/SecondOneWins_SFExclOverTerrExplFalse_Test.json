@@ -1,0 +1,55 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "regionUId": "AI",
+    "accountUId": "ACCT01"
+  },
+
+  "Scenario": {
+    "Name": "OMR-2505_test_",
+    "Description": "",
+    "EffectiveDate__c": "2021-09-01",
+    "EndDate__c": "2021-09-30",
+    "ScenarioStatus__c": "PENDG",
+    "OMRegionId__c": "{{regionUId}}",
+    "UniqueIntegrationId__c": "T-{{TestUniqueIntegrationId}}"
+  },
+
+  "ScenarioAccountExplicit": [
+    { // OMR-2505 C7970542 Terr explicit covers Terr excl (Terr Explicit first)
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "EffectiveDate__c": "2021-09-10",
+      "EndDate__c": "2021-09-15"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "AccountExclusion Merge",
+        "query": "select \"SOMSalesForceId\",\"OMAccountId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountExclusion\" where \"SOMSalesForceId\"='{{ScenarioSalesForce.SOMSalesForceId__c[0]}}' and \"OMAccountId\"='{{accountUId}}' order by \"EffectiveDate\"",
+        "exp_result": "[{SOMSalesForceId:{{ScenarioSalesForce.SOMSalesForceId__c[0]}},OMAccountId:{{accountUId}},EffectiveDate:2021-09-05,EndDate:2021-09-09},{SOMSalesForceId:{{ScenarioSalesForce.SOMSalesForceId__c[0]}},OMAccountId:{{accountUId}},EffectiveDate:2021-09-16,EndDate:2021-09-30}]",
+        "odataQuery": "/OMAccountExclusion?$select=SOMSalesForceId,OMAccountId,EffectiveDate,EndDate&$filter=SOMSalesForceId eq '{{ScenarioSalesForce.SOMSalesForceId__c[0]}}' and OMAccountId eq '{{accountUId}}'&$orderby=EffectiveDate"
+      }
+    ],
+
+    "AlignmentResults": [
+      {
+        "testname": "SecondOneWins",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{accountUId}},EffectiveDate:2021-09-10,EndDate:2021-09-15,Source:EXPL,Reason:}]",
+        "account_uids": "{{accountUId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+      }
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "Tests": {
+    "Explicits": [
+      {
+        "testname": "WinnerExplicits-369FromLoser",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{369WinnerId}},EffectiveDate:{{NonOverlappingExplicitStart_1}},EndDate:{{NonOverlappingExplicitEnd_1}}}]",
+        "account_uids": "{{369WinnerId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+      },
+      {
+        "testname": "LoserExplicits-369",
+        "exp_result": "[]",
+        "account_uids": "{{369LoserId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+      }
+    ],
+    "Exclusions": [
+      {
+        "testname": "WinnerExclusions-369FromLoser",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[1]}},AccountUID:{{369WinnerId}},EffectiveDate:{{NonOverlappingExcludeStart_1}},EndDate:{{NonOverlappingExcludeEnd_1}}}]",
+        "account_uids": "{{369WinnerId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}"
+      },
+      {
+        "testname": "LoserExclusions-369",
+        "exp_result": "[]",
+        "account_uids": "{{369LoserId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}"
+      }
+    ],
+    "AlignmentResults": [
+      // T0: Explicit only
+      {
+        "testname": "WinnerAlignmentsT0-369FromLoser",
+        "exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{369WinnerId}},EffectiveDate:{{NonOverlappingExplicitStart_1}},EndDate:{{NonOverlappingExplicitEnd_1}},Source:EXPL,Reason:}]",
+        "account_uids": "{{369WinnerId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+      },
+      // T1: Exclusions only
+      {
+        "testname": "WinnerAlignmentsT1-369FromLoser",
+        "exp_result": "[]",
+        "account_uids": "{{369WinnerId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}"
+      },
+      // Loser Alignments
+      {
+        "testname": "LoserAlignments-369",
+        "exp_result": "[]",
+        "account_uids": "{{369LoserId}}",
+        "territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}},{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+        "territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}},{{ScenarioTerritory.SOMTerritoryId__c[1]}}"
+      }
+    ]
+  }
+}

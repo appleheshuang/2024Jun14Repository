@@ -1,0 +1,107 @@
+﻿{
+  "BaseData": {
+    "EffectiveDate": "3025-03-01",
+    "EndDate": "3025-10-31",
+    "som_region_id": "US",
+    "repremoved_accountUId": "REPREMOVED-15972",
+    "loaded_accountUId": "LOADED-15972",
+    "hoedited_accountUId": "HOEDITED-15972",
+    "affiliated_accountUId": "AFFILIATED-15972",
+    "affil2_accountUId": "AFFIL2-15972",
+    "expAtargets": "[{Channel:MEET,Frequency:3},{Channel:EMAIL,Frequency:10}]",
+    "expHoModifiedtargets": "[{Channel:MEET,Frequency:2},{Channel:EMAIL,Frequency:2}]"
+  },
+  "Adjudication": {
+    "Id": "",
+    "Name": "",
+    "Type__c": "FUTURE",
+    "ReviewStartDate__c": "{{today}}",
+    "ReviewStartDate1__c": "{{today}}",
+    "ReviewStartDate2__c": "{{today}}",
+    "ReviewEndDate__c": "{{today+20}}",
+    "ReviewEndDate1__c": "{{today+10}}",
+    "ReviewEndDate2__c": "{{today+20}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "AdjudicationStatus__c": "PEND",
+    "UserAssignmentType__c": "SECN",
+    "AdjudicationScope__c": "ALGN_ENGP",
+    "AdjudicationEffectiveDate__c": "{{EffectiveDate}}",
+    "AdjudicationEndDate__c": "{{EndDate}}",
+    "RefScenarioEffectiveDate__c": "{{EffectiveDate}}",
+    "RefScenarioEndDate__c": "{{EndDate}}",
+    "RefScenarioUniqueIntegrationId__c": "{{Scenario.UniqueIntegrationId__c}}",
+    "RefEngagementPlanName__c": "{{ScenarioEngagementPlan.Name}}",
+    "SOMEngagementPlanId__c": "{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}",
+    "AutoApplyOnManagerApproval__c": false,
+    "AutoApproveAccountCRsOnSubmit__c": true,
+    "AutoApproveGeographyCRsOnSubmit__c": false
+  },
+  "AdjudicationLevel": [
+    {
+      "Id": "",
+      "TerritoryType__c": "DIST",
+      "Role__c": "APPR",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "ResponseDays__c": "10.0",
+      "PermittedActions__c": "ADD;DEL;APPRREJ;VIEW;EDITSEG;EDITFREQ"
+    },
+    {
+      "Id": "",
+      "TerritoryType__c": "TERR",
+      "Role__c": "REQ",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "ResponseDays__c": "10.0",
+      "AutomaticAction__c": "APPR",
+      "PermittedActions__c": "ADD;DEL;VIEW;EDITSEG;EDITFREQ"
+    }
+  ],
+  "AdjudicationGuardRail": {
+    "Id": "",
+    "OMAdjudicationId__c": "{{Adjudication.Id}}",
+    "TerritoryType__c": "TERR",
+    "MaxAccountPercent__c": "100.0",
+    "MaxGeographyPercent__c": "100.0",
+    "MaxSegmentChange__c": "10",
+    "MaxFrequencyChange__c": "10"
+  },
+  "AdjudicationTerritory": [
+    {
+      "Id": "",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UserAssignmentType__c": "SECN",
+      "Generated__c": false,
+      "RefTerritoryType__c": "TERR"
+    },
+    {
+      "Id": "",
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "UserAssignmentType__c": "SECN",
+      "Generated__c": false,
+      "RefTerritoryType__c": "DIST"
+    }
+  ],
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "initial",
+        "query": "select a.\"Name\", t.\"Name\" \"Terr\", ar.\"Source\", acc.\"UniqueIntegrationId\" \"OMAccountUId\", ar.\"Action\", ar.\"Targets\" from static.\"OMAdjudication\" a join static.\"OMAccountAdjudicationResult\" ar on ar.\"OMAdjudicationId\" = a.\"Id\" join static.\"OMAdjudicationTerritory\" ad on ad.\"OMAdjudicationId\" = a.\"Id\" join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = ar.\"SOMTerritoryId\" join static.\"OMAccount\" acc on acc.\"Id\" = ar.\"OMAccountId\" where a.\"Id\" = '{{Adjudication.Id}}' and acc.\"UniqueIntegrationId\" in ('{{repremoved_accountUId}}','{{loaded_accountUId}}','{{affiliated_accountUId}}','{{affil2_accountUId}}') and ar.\"AccessKey\" = ad.\"AccessKeyApprover\" order by acc.\"UniqueIntegrationId\"",
+        "exp_result": "[{Name:{{Adjudication.Name}},Terr:{{ScenarioTerritory.Name[0]}},Source:DSHR,OMAccountUId:{{affil2_accountUId}},Action:null,Targets:{{expHoModifiedtargets}}},{Name:{{Adjudication.Name}},Terr:{{ScenarioTerritory.Name[0]}},Source:DSHR,OMAccountUId:{{affiliated_accountUId}},Action:null,Targets:{{expHoModifiedtargets}}},{Name:{{Adjudication.Name}},Terr:{{ScenarioTerritory.Name[0]}},Source:EXPL,OMAccountUId:{{loaded_accountUId}},Action:null,Targets:{{expAtargets}}},{Name:{{Adjudication.Name}},Terr:{{ScenarioTerritory.Name[0]}},Source:EXPL,OMAccountUId:{{repremoved_accountUId}},Action:null,Targets:{{expAtargets}}}]"
+      },
+      {
+        "testname": "17916-initial-hoedited",
+        "query": "select a.\"Name\", t.\"Name\" \"Terr\", ar.\"Source\", acc.\"UniqueIntegrationId\" \"OMAccountUId\", ar.\"Action\", ar.\"Targets\" from static.\"OMAdjudication\" a join static.\"OMAccountAdjudicationResult\" ar on ar.\"OMAdjudicationId\" = a.\"Id\" join static.\"OMAdjudicationTerritory\" ad on ad.\"OMAdjudicationId\" = a.\"Id\" join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = ar.\"SOMTerritoryId\" join static.\"OMAccount\" acc on acc.\"Id\" = ar.\"OMAccountId\" where a.\"Id\" = '{{Adjudication.Id}}' and acc.\"UniqueIntegrationId\" in ('{{hoedited_accountUId}}') and ar.\"AccessKey\" = ad.\"AccessKeyApprover\" order by acc.\"UniqueIntegrationId\"",
+        "exp_result": "[{Name:{{Adjudication.Name}},Terr:{{ScenarioTerritory.Name[0]}},Source:EXPL,OMAccountUId:{{hoedited_accountUId}},Action:null,Targets:{{expHoModifiedtargets}}}]"
+      }
+    ]
+  }
+}

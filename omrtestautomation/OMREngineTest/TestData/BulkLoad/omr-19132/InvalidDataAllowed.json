@@ -1,0 +1,27 @@
+{
+  "Bulkload": {
+    "S3Path": "autotestdata/OMR-19132/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "PicklistValidate": false,
+    "Files": [
+      {
+        "file": "InvalidAccountType.csv",
+        "table": "OMAccount"
+      }
+    ]
+  },
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "account_has_invalid_type",
+        "query": "OMAccount,Name,Type,AccountType,Status,UniqueIntegrationId,Id:'ACCT-19132-INV'",
+        "exp_result": "[{Name:ACCT-19132-INV,Type:Other,AccountType:XXX,Status:ACTV,UniqueIntegrationId:ACCT-19132-INV}]",
+        "odataQuery": "/OMAccount?$select=Name,Type,AccountType,Status,UniqueIntegrationId&$filter=Id eq 'ACCT-19132-INV'"
+      }
+    ]
+  }
+}

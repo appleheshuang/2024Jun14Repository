@@ -1,0 +1,66 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "GS",
+    "DateToday": "{{dbt_today}}"
+  },
+
+  "Scenario": {
+    "Description": "Test case C17773191: Delete cascade territory with past inactive OMUserAssignment, OMGeographyTerritory",
+    "EffectiveDate__c": "{{DateToday}}",
+    "EndDate__c": "{{DateToday}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "DELWITHINAC-CASCADE-{{TestUniqueIntegrationID}}"
+  },
+
+  // Ignore past inactive UserAssignment, GeographyTerritory
+  // Cascade Delete future UserAssignment, GeographyTerritory
+  "ScenarioTerritory": [
+    {
+      "Action__c": "DEL",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[0]}}",
+      "UniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR",
+      "Cascade__c": true
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Cascade Delete Future UserAssignments",
+        "query": "select gt.\"SOMUserId\",t.\"UniqueIntegrationId\", gt.\"Status\", gt.\"EffectiveDate\", gt.\"EndDate\" from \"{{schema}}\".\"OMUserAssignment\" gt join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = gt.\"SOMTerritoryId\" where gt.\"UniqueIntegrationId\" in ('FUTURE-U{{TestUniqueIntegrationId}}') order by gt.\"EffectiveDate\", gt.\"EndDate\"",
+        "exp_result": "[{SOMUserId:{{ScenarioUserAssignment.SOMUserId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Status:INAC,EffectiveDate:{{ScenarioUserAssignment.EffectiveDate__c[2]}},EndDate:{{ScenarioUserAssignment.EndDate__c[2]}}}]"
+      },
+      {
+        "testname": "Cascade Delete Future GeoTerrs",
+        "query": "select gt.\"SOMGeographyId\", t.\"UniqueIntegrationId\", gt.\"Status\", gt.\"EffectiveDate\", gt.\"EndDate\" from {{schema}}.\"OMGeographyTerritory\" gt join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = gt.\"SOMTerritoryId\" where gt.\"UniqueIntegrationId\" in ('FUTURE-G{{TestUniqueIntegrationId}}') order by gt.\"EffectiveDate\", gt.\"EndDate\"",
+        "exp_result": "[{SOMGeographyId:{{ScenarioGeographyTerritory.SOMGeographyId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Status:INAC,EffectiveDate:{{ScenarioGeographyTerritory.EffectiveDate__c[2]}},EndDate:{{ScenarioGeographyTerritory.EndDate__c[2]}}}]"
+      },
+      {
+        "testname": "Cascade Delete territory",
+        "query": "select \"UniqueIntegrationId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMTerritory\" where \"SOMTerritoryId\" in ('{{ScenarioUserAssignment.SOMTerritoryId__c[0]}}') order by \"UniqueIntegrationId\"",
+        "exp_result": "[{UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Status:INAC,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[0]}}}]"
+      },
+      {
+        "testname": "No change to Past INAC UserAssignments",
+        "query": "select gt.\"SOMUserId\",t.\"UniqueIntegrationId\", gt.\"Status\", gt.\"EffectiveDate\", gt.\"EndDate\" from \"{{schema}}\".\"OMUserAssignment\" gt join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = gt.\"SOMTerritoryId\" where gt.\"UniqueIntegrationId\" in ('PAST-U{{TestUniqueIntegrationId}}','CURR-U{{TestUniqueIntegrationId}}') order by gt.\"EffectiveDate\", gt.\"EndDate\"",
+        "exp_result": "[{SOMUserId:{{ScenarioUserAssignment.SOMUserId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Status:INAC,EffectiveDate:{{ScenarioUserAssignment.EffectiveDate__c[0]}},EndDate:{{ScenarioUserAssignment.EndDate__c[0]}}},{SOMUserId:{{ScenarioUserAssignment.SOMUserId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Status:INAC,EffectiveDate:{{ScenarioUserAssignment.EffectiveDate__c[1]}},EndDate:{{ScenarioUserAssignment.EndDate__c[1]}}}]"
+      },
+      {
+        "testname": "No change to Past INAC GeoTerrs",
+        "query": "select gt.\"SOMGeographyId\", t.\"UniqueIntegrationId\", gt.\"Status\", gt.\"EffectiveDate\", gt.\"EndDate\" from {{schema}}.\"OMGeographyTerritory\" gt join {{schema}}.\"OMTerritory\" t on t.\"SOMTerritoryId\" = gt.\"SOMTerritoryId\" where gt.\"UniqueIntegrationId\" in ('PAST-G{{TestUniqueIntegrationId}}','CURR-G{{TestUniqueIntegrationId}}') order by gt.\"EffectiveDate\", gt.\"EndDate\"",
+        "exp_result": "[{SOMGeographyId:{{ScenarioGeographyTerritory.SOMGeographyId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Status:INAC,EffectiveDate:{{ScenarioGeographyTerritory.EffectiveDate__c[0]}},EndDate:{{ScenarioGeographyTerritory.EndDate__c[0]}}},{SOMGeographyId:{{ScenarioGeographyTerritory.SOMGeographyId__c}},UniqueIntegrationId:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},Status:INAC,EffectiveDate:{{ScenarioGeographyTerritory.EffectiveDate__c[1]}},EndDate:{{ScenarioGeographyTerritory.EndDate__c[1]}}}]"
+      }
+    ]
+  }
+}

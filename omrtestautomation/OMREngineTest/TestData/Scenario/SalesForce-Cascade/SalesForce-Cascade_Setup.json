@@ -1,0 +1,182 @@
+{
+  "Configs": {
+    "jobtype": "commit",
+    "jobparams": "CalculateMaps=false;RuleEngineEnabled=true"
+  },
+  "BaseData": {
+    "regionUId": "REG01",
+    "productUId": "PROD1",
+    "accountUId": "ACCT05",
+    "accountUId2": "ACCT04"
+  },
+
+  "Scenario": {
+    "Name": "Delete SalesForce cascade Territory Setup",
+    "Description": "Delete SalesForce cascade Territory",
+    "EffectiveDate__c": "2021-03-01",
+    "EndDate__c": "2021-12-30",
+    "ScenarioStatus__c": "PENDG",
+    "OMRegionId__c": "{{regionUId}}",
+    "UniqueIntegrationId__c": "Setup-{{TestUniqueIntegrationId}}"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "Name": "SalesForce SF1-{{TestUniqueIntegrationId}}",
+      "Type__c": "INST",
+      "UniqueIntegrationId__c": "SF1-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "RegionUniqueIntegrationId__c": "{{regionUId}}",
+      "SOMRegionId__c": "{{regionUId}}",
+      "Cascade__c": true,
+      "EffectiveDate__c": "2021-03-01",
+      "EndDate__c": "2021-12-30"
+    },
+    {
+      "Action__c": "ADD",
+      "Name": "SalesForce SF2-{{TestUniqueIntegrationId}}",
+      "Type__c": "INST",
+      "UniqueIntegrationId__c": "SF2-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "RegionUniqueIntegrationId__c": "{{regionUId}}",
+      "SOMRegionId__c": "{{regionUId}}",
+      "Cascade__c": false,
+      "EffectiveDate__c": "2021-03-01",
+      "EndDate__c": "2021-12-30"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "T1 {{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "T1-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{regionUId}}",
+      "Type__c": "TERR",
+      "EffectiveDate__c": "2021-03-01",
+      "EndDate__c": "2021-12-30"
+      //"Cascade__c": true
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[1]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "T2 {{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "T2-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{regionUId}}",
+      "Type__c": "TERR",
+      "EffectiveDate__c": "2021-03-01",
+      "EndDate__c": "2021-12-30"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "T3 {{TestUniqueIntegrationId}}",
+      "UniqueIntegrationId__c": "T3-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{regionUId}}",
+      "Type__c": "TERR",
+      "EffectiveDate__c": "2021-03-01",
+      "EndDate__c": "2021-12-30"
+    }
+  ],
+
+  "ScenarioProductSalesForce": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "PSF1-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2021-03-01",
+      "EndDate__c": "2021-12-30"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "ProductUniqueIntegrationId__c": "{{productUId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[1]}}",
+      "UniqueIntegrationId__c": "PSF2-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "DETL",
+      "EffectiveDate__c": "2021-03-01",
+      "EndDate__c": "2021-04-30"
+    }
+  ],
+
+  "ScenarioAccountExclusion": [
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "AExc1-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "EffectiveDate__c": "2021-04-05",
+      "EndDate__c": "2021-10-30"
+    },
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "UniqueIntegrationId__c": "AExc2-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "EffectiveDate__c": "2021-04-10",
+      "EndDate__c": "2021-04-25"
+    },
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId2}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+      "UniqueIntegrationId__c": "AExc3-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "EffectiveDate__c": "2021-03-01",
+      "EndDate__c": "2021-12-30"
+    },
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId2}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "UniqueIntegrationId__c": "AExc4-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "EffectiveDate__c": "2021-03-01",
+      "EndDate__c": "2021-12-30"
+    }
+  ],
+
+  "ScenarioRule": [
+    {
+      "Action__c": "ADD",
+      "Name": "Rule R1-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "UniqueIntegrationId__c": "R1-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[0]}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+      "RuleData__c": "{\"geography\":false,\"explicit\":false,\"filter\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"MP\"},\"hierarchy\":\"\"}",
+      "RuleScope__c": "ALGN",
+      "EffectiveDate__c": "2021-05-01",
+      "EndDate__c": "2021-05-02"
+    },
+    {
+      "Action__c": "ADD",
+      "Name": "Rule R2-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id[0]}}",
+      "UniqueIntegrationId__c": "R2-{{TestUniqueIntegrationId}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[1]}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+      "RuleData__c": "{\"geography\":false,\"explicit\":false,\"filter\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"MP\"},\"hierarchy\":\"\"}",
+      "RuleScope__c": "ALGN",
+      "EffectiveDate__c": "2021-05-01",
+      "EndDate__c": "2021-05-02"
+    }
+  ]
+}

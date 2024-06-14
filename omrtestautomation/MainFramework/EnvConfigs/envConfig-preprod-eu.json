@@ -1,0 +1,8 @@
+{
+	"Url": "https://preprodoptimizereuiprodenv.prod.optimizer.iqvia.io/",
+	"EnvRoot": "latest",
+	"TestDataBucket": "guardians-testdata-east2",
+	"AwsRegion": "eu-west-1",
+	"master_apikey": "81vTUnI0iPWh4gC3W3537vzMRCJ46um4xwHUkhh6",
+	"generic_sfApiKey": "SZLWvZHCeI5sxXLIs2IRb9NRYGoNnV7D8OfKTmps1"
+}

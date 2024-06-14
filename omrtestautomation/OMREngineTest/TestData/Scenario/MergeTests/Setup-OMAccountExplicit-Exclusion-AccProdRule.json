@@ -1,0 +1,193 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "som_region_id": "GS",
+    "accountUId": "45ACCTEXP", // Department
+    "accountUId2": "ACCT02", // Institution
+    "accountUId3": "ACCT03", // Pharmacy
+    "salesforceUID": "SF506",
+    "territoryUID": "T506",
+    "territoryUID2": "T606",
+    "EffectiveDate": "2021-01-01",
+    "EndDate": "2022-12-31"
+  },
+
+  "Scenario": {
+    "Description": "Precondition for check actions on entities OMAccountExplicit, OMAccountExclusion, OMAccountProductRule",
+    "name": "Test case C7644688",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "AcctExpExcSetup-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "name": "SF 506"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "Terr 506",
+      "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "Terr 606",
+      "UniqueIntegrationId__c": "{{territoryUID2}}-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    }
+  ],
+
+  "ScenarioAccountExplicit": [
+    // precondition fo Actions EDIT, EFFE, EXPR
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "2021-01-10",
+      "EndDate__c": "2021-03-01"
+    },
+    // precondition fo Action PEXP
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId2}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "2021-06-15",
+      "EndDate__c": "2021-08-31"
+    },
+    // precondition fo Action DEL
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId3}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "2021-10-01",
+      "EndDate__c": "2021-11-30"
+    }
+  ],
+
+  "ScenarioAccountExclusion": [
+    // precondition fo Actions EDIT, EFFE, EXPR
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "2022-01-10",
+      "EndDate__c": "2022-03-01"
+    },
+    // precondition fo Action PEXP
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId2}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "2022-06-15",
+      "EndDate__c": "2022-08-31"
+    },
+    // precondition fo Action DEL
+    {
+      "Action__c": "ADD",
+      "Purpose__c": "ALGN",
+      "AccountUniqueIntegrationId__c": "{{accountUId3}}",
+      "TerritoryUniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "EffectiveDate__c": "2022-10-01",
+      "EndDate__c": "2022-11-30"
+    }
+  ],
+
+  "ScenarioAccountProductRule": [
+    // precondition fo Actions EDIT, EFFE, EXPR
+    {
+      "Action__c": "ADD",
+      "Name": "PROD Rule 1-{{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "PROD 1-{{TestUniqueIntegrationID}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Department\"},\"ProductRule\":{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"}}",
+      "EffectiveDate__c": "2021-02-10",
+      "EndDate__c": "2021-04-20"
+    },
+    // precondition fo Action DEL
+    {
+      "Action__c": "ADD",
+      "Name": "PROD Rule 2-{{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "PROD 2-{{TestUniqueIntegrationID}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Institution\"},\"ProductRule\":{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"}}",
+      "EffectiveDate__c": "2021-05-10",
+      "EndDate__c": "2021-06-20"
+    } /*,
+    {
+      "Action__c": "ADD",
+      "Name": "PROD Rule 3-{{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "PROD 3-{{TestUniqueIntegrationID}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Pharmacy\"},\"ProductRule\":{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"}}",
+      "EffectiveDate__c": "2021-08-10",
+      "EndDate__c": "2021-09-20"
+    },
+    {
+      "Action__c": "ADD",
+      "Name": "PROD Rule 4-{{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "PROD 4-{{TestUniqueIntegrationID}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "RuleData__c": "{\"AccountRule\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"Practice\"},\"ProductRule\":{\"type\":\"In\",\"table\":\"OMProduct\",\"column\":\"Type\",\"value\":\"Detail\"}}",
+      "EffectiveDate__c": "2021-10-10",
+      "EndDate__c": "2021-11-20"
+    }*/
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "merge_accountExplicit",
+        "query": "select \"SOMTerritoryId\",\"OMAccountId\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMAccountExplicit\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c}}' order by \"EffectiveDate\" asc",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},OMAccountId:{{accountUId}},EffectiveDate:{{ScenarioAccountExplicit.EffectiveDate__c[0]}},EndDate:{{ScenarioAccountExplicit.EndDate__c[0]}}},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},OMAccountId:{{accountUId2}},EffectiveDate:{{ScenarioAccountExplicit.EffectiveDate__c[1]}},EndDate:{{ScenarioAccountExplicit.EndDate__c[1]}}},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},OMAccountId:{{accountUId3}},EffectiveDate:{{ScenarioAccountExplicit.EffectiveDate__c[2]}},EndDate:{{ScenarioAccountExplicit.EndDate__c[2]}}}]",
+        "odataQuery": "/OMAccountExplicit?$select=SOMTerritoryId,OMAccountId,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c}}'&$orderBy=EffectiveDate asc",
+        "sfQuery": null
+      },
+      {
+        "testname": "merge_accountExclusion",
+        "query": "OMAccountExclusion,OMAccountId,Status,EffectiveDate,EndDate,SOMTerritoryId:'{{ScenarioTerritory.SOMTerritoryId__c}}' order by \"EffectiveDate\" asc",
+        "exp_result": "[{OMAccountId:{{accountUId}},Status:ACTV,EffectiveDate:{{ScenarioAccountExclusion.EffectiveDate__c[0]}},EndDate:{{ScenarioAccountExclusion.EndDate__c[0]}}},{OMAccountId:{{accountUId2}},Status:ACTV,EffectiveDate:{{ScenarioAccountExclusion.EffectiveDate__c[1]}},EndDate:{{ScenarioAccountExclusion.EndDate__c[1]}}},{OMAccountId:{{accountUId3}},Status:ACTV,EffectiveDate:{{ScenarioAccountExclusion.EffectiveDate__c[2]}},EndDate:{{ScenarioAccountExclusion.EndDate__c[2]}}}]",
+        "odataQuery": "/OMAccountExclusion?$select=OMAccountId,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c}}'&$orderBy=EffectiveDate asc",
+        "sfQuery": null
+      }
+    ]
+  }
+}

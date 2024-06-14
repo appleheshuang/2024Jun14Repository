@@ -1,0 +1,31 @@
+﻿{
+	"Region": [
+		{
+			"SOMRegionId__c": "ZW",
+			"UniqueIntegrationId__c": "OMR15543-ZW",
+			"NightlyThreshold__c": 1,
+			"ThresholdAction__c": "Error"
+		},
+		{
+			"SOMRegionId__c": "ZM",
+			"UniqueIntegrationId__c": "OMR15543-ZM",
+			"NightlyThreshold__c": 50,
+			"ThresholdAction__c": "Error"
+		},
+		{
+			"SOMRegionId__c": "ZR",
+			"UniqueIntegrationId__c": "OMR15543-ZR",
+			"NightlyThreshold__c": 100,
+			"ThresholdAction__c": "Error"
+		}
+	],
+	"Tests": {
+		"MergeResults": [
+			{
+				"testname": "RegionalThresholds",
+				"query": "select \"UniqueIntegrationId\",\"NightlyThreshold\",\"ThresholdAction\" from static.\"OMRegion\" where \"SOMRegionId\" in ('ZR','ZM','ZW') order by \"UniqueIntegrationId\"",
+				"exp_result": "[{UniqueIntegrationId:OMR15543-ZM,NightlyThreshold:50.00,ThresholdAction:Error},{UniqueIntegrationId:OMR15543-ZR,NightlyThreshold:100.00,ThresholdAction:Error},{UniqueIntegrationId:OMR15543-ZW,NightlyThreshold:1.00,ThresholdAction:Error}]"
+			}
+		]
+	}
+}

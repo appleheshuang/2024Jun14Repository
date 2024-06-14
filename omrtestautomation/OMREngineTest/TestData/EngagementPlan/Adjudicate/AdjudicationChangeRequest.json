@@ -1,0 +1,32 @@
+﻿{
+  "Configs": {
+    "loadData": "Smoketest\\LoadData\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "adjudicate"
+  },
+  "BaseData": {
+    "OMAccountId": "10ACCTEXC"
+  },
+  "AdjudicationChangeRequestAccount": 
+  [
+    {
+      "OMAdjudicationId__c": "{{Adjudication.Id}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "OMAccountId__c": "{{OMAccountId}}",
+      "AccountUniqueIntegrationId__c": "{{OMAccountId}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "InitialLevel__c": "TERR",
+      "RefTerritoryType__c": "TERR",
+      "SubmitStatus__c": "PEND",
+      "Action__c": "ADD",
+      "RefAccountAccountType__c": "Institution",
+      "RefAccountName__c": "{{OMAccountId}}",
+      "RefAccountSpecialty__c": "Audiology",
+      "RefAccountType__c": "Other",
+      "RefAddressText__c": "CITY01 STATE01 1234",
+      "RefAddress__c": "CITY01 STATE01 1234",
+      "SimulationStatusRep__c": "DONE"
+    }
+  ]
+}

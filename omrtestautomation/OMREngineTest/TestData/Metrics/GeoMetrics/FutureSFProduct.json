@@ -1,0 +1,464 @@
+{
+  "BaseData": {
+    "som_region_id": "UK",
+    "initialSalesforceUID": "SF17481-{{TestUniqueIntegrationId}}",
+    "initialRuleUID": "R17481-{{TestUniqueIntegrationId}}",
+    "newSalesforceUID": "SF17481-2-{{TestUniqueIntegrationId}}",
+    "T1UID": "T17481-1-{{TestUniqueIntegrationId}}",
+    "T2UID": "T17481-2-{{TestUniqueIntegrationId}}",
+    "DistrictUID": "D17481-{{TestUniqueIntegrationId}}",
+    "newRuleUID": "R17481-2-{{TestUniqueIntegrationId}}",
+    "T2_AcctSales_Total": "101.000",
+    "T2_AcctCount_Total": "18.000",
+    "T2_PostSales_Total": "71.700",
+    "T2_BrickSales_Total": "0.000",
+    "T2_StateCount_Total": "7.000",
+    "T1_PostSales_Total": "0.000",
+    "T1_BrickSales_Total": "3.000",
+    "T1_StateCount_Total": "0.000",
+    // From initial Base Metric Data
+    "A1_UK_UId": "A1-17481-{{TestUniqueIntegrationId}}",
+    "A2_UK_UId": "A2-17481-{{TestUniqueIntegrationId}}",
+    "A3_UK_UId": "A3-17481-{{TestUniqueIntegrationId}}",
+    "A4_US_UId": "A4-17481-{{TestUniqueIntegrationId}}",
+    "A5_PN_UId": "A5-17481-{{TestUniqueIntegrationId}}",
+    "A1_Copromote_Sales": "11.000",
+    "A2_Copromote_Sales": "20.000",
+    "A3_Copromote_Sales": "30.000",
+    "A4_Copromote_Sales": "n/a",
+    "A5_Copromote_Sales": "40.000",
+    "G1_Post_UId": "G1_POST1_17481_{{TestUniqueIntegrationId}}",
+    "G2_Post_UId": "G2_POST2_17481_{{TestUniqueIntegrationId}}",
+    "G3_Brick_UId": "G3_BRICK3_17481_{{TestUniqueIntegrationId}}",
+    "G4_Brick_UId": "G4_BRICK4_17481_{{TestUniqueIntegrationId}}",
+    "G5_State_UId": "G5_STATE5_17481_{{TestUniqueIntegrationId}}",
+    "G6_State_UId": "G6_STATE6_17481_{{TestUniqueIntegrationId}}",
+    "G7_Post_UId": "G7_POST7_17481_{{TestUniqueIntegrationId}}",
+    "G8_Brick_UId": "G8_BRICK8_17481_{{TestUniqueIntegrationId}}",
+    "G9_State_UId": "G9_STATE9_17481_{{TestUniqueIntegrationId}}",
+    "product_in_sf_1": "PN-COPROMOTE",
+    "product_in_sf_2": "PN-NOPROMOTE",
+    "product_in_sf_3": "UK-COPRO-COMPETITOR",
+    "product_in_sf_4": "UK-COPROMOTE",
+    "product_in_sf_5": "UK-NOPRO-COMPETITOR",
+    "product_in_sf_6": "UK-NOPROMOTE",
+    "product_not_in_sf": "UK-COPRO-EXCLUDE"
+  },
+
+  "Scenario": {
+    "Description": "",
+    "Name": "",
+    "EffectiveDate__c": "3020-01-01",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": ""
+  },
+
+  "ScenarioSalesForce": [
+    {
+      "Action__c": "ADD",
+      "UniqueIntegrationId__c": "{{newSalesforceUID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "RegionUniqueIntegrationId__c": "{{som_region_id}}",
+      "Type__c": "KOL",
+      "Name": "SF-17481-FUTURE"
+    },
+    {
+      //"Action__c": "PEXP", PEXP not working with cascade so use EXPR with date
+      "Action__c": "EXPR",
+      "EndDate__c": "3019-12-31",
+      "UniqueIntegrationId__c": "{{initialSalesforceUID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "RegionUniqueIntegrationId__c": "{{som_region_id}}",
+      "Type__c": "KOL",
+      "Name": "SF-17481-INIT",
+      "Cascade__c": "true"
+    }
+  ],
+
+  "ScenarioRule": [
+    {
+      "Action__c": "ADD",
+      "Name": "R2-17481-INGEO",
+      "UniqueIntegrationId__c": "{{newRuleUID}}",
+      "SalesForceUniqueIntegrationId__c": "{{newSalesforceUID}}",
+      "RuleData__c": "{\"geography\":true,\"explicit\":false,\"filter\":{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"MP\"}}"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{newSalesforceUID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "T1-17481-FUTURE",
+      "UniqueIntegrationId__c": "{{T1UID}}",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{newSalesforceUID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "T2-17481-FUTURE",
+      "UniqueIntegrationId__c": "{{T2UID}}",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "ADD",
+      "SalesForceUniqueIntegrationId__c": "{{newSalesforceUID}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Name": "D-17481-FUTURE",
+      "UniqueIntegrationId__c": "{{DistrictUID}}",
+      "RegionUniqueIntegrationId__c": "{{regionUID}}",
+      "Type__c": "DIST"
+    }
+  ],
+
+  "ScenarioTerritoryHierarchy": [
+    {
+      "Action__c": "ADD",
+      "ChildTerritoryUniqueIntegrationId__c": "{{T1UID}}",
+      "SOMChildTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UniqueIntegrationId__c": "D-T1-{{TestUniqueIntegrationId}}",
+      "RefChildTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "ParentTerritoryUniqueIntegrationId__c": "{{DistrictUID}}",
+      "SOMParentTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "RefParentTerritoryName__c": "{{ScenarioTerritory.Name[2]}}",
+      "RelationType__c": "PRIM"
+    },
+    {
+      "Action__c": "ADD",
+      "ChildTerritoryUniqueIntegrationId__c": "{{T2UID}}",
+      "SOMChildTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "UniqueIntegrationId__c": "D-T2-{{TestUniqueIntegrationId}}",
+      "RefChildTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+      "ParentTerritoryUniqueIntegrationId__c": "{{DistrictUID}}",
+      "SOMParentTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "RefParentTerritoryName__c": "{{ScenarioTerritory.Name[2]}}",
+      "RelationType__c": "PRIM"
+    }
+  ],
+
+
+  "ScenarioGeographyTerritory": [
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "{{G1_Post_UId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "UniqueIntegrationId__c": "SGT01-{{T2UID}}",
+      "GeographyUniqueIntegrationId__c": "{{G1_Post_UId}}",
+      "TerritoryUniqueIntegrationId__c": "{{T2UID}}"
+    },
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "{{G2_Post_UId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "UniqueIntegrationId__c": "SGT02-{{T2UID}}",
+      "GeographyUniqueIntegrationId__c": "{{G2_Post_UId}}",
+      "TerritoryUniqueIntegrationId__c": "{{T2UID}}"
+    },
+
+    // G3_Brick_UId added to T1, not T2
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "{{G3_Brick_UId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "UniqueIntegrationId__c": "SGT1-03-{{T1UID}}",
+      "GeographyUniqueIntegrationId__c": "{{G3_Post_UId}}",
+      "TerritoryUniqueIntegrationId__c": "{{T1UID}}"
+    },
+
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "{{G4_Brick_UId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "UniqueIntegrationId__c": "SGT04-{{T2UID}}",
+      "GeographyUniqueIntegrationId__c": "{{G4_Brick_UId}}",
+      "TerritoryUniqueIntegrationId__c": "{{T2UID}}"
+    },
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "{{G5_State_UId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "UniqueIntegrationId__c": "SGT05-{{T2UID}}",
+      "GeographyUniqueIntegrationId__c": "{{G5_State_UId}}",
+      "TerritoryUniqueIntegrationId__c": "{{T2UID}}"
+    },
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "{{G6_State_UId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "UniqueIntegrationId__c": "SGT06-{{T2UID}}",
+      "GeographyUniqueIntegrationId__c": "{{G6_State_UId}}",
+      "TerritoryUniqueIntegrationId__c": "{{T2UID}}"
+    },
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "{{G7_Post_UId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "UniqueIntegrationId__c": "SGT07-{{T2UID}}",
+      "GeographyUniqueIntegrationId__c": "{{G7_Post_UId}}",
+      "TerritoryUniqueIntegrationId__c": "{{T2UID}}"
+    },
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "{{G8_Brick_UId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "UniqueIntegrationId__c": "SGT08-{{T2UID}}",
+      "GeographyUniqueIntegrationId__c": "{{G8_Brick_UId}}",
+      "TerritoryUniqueIntegrationId__c": "{{T2UID}}"
+    },
+    {
+      "Action__c": "ADD",
+      "Source__c": "EXPL",
+      "Purpose__c": "SFA",
+      "SOMGeographyId__c": "{{G9_State_UId}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "UniqueIntegrationId__c": "SGT09-{{T2UID}}",
+      "GeographyUniqueIntegrationId__c": "{{G9_State_UId}}",
+      "TerritoryUniqueIntegrationId__c": "{{T2UID}}"
+    }
+  ],
+
+  "ScenarioProductSalesForce": [
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{product_in_sf_1}}",
+      "SalesForceUniqueIntegrationId__c": "{{newSalesforceUID}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{product_in_sf_2}}",
+      "SalesForceUniqueIntegrationId__c": "{{newSalesforceUID}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{product_in_sf_3}}",
+      "SalesForceUniqueIntegrationId__c": "{{newSalesforceUID}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    // Not added to sf : product_in_sf_4 = UK-COPROMOTE
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{product_in_sf_5}}",
+      "SalesForceUniqueIntegrationId__c": "{{newSalesforceUID}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{product_in_sf_6}}",
+      "SalesForceUniqueIntegrationId__c": "{{newSalesforceUID}}",
+      "ProductAlignmentType__c": "DETL"
+    }
+  ],
+
+  "Tests": {
+    "MetricResult": [
+      // Account & Rollup results
+      {
+        "testname": "AccountMetricResult_Precheck",
+        "entity": "Account",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{A1_UK_UId}},{{A2_UK_UId}},{{A3_UK_UId}},{{A4_US_UId}},{{A5_PN_UId}}",
+        "columns": "Metric11,Metric12,Metric13,Metric14,Metric15,Metric16",
+        "exp_result": "[{Account:{{A1_UK_UId}},Metric11:7.000,Metric12:{{A1_Copromote_Sales}},Metric13:{{A1_Copromote_Sales}},Metric14:{{A1_Copromote_Sales}},Metric15:{{A1_Copromote_Sales}},Metric16:{{A1_Copromote_Sales}}},{Account:{{A2_UK_UId}},Metric11:5.000,Metric12:{{A2_Copromote_Sales}},Metric13:{{A2_Copromote_Sales}},Metric14:{{A2_Copromote_Sales}},Metric15:{{A2_Copromote_Sales}},Metric16:{{A2_Copromote_Sales}}},{Account:{{A3_UK_UId}},Metric11:3.000,Metric12:{{A3_Copromote_Sales}},Metric13:{{A3_Copromote_Sales}},Metric14:{{A3_Copromote_Sales}},Metric15:{{A3_Copromote_Sales}},Metric16:{{A3_Copromote_Sales}}},{Account:{{A5_PN_UId}},Metric11:3.000,Metric12:{{A5_Copromote_Sales}},Metric13:{{A5_Copromote_Sales}},Metric14:{{A5_Copromote_Sales}},Metric15:{{A5_Copromote_Sales}},Metric16:{{A5_Copromote_Sales}}}]"
+      },
+      {
+        "testname": "PostGeoRollupResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{G1_Post_UId}},{{G2_Post_UId}},{{G7_Post_UId}}",
+        "columns": "Metric13,Metric16",
+        "exp_result": "[{Geography:{{G1_Post_UId}},Metric13:30.000,Metric16:41.000},{Geography:{{G7_Post_UId}},Metric13:60.000,Metric16:60.000}]"
+      },
+      {
+        "testname": "BrickGeoRollupResult_Primary",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{G3_Brick_UId}},{{G4_Brick_UId}},{{G8_Brick_UId}}",
+        "columns": "Metric12",
+        "exp_result": "[{Geography:{{G3_Brick_UId}},Metric12:50.000},{Geography:{{G4_Brick_UId}},Metric12:40.000}]"
+      },
+      {
+        "testname": "BrickGeoRollupResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{G3_Brick_UId}},{{G4_Brick_UId}},{{G8_Brick_UId}}",
+        "columns": "Metric11,Metric15",
+        "exp_result": "[{Geography:{{G3_Brick_UId}},Metric11:5.500,Metric15:40.000},{Geography:{{G4_Brick_UId}},Metric11:5.500,Metric15:50.000}]"
+      },
+      {
+        "testname": "StateGeoRollupResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{G5_State_UId}},{{G6_State_UId}},{{G9_State_UId}}",
+        "columns": "Metric14",
+        "exp_result": "[{Geography:{{G5_State_UId}},Metric14:5.500},{Geography:{{G6_State_UId}},Metric14:5.500},{Geography:{{G9_State_UId}},Metric14:20.000}]"
+      },
+      {
+        "testname": "AccountMetricNoRollup_Precheck",
+        "entity": "Account",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{A1_UK_UId}},{{A2_UK_UId}},{{A3_UK_UId}},{{A4_US_UId}},{{A5_PN_UId}}",
+        "columns": "Metric17",
+        "exp_result": "[{Account:{{A1_UK_UId}},Metric17:{{A1_Copromote_Sales}}},{Account:{{A2_UK_UId}},Metric17:{{A2_Copromote_Sales}}},{Account:{{A3_UK_UId}},Metric17:{{A3_Copromote_Sales}}},{Account:{{A5_PN_UId}},Metric17:{{A5_Copromote_Sales}}}]"
+      },
+      /* Commented out due to v19 change for defaults
+      {
+        "testname": "NoGeoRollupMetricResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{G1_Post_UId}},{{G2_Post_UId}},{{G3_Brick_UId}},{{G4_Brick_UId}},{{G5_State_UId}},{{G6_State_UId}}",
+        "columns": "Metric17",
+        "exp_result": "[{Geography:{{G1_Post_UId}},Metric17:null},{Geography:{{G3_Brick_UId}},Metric17:null},{Geography:{{G4_Brick_UId}},Metric17:null},{Geography:{{G5_State_UId}},Metric17:null},{Geography:{{G6_State_UId}},Metric17:null}]"
+      },*/
+      // Geo Metric Results
+      {
+        "testname": "GeoPostMetricResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{G1_Post_UId}},{{G2_Post_UId}},{{G7_Post_UId}}",
+        "columns": "Metric20",
+        "exp_result": "[{Geography:{{G1_Post_UId}},Metric20:1.000},{Geography:{{G7_Post_UId}},Metric20:70.700}]"
+      },
+      {
+        "testname": "GeoBrickMetricResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{G3_Brick_UId}},{{G4_Brick_UId}},{{G8_Brick_UId}}",
+        "columns": "Metric19",
+        "exp_result": "[{Geography:{{G3_Brick_UId}},Metric19:3.000},{Geography:{{G4_Brick_UId}},Metric19:0.000}]"
+      },
+      {
+        "testname": "GeoStateMetricResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{G5_State_UId}},{{G6_State_UId}},{{G9_State_UId}}",
+        "columns": "Metric10",
+        "exp_result": "[{Geography:{{G5_State_UId}},Metric10:2.000},{Geography:{{G6_State_UId}},Metric10:0.000},{Geography:{{G9_State_UId}},Metric10:5.000}]"
+      },
+      {
+        "testname": "ExpiredSalesforce",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[0]}}",
+        "entityId": "{{G1_Post_UId}},{{G2_Post_UId}},{{G3_Brick_UId}},{{G4_Brick_UId}},{{G5_State_UId}},{{G6_State_UId}}",
+        "columns": "Metric11,Metric12,Metric13,Metric14,Metric15,Metric16",
+        "exp_result": "[]"
+      },
+      // Territory rollups
+      {
+        "testname": "AcctToTerritory2-RollupResult",
+        "entity": "Territory",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{T2UID}}",
+        "columns": "Metric11,Metric12,Metric13,Metric14,Metric15,Metric16,Metric17",
+        "exp_result": "[{Territory:{{T2UID}},Metric11:{{T2_AcctCount_Total}},Metric12:{{T2_AcctSales_Total}},Metric13:{{T2_AcctSales_Total}},Metric14:{{T2_AcctSales_Total}},Metric15:{{T2_AcctSales_Total}},Metric16:{{T2_AcctSales_Total}},Metric17:{{T2_AcctSales_Total}}}]"
+      },
+      {
+        "testname": "GeoToTerritory2-RollupResult",
+        "entity": "Territory",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{T2UID}}",
+        "columns": "Metric10,Metric19,Metric20", //Remove ,Metric18 due to v19 changes
+        "exp_result": "[{Territory:{{T2UID}},Metric10:{{T2_StateCount_Total}},Metric19:{{T2_BrickSales_Total}},Metric20:{{T2_PostSales_Total}}}]" //Metric18:0.000,
+      },
+      {
+        "testname": "GeoToTerritory1-RollupResult",
+        "entity": "Territory",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{T1UID}}",
+        "columns": "Metric10,Metric18,Metric19,Metric20",
+        "exp_result": "[{Territory:{{T1UID}},Metric10:0.000,Metric18:0.000,Metric19:3.000,Metric20:0.000}]"
+      }
+      /* The result is no longer valid in v20. Needs to be updated per OMR-20279
+      {
+        "testname": "GeoToDistrict-RollupResult",
+        "entity": "Territory",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{DistrictUID}}",
+        "columns": "Metric10,Metric18,Metric19,Metric20",
+        "exp_result": "[]"
+      }*/
+    ],
+    "MetricSummary": [
+      {
+        "testname": "Territory2-AcctRollupSummary",
+        "territory": "{{T2UID}}",
+        "columns": "Metric11Before,Metric11After,Metric12Before,Metric12After,Metric13Before,Metric13After,Metric14Before,Metric14After,Metric15Before,Metric15After,Metric16Before,Metric16After,Metric17Before,Metric17After",
+        "exp_result": "[{Territory:{{T2UID}},AccountType:Total,Metric11Before:null,Metric11After:{{T2_AcctCount_Total}},Metric12Before:null,Metric12After:{{T2_AcctSales_Total}},Metric13Before:null,Metric13After:{{T2_AcctSales_Total}},Metric14Before:null,Metric14After:{{T2_AcctSales_Total}},Metric15Before:null,Metric15After:{{T2_AcctSales_Total}},Metric16Before:null,Metric16After:{{T2_AcctSales_Total}},Metric17Before:null,Metric17After:{{T2_AcctSales_Total}}}]"
+      },
+      {
+        "testname": "Territory2-GeoRollupSummary",
+        "territory": "{{T2UID}}",
+        "columns": "Metric10Before,Metric10After,Metric19Before,Metric19After,Metric20Before,Metric20After", //",Metric18Before,Metric18After",
+        "exp_result": "[{Territory:{{T2UID}},AccountType:Total,Metric10Before:null,Metric10After:{{T2_StateCount_Total}},Metric19Before:null,Metric19After:{{T2_BrickSales_Total}},Metric20Before:null,Metric20After:{{T2_PostSales_Total}}}]" //,Metric18Before:null,Metric18After:0.000}]"
+      },
+      {
+        "testname": "Territory1-GeoRollupSummary",
+        "territory": "{{T1UID}}",
+        "columns": "Metric10Before,Metric10After,Metric19Before,Metric19After,Metric20Before,Metric20After,Metric18Before,Metric18After",
+        "exp_result": "[{Territory:{{T1UID}},AccountType:Total,Metric10Before:null,Metric10After:{{T1_StateCount_Total}},Metric19Before:null,Metric19After:{{T1_BrickSales_Total}},Metric20Before:null,Metric20After:{{T1_PostSales_Total}},Metric18Before:null,Metric18After:0.000}]"
+      },
+      {
+        "testname": "District-RollupSummary",
+        "territory": "{{DistrictUID}}",
+        "columns": "Metric10Before,Metric10After,Metric19Before,Metric19After,Metric20Before,Metric20After,Metric18Before,Metric18After",
+        "exp_result": "[]"
+      }
+    ],
+    "EmptyMetrics": [
+      {
+        "testname": "PostGeoRollupEmpty",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{G3_Brick_UId}},{{G4_Brick_UId}},{{G5_State_UId}},{{G6_State_UId}}",
+        "columns": "Metric13,Metric16"
+      },
+      {
+        "testname": "BrickGeoRollupEmpty",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{G1_Post_UId}},{{G5_State_UId}},{{G6_State_UId}}",
+        "columns": "Metric11,Metric12,Metric15"
+      },
+      {
+        "testname": "StateGeoRollupEmpty",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{G1_Post_UId}},{{G3_Brick_UId}},{{G4_Brick_UId}}",
+        "columns": "Metric14"
+      }
+      /* Commented out due to v19 change for defaults
+      {
+        "testname": "NoGeoMetricResult",
+        "entity": "Geography",
+        "salesforceId": "{{ScenarioSalesForce.SOMSalesForceId__c[1]}}",
+        "entityId": "{{G1_Post_UId}},{{G3_Brick_UId}},{{G4_Brick_UId}},{{G5_State_UId}},{{G6_State_UId}}",
+        "columns": "Metric18"
+      }*/
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "Bulkload": {
+    "S3Path": "autotestdata/OMR-10769/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMRegionOMR-10769Success.csv",
+        "table": "OMRegion"
+      },
+      {
+        "file": "OMProductOMR-10769Success.csv",
+        "table": "OMProduct"
+      }
+    ]
+  }
+}

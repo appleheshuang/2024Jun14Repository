@@ -1,0 +1,15 @@
+{
+  "Bulkload": {
+    "S3Path": "InTestJane/OMR-18947/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "VaildateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMR-18947_OMAuditConfig.csv",
+        "table": "OMAuditConfig"
+      }
+    ]
+  }
+}

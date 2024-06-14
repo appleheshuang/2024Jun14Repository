@@ -1,0 +1,172 @@
+﻿{
+  "BaseData": {
+    "region": "US",
+    "locale": "en_US",
+    "timezone": "America/Los_Angeles",
+    "emailencoding": "ISO-8859-1",
+    "language": "en_US",
+    "EffectiveDate": "2020-01-01",
+    "EndDate": "3999-12-31",
+    "exp_country": "US"
+  },
+  "User": [
+    {
+      "SOMUserId__c": "KIRBY-{{TestUniqueIntegrationId}}",
+      "Name": "Kirby Seif",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}",
+      "UniqueIntegrationId__c": "KIRBY-{{TestUniqueIntegrationId}}",
+      "FirstName__c": "Kirby",
+      "LastName__c": "Seif",
+      "NewHire__c": "false",
+      "Status__c": "ACTV",
+      "Type__c": "FELD",
+      "UserName__c": "ksei{{TestUniqueIntegrationId}}@not-here.com",
+      "Email__c": "kseifb0@not-here.com",
+      "Country__c": "US",
+      "OMRegionId__c": "{{region}}",
+      "LocaleSidKey__c": "{{locale}}",
+      "TimeZoneSidKey__c": "{{timezone}}",
+      "EmailEncodingKey__c": "{{emailencoding}}",
+      "LanguageLocaleKey__c": "{{language}}"
+    },
+    {
+      "SOMUserId__c": "BABS-{{TestUniqueIntegrationId}}",
+      "Name": "Babs Steutly",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}",
+      "UniqueIntegrationId__c": "BABS-{{TestUniqueIntegrationId}}",
+      "FirstName__c": "Babs",
+      "LastName__c": "Steutly",
+      "NewHire__c": "false",
+      "Status__c": "ACTV",
+      "Type__c": "FELD",
+      "UserName__c": "bste{{TestUniqueIntegrationId}}@not-here.com",
+      "Email__c": "bsteutlyb1@not-here.com",
+      "Country__c": "NZ",
+      "OMRegionId__c": "{{region}}",
+      "LocaleSidKey__c": "{{locale}}",
+      "TimeZoneSidKey__c": "{{timezone}}",
+      "EmailEncodingKey__c": "{{emailencoding}}",
+      "LanguageLocaleKey__c": "{{language}}"
+    },
+    {
+      "SOMUserId__c": "LEODORA-{{TestUniqueIntegrationId}}",
+      "Name": "Leodora Rossin",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}",
+      "UniqueIntegrationId__c": "LEODORA-{{TestUniqueIntegrationId}}",
+      "FirstName__c": "Leodora",
+      "LastName__c": "Rossin",
+      "NewHire__c": "false",
+      "Status__c": "ACTV",
+      "Type__c": "FELD",
+      "UserName__c": "lros{{TestUniqueIntegrationId}}@not-here.com",
+      "Email__c": "lrossinb2@not-here.com",
+      "Country__c": "US",
+      "OMRegionId__c": "{{region}}",
+      "LocaleSidKey__c": "{{locale}}",
+      "TimeZoneSidKey__c": "{{timezone}}",
+      "EmailEncodingKey__c": "{{emailencoding}}",
+      "LanguageLocaleKey__c": "{{language}}"
+    }
+  ],
+  "UserAddress": [
+    {
+      "SOMUserAddressId__c": "BAB-HOME-{{TestUniqueIntegrationId}}",
+      "OMUserId__c": "{{User.Id[1]}}",
+      "Type__c": "HOME",
+      "AddressLine1__c": "134 Market St.",
+      "City__c": "Eagan",
+      "State__c": "MN",
+      "ZipCode__c": "55122",
+      "Country__c": "US",
+      "Status__c": "ACTV",
+      "UniqueIntegrationId__c": "BAB-HOME-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}"
+    },
+    {
+      "SOMUserAddressId__c": "BAB-MAIL-{{TestUniqueIntegrationId}}",
+      "OMUserId__c": "{{User.Id[1]}}",
+      "Type__c": "MAIL",
+      "AddressLine1__c": "151 Market St.",
+      "City__c": "Eagan",
+      "State__c": "MN",
+      "ZipCode__c": "55122",
+      "Country__c": "US",
+      "Status__c": "ACTV",
+      "UniqueIntegrationId__c": "BAB-MAIL-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}"
+    },
+    {
+      "SOMUserAddressId__c": "BAB-SHIP-{{TestUniqueIntegrationId}}",
+      "OMUserId__c": "{{User.Id[1]}}",
+      "Type__c": "SHIP",
+      "AddressLine1__c": "100 Market St.",
+      "AddressLine2__c": "Unit B",
+      "City__c": "Rochester",
+      "State__c": "MN",
+      "ZipCode__c": "55903",
+      "Country__c": "US",
+      "Status__c": "ACTV",
+      "UniqueIntegrationId__c": "BAB-SHIP-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}"
+    },
+    {
+      "SOMUserAddressId__c": "BAB-SLOC-{{TestUniqueIntegrationId}}",
+      "OMUserId__c": "{{User.Id[1]}}",
+      "Type__c": "SLOC",
+      "AddressLine1__c": "117 Market St.",
+      "AddressLine2__c": "Unit B",
+      "City__c": "Rochester",
+      "State__c": "MN",
+      "ZipCode__c": "55903",
+      "Country__c": "US",
+      "Status__c": "ACTV",
+      "UniqueIntegrationId__c": "BAB-SLOC-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}"
+    },
+    {
+      "SOMUserAddressId__c": "LEO-SHIP-{{TestUniqueIntegrationId}}",
+      "OMUserId__c": "{{User.Id[2]}}",
+      "Type__c": "SHIP",
+      "AddressLine1__c": "168 Market St.",
+      "City__c": "Salem",
+      "State__c": "OR",
+      "ZipCode__c": "97302",
+      "Country__c": "US",
+      "Status__c": "ACTV",
+      "UniqueIntegrationId__c": "LEO-SHIP-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}"
+    },
+    {
+      "SOMUserAddressId__c": "LEO-SLOC-{{TestUniqueIntegrationId}}",
+      "OMUserId__c": "{{User.Id[2]}}",
+      "Type__c": "SLOC",
+      "AddressLine1__c": "185 Market St.",
+      "City__c": "Salem",
+      "State__c": "OR",
+      "ZipCode__c": "97302",
+      "Country__c": "US",
+      "Status__c": "ACTV",
+      "UniqueIntegrationId__c": "LEO-SLOC-{{TestUniqueIntegrationId}}",
+      "EffectiveDate__c": "{{EffectiveDate}}",
+      "EndDate__c": "{{EndDate}}"
+    }
+  ],
+  "Tests": {
+    "OCEResults": [
+      {
+        "testname": "OCEUserAddress",
+        "query": "select u.\"Name\", NVL(ua.\"AddressLine1\",'Street') \"Street\", NVL(ua.\"City\",'') \"City\", NVL(ua.\"State\",'') \"State\", NVL(ua.\"ZipCode\",'') \"PostalCode\", NVL(ua.\"Country\",'') \"Country\", u.\"UniqueIntegrationId\" \"UniqueIntegrationID\" from \"STATIC\".\"OMUser\" u left outer join \"STATIC\".\"OMUserAddress\" ua on ua.\"SOMUserId\" = u.\"SOMUserId\" and ua.\"Type\" = 'HOME' where u.\"UniqueIntegrationId\" in ('{{User.UniqueIntegrationId__c[0]}}','{{User.UniqueIntegrationId__c[1]}}','{{User.UniqueIntegrationId__c[2]}}') order by u.\"Name\" ",
+        "exp_result": "[{Name:{{User.Name[1]}},Street:{{UserAddress.AddressLine1__c[0]}},City:{{UserAddress.City__c[0]}},State:{{UserAddress.State__c[0]}},PostalCode:{{UserAddress.ZipCode__c[0]}},Country:{{UserAddress.Country__c[0]}},UniqueIntegrationID:{{User.UniqueIntegrationId__c[1]}}},{Name:{{User.Name[0]}},Street:Street,City:,State:,PostalCode:,Country:,UniqueIntegrationID:{{User.UniqueIntegrationId__c[0]}}},{Name:{{User.Name[2]}},Street:Street,City:,State:,PostalCode:,Country:,UniqueIntegrationID:{{User.UniqueIntegrationId__c[2]}}}]",
+        "sfQuery": "select Name, Street, City, State, PostalCode,  Country, OCE__UniqueIntegrationID__c from User where OCE__UniqueIntegrationID__c in ('{{User.UniqueIntegrationId__c[0]}}','{{User.UniqueIntegrationId__c[1]}}','{{User.UniqueIntegrationId__c[2]}}') order by Name "
+      }
+    ]
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "Bulkload": {
+    "S3AccessKey": "",
+    "S3SecretKey": "",
+    "S3BucketName": "",
+    "S3Path": "autotestdata/ItgPerf-InitialLoad/",
+    "FileFormat": "CSV",
+    "Rollback": true,
+    "ValidateOnly": false,
+    "ReplaceExistingData": false,
+    "Files": [
+      {
+        "file": "OMRegion-exclUS.csv",
+        "table": "OMRegion"
+      },
+      {
+        "file": "OMRegionHierarchy.csv",
+        "table": "OMRegionHierarchy"
+      },
+      {
+        "file": "OMGeography.csv",
+        "table": "OMGeography"
+      },
+      {
+        "file": "OMAccount.csv",
+        "table": "OMAccount"
+      },
+      {
+        "file": "OMAccountAddress.csv",
+        "table": "OMAccountAddress"
+      },
+      {
+        "file": "OMAffiliation.csv",
+        "table": "OMAffiliation"
+      },
+      {
+        "file": "OMProduct.csv",
+        "table": "OMProduct"
+      },
+      {
+        "file": "OMProductHierarchy.csv",
+        "table": "OMProductHierarchy"
+      }
+    ]
+  },
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Region",
+        "query": "select creg.\"SOMRegionId\", creg.\"Name\", creg.\"UniqueIntegrationId\", creg.\"EffectiveDate\", creg.\"EndDate\", creg.\"Status\",creg.\"SuppressPublish\",creg.\"Country\", preg.\"SOMRegionId\" \"ParentId\", preg.\"Name\" \"ParentName\"  from STATIC.\"OMRegion\" creg left outer join STATIC.\"OMRegionHierarchy\" h on h.\"SOMChildRegionId\" = creg.\"SOMRegionId\" left outer join STATIC.\"OMRegion\" preg on preg.\"SOMRegionId\" = h.\"SOMParentRegionId\" where creg.\"UniqueIntegrationId\" in ('REG01','10002000000107','REG03') order by creg.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMRegionId:10002000000107,Name:United States,UniqueIntegrationId:10002000000107,EffectiveDate:2017-01-01,EndDate:3999-12-31,Status:ACTV,SuppressPublish:false,Country:US,ParentId:10002000000127,ParentName:North America},{SOMRegionId:REG01,Name:New Zealand,UniqueIntegrationId:REG01,EffectiveDate:2020-01-01,EndDate:3999-12-31,Status:ACTV,SuppressPublish:false,Country:NZ,ParentId:null,ParentName:null},{SOMRegionId:PI,Name:Pacific Islands,UniqueIntegrationId:REG03,EffectiveDate:2020-01-01,EndDate:3999-12-31,Status:ACTV,SuppressPublish:false,Country:CK,ParentId:null,ParentName:null}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "Geography",
+        "query": "select creg.\"SOMGeographyId\", creg.\"UniqueIntegrationId\", creg.\"Type\", creg.\"Code\",creg.\"City\",creg.\"State\",creg.\"Country\",creg.\"EffectiveDate\", creg.\"EndDate\", creg.\"Status\",creg.\"SOMRegionId\", preg.\"SOMRegionId\" \"ParentId\", preg.\"Name\" \"ParentName\" from STATIC.\"OMGeography\" creg left outer join STATIC.\"OMGeographyHierarchy\" h on h.\"SOMChildGeographyId\" = creg.\"SOMGeographyId\" left outer join STATIC.\"OMGeography\" preg on preg.\"SOMGeographyId\" = h.\"SOMParentGeographyId\" where creg.\"UniqueIntegrationId\" in ('NZ-1234','PI-001','US-95129') order by creg.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMGeographyId:GEO01,UniqueIntegrationId:NZ-1234,Type:POST,Code:1234,City:CITY01,State:STATE01,Country:NZ,EffectiveDate:2020-01-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:REG01,ParentId:null,ParentName:null},{SOMGeographyId:AVARUA,UniqueIntegrationId:PI-001,Type:GEO1,Code:AVARUA,City:null,State:null,Country:CK,EffectiveDate:2020-01-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:PI,ParentId:null,ParentName:null},{SOMGeographyId:US-95129,UniqueIntegrationId:US-95129,Type:POST,Code:95129,City:San Jose,State:CA,Country:US,EffectiveDate:2020-01-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:10002000000107,ParentId:null,ParentName:null}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "Product",
+        "query": "select creg.\"SOMProductId\", creg.\"Name\", creg.\"UniqueIntegrationId\", creg.\"Type\",creg.\"DetailType\", creg.\"EffectiveDate\", creg.\"EndDate\", creg.\"Status\",creg.\"SOMRegionId\", preg.\"SOMProductId\" \"ParentId\", preg.\"Name\" \"ParentName\"  from STATIC.\"OMProduct\" creg left outer join STATIC.\"OMProductHierarchy\" h on h.\"SOMChildProductId\" = creg.\"SOMProductId\"left outer join STATIC.\"OMProduct\" preg on preg.\"SOMProductId\" = h.\"SOMParentProductId\" where creg.\"UniqueIntegrationId\" in ('PROD1','PROD02','PROD03','PROD04','PROD05') AND creg.\"Status\" = 'ACTV' order by creg.\"UniqueIntegrationId\"",
+        "exp_result": "[{SOMProductId:PROD02-PI,Name:PIProd,UniqueIntegrationId:PROD02,Type:Detail,DetailType:Indication,EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:PI,ParentId:null,ParentName:null},{SOMProductId:PROD03-US,Name:Tylenol,UniqueIntegrationId:PROD03,Type:Detail,DetailType:Regimen,EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:10002000000107,ParentId:null,ParentName:null},{SOMProductId:PROD04-GLOBAL,Name:Salbutamol,UniqueIntegrationId:PROD04,Type:Bundle,DetailType:null,EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:null,ParentId:null,ParentName:null},{SOMProductId:PROD05-BUNDLE-NZ,Name:Oxycontin,UniqueIntegrationId:PROD05,Type:Bundle,DetailType:null,EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:REG01,ParentId:null,ParentName:null},{SOMProductId:PROD1,Name:Panadol,UniqueIntegrationId:PROD1,Type:Detail,DetailType:Brand,EffectiveDate:2020-08-01,EndDate:3999-12-31,Status:ACTV,SOMRegionId:REG01,ParentId:null,ParentName:null}]",
+        "sfQuery": null
+      },
+      {
+        "testname": "AccountToAddress",
+        "query": "select distinct a.\"Id\", a.\"Name\", \"AccountType\", a.\"Type\", a.\"Specialty\" \"AccSpecialty\",\"IndividualTypes\", \"OrganizationTypes\", \"AffiliationType\", aff.\"Specialty\" \"AffSpecialty\", add.\"Id\" \"AddressId\",a.\"SOMRegionId\" from static.\"OMAccount\" a left outer join static.\"OMAffiliation\" aff on aff.\"From\" = a.\"Id\" and aff.\"From\" = aff.\"To\" left outer join static.\"OMAccountAddress\" add on add.\"Id\" = aff.\"AddressId\" where a.\"Id\" in ('10ACCTEXC','45ACCTEXP','51ACCTEXPLR','ACCT01','ACCT02','ACCT03','ACCT04','ACCT05','MP01','MP02','INST03') order by a.\"Id\",add.\"Id\"",
+        "exp_result": "[{Id:10ACCTEXC,Name:10ACCTEXC,AccountType:Institution,Type:Other,AccSpecialty:Audiology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Audiology,AddressId:ADDRESS01,SOMRegionId:REG01},{Id:45ACCTEXP,Name:45ACCTEXP,AccountType:Department,Type:Other,AccSpecialty:Audiology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Audiology,AddressId:ADDRESS01,SOMRegionId:REG01},{Id:51ACCTEXPLR,Name:51ACCTEXPLR,AccountType:Institution,Type:Research,AccSpecialty:Audiology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Audiology,AddressId:ADDRESS01,SOMRegionId:REG01},{Id:ACCT01,Name:ACCT01,AccountType:Institution,Type:Hospital,AccSpecialty:Audiology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Audiology,AddressId:ADDRESS01,SOMRegionId:REG01},{Id:ACCT02,Name:ACCT02,AccountType:Institution,Type:Hospital,AccSpecialty:Audiology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:null,AffSpecialty:null,AddressId:null,SOMRegionId:REG01},{Id:ACCT03,Name:ACCT03,AccountType:Pharmacy,Type:Other,AccSpecialty:Audiology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Audiology,AddressId:ADDRESS01,SOMRegionId:REG01},{Id:ACCT04,Name:ACCT04,AccountType:Practices,Type:Other,AccSpecialty:Audiology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Audiology,AddressId:ADDRESS01,SOMRegionId:REG01},{Id:ACCT05,Name:ACCT05,AccountType:MP,Type:Other,AccSpecialty:Audiology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Audiology,AddressId:ADDRESS01,SOMRegionId:REG01},{Id:INST03,Name:Family Medicine Center,AccountType:Institution,Type:Family Medicine,AccSpecialty:Pediatrics,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Pediatrics,AddressId:ADDRESS02,SOMRegionId:10002000000107},{Id:MP01,Name:Professional Oncologist,AccountType:MP,Type:Oncology,AccSpecialty:Oncology,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Oncology,AddressId:ADDRESS02,SOMRegionId:10002000000107},{Id:MP02,Name:Professional Pediatrician,AccountType:MP,Type:Pediatrics,AccSpecialty:Pediatrics,IndividualTypes:Business Contacts,OrganizationTypes:Functional Unit,AffiliationType:HARD,AffSpecialty:Pediatrics,AddressId:ADDRESS02,SOMRegionId:10002000000107}]"
+      },
+      {
+        "testname": "Address",
+        "query": "select \"Id\",\"AddressLine1\",\"ZipCode\",\"City\",\"State\",\"Country\" from static.\"OMAccountAddress\" where \"Id\" in ('ADDRESS01','ADDRESS02') order by \"Id\"",
+        "exp_result": "[{Id:ADDRESS01,AddressLine1:1 ADDRESS ST,ZipCode:1234,City:CITY01,State:STATE01,Country:NZ},{Id:ADDRESS02,AddressLine1:123 Test St.,ZipCode:95129,City:CITY02,State:STATE02,Country:US}]"
+      }
+    ]
+  }
+}

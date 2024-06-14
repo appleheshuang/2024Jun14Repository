@@ -1,0 +1,8 @@
+{
+  "OCE__Product__c": [
+    {
+      "Name": "{{Product.Name[0]}}",
+      "OCE__UniqueIntegrationID__c": "{{Product.UniqueIntegrationId__c[0]}}"
+    }
+  ]
+}

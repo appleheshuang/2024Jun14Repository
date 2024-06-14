@@ -1,0 +1,17 @@
+{
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Account Product Explicit",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Status\" from \"{{schema}}\".\"OMAccountProductExplicit\" where \"UniqueIntegrationId\" like '%{{TestUniqueIntegrationId}}%' order by \"OMAccountId\" asc",
+        "exp_result": "[{OMAccountId:Add{{TestUniqueIntegrationID}},SOMProductId:{{Product.SOMProductId__c[0]}},EffectiveDate:{{EffectiveDate}},EndDate:{{dbt_yesterday}},Status:ACTV},{OMAccountId:Delete{{TestUniqueIntegrationId}},SOMProductId:{{Product.SOMProductId__c[1]}},EffectiveDate:{{EffectiveDate}},EndDate:{{EndDate}},Status:ACTV}]",
+        "odataQuery": "/OMAccountProductExplicit?$select=OMAccountId,SOMProductId,EffectiveDate,EndDate,Status&$filter=contains(UniqueIntegrationId,'{{TestUniqueIntegrationID}}')&$orderBy=OMAccountId asc"
+      },
+      {
+        "testname": "Account Product Restricition",
+        "query": "select \"OMAccountId\",\"SOMProductId\",\"EffectiveDate\",\"EndDate\",\"Source\" from \"{{schema}}\".\"OMAccountProductRestriction\"  where \"SOMProductId\" in ('{{Product.SOMProductId__c[0]}}','{{Product.SOMProductId__c[1]}}') and \"OMAccountId\" like '%{{TestUniqueIntegrationID}}' order by \"OMAccountId\" asc",
+        "exp_result": "[{OMAccountId:3893RECALC{{TestUniqueIntegrationID}},SOMProductId:{{Product.SOMProductId__c[0]}},EffectiveDate:{{dbt_today}},EndDate:{{EndDate}},Source:DSHR},{OMAccountId:Add{{TestUniqueIntegrationID}},SOMProductId:{{Product.SOMProductId__c[0]}},EffectiveDate:{{EffectiveDate}},EndDate:{{dbt_yesterday}},Source:EXPL},{OMAccountId:Delete{{TestUniqueIntegrationID}},SOMProductId:{{Product.SOMProductId__c[1]}},EffectiveDate:{{EffectiveDate}},EndDate:{{dbt_yesterday}},Source:EXPL}]"
+      }
+    ]
+  }
+}

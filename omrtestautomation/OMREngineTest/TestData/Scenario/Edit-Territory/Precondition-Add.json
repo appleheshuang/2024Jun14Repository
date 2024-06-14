@@ -1,0 +1,87 @@
+﻿{
+  "Configs": {
+    "loadData": "Smoketest\\LoadData\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "EffectiveDate": "2021-01-01",
+    "EndDate": "2022-12-31",
+    "som_region_id": "BM",
+    "salesforceUID1": "SF505", // C7652002 SF1
+    "salesforceUID2": "SF605", // C7652002 SF2
+    "territoryUID1": "T605" // C7652002 Terr
+  },
+
+  "Scenario": {
+    "Description": "OMR-525 - Edit SalesForce several times",
+    "Name": "C7652002",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "SET{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioSalesForce": [
+    // C7652002 SF1 ADD
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID1}}-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "Name": "SF 505"
+    }, 
+    // C7652002 SF2 ADD
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID2}}-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "Name": "SF 605"
+    },
+    {
+      "Action__c": "ADD",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "{{salesforceUID3}}-{{TestUniqueIntegrationId}}",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "Type__c": "KOL",
+      "Name": "SF 705"
+    }
+  ],
+
+  "ScenarioTerritory": [
+    // C7652002 precondition, add TerrSF 2022-02-01 => 2022-12-31
+    {
+      "Action__c": "ADD",
+      "OMScenarioId__c": "{{Scenario.Id}}",
+      "SalesForceUniqueIntegrationId__c": "{{salesforceUID1}}-{{TestUniqueIntegrationId}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "Name": "Terr 605",
+      "UniqueIntegrationId__c": "{{territoryUID1}}-{{TestUniqueIntegrationId}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR",
+      "EffectiveDate__c": "2022-01-01",
+      "EndDate__c": "2022-12-31"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "merge_territory",
+        "query": "OMTerritory,Name,Status,EffectiveDate,EndDate,UniqueIntegrationId:'{{ScenarioTerritory.UniqueIntegrationId__c}}'",
+        "exp_result": "[{Name:{{ScenarioTerritory.Name}},Status:ACTV,EffectiveDate:{{ScenarioTerritory.EffectiveDate__c}},EndDate:{{ScenarioTerritory.EndDate__c}}}]"
+      }, 
+      // check C7652002 precondition, add TerrSF 2022-02-01 => 2022-12-31
+      {
+        "testname": "merge_terrSF1",
+        "query": "select \"SOMTerritoryId\",\"SOMSalesForceId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMTerritorySalesForce\" where \"SOMSalesForceId\"='{{ScenarioSalesForce.SOMSalesForceId__c[0]}}' AND \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c}}' ",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c}},SOMSalesForceId:{{ScenarioSalesForce.SOMSalesForceId__c[0]}},Status:ACTV,EffectiveDate:{{ScenarioTerritory.EffectiveDate__c}},EndDate:{{ScenarioTerritory.EndDate__c}}}]"
+      }
+    ]
+  }
+}

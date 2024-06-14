@@ -1,0 +1,57 @@
+﻿{
+	"DE_Call_Master__IQ": [
+		{
+			"keys": {
+				"Call ID": "CallId{{TestUniqueIntegrationID}}",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Channel Code": "Face To Face",
+				"Call Duration": "13",
+				"Call Name": "CallName-{{TestUniqueIntegrationID}}_WithValidBusinessUnit_Update",
+				"Call Type Code": "Detail Only",
+				"Contact Key": "NDAccount_{{TestUniqueIntegrationID}}_WithValidBU",
+				"Created By": "0051N000005pIXVQA2",
+				"Updated Date": "{{dbt_current}}",
+				"Integration ID": "Call{{TestUniqueIntegrationID}}",
+				"Parent Call ID": "2342343",
+				"Planned Date": "{{dbt_current}}",
+				"SalesRep ID": "0051N000005pIXVQA2",
+				"Status Code": "Inactive",
+				"Territory ID": "TM - SPC - Union City 20B06T14",
+				"Updated By": "AutomationUpdate",
+				"Business Unit MIDs": "{{BUID}}"
+			}
+		},
+		{
+			"keys": {
+				"Call ID": "CallID{{TestUniqueIntegrationID}}OtherBU",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Name": "C-{{TestUniqueIntegrationID}}_OtherBU",
+				"Contact Key": "NDAccount_{{TestUniqueIntegrationID}}_OtherBU",
+				"Created By": "0051N000005pIXVQA2",
+				"Status Code": "Inactive",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUID}}",
+				"Updated Date": "{{dbt_current}}"
+			}
+		},
+		{
+			"keys": {
+				"Call ID": "CallID{{TestUniqueIntegrationID}}NOBU",
+				"Crm ID": "{{CRMID}}"
+			},
+			"values": {
+				"Call Name": "C-{{TestUniqueIntegrationID}}_NOBU",
+				"Contact Key": "NDAccount_{{TestUniqueIntegrationID}}_NOBU",
+				"Created By": "0051N000005pIXVQA2",
+				"Status Code": "Inactive",
+				"Updated By": "Automation",
+				"Business Unit MIDs": "{{BUID}}",
+				"Updated Date": "{{dbt_current}}"
+			}
+		}
+	]
+}

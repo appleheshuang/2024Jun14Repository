@@ -1,0 +1,374 @@
+{
+  "Configs": {
+    "loadData": "Smoketest\\LoadData\\Bulkload.json",
+    "resetData": "false",
+    "jobtype": "calculate"
+  },
+
+  "BaseData": {
+    "EffectiveDate": "2024-10-01",
+    "EndDate": "2026-10-01",
+    "som_region_id": "IE",
+    "salesforceUID": "SF305",
+    "salesforceUID1": "SF405", // ADD,EDIT+RESTART+END C7643067 Edit SF+Restart+End; Edit to salesforceUID6;
+    "salesforceUID2": "SF505", // ADD,EXPR,EFFE C7644689 Restart, End entities;
+    "salesforceUID3": "SF605", // ADD,DELETE  C7644689 Delete entities;
+    "salesforceUID4": "SF705", // ADD,PEXP C7644689 Pre-expire (Remove) with new start date between original start and end;
+    "salesforceUID5": "SF805", // ADD,EDIT C7644689 Edit, C7643065 Edit SF;
+    "territoryUID": "T305",    // EDIT C7644689 Edit, C7643065 Edit SF (from salesforceUID to salesforceUID5);
+    "territoryUID1": "T505"    // EDIT SF+Restart+End from  salesforceUID2 to salesforceUID6;
+  },
+
+  "Scenario": {
+    "Description": "",
+    "name": "TCs C7644689-Merge-Salesforce-Entity-Action-ADD, C7677459-Edit+Restart-Territory, C7643059-Edit-SF+Restart, C7643060-Add-Territory, C7643061-Delete-Territory, C7643063-Edit-Territory, C7643068-EFFE+END-Territory, C7877764-EFFE+END-Territory-overlap, C7643062-END-Territory, C7643064-Restart-Territory, C7643065-Edit-SF, C7677467-Edit+End-Territory, C7643066-Edit-SF+END, C7877766-Edit+Restart+End-Territory-overlap,C7643067-Edit-SF+Restart+End, C7877765-Restart+End-Territory-no-overlap",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "R-{{TestUniqueIntegrationID}}"
+  },
+
+  "ScenarioSalesForce": [
+    // C7644689 Pre-expire (Remove);
+    {
+      "Action__c": "PEXP",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "0-{{TestUniqueIntegrationID}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[4]}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "name": "SF 705"
+    },
+    // EXPR,EFFE C7644689 Restart, End entities;
+    {
+      "Action__c": "EFFE",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "1-{{TestUniqueIntegrationID}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[2]}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "name": "SF 505"
+    },
+    {
+      "Action__c": "EXPR",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "1-{{TestUniqueIntegrationID}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[2]}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "name": "SF 505"
+    },
+    // DELETE  C7644689 Delete entities;
+    {
+      "Action__c": "DEL",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "UniqueIntegrationId__c": "2-{{TestUniqueIntegrationID}}",
+      "SOMSalesForceId__c": "{{ScenarioSalesForce.SOMSalesForceId__c[3]}}",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "Type__c": "INST",
+      "name": "SF 605"
+    }
+  ],
+    // C7643065 Edit SF (from salesforceUID to salesforceUID5), C7644689 Edit SF, C7643063 Edit Territory
+  "ScenarioTerritory": [
+    {
+      "Action__c": "EDIT",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[5]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[0]}}",
+      "UniqueIntegrationId__c": "T1-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    // C7643061 DELETE Territory
+    {
+      "Action__c": "DEL",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[11]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[4]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[4]}}",
+      "UniqueIntegrationId__c": "T2-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    // C7643062 END Territory, C7643064 RESTART Territory, C7643068 EFFE+EXPR Territory, C7877764 Restart+End overlap
+    {
+      "Action__c": "EFFE",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[11]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[5]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[5]}}",
+      "UniqueIntegrationId__c": "T3-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "EXPR",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[11]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[5]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[5]}}",
+      "UniqueIntegrationId__c": "T3-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c{{ScenarioTerritory.Name[5]}}": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    //C7643067 Edit SF+Restart+End (from salesforceUID2 to salesforceUID6), C7877766 Edit+Restart+End Territory overlap
+    {
+      "Action__c": "EDIT",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[6]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[1]}}",
+      "UniqueIntegrationId__c": "T2-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "EFFE",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[6]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[1]}}",
+      "UniqueIntegrationId__c": "T2-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "EXPR",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[6]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[1]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[1]}}",
+      "UniqueIntegrationId__c": "T2-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    //C7643059 Edit SF+Restart (from salesforceUID7 to salesforceUID8), C7677459 EDit+Restart Territory
+    {
+      "Action__c": "EDIT",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[8]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[2]}}", 
+      "UniqueIntegrationId__c": "T3-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "EFFE",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[8]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[2]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[2]}}",
+      "UniqueIntegrationId__c": "T3-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    //C7643066 Edit SF+End (from salesforceUID9 to salesforceUID10), C7677467 Edit+end Territory
+    {
+      "Action__c": "EDIT",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[10]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[3]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[3]}}",
+      "UniqueIntegrationId__c": "T4-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "EXPR",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[10]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[3]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[3]}}",
+      "UniqueIntegrationId__c": "T4-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    // C7677459 Edit name+Restart Territory
+    {
+      "Action__c": "EDIT",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[11]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[6]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "Edited terr-{{TestUniqueIntegrationID}}",
+      "UniqueIntegrationId__c": "T5-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    {
+      "Action__c": "EFFE",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[11]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[6]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[6]}}",
+      "UniqueIntegrationId__c": "T5-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR"
+    },
+    // C7877765 Restart+End Territory no overlap
+    {
+      "Action__c": "EFFE",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[11]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[7]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[7]}}",
+      "UniqueIntegrationId__c": "T6-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR",
+      "EffectiveDate__c": "2026-02-05",
+      "EndDate__c": "{{Scenario.EndDate__c[1]}}"
+    },
+    {
+      "Action__c": "EXPR",
+      "OMScenarioId__c": "{{Scenario.Id[1]}}",
+      "SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c[11]}}",
+      "SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[7]}}",
+      "TerritorySalesForceType__c": "PRIM",
+      "name": "{{ScenarioTerritory.Name[7]}}",
+      "UniqueIntegrationId__c": "T6-{{TestUniqueIntegrationID}}",
+      "SOMRegionId__c": "{{som_region_id}}",
+      "Type__c": "TERR",
+      "EffectiveDate__c": "2026-02-05",
+      "EndDate__c": "{{Scenario.EndDate__c[1]}}"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      // C7644689 Pre-expire (Remove);
+      {
+        "testname": "merge_PEXP_SF",
+        "query": "OMSalesForce,Name,Status,EffectiveDate,EndDate,SOMSalesForceId:'{{ScenarioSalesForce.SOMSalesForceId__c[4]}}'",
+        "exp_result": "[{Name:{{ScenarioSalesForce.Name[4]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c}},EndDate:2024-09-30}]",
+        "sfQuery": "select {{prefix}}Name, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMSalesForce__c where {{prefix}}SOMSalesForceId__c = '{{ScenarioSalesForce.SOMSalesForceId__c[4]}}'"
+      },
+      //Check C7644689 Restart, End entities;
+      {
+        "testname": "merge_EFFE_EXPR_SF",
+        "query": "OMSalesForce,Name,Status,EffectiveDate,EndDate,SOMSalesForceId:'{{ScenarioSalesForce.SOMSalesForceId__c[2]}}'",
+        "exp_result": "[{Name:{{ScenarioSalesForce.Name[2]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}}}]",
+        "sfQuery": "select {{prefix}}Name, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMSalesForce__c where {{prefix}}SOMSalesForceId__c = '{{ScenarioSalesForce.SOMSalesForceId__c[2]}}'"
+      },
+      //Check C7644689 Delete entities;
+      {
+        "testname": "merge_DEL_SF",
+        "query": "OMSalesForce,Name,Status,EffectiveDate,EndDate,SOMSalesForceId:'{{ScenarioSalesForce.SOMSalesForceId__c[3]}}'",
+        "exp_result": "[{Name:{{ScenarioSalesForce.Name[3]}},Status:INAC,EffectiveDate:2021-01-01,EndDate:2026-12-01}]",
+        "sfQuery": "select {{prefix}}Name, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMSalesForce__c where {{prefix}}SOMTerritoryId__c = '{{ScenarioSalesForce.SOMSalesForceId__c[3]}}'"
+      },
+      //Check C7643065 Edit SF, C7643063 Edit Territory
+
+      {
+        "testname": "merge_EDIT_SF_TER_1",
+        "query": "select \"SOMTerritoryId\",\"SOMSalesForceId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMTerritorySalesForce\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[0]}}' AND \"SOMSalesForceId\"='{{ScenarioSalesForce.SOMSalesForceId__c[5]}}'",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMSalesForceId:{{ScenarioSalesForce.SOMSalesForceId__c[5]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c}}}]",
+        "sfQuery": "select {{prefix}}SOMTerritoryId__c, {{prefix}}SOMSalesForceId__c, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMTerritorySalesForce__c where {{prefix}}SOMTerritoryId__c='{{ScenarioTerritory.SOMTerritoryId__c[0]}}' AND {{prefix}}SOMSalesForceId__c='{{ScenarioSalesForce.SOMSalesForceId__c[5]}}'"
+      },
+      {
+        "testname": "merge_EDIT_SF_TER_2",
+        "query": "select \"SOMTerritoryId\",\"SOMSalesForceId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMTerritorySalesForce\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[0]}}' AND \"SOMSalesForceId\"='{{ScenarioSalesForce.SOMSalesForceId__c[0]}}'",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[0]}},SOMSalesForceId:{{ScenarioSalesForce.SOMSalesForceId__c[0]}},Status:ACTV,EffectiveDate:2021-01-01,EndDate:2024-09-30}]",
+        "sfQuery": "select {{prefix}}SOMTerritoryId__c, {{prefix}}SOMSalesForceId__c, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMTerritorySalesForce__c where {{prefix}}SOMTerritoryId__c = '{{ScenarioTerritory.SOMTerritoryId__c[0]}}' AND {{prefix}}SOMSalesForceId__c='{{ScenarioSalesForce.SOMSalesForceId__c[0]}}'"
+      },
+      //Check C7643067 Edit SF+Restart+End, C7877766 Edit+Restart+End Territory overlap
+      {
+        "testname": "merge_EDIT_EFFE_EXPR_SF_TER_1",
+        "query": "select \"SOMTerritoryId\",\"SOMSalesForceId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMTerritorySalesForce\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[1]}}' AND \"SOMSalesForceId\"='{{ScenarioSalesForce.SOMSalesForceId__c[6]}}'",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},SOMSalesForceId:{{ScenarioSalesForce.SOMSalesForceId__c[6]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}}}]",
+        "sfQuery": "select {{prefix}}SOMTerritoryId__c, {{prefix}}SOMSalesForceId__c, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMTerritorySalesForce__c where {{prefix}}SOMTerritoryId__c = '{{ScenarioTerritory.SOMTerritoryId__c[1]}}' AND {{prefix}}SOMSalesForceId__c='{{ScenarioSalesForce.SOMSalesForceId__c[6]}}'"
+      },
+      {
+        "testname": "merge_EDIT_EFFE_EXPR_SF_TER_2",
+        "query": "select \"SOMTerritoryId\",\"SOMSalesForceId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMTerritorySalesForce\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[1]}}' AND \"SOMSalesForceId\"='{{ScenarioSalesForce.SOMSalesForceId__c[1]}}'",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[1]}},SOMSalesForceId:{{ScenarioSalesForce.SOMSalesForceId__c[1]}},Status:INAC,EffectiveDate:2021-01-01,EndDate:2024-09-30}]",
+        "sfQuery": "select {{prefix}}SOMTerritoryId__c, {{prefix}}SOMSalesForceId__c, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMTerritorySalesForce__c where {{prefix}}SOMTerritoryId__c = '{{ScenarioTerritory.SOMTerritoryId__c[1]}}' AND {{prefix}}SOMSalesForceId__c='{{ScenarioSalesForce.SOMSalesForceId__c[1]}}'"
+      },
+      //Check C7643059 Edit SF+Restart
+      {
+        "testname": "merge_terr_605",
+        "query": "OMTerritory,Name,Status,EffectiveDate,EndDate,SOMTerritoryId:'{{ScenarioTerritory.SOMTerritoryId__c[2]}}'",
+        "exp_result": "[{Name:{{ScenarioTerritory.Name[2]}},Status:ACTV,EffectiveDate:2024-10-01,EndDate:{{Scenario.EndDate__c[0]}}}]",
+        "sfQuery": "select {{prefix}}Name, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMTerritory__c where {{prefix}}SOMTerritoryId__c = '{{ScenarioTerritory.SOMTerritoryId__c[2]}}'"
+      },
+      {
+        "testname": "merge_EDIT_EFFE_SF_Terr_605_1",
+        "query": "select \"SOMTerritoryId\",\"SOMSalesForceId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMTerritorySalesForce\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[2]}}' AND \"SOMSalesForceId\"='{{ScenarioSalesForce.SOMSalesForceId__c[7]}}'",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[2]}},SOMSalesForceId:{{ScenarioSalesForce.SOMSalesForceId__c[7]}},Status:INAC,EffectiveDate:2021-01-01,EndDate:2024-09-30}]",
+        "sfQuery": "select {{prefix}}SOMTerritoryId__c, {{prefix}}SOMSalesForceId__c, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMTerritorySalesForce__c where {{prefix}}SOMTerritoryId__c = '{{ScenarioTerritory.SOMTerritoryId__c[2]}}' AND {{prefix}}SOMSalesForceId__c='{{ScenarioSalesForce.SOMSalesForceId__c[7]}}'"
+      },
+      {
+        "testname": "merge_EDIT_EFFE_SF_Terr_605_2",
+        "query": "select \"SOMTerritoryId\",\"SOMSalesForceId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMTerritorySalesForce\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[2]}}' AND \"SOMSalesForceId\"='{{ScenarioSalesForce.SOMSalesForceId__c[8]}}'",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[2]}},SOMSalesForceId:{{ScenarioSalesForce.SOMSalesForceId__c[8]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[0]}}}]",
+        "sfQuery": "select {{prefix}}SOMTerritoryId__c, {{prefix}}SOMSalesForceId__c, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMTerritorySalesForce__c where {{prefix}}SOMTerritoryId__c = '{{ScenarioTerritory.SOMTerritoryId__c[2]}}' AND {{prefix}}SOMSalesForceId__c='{{ScenarioSalesForce.SOMSalesForceId__c[8]}}'"
+      },
+      //Check C7643066 Edit SF+END, C7677467 Edit+End Territory
+      {
+        "testname": "merge_EDIT_EXPR_SF_Terr_705",
+        "query": "select \"SOMTerritoryId\",\"SOMSalesForceId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMTerritorySalesForce\" where \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[3]}}' order by \"Status\", \"EffectiveDate\"",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[3]}},SOMSalesForceId:{{ScenarioSalesForce.SOMSalesForceId__c[9]}},Status:ACTV,EffectiveDate:2021-01-01,EndDate:2024-09-30},{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[3]}},SOMSalesForceId:{{ScenarioSalesForce.SOMSalesForceId__c[10]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}}}]",
+        "sfQuery": "select {{prefix}}SOMTerritoryId__c, {{prefix}}SOMSalesForceId__c, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMTerritorySalesForce__c where {{prefix}}SOMTerritoryId__c = '{{ScenarioTerritory.SOMTerritoryId__c[2]}} order by {{prefix}}Status__c, {{prefix}}EffectiveDate__c'"
+      },
+      //Check C7643061 DELETE Territory
+      {
+        "testname": "merge_DEL_Terr_805",
+        "query": "OMTerritory,Name,Status,EffectiveDate,EndDate,SOMTerritoryId:'{{ScenarioTerritory.SOMTerritoryId__c[4]}}'",
+        "exp_result": "[{Name:{{ScenarioTerritory.Name[4]}},Status:INAC,EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{Scenario.EndDate__c[0]}}}]",
+        "odataQuery": "/OMTerritory?$select=Name,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[4]}}'",
+        "sfQuery": "select {{prefix}}Name, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMTerritory__c where {{prefix}}SOMTerritoryId__c = '{{ScenarioTerritory.SOMTerritoryId__c[4]}}'"
+      },
+      //Check C7643062 END Territory, C7643064 RESTART Territory, C7643068 EFFE+EXPR Territory, C7877764 Restart+End overlap
+      {
+        "testname": "merge_DEL_Terr_905",
+        "query": "OMTerritory,Name,Status,EffectiveDate,EndDate,SOMTerritoryId:'{{ScenarioTerritory.SOMTerritoryId__c[5]}}'",
+        "exp_result": "[{Name:{{ScenarioTerritory.Name[5]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}}}]",
+        "odataQuery": "/OMTerritory?$select=Name,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[5]}}'",
+        "sfQuery": "select {{prefix}}Name, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMTerritory__c where {{prefix}}SOMTerritoryId__c = '{{ScenarioTerritory.SOMTerritoryId__c[5]}}'"
+      },
+      {
+        "testname": "merge_EDIT_EFFE_EXPR_SF_Terr04_SF07",
+        "query": "select \"SOMTerritoryId\",\"SOMSalesForceId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMTerritorySalesForce\" where \"SOMSalesForceId\"='{{ScenarioSalesForce.SOMSalesForceId__c[11]}}' AND \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[4]}}' ",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[4]}},SOMSalesForceId:{{ScenarioSalesForce.SOMSalesForceId__c[11]}},Status:INAC,EffectiveDate:{{Scenario.EffectiveDate__c[0]}},EndDate:{{Scenario.EndDate__c[0]}}}]",
+        "odataQuery": "/OMTerritorySalesForce?$select=SOMTerritoryId,SOMSalesForceId,Status,EffectiveDate,EndDate&$filter=SOMSalesForceId eq '{{ScenarioSalesForce.SOMSalesForceId__c[11]}}' and SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[4]}}'",
+        "sfQuery": "select {{prefix}}SOMTerritoryId__c, {{prefix}}SOMSalesForceId__c, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMTerritorySalesForce__c where {{prefix}}SOMSalesForceId__c = '{{ScenarioSalesForce.SOMSalesForceId__c[11]}}' AND {{prefix}}SOMTerritoryId__c = '{{ScenarioTerritory.SOMTerritoryId__c[4]}}'"
+      },
+      {
+        "testname": "merge_EDIT_EFFE_EXPR_SF_Terr05_SF07",
+        "query": "select \"SOMTerritoryId\",\"SOMSalesForceId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMTerritorySalesForce\" where \"SOMSalesForceId\"='{{ScenarioSalesForce.SOMSalesForceId__c[11]}}' AND \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[5]}}' ",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[5]}},SOMSalesForceId:{{ScenarioSalesForce.SOMSalesForceId__c[11]}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[1]}}}]",
+        "odataQuery": "/OMTerritorySalesForce?$select=SOMTerritoryId,SOMSalesForceId,Status,EffectiveDate,EndDate&$filter=SOMSalesForceId eq '{{ScenarioSalesForce.SOMSalesForceId__c[11]}}' and SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[5]}}'",
+        "sfQuery": "select {{prefix}}SOMTerritoryId__c, {{prefix}}SOMSalesForceId__c, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMTerritorySalesForce__c where {{prefix}}SOMSalesForceId__c = '{{ScenarioSalesForce.SOMSalesForceId__c[11]}}' AND {{prefix}}SOMTerritoryId__c = '{{ScenarioTerritory.SOMTerritoryId__c[5]}}'"
+      },
+      // C7677459 Edit+Restart Territory
+      {
+        "testname": "merge_Edit_Name_Terr_005",
+        "query": "OMTerritory,Name,Status,EffectiveDate,EndDate,SOMTerritoryId:'{{ScenarioTerritory.SOMTerritoryId__c[6]}}'",
+        "exp_result": "[{Name:Edited terr-{{TestUniqueIntegrationID}},Status:ACTV,EffectiveDate:{{Scenario.EffectiveDate__c[1]}},EndDate:{{Scenario.EndDate__c[0]}}}]",
+        "odataQuery": "/OMTerritory?$select=Name,Status,EffectiveDate,EndDate&$filter=SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[6]}}'",
+        "sfQuery": "select {{prefix}}Name, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMTerritory__c where {{prefix}}SOMTerritoryId__c = '{{ScenarioTerritory.SOMTerritoryId__c[6]}}'"
+      },
+      // C7877765 Restart+End Territory no overlap
+      {
+        "testname": "merge_EFFE_EXPR_SF_Terr006_SF07",
+        "query": "select \"SOMTerritoryId\",\"SOMSalesForceId\",\"Status\",\"EffectiveDate\",\"EndDate\" from \"{{schema}}\".\"OMTerritorySalesForce\" where \"SOMSalesForceId\"='{{ScenarioSalesForce.SOMSalesForceId__c[11]}}' AND \"SOMTerritoryId\"='{{ScenarioTerritory.SOMTerritoryId__c[7]}}' ",
+        "exp_result": "[{SOMTerritoryId:{{ScenarioTerritory.SOMTerritoryId__c[7]}},SOMSalesForceId:{{ScenarioSalesForce.SOMSalesForceId__c[11]}},Status:ACTV,EffectiveDate:2026-02-05,EndDate:{{Scenario.EndDate__c[1]}}}]",
+        "odataQuery": "/OMTerritorySalesForce?$select=SOMTerritoryId,SOMSalesForceId,Status,EffectiveDate,EndDate&$filter=SOMSalesForceId eq '{{ScenarioSalesForce.SOMSalesForceId__c[11]}}' and SOMTerritoryId eq '{{ScenarioTerritory.SOMTerritoryId__c[7]}}'",
+        "sfQuery": "select {{prefix}}SOMTerritoryId__c, {{prefix}}SOMSalesForceId__c, {{prefix}}Status__c, {{prefix}}EffectiveDate__c, {{prefix}}EndDate__c from {{prefix}}OMTerritorySalesForce__c where {{prefix}}SOMSalesForceId__c = '{{ScenarioSalesForce.SOMSalesForceId__c[11]}}' AND {{prefix}}SOMTerritoryId__c = '{{ScenarioTerritory.SOMTerritoryId__c[7]}}'"
+      }
+    ]
+  }
+}            

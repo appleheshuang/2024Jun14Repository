@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Constructors\OCEConstructors\**" />
+    <Compile Remove="DevCode\**" />
+    <EmbeddedResource Remove="Constructors\OCEConstructors\**" />
+    <EmbeddedResource Remove="DevCode\**" />
+    <None Remove="Constructors\OCEConstructors\**" />
+    <None Remove="DevCode\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="GlobalUtils\EngineApi.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Constructors\SalesforceConstructors\OCEAddress.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Amazon.Extensions.CognitoAuthentication" Version="1.0.3" />
+    <PackageReference Include="Amazon.Lambda.APIGatewayEvents" Version="1.2.0" />
+    <PackageReference Include="Amazon.Lambda.Core" Version="1.1.0" />
+    <PackageReference Include="AWSSDK.CognitoIdentityProvider" Version="3.3.103" />
+    <PackageReference Include="AWSSDK.Core" Version="3.3.103.58" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.101.72" />
+    <PackageReference Include="AWSSDK.Lambda" Version="3.3.103.25" />
+    <PackageReference Include="AWSSDK.S3" Version="3.3.106" />
+    <PackageReference Include="CsvHelper" Version="12.2.1" />
+    <PackageReference Include="FluentAssertions.Json" Version="5.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="Moq" Version="4.13.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="RestSharp" Version="106.6.10" />
+    <PackageReference Include="Serilog" Version="2.9.0" />
+    <PackageReference Include="Snowflake.Data" Version="1.1.0" />
+    <PackageReference Include="SpecFlow" Version="3.9.8" />
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.8" />
+    <PackageReference Include="SpecFlow.xUnit" Version="3.9.8" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="XunitXml.TestLogger" Version="2.1.26" />
+    <None Update="Configs\config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TenantConfigs\" />
+  </ItemGroup>
+
+</Project>

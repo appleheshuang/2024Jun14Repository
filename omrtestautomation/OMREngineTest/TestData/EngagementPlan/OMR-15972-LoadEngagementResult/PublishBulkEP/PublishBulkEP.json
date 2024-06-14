@@ -1,0 +1,294 @@
+{
+	"BaseData": {
+		"EarlyEffectiveDate": "{{today-5}}",
+		"EarlyEndDate": "{{today+7}}",
+		"EffectiveDate": "{{today-3}}",
+		"EndDate": "{{today+31}}",
+		"EngEffectiveDate": "{{today-1}}",
+		"EngEndDate": "{{today+29}}",
+		"DayBeforeEngEffective": "{{today-2}}",
+		"DayAfterEngEnd": "{{today+30}}",
+		"LateEffectiveDate": "{{today+27}}",
+		"LateEndDate": "{{today+33}}",
+		"som_region_id": "US",
+		"align_all_accountUId": "NO-RULA-15972P",
+		"excl_left_accountUId": "EXCL-RULA-15972P",
+		"loadonly_accountUId": "NONE-15972P",
+		"expl_right_accountUId": "EXPR-NO-15972P",
+		"salesforceUID": "SF15972",
+		"territoryUID": "T15972",
+		"ruleUID": "R15972",
+		"segAMeetTarget": 3,
+		"segAEmailTarget": 10,
+		"segBMeetTarget": 1,
+		"segBEmailTarget": 5,
+		"segCMeetTarget": 0,
+		"segCEmailTarget": 1,
+		"segAtargets": "[{\"Channel\":\"MEET\",\"Frequency\":{{segAMeetTarget}}},{\"Channel\":\"EMAIL\",\"Frequency\":{{segAEmailTarget}}}]",
+		"segBtargets": "[{\"Channel\":\"MEET\",\"Frequency\":{{segBMeetTarget}}},{\"Channel\":\"EMAIL\",\"Frequency\":{{segBEmailTarget}}}]",
+		"segCtargets": "[{\"Channel\":\"MEET\",\"Frequency\":{{segCMeetTarget}}},{\"Channel\":\"EMAIL\",\"Frequency\":{{segCEmailTarget}}}]",
+		"expAtargets": "[{Channel:MEET,Frequency:{{segAMeetTarget}}},{Channel:EMAIL,Frequency:{{segAEmailTarget}}}]",
+		"expBtargets": "[{Channel:MEET,Frequency:{{segBMeetTarget}}},{Channel:EMAIL,Frequency:{{segBEmailTarget}}}]",
+		"expCtargets": "[{Channel:MEET,Frequency:{{segCMeetTarget}}},{Channel:EMAIL,Frequency:{{segCEmailTarget}}}]",
+		"oceMeetExpAtargets": "ActivityPlanConfigName:MEET,HQGoal:{{segAMeetTarget}}",
+		"oceEmailExpAtargets": "ActivityPlanConfigName:EMAIL,HQGoal:{{segAEmailTarget}}",
+		"oceMeetExpBtargets": "ActivityPlanConfigName:MEET,HQGoal:{{segBMeetTarget}}",
+		"oceEmailExpBtargets": "ActivityPlanConfigName:EMAIL,HQGoal:{{segBEmailTarget}}",
+		"oceMeetExpCtargets": "ActivityPlanConfigName:MEET,HQGoal:{{segCMeetTarget}}",
+		"oceEmailExpCtargets": "ActivityPlanConfigName:EMAIL,HQGoal:{{segCEmailTarget}}"
+	},
+	"Scenario": {
+		"Description": "",
+		"Name": "",
+		"EffectiveDate__c": "{{EffectiveDate}}",
+		"EndDate__c": "{{EndDate}}",
+		"OMRegionId__c": "{{som_region_id}}",
+		"ScenarioStatus__c": "PENDG",
+		"UniqueIntegrationId__c": "",
+		"Type__c": "USER"
+	},
+	"ScenarioSalesForce": [
+		{
+			"Action__c": "ADD",
+			"SOMRegionId__c": "{{som_region_id}}",
+			"UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+			"Type__c": "INST",
+			"Name": "SF-15972",
+			"RegionUniqueIntegrationId__c": "{{som_region_id}}",
+			"RefRegionName__c": "US-95129",
+			"EffectiveDate__c": "{{EarlyEffectiveDate}}",
+			"EndDate__c": "{{LateEndDate}}"
+		}
+	],
+	"ScenarioTerritory": [
+		{
+			"Action__c": "ADD",
+			"SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+			"TerritorySalesForceType__c": "PRIM",
+			"Name": "EngTerr_{{TestUniqueIntegrationId}}",
+			"UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationId}}",
+			"SOMRegionId__c": "{{som_region_id}}",
+			"Type__c": "TERR",
+			"EffectiveDate__c": "{{EarlyEffectiveDate}}",
+			"EndDate__c": "{{LateEndDate}}"
+		}
+	],
+	"ScenarioRule": [
+		{
+			// Dynamically align accounts with speciality = Clinical genetics
+			"Name": "Genetics-{{ruleUID}}-{{TestUniqueIntegrationId}}",
+			"Action__c": "ADD",
+			"UniqueIntegrationId__c": "specialtyA-{{ruleUID}}-{{TestUniqueIntegrationId}}",
+			"SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+			"RuleData__c": "{\"geography\":false,\"explicit\":false,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC\"},{\"type\":\"Equals\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Clinical genetics\"}]},\"hierarchy\":\"TERR\"}",
+			"RuleScope__c": "ALGN_ENGP"
+		}
+	],
+	"ScenarioAccountExplicit": [
+		{
+			"Action__c": "ADD",
+			"Purpose__c": "COMP",
+			"AccountUniqueIntegrationId__c": "{{expl_right_accountUId}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"EffectiveDate__c": "{{LateEffectiveDate}}",
+			"EndDate__c": "{{LateEndDate}}"
+		}
+	],
+	"ScenarioAccountExclusion": [
+		{
+			"Action__c": "ADD",
+			"Purpose__c": "COMP",
+			"AccountUniqueIntegrationId__c": "{{excl_left_accountUId}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"EffectiveDate__c": "{{EarlyEffectiveDate}}",
+			"EndDate__c": "{{EarlyEndDate}}"
+		}
+	],
+	"ScenarioEngagementPlan": [
+		{
+			"Name": "EP-15972-{{TestUniqueIntegrationId}}",
+			"UniqueIntegrationId__c": "EngP-{{TestUniqueIntegrationId}}",
+			"Action__c": "ADD",
+			"SOMSalesForceId__c": "{{ScenarioSalesForce.somsalesforceid__c}}",
+			"SOMRegionId__c": "{{som_region_id}}",
+			"PlanType__c": "LOAD",
+			"ImportEngagementPlan__c": true,
+			"EffectiveDate__c": "{{EngEffectiveDate}}",
+			"EndDate__c": "{{EngEndDate}}",
+			"OMEngagementSegment__c": "[{\"SOMEngagementSegmentId\":\"segA-{{TestUniqueIntegrationId}}\",\"Name\":\"SegA\",\"Description\":\"\",\"Rank\":1,\"SOMRuleId\":\"\",\"Targets\":[{\"SOMEngagementSegmentTargetId\":\"meetA-{{TestUniqueIntegrationId}}\",\"Channel\":\"MEET\",\"Frequency\":100},{\"SOMEngagementSegmentTargetId\":\"emailA-{{TestUniqueIntegrationId}}\",\"Channel\":\"EMAIL\",\"Frequency\":100}]},{\"SOMEngagementSegmentId\":\"segB-{{TestUniqueIntegrationId}}\",\"Name\":\"SegB\",\"Description\":\"\",\"Rank\":2,\"SOMRuleId\":\"\",\"Targets\":[{\"SOMEngagementSegmentTargetId\":\"meetB-{{TestUniqueIntegrationId}}\",\"Channel\":\"MEET\",\"Frequency\":50},{\"SOMEngagementSegmentTargetId\":\"emailB-{{TestUniqueIntegrationId}}\",\"Channel\":\"EMAIL\",\"Frequency\":50}]},{\"SOMEngagementSegmentId\":\"segC-{{TestUniqueIntegrationId}}\",\"Name\":\"SegC\",\"Description\":\"\",\"Rank\":3,\"SOMRuleId\":\"\",\"Targets\":[{\"SOMEngagementSegmentTargetId\":\"meetC-{{TestUniqueIntegrationId}}\",\"Channel\":\"MEET\",\"Frequency\":25},{\"SOMEngagementSegmentTargetId\":\"emailC-{{TestUniqueIntegrationId}}\",\"Channel\":\"EMAIL\",\"Frequency\":25}]}]"
+		}
+	],
+	"ScenarioEngagementResult": [
+		{
+			"AccountUniqueIntegrationId__c": "{{align_all_accountUId}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"EngagementPlanUniqueIntegrationId__c": "{{ScenarioEngagementPlan.UniqueIntegrationId__c[0]}}",
+			"SOMEngagementPlanId__c": "{{ScenarioEngagementPlan.SOMEngagementPlanId__c[0]}}",
+			"SOMEngagementSegmentId__c": "segB-{{TestUniqueIntegrationId}}",
+			"Targets__c": "{{segBtargets}}",
+			"SOMEngagementResultId__c": "01-EngRes-{{TestUniqueIntegrationId}}",
+			"OMAccountId__c": "{{Account.Id[0]}}",
+			"SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"OMScenarioEngagementPlanId__c": "{{ScenarioEngagementPlan.Id[0]}}",
+			"EngagementSegmentName__c": "SegB",
+			"UniqueIntegrationId__c": "01-EPRes-{{TestUniqueIntegrationId}}",
+			"Name": "01-EP-15972"
+		},
+		{
+			"AccountUniqueIntegrationId__c": "{{excl_left_accountUId}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"EngagementPlanUniqueIntegrationId__c": "{{ScenarioEngagementPlan.UniqueIntegrationId__c[0]}}",
+			"SOMEngagementPlanId__c": "{{ScenarioEngagementPlan.SOMEngagementPlanId__c[0]}}",
+			"SOMEngagementSegmentId__c": "segC-{{TestUniqueIntegrationId}}",
+			"Targets__c": "{{segCtargets}}",
+			"SOMEngagementResultId__c": "03-EngRes-{{TestUniqueIntegrationId}}",
+			"OMAccountId__c": "{{Account.Id[1]}}",
+			"SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"OMScenarioEngagementPlanId__c": "{{ScenarioEngagementPlan.Id[0]}}",
+			"EngagementSegmentName__c": "SegC",
+			"UniqueIntegrationId__c": "03-EPRes-{{TestUniqueIntegrationId}}",
+			"Name": "03-EP-15972"
+		},
+		{
+			"AccountUniqueIntegrationId__c": "{{loadonly_accountUId}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"EngagementPlanUniqueIntegrationId__c": "{{ScenarioEngagementPlan.UniqueIntegrationId__c[0]}}",
+			"SOMEngagementPlanId__c": "{{ScenarioEngagementPlan.SOMEngagementPlanId__c[0]}}",
+			"SOMEngagementSegmentId__c": "segA-{{TestUniqueIntegrationId}}",
+			"Targets__c": "{{segAtargets}}",
+			"SOMEngagementResultId__c": "05-EngRes-{{TestUniqueIntegrationId}}",
+			"OMAccountId__c": "{{Account.Id[2]}}",
+			"SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"OMScenarioEngagementPlanId__c": "{{ScenarioEngagementPlan.Id[0]}}",
+			"EngagementSegmentName__c": "SegA",
+			"UniqueIntegrationId__c": "05-EPRes-{{TestUniqueIntegrationId}}",
+			"Name": "05-EP-15972"
+		},
+		{
+			"AccountUniqueIntegrationId__c": "{{expl_right_accountUId}}",
+			"TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+			"EngagementPlanUniqueIntegrationId__c": "{{ScenarioEngagementPlan.UniqueIntegrationId__c[0]}}",
+			"SOMEngagementPlanId__c": "{{ScenarioEngagementPlan.SOMEngagementPlanId__c[0]}}",
+			"SOMEngagementSegmentId__c": "segA-{{TestUniqueIntegrationId}}",
+			"Targets__c": "{{segAtargets}}",
+			"SOMEngagementResultId__c": "06-EngRes-{{TestUniqueIntegrationId}}",
+			"OMAccountId__c": "{{Account.Id[3]}}",
+			"SOMTerritoryId__c": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+			"OMScenarioEngagementPlanId__c": "{{ScenarioEngagementPlan.Id[0]}}",
+			"EngagementSegmentName__c": "SegA",
+			"UniqueIntegrationId__c": "06-EPRes-{{TestUniqueIntegrationId}}",
+			"Name": "06-EP-15972"
+		}
+	],
+	"Tests": {
+		"Explicits": [
+			{
+				"testname": "Explicits-with-right-overlap", // new explicit generated, overlapping explicit trimmed
+				"exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{expl_right_accountUId}},EffectiveDate:{{EngEffectiveDate}},EndDate:{{EngEndDate}}},{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{expl_right_accountUId}},EffectiveDate:{{DayAfterEngEnd}},EndDate:{{LateEndDate}}}]",
+				"account_uids": "{{expl_right_accountUId}}",
+				"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+			},
+			{
+				"testname": "Explicits-loadonly", // explicit added for eng plan interval
+				"exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{loadonly_accountUId}},EffectiveDate:{{EngEffectiveDate}},EndDate:{{EngEndDate}}}]",
+				"account_uids": "{{loadonly_accountUId}}",
+				"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+			},
+			{
+				"testname": "Explicits-with-left-exclude", // 3 accounts, explicits added for eng plan interval
+				"exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{excl_left_accountUId}},EffectiveDate:{{EngEffectiveDate}},EndDate:{{EngEndDate}}}]",
+				"account_uids": "{{excl_left_accountUId}}",
+				"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+			},
+			{
+				"testname": "Explicits-alignedbyrule", // No explicit for account aligned by rule
+				"exp_result": "[]",
+				"account_uids": "{{align_all_accountUId}}",
+				"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+			}
+		],
+		"Exclusions": [
+			{
+				"testname": "Exclusions-with-left-exclusion", // 2 accounts, exclusions trimmed
+				"exp_result": "[{TerritoryUID:{{ScenarioTerritory.UniqueIntegrationId__c[0]}},AccountUID:{{excl_left_accountUId}},EffectiveDate:{{EarlyEffectiveDate}},EndDate:{{DayBeforeEngEffective}}}]",
+				"account_uids": "{{excl_left_accountUId}}",
+				"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+			},
+			{
+				"testname": "Exclusions-none", // No exclusion for other accounts
+				"exp_result": "[]",
+				"account_uids": "{{expl_right_accountUId}},{{align_all_accountUId}},{{loadonly_accountUId}}",
+				"territory_uids": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"territory_somids": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}"
+			}
+		],
+		"EngagementResults": [
+			{
+				"testname": "EngagementExplicits-Targets_A",
+				"type": "Explicit",
+				"exp_territory_uid": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"exp_account_uids": "{{expl_right_accountUId}},{{loadonly_accountUId}}",
+				"exp_segment_id": "segA-{{TestUniqueIntegrationId}}",
+				"exp_target": "{{expAtargets}}",
+				"account_uids": "{{expl_right_accountUId}},{{loadonly_accountUId}}",
+				"territory_somid": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+				"engplan_somid": "{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}"
+			},
+			{
+				"testname": "EngagementExplicits-Targets_B",
+				"type": "Result,Explicit",
+				"exp_territory_uid": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"exp_segment_id": "segB-{{TestUniqueIntegrationId}}",
+				"exp_target": "{{expBtargets}}",
+				"account_uids": "{{align_all_accountUId}}",
+				"territory_somid": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+				"engplan_somid": "{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}"
+			},
+			{
+				"testname": "EngagementExplicits-Targets_C",
+				"type": "Result,Explicit",
+				"exp_territory_uid": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+				"exp_segment_id": "segC-{{TestUniqueIntegrationId}}",
+				"exp_target": "{{expCtargets}}",
+				"account_uids": "{{excl_left_accountUId}}",
+				"territory_somid": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+				"engplan_somid": "{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}"
+			}
+		],
+		"OCEResults": [
+			{
+				"testname": "Territory2",
+				"exp_result": "[{Name:{{ScenarioTerritory.Name[0]}},DeveloperName:O{{ScenarioTerritory.SOMTerritoryId__c}}}]",
+				"sfQuery": "select Name, DeveloperName from Territory2 where DeveloperName in ('O{{ScenarioTerritory.SOMTerritoryId__c}}') order by Name"
+			},
+			{
+				"testname": "engplan-period",
+				"query": "select \"EffectiveDate\" \"StartDate\", \"EndDate\" from OUTPUT.\"OMEngagementPlan\" where \"SOMEngagementPlanId\" = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}'",
+				"exp_result": "[{StartDate:{{EngEffectiveDate}},EndDate:{{EngEndDate}}}]",
+				"sfQuery": "select OCE__StartDate__c, OCE__EndDate__c from OCE__Period__c where OCE__UniqueIntegrationID__c = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}' order by OCE__StartDate__c"
+			},
+			{
+				"testname": "engplan-plancycle",
+				"query": "select distinct e.\"EffectiveDate\" \"StartDate\", e.\"EndDate\", 'Approved' \"Status\", terr.\"Name\" \"Territory\", 'AccountGoal' \"Type\", terr.\"Name\"||'-'||e.\"UniqueIntegrationId\" \"UniqueIntegrationID\" from OUTPUT.\"OMEngagementResult\" r join OUTPUT.\"OMEngagementPlan\" e on e.\"SOMEngagementPlanId\" = r.\"SOMEngagementPlanId\" join OUTPUT.\"OMTerritory\" terr on terr.\"SOMTerritoryId\" = r.\"SOMTerritoryId\" where r.\"SOMEngagementPlanId\" = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}'",
+				"exp_result": "[{StartDate:{{EngEffectiveDate}},EndDate:{{EngEndDate}},Status:Approved,Territory:{{ScenarioTerritory.Name}},Type:AccountGoal,UniqueIntegrationID:{{ScenarioTerritory.Name}}-{{ScenarioEngagementPlan.UniqueIntegrationId__c}}}]",
+				"sfQuery": "select OCE__StartDate__c, OCE__EndDate__c, OCE__Status__c, OCE__Territory__c, OCE__Type__c,OCE__UniqueIntegrationID__c from OCE__PlanCycle__c where OCE__Period__r.OCE__UniqueIntegrationID__c = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}' order by OCE__StartDate__c"
+			},
+			{
+				"testname": "engplan-accountgoal",
+				"query": "SELECT acc.\"Name\", terr.\"Name\" \"Territory\" FROM output.\"OMEngagementResult\" r join static.\"OMAccount\" acc on acc.\"Id\" = r.\"OMAccountId\" join output.\"OMTerritory\" terr on terr.\"SOMTerritoryId\" = r.\"SOMTerritoryId\" where r.\"SOMEngagementPlanId\" = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}' ORDER BY acc.\"UniqueIntegrationId\"",
+				"exp_result": "[{Name:{{Account.FirstName[1]}} {{Account.LastName[1]}},Territory:{{ScenarioTerritory.Name}}},{Name:{{Account.FirstName[3]}} {{Account.LastName[3]}},Territory:{{ScenarioTerritory.Name}}},{Name:{{Account.FirstName[0]}} {{Account.LastName[0]}},Territory:{{ScenarioTerritory.Name}}},{Name:{{Account.FirstName[2]}} {{Account.LastName[2]}},Territory:{{ScenarioTerritory.Name}}}]",
+				"sfQuery": "select OCE__Account__r.Name, OCE__PlanCycle__r.OCE__Territory__c from OCE__AccountGoal__c where OCE__AccountGoal__c.OCE__Plancycle__r.OCE__Period__r.OCE__UniqueIntegrationId__c = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}' order by OCE__Account__r.OCE__UniqueIntegrationID__c"
+			},
+			{
+				"testname": "engplan-activityplan",
+				"exp_result": "[{Name:{{Account.FirstName[1]}} {{Account.LastName[1]}},Territory:{{ScenarioTerritory.Name}},{{oceEmailExpCtargets}}},{Name:{{Account.FirstName[1]}} {{Account.LastName[1]}},Territory:{{ScenarioTerritory.Name}},{{oceMeetExpCtargets}}},{Name:{{Account.FirstName[3]}} {{Account.LastName[3]}},Territory:{{ScenarioTerritory.Name}},{{oceEmailExpAtargets}}},{Name:{{Account.FirstName[3]}} {{Account.LastName[3]}},Territory:{{ScenarioTerritory.Name}},{{oceMeetExpAtargets}}},{Name:{{Account.FirstName[0]}} {{Account.LastName[0]}},Territory:{{ScenarioTerritory.Name}},{{oceEmailExpBtargets}}},{Name:{{Account.FirstName[0]}} {{Account.LastName[0]}},Territory:{{ScenarioTerritory.Name}},{{oceMeetExpBtargets}}},{Name:{{Account.FirstName[2]}} {{Account.LastName[2]}},Territory:{{ScenarioTerritory.Name}},{{oceEmailExpAtargets}}},{Name:{{Account.FirstName[2]}} {{Account.LastName[2]}},Territory:{{ScenarioTerritory.Name}},{{oceMeetExpAtargets}}}]",
+				"sfQuery": "select OCE__AccountGoal__r.OCE__Account__r.Name, OCE__AccountGoal__r.OCE__PlanCycle__r.OCE__Territory__c, OCE__ActivityPlanConfigName__c, OCE__HQGoal__c from OCE__ActivityPlan__c where OCE__AccountGoal__r.OCE__PlanCycle__r.OCE__Period__r.OCE__UniqueIntegrationID__c = '{{ScenarioEngagementPlan.SOMEngagementPlanId__c}}' order by OCE__AccountGoal__r.OCE__Account__r.OCE__UniqueIntegrationID__c, OCE__ActivityPlanConfigName__c"
+			}
+		]
+	}
+}

@@ -1,0 +1,55 @@
+{
+    "Configs": {
+        "loadData": "Smoketest\\Bulkload.json",
+        "resetData": "false",
+        "jobtype": "calculate"
+    },
+
+  "BaseData": {
+    "som_region_id": "FX",
+    "salesforceUID": "ERRORSF",
+    "territoryUID": "ERRORSFT",
+    "EffectiveDate": "{{today}}",
+    "EndDate": "{{today+10}}"
+  },
+
+  "Scenario": {
+    //Add precondition for OMR-799
+    "Description": "Precondition for Deleteing Parent data SF",
+    "name": "Precondition for Deleteing Parent data SF",
+    "OMRegionId__c": "{{som_region_id}}",
+    "ScenarioStatus__c": "PENDG",
+    "UniqueIntegrationId__c": "OMR799-{{TestUniqueIntegrationID}}",
+    "EffectiveDate__c": "{{EffectiveDate}}",
+    "EndDate__c": "{{EndDate}}"
+  },
+
+    "ScenarioSalesForce": [
+      {
+        "Action__c": "ADD",
+        "SOMRegionId__c": "{{som_region_id}}",
+        "UniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+        "OMScenarioId__c": "{{Scenario.Id[0]}}",
+        "Type__c": "KOL",
+        "name": "{{salesforceUID}}",
+        "EffectiveDate__c": "{{EffectiveDate}}",
+        "EndDate__c": "{{EndDate}}",
+        "SOMSalesForceId__c": "{{salesforceUID}}{{TestUniqueIntegrationID}}"
+      }
+    ],
+    "ScenarioTerritory": [
+      {
+        "Action__c": "ADD",
+        "OMScenarioId__c": "{{Scenario.Id[0]}}",
+        "SalesForceUniqueIntegrationId__c": "{{salesforceUID}}-{{TestUniqueIntegrationID}}",
+        "TerritorySalesForceType__c": "PRIM",
+        "name": "{{territoryUID}}",
+        "UniqueIntegrationId__c": "{{territoryUID}}-{{TestUniqueIntegrationID}}",
+        "SOMRegionId__c": "{{som_region_id}}",
+        "Type__c": "TERR",
+        "EffectiveDate__c": "{{EffectiveDate}}",
+        "EndDate__c": "{{EndDate}}",
+        "SOMTerritoryId__c": "{{territoryUID}}{{TestUniqueIntegrationID}}"
+      }
+    ]
+}

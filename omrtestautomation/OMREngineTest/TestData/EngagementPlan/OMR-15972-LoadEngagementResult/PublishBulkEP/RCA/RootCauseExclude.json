@@ -1,0 +1,47 @@
+{
+  "RootCauseRequest": {
+    "OMAccountId": "{{Account.Id[1]}}",
+    "SOMTerritoryId": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+    "EffectiveDate": "{{EngEffectiveDate}}T00:00:00",
+    "EndDate": "{{Scenario.EndDate__c}}T00:00:00"
+  },
+  "RootCauseResponse": {
+    "omAccountId": "{{Account.Id[1]}}",
+    "somTerritoryId": "{{ScenarioTerritory.SOMTerritoryId__c[0]}}",
+    "effectiveDate": "{{EngEffectiveDate}}T00:00:00",
+    "endDate": "{{Scenario.EndDate__c}}T00:00:00",
+    "rules": [
+      {
+        "ruleName": "{{ScenarioRule.Name}}",
+        "somRuleId": "{{ScenarioRule.SOMRuleId__c}}",
+        "uniqueIntegrationId": "{{ScenarioRule.UniqueIntegrationId__c}}",
+        "effectiveDate": "{{EngEffectiveDate}}T00:00:00",
+        "endDate": "{{Scenario.EndDate__c}}T00:00:00",
+        "effectiveCalculationDate": "",
+        "endCalculationDate": "",
+        "data": [
+          {
+            "table": "OMRuleVersion",
+            "id": "{{ScenarioRule.SOMRuleId__c}}",
+            "uniqueIntegrationId": "{{ScenarioRule.UniqueIntegrationId__c}}",
+            "column": "VersionNumber",
+            "beforeEffective": "1",
+            "afterEffective": "1",
+            "beforeEnd": "1",
+            "afterEnd": "{*R*}"
+          },
+          {
+            "table": "OMAccount",
+            "id": "{{Account.Id[1]}}",
+            "uniqueIntegrationId": "{{excl_left_accountUId}}",
+            "column": "Specialty",
+            "beforeEffective": "Clinical genetics",
+            "afterEffective": "Clinical genetics",
+            "beforeEnd": "Clinical genetics",
+            "afterEnd": "Clinical genetics"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "BaseData": {
+    "som_region_id": "REG01",
+    "regionUID": "REG01",
+    "salesforceUID": "19934-SF",
+    "territoryUID": "19934-TERR"
+  },
+
+ 
+  "ScenarioProductExclusion": [
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[0]}}",
+      "RefProductName__c": "{{Product.Name[0]}}",
+      "RefProductType__c": "{{Product.Type__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[1]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "UniqueIntegrationId__c": "PEXCLEXPR0-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[1]}}",
+      "RefProductName__c": "{{Product.Name[1]}}",
+      "RefProductType__c": "{{Product.Type__c[1]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[1]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "UniqueIntegrationId__c": "PEXCLEXPR1-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "MIRF"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[2]}}",
+      "RefProductName__c": "{{Product.Name[2]}}",
+      "RefProductType__c": "{{Product.Type__c[2]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[1]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[1]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[1]}}",
+      "UniqueIntegrationId__c": "PEXCLEXPR2-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "SMPL"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[0]}}",
+      "RefProductName__c": "{{Product.Name[0]}}",
+      "RefProductType__c": "{{Product.Type__c[0]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[2]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[2]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+      "UniqueIntegrationId__c": "PEXCLEFFE0-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "DETL"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[1]}}",
+      "RefProductName__c": "{{Product.Name[1]}}",
+      "RefProductType__c": "{{Product.Type__c[1]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[2]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[2]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+      "UniqueIntegrationId__c": "PEXCLEFFE1-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "MIRF"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[2]}}",
+      "RefProductName__c": "{{Product.Name[2]}}",
+      "RefProductType__c": "{{Product.Type__c[2]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[2]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[2]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[2]}}",
+      "UniqueIntegrationId__c": "PEXCLEFFE2-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "SMPL"
+    },
+    {
+      "Action__c": "ADD",
+      "ProductUniqueIntegrationId__c": "{{Product.UniqueIntegrationId__c[3]}}",
+      "RefProductName__c": "{{Product.Name[3]}}",
+      "RefProductType__c": "{{Product.Type__c[3]}}",
+      "RefSalesForceName__c": "{{ScenarioSalesForce.Name[0]}}",
+      "RefTerritoryName__c": "{{ScenarioTerritory.Name[0]}}",
+      "RefTerritoryType__c": "{{ScenarioTerritory.Type__c[0]}}",
+      "TerritoryUniqueIntegrationId__c": "{{ScenarioTerritory.UniqueIntegrationId__c[0]}}",
+      "UniqueIntegrationId__c": "PEXCLMOVE1-{{TestUniqueIntegrationId}}",
+      "ProductAlignmentType__c": "SMPL"
+    }
+  ],
+
+  "Tests": {
+    "MergeResults": [
+      {
+        "testname": "Product Exclusion Expire Records Past",
+        "query": "skip",
+        "sfQuery": "select OCE__Territory__c,OCE__Product__r.Name,OCE__UniqueIntegrationID__c from OCE__TerritoryProductExclusion__c where OCE__Territory__c='{{ScenarioTerritory.Name[1]}}' and OCE__Product__r.Name='{{Product.Name[0]}}'",
+        "exp_result": "[{OCE__Territory:{{ScenarioTerritory.Name[1]}},Name:{{Product.Name[0]}},OCE__UniqueIntegrationID:{{Product.SOMProductId__c[0]}}-{{ScenarioTerritory.SOMTerritoryId__c[1]}}}]"
+      },
+      {
+        "testname": "Product Exclusion Expire Records Current",
+        "query": "skip",
+        "sfQuery": "select OCE__Territory__c,OCE__Product__r.Name,OCE__UniqueIntegrationID__c from OCE__TerritoryProductExclusion__c where OCE__Territory__c='{{ScenarioTerritory.Name[1]}}' and OCE__Product__r.Name='{{Product.Name[1]}}'",
+        "exp_result": "[{OCE__Territory:{{ScenarioTerritory.Name[1]}},Name:{{Product.Name[1]}},OCE__UniqueIntegrationID:{{Product.SOMProductId__c[1]}}-{{ScenarioTerritory.SOMTerritoryId__c[1]}}}]"
+      },
+      {
+        "testname": "Product Exclusion Expire Records Future",
+        "query": "skip",
+        "sfQuery": "select OCE__Territory__c,OCE__Product__r.Name,OCE__UniqueIntegrationID__c from OCE__TerritoryProductExclusion__c where OCE__Territory__c='{{ScenarioTerritory.Name[1]}}' and OCE__Product__r.Name='{{Product.Name[2]}}'",
+        "exp_result": "[{OCE__Territory:{{ScenarioTerritory.Name[1]}},Name:{{Product.Name[2]}},OCE__UniqueIntegrationID:{{Product.SOMProductId__c[2]}}-{{ScenarioTerritory.SOMTerritoryId__c[1]}}}]"
+      },
+      {
+        "testname": "Product Exclusion EFFE Records Past",
+        "query": "skip",
+        "sfQuery": "select OCE__Territory__c,OCE__Product__r.Name,OCE__UniqueIntegrationID__c from OCE__TerritoryProductExclusion__c where OCE__Territory__c='{{ScenarioTerritory.Name[2]}}' and OCE__Product__r.Name='{{Product.Name[0]}}'",
+        "exp_result": "[{OCE__Territory:{{ScenarioTerritory.Name[2]}},Name:{{Product.Name[0]}},OCE__UniqueIntegrationID:{{Product.SOMProductId__c[0]}}-{{ScenarioTerritory.SOMTerritoryId__c[2]}}}]"
+      },
+      {
+        "testname": "Product Exclusion EFFE Records Current",
+        "query": "skip",
+        "sfQuery": "select OCE__Territory__c,OCE__Product__r.Name,OCE__UniqueIntegrationID__c from OCE__TerritoryProductExclusion__c where OCE__Territory__c='{{ScenarioTerritory.Name[2]}}' and OCE__Product__r.Name='{{Product.Name[1]}}'",
+        "exp_result": "[{OCE__Territory:{{ScenarioTerritory.Name[2]}},Name:{{Product.Name[1]}},OCE__UniqueIntegrationID:{{Product.SOMProductId__c[1]}}-{{ScenarioTerritory.SOMTerritoryId__c[2]}}}]"
+      },
+      {
+        "testname": "Product Exclusion EFFE Records Future",
+        "query": "skip",
+        "sfQuery": "select OCE__Territory__c,OCE__Product__r.Name,OCE__UniqueIntegrationID__c from OCE__TerritoryProductExclusion__c where OCE__Territory__c='{{ScenarioTerritory.Name[2]}}' and OCE__Product__r.Name='{{Product.Name[2]}}'",
+        "exp_result": "[{OCE__Territory:{{ScenarioTerritory.Name[2]}},Name:{{Product.Name[2]}},OCE__UniqueIntegrationID:{{Product.SOMProductId__c[2]}}-{{ScenarioTerritory.SOMTerritoryId__c[2]}}}]"
+      },
+      {
+        "testname": "Product Exclusion Move",
+        "query": "skip",
+        "sfQuery": "select OCE__Territory__c,OCE__Product__r.Name,OCE__UniqueIntegrationID__c from OCE__TerritoryProductExclusion__c where OCE__Territory__c='{{ScenarioTerritory.Name[0]}}' and OCE__Product__r.Name='{{Product.Name[3]}}'",
+        "exp_result": "[{OCE__Territory:{{ScenarioTerritory.Name[0]}},Name:{{Product.Name[3]}},OCE__UniqueIntegrationID:{{Product.SOMProductId__c[3]}}-{{ScenarioTerritory.SOMTerritoryId__c[0]}}}]"
+      }
+    ]
+  }
+}

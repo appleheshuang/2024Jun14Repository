@@ -1,0 +1,76 @@
+{
+	"Configs": {
+		"loadData": "Smoketest\\LoadData\\Bulkload.json",
+		"resetData": "false",
+		"jobtype": "commit",
+		"rca": "true"
+	},
+
+	"BaseData": {
+		"EffectiveDate": "2022-06-01", //Used by recalc
+		"EndDate": "3999-12-31",
+		"som_region_id": "ZW",
+		"recalc_accountUId": "OMR-15543-1-{{TestUniqueIntegrationId}}",
+		"salesforceUID": "RECALC-ROLLBACK-SF",
+		"territory_aligned_by_rule_UId": "RECALC-ROLLBACK-RULE-TERR",
+		"territory_aligned_by_explicit_UId": "RECALC-ROLLBACK-EXPL-TERR",
+		"ruleUID": "RECALC-ROLLBACK-RULE",
+		"EffectivePast": "2023-03-01",
+		"EndPast": "2023-03-31",
+		"EffectiveFuture": "3022-03-01",
+		"EndFuture": "3022-03-31"
+	},
+
+	"Scenario": {
+		"Description": "",
+		"Name": "",
+		"EffectiveDate__c": "{{EffectiveDate}}",
+		"EndDate__c": "{{EndDate}}",
+		"OMRegionId__c": "{{som_region_id}}",
+		"ScenarioStatus__c": "PENDG",
+		"UniqueIntegrationId__c": ""
+	},
+
+	"ScenarioSalesForce": [
+		{
+			"Action__c": "ADD",
+			"SOMRegionId__c": "{{som_region_id}}",
+			"UniqueIntegrationId__c": "0-{{salesforceUID}}-{{TestUniqueIntegrationId}}",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"Type__c": "KOL",
+			"Name": "SF Recalc Rollback"
+		}
+	],
+
+	"ScenarioTerritory": [
+		{
+			"Action__c": "ADD",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+			"TerritorySalesForceType__c": "PRIM",
+			"Name": "Recalc Terr aligned by rule",
+			"UniqueIntegrationId__c": "0-{{territory_aligned_by_rule_UId}}-{{TestUniqueIntegrationId}}",
+			"SOMRegionId__c": "{{som_region_id}}",
+			"Type__c": "TERR"
+		}
+	],
+
+	"ScenarioRule": [
+		{
+			"Name": "RollbackRecalcRule-0-{{TestUniqueIntegrationId}}",
+			"Action__c": "ADD",
+			"UniqueIntegrationId__c": "SF0-{{ruleUID}}-{{TestUniqueIntegrationId}}",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+			"RuleData__c": "{\"geography\":false,\"explicit\":false,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC\"},{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Audiology\"}]},\"hierarchy\":\"TERR;DIST;REGN;AREA;BU\"}"
+		},
+		{
+			"Name": "RollbackRecalcRule-1-{{TestUniqueIntegrationId}}",
+			"Action__c": "ADD",
+			"UniqueIntegrationId__c": "SF1-{{ruleUID}}-{{TestUniqueIntegrationId}}",
+			"OMScenarioId__c": "{{Scenario.Id}}",
+			"SalesForceUniqueIntegrationId__c": "{{ScenarioSalesForce.UniqueIntegrationId__c}}",
+			"RuleData__c": "{\"geography\":false,\"explicit\":false,\"filter\":{\"type\":\"and\",\"filters\":[{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"AccountType\",\"value\":\"BC\"},{\"type\":\"In\",\"table\":\"OMAccount\",\"column\":\"Specialty\",\"value\":\"Sports%20medicine\"}]},\"hierarchy\":\"TERR;DIST;REGN;AREA;BU\"}"
+		}
+	]
+}
